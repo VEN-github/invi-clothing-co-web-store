@@ -1,0 +1,46 @@
+@use '../abstracts/colors';
+@use '../abstracts/fonts';
+@use './grid';
+@use '../components/buttons';
+
+.product-card {
+  padding: 5em;
+  & h1 {
+    font-size: 4rem;
+    font-weight: map-get(fonts.$font-weight, semi-bold);
+    color: colors.$primary-color;
+    text-align: center;
+    letter-spacing: 0.1em;
+  }
+  .card {
+    @include grid.grid(1fr 1fr, auto, none, 20px);
+    padding: 5em 0;
+    &-container {
+      display: grid;
+      place-items: center;
+      padding: 5em;
+      background: #d6d5da;
+      border-radius: 15px;
+      .card-img {
+        width: 230px;
+        object-fit: cover;
+      }
+    }
+    .tees {
+      grid-column: 1/2;
+      grid-row: 1/2;
+    }
+    .accessories {
+      grid-column: 2/3;
+      grid-row: 1/2;
+    }
+    .collection {
+      grid-column: 1/3;
+      grid-row: 2/3;
+      & img {
+        width: 800px;
+        object-fit: cover;
+      }
+    }
+  }
+}

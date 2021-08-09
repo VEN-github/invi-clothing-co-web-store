@@ -1,0 +1,1 @@
+const sf=document.querySelector("#shipping-fee");document.querySelectorAll("#ship-method").forEach(e=>{e.addEventListener("click",()=>{var e=document.querySelector("input[type=radio]:checked");sf.innerText=e.value})});
