@@ -1,0 +1,52 @@
+@use '../abstracts/breakpoints';
+
+@mixin desktop {
+  @media screen and (max-width: breakpoints.$desktop) {
+    @content;
+  }
+}
+@mixin bigLaptop {
+  @media screen and (max-width: breakpoints.$big-laptop) {
+    @content;
+  }
+}
+@mixin laptop {
+  @media screen and (max-width: breakpoints.$laptop) {
+    @content;
+  }
+}
+@mixin landscapeTablet {
+  @media screen and (max-width: breakpoints.$landscape-tablet) {
+    @content;
+  }
+}
+@mixin portraitTablet {
+  @media screen and (max-width: breakpoints.$portrait-tablet) {
+    @content;
+  }
+}
+@mixin tablet {
+  @media screen and (max-width: breakpoints.$tablet) {
+    @content;
+  }
+}
+@mixin bigMobile {
+  @media screen and (max-width: breakpoints.$big-mobile) {
+    @content;
+  }
+}
+@mixin mediumMobile {
+  @media screen and (max-width: breakpoints.$medium-mobile) {
+    @content;
+  }
+}
+@mixin smallMobile {
+  @media screen and (max-width: breakpoints.$small-mobile) {
+    @content;
+  }
+}
+@mixin mobile {
+  @media screen and (max-width: breakpoints.$mobile) {
+    @content;
+  }
+}

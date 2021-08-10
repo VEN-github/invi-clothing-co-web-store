@@ -1,0 +1,202 @@
+@use '../abstracts/colors';
+@use '../abstracts/fonts';
+@use '../layout/flex';
+@use '../layout/grid';
+@use '../components/banner';
+
+#cart {
+  position: relative;
+  padding: 8em 0;
+  .empty-cart {
+    @include flex.flex(center, center, column);
+    padding-bottom: 6em;
+    & img {
+      width: 600px;
+      max-width: 100%;
+      object-fit: cover;
+      margin-bottom: 3em;
+    }
+    &-details {
+      & h3 {
+        font-size: 3rem;
+        font-weight: map-get(fonts.$font-weight, semi-bold);
+        letter-spacing: 0.1em;
+        color: colors.$primary-color;
+      }
+      & p {
+        margin-bottom: 2em;
+        font-size: 1.25rem;
+        font-weight: map-get(fonts.$font-weight, regular);
+        text-align: center;
+        color: colors.$light-color;
+      }
+    }
+  }
+  .cart-wrapper {
+    @include grid.grid(1fr 1fr, none, none, 30px);
+  }
+  .cart-header {
+    @include flex.flex(flex-start, center, row);
+    width: 930px;
+    max-width: 100%;
+    margin-top: 2.5em;
+    padding-bottom: 0.5em;
+    font-size: 1.125rem;
+    font-weight: map-get(fonts.$font-weight, medium);
+    color: colors.$primary-color;
+    border-bottom: 1px solid colors.$disabled-color;
+
+    .label-item {
+      margin-right: 20em;
+    }
+    .label-price {
+      margin-right: 5.5em;
+    }
+    .label-quantity {
+      margin-right: 6em;
+    }
+  }
+  .cart-items {
+    @include flex.flex(flex-start, center, row);
+    width: 930px;
+    max-width: 100%;
+    padding: 1em 0;
+    border-bottom: 1px solid colors.$disabled-color;
+    & img {
+      width: 160px;
+      object-fit: cover;
+      margin-right: 1.2em;
+      padding: 0.8em;
+      background: #e5e5e5;
+      border-radius: 5px;
+    }
+    .item-label {
+      width: 22%;
+      & p {
+        font-size: 0.875rem;
+        font-weight: map-get(fonts.$font-weight, regular);
+        color: colors.$primary-color;
+      }
+      & .item-name {
+        margin-bottom: 0.3em;
+        font-size: 1.25rem;
+        font-weight: map-get(fonts.$font-weight, semi-bold);
+        color: colors.$primary-color;
+      }
+    }
+    .item-price {
+      display: flex;
+      width: 15%;
+      & p {
+        font-size: 1.125rem;
+        font-weight: map-get(fonts.$font-weight, regular);
+        color: colors.$primary-color;
+      }
+      .peso-sign {
+        width: 25px;
+        height: 25px;
+        margin-right: 0.2em;
+        color: colors.$primary-color;
+      }
+    }
+    .item-total {
+      @extend .item-price;
+    }
+    .item-quantity {
+      display: flex;
+      width: 21%;
+    }
+    .del-icon {
+      width: 36px;
+      height: 36px;
+      padding: 0.5em;
+      background: colors.$light-color;
+      color: colors.$text-color;
+      border-radius: 50%;
+      cursor: pointer;
+      transition: background 0.5s ease;
+
+      &:hover {
+        background: colors.$accent-color;
+      }
+    }
+  }
+  .cont-shop {
+    margin-top: 0.8em;
+    & a {
+      font-size: 1rem;
+      font-weight: map-get(fonts.$font-weight, regular);
+      text-decoration: none;
+      color: colors.$primary-color;
+      transition: color 0.5s ease;
+
+      &:hover {
+        color: colors.$accent-color;
+      }
+    }
+  }
+  .order-summary {
+    justify-self: center;
+    width: 345px;
+    height: 555px;
+    margin: 1.5em 0 2.5em 0;
+    padding: 1em 1.5em;
+    background: colors.$text-color;
+    border-radius: 15px;
+    box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.15);
+    & h4 {
+      padding-bottom: 0.3em;
+      font-size: 1.5rem;
+      font-weight: map-get(fonts.$font-weight, medium);
+      color: colors.$primary-color;
+      text-align: center;
+      border-bottom: 1px solid colors.$disabled-color;
+    }
+    & p {
+      padding: 0.5em 0;
+      font-size: 1rem;
+      font-weight: map-get(fonts.$font-weight, regular);
+      color: colors.$primary-color;
+      border-bottom: 1px solid colors.$disabled-color;
+    }
+    & .note {
+      margin-bottom: 1em;
+      padding-top: 0.8em;
+      & p {
+        padding: 0;
+        font-size: 1rem;
+        font-weight: map-get(fonts.$font-weight, medium);
+        color: colors.$primary-color;
+        border: 0;
+      }
+    }
+    .subtotal-container {
+      @include flex.flex(space-between, center, row);
+      margin-bottom: 1em;
+      font-size: 1.625rem;
+      font-weight: map-get(fonts.$font-weight, medium);
+      color: colors.$primary-color;
+      .subtotal {
+        @include flex.flex(flex-start, center, row);
+        .peso-sign {
+          width: 26px;
+          height: 26px;
+          margin-right: 0.2em;
+          color: colors.$primary-color;
+        }
+      }
+    }
+    .checkout {
+      &-btn {
+        display: inline-block;
+        width: 100%;
+      }
+      .right-arrow {
+        position: relative;
+        top: 3px;
+        right: -3px;
+        height: 100%;
+      }
+    }
+  }
+}

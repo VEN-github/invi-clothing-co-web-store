@@ -1,0 +1,54 @@
+@use '../abstracts/colors';
+@use '../abstracts/fonts';
+@use '../components/media';
+
+.showcase {
+  width: 100%;
+  min-height: 100%;
+  padding-top: 6em;
+  background: radial-gradient(
+    62.24% 106.45% at 108.33% 100.38%,
+    #ed6a4c 0%,
+    #2c3037 100%
+  );
+
+  .hero {
+    justify-self: center;
+    & img {
+      max-width: 580px;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: drop-shadow(14px 0px 16px rgba(0, 0, 0, 0.25));
+    }
+  }
+  .showcase-text {
+    align-self: center;
+    & h1 {
+      font-size: 6.75rem;
+      font-weight: map-get(fonts.$font-weight, extra-bold);
+      background: linear-gradient(279.15deg, #ffffff -7.93%, #ed6a4c 113.09%);
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: 0.045em;
+      line-height: 132px;
+      margin-bottom: 0.2em;
+
+      & span {
+        display: block;
+      }
+    }
+    & p {
+      font-size: 1.45rem;
+      color: colors.$text-color;
+      // line-height: 1.75em;
+
+      & span {
+        display: block;
+      }
+    }
+    & .cta {
+      margin-top: 3em;
+    }
+  }
+}
