@@ -1,10 +1,10 @@
 <?php
-  require_once('../class/webstoreclass.php');
-  $ID = $store->login();
-  $user = $store->setProfile();
-  $userID = $store->get_userdata();
-  $title = 'Order Confirmed - Checkout';
-  include_once('../includes/header.php');
+require_once "../class/webstoreclass.php";
+$ID = $store->login();
+$user = $store->setProfile();
+$userID = $store->get_userdata();
+$title = "Order Confirmed - Checkout";
+include_once "../includes/header.php";
 ?>
   <body>
     <div class="page-container">
@@ -58,7 +58,7 @@
                 </div>
                 <ul class="menu">
                   <li>
-                    <a href="profile.php?ID=<?php echo $userID['ID'];?>"
+                    <a href="profile.php?ID=<?php echo $userID["ID"]; ?>"
                       ><span
                         class="iconify"
                         data-icon="fa-solid:user"
@@ -119,7 +119,7 @@
         </div>
       </header>
       <!-- end of navbar -->
-      <!-- start of cart section -->
+      <!-- start of order confirmed section -->
       <main>
         <section id="confirmation">
           <div class="container">
@@ -131,7 +131,9 @@
               />
               <div class="confirmation-details">
                 <p class="confirmation-notif">
-                  Thank you, <?php echo $user['firstName']." ".$user['lastName'];?>. Your Order is confirmed
+                  Thank you, <?php echo $user["firstName"] .
+                    " " .
+                    $user["lastName"]; ?>. Your Order is confirmed
                 </p>
                 <p>
                   Your order has been placed and will be processed as soon as
@@ -164,8 +166,8 @@
           </div>
         </section>
       </main>
-      <!-- end of cart section -->
-      <?php require_once '../includes/footer.php'?>
+      <!-- end of confirmed section -->
+      <?php require_once "../includes/footer.php"; ?>
     </div>
     <script src="./assets/js/header.js"></script>
     <script src="./assets/js/user.js"></script>

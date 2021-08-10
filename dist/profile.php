@@ -1,12 +1,12 @@
 <?php
-  require_once('../class/webstoreclass.php');
-  $store->update_userdata();
-  $store->delete_userdata();
-  $store->add_cart(); 
-  $user = $store->setProfile();
-  $userID = $store->get_userdata();
-  $title = 'Profile';
-  include_once('../includes/header.php');
+require_once "../class/webstoreclass.php";
+$store->update_userdata();
+$store->delete_userdata();
+$store->add_cart();
+$user = $store->setProfile();
+$userID = $store->get_userdata();
+$title = "Profile";
+include_once "../includes/header.php";
 ?>
   <body>
     <div class="page-container">
@@ -43,14 +43,12 @@
                     data-inline="false"
                   ></span
                 ></a>
-                <?php
-                  if(isset($_SESSION['cart'])){
-                    $count = count($_SESSION['cart']);
-                    echo "<span class=\"counter\">$count</span>";
-                  } else{ 
-                    echo "<span class=\"counter\">0</span>";
-                  }
-                ?>  
+                <?php if (isset($_SESSION["cart"])) {
+                  $count = count($_SESSION["cart"]);
+                  echo "<span class=\"counter\">$count</span>";
+                } else {
+                  echo "<span class=\"counter\">0</span>";
+                } ?>  
               </div>
               <div class="profile-menu">
                 <div class="hover">
@@ -67,7 +65,7 @@
                 </div>
                 <ul class="menu">
                   <li>
-                    <a href="profile.php?ID=<?php echo $userID['ID'];?>"
+                    <a href="profile.php?ID=<?php echo $userID["ID"]; ?>"
                       ><span
                         class="iconify"
                         data-icon="fa-solid:user"
@@ -128,7 +126,7 @@
         </div>
       </header>
       <!-- end of navbar -->
-      <!-- start of cart section -->
+      <!-- start of profile section -->
       <main>
         <section id="profile">
           <div class="banner">Profile</div>
@@ -148,11 +146,15 @@
                       data-inline="false"
                     ></span>
                   </button>
-                  <p class="user-name"><?php echo $user['firstName']." ".$user['lastName'];?></p>
+                  <p class="user-name"><?php echo $user["firstName"] .
+                    " " .
+                    $user["lastName"]; ?></p>
                 </div>
                 <ul class="menu">
                   <li>
-                    <a href="profile.php?ID=<?php echo $userID['ID'];?>" class="visited"
+                    <a href="profile.php?ID=<?php echo $userID[
+                      "ID"
+                    ]; ?>" class="visited"
                       ><span
                         class="iconify visited"
                         data-icon="fa-solid:user"
@@ -207,14 +209,18 @@
                 <h4>Personal Details</h4>
                 <form action="" method="post">
                   <div class="input-field">
-                    <input type="text" name="firstName" id="" class="input left-input" value="<?php echo $user['firstName']?>" />
-                    <input type="text" name="lastName" id="" class="input" value="<?php echo $user['lastName']?>" />
+                    <input type="text" name="firstName" id="" class="input left-input" value="<?php echo $user[
+                      "firstName"
+                    ]; ?>" />
+                    <input type="text" name="lastName" id="" class="input" value="<?php echo $user[
+                      "lastName"
+                    ]; ?>" />
                   </div>
                   <div class="input-field">
                     <input type="text" name="email" id="" class="input left-input disabled"
-                    value="<?php echo $user['email']?>" />
+                    value="<?php echo $user["email"]; ?>" />
                     <input type="text" name="contactNumber" id="" class="input" placeholder="Contact Number"         
-                    value="<?php echo $user['contactNumber']?>" />
+                    value="<?php echo $user["contactNumber"]; ?>" />
                   </div>
                   <!-- <div class="input-field">
                     <input
@@ -253,8 +259,8 @@
           </div>
         </section>
       </main>
-      <!-- end of cart section -->
-      <?php require_once '../includes/footer.php'?>
+      <!-- end of profile section -->
+      <?php require_once "../includes/footer.php"; ?>
     </div>
     <script src="./assets/js/header.js"></script>
     <script src="./assets/js/user.js"></script>
