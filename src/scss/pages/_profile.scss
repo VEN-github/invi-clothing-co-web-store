@@ -1,0 +1,135 @@
+@use '../abstracts/colors';
+@use '../abstracts/fonts';
+@use '../layout/flex';
+@use '../layout/grid';
+@use '../components/banner';
+
+#profile {
+  padding: 8em 0;
+
+  .profile-wrapper {
+    @include grid.grid(400px 1fr, none, none, 30px);
+  }
+  .profile-summary {
+    width: 345px;
+    height: fit-content;
+    margin: 1.5em 0 2.5em 0;
+    background: colors.$text-color;
+    border-radius: 15px;
+    box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.15);
+  }
+  .user {
+    position: relative;
+    @include flex.flex(flex-start, center, column);
+    padding: 1em 0;
+    border-bottom: 1px solid colors.$disabled-color;
+    .avatar {
+      width: 100px;
+      height: 100px;
+      color: colors.$primary-color;
+    }
+    .camera-btn {
+      position: absolute;
+      top: 48%;
+      right: 38%;
+
+      & .camera {
+        width: 26px;
+        height: 26px;
+        padding: 0.3em;
+        background: colors.$accent-color;
+        color: colors.$text-color;
+        border-radius: 50%;
+        transition: background 0.5s ease-in-out;
+      }
+      &:hover .camera {
+        background: colors.$secondary-color;
+      }
+    }
+    .user-name {
+      font-size: 1.75rem;
+      font-weight: map-get(fonts.$font-weight, semi-bold);
+      text-align: center;
+      color: colors.$primary-color;
+    }
+  }
+  .menu {
+    list-style: none;
+    & li {
+      padding: 0.8em 2em;
+      border-bottom: 1px solid colors.$disabled-color;
+
+      & a {
+        @include flex.flex(flex-start, center, row);
+        font-size: 1.25rem;
+        font-weight: map-get(fonts.$font-weight, regular);
+        text-decoration: none;
+        color: colors.$primary-color;
+        transition: color 0.5s ease;
+        &.visited {
+          color: colors.$secondary-color;
+        }
+        &:hover:not(.visited) {
+          color: colors.$accent-color;
+        }
+        &:hover:not(.visited) .iconify {
+          color: colors.$accent-color;
+        }
+
+        & .iconify {
+          width: 23px;
+          height: 23px;
+          margin-right: 0.8em;
+          color: colors.$light-color;
+          cursor: pointer;
+          transition: color 0.5s ease;
+
+          &.visited {
+            color: colors.$secondary-color;
+          }
+        }
+      }
+    }
+    & li:last-child {
+      border-bottom: 0;
+    }
+  }
+  .customer-details {
+    width: 790px;
+    max-width: 100%;
+    padding: 1.5em 0;
+    & h4 {
+      margin-bottom: 1em;
+      font-size: 1.5rem;
+      font-weight: map-get(fonts.$font-weight, medium);
+      color: colors.$primary-color;
+    }
+    & .input-field {
+      margin-bottom: 1em;
+    }
+
+    & .left-input {
+      margin-right: 1em;
+    }
+
+    & .button-container {
+      @include flex.flex(flex-end, stretch, row);
+      margin-top: 3em;
+
+      & .update-btn {
+        margin: 0 0.8em 0 1em;
+      }
+
+      & .del-acct {
+        position: relative;
+        top: 2px;
+        left: 0;
+      }
+      & .save-icon {
+        position: relative;
+        top: 2.5px;
+        left: 0;
+      }
+    }
+  }
+}

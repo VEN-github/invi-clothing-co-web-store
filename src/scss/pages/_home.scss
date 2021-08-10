@@ -1,0 +1,57 @@
+@use '../abstracts/colors';
+@use '../abstracts/fonts';
+@use '../layout/header';
+@use '../layout/showcase';
+@use '../layout/features';
+@use '../layout/productcard';
+@use '../layout/footer';
+@use '../layout/flex';
+
+.info {
+  width: 100%;
+  height: 100%;
+  padding: 4em 0;
+  background: #e5e5e5;
+
+  &-container {
+    @include flex.flex(space-around, stretch, row);
+    flex-wrap: wrap;
+  }
+
+  .box {
+    @include flex.flex(flex-start, center, column);
+    .shirt-icon {
+      width: 85px;
+      height: 85px;
+      color: colors.$secondary-color;
+    }
+    .money-icon {
+      @extend .shirt-icon;
+    }
+    .ph-flag {
+      width: 85px;
+      height: 85px;
+      padding: 0.1em;
+      background: colors.$secondary-color;
+      border-radius: 50%;
+    }
+    &-details {
+      h4 {
+        font-size: 1.5rem;
+        font-weight: map-get(fonts.$font-weight, semi-bold);
+        color: colors.$primary-color;
+        letter-spacing: 0.05em;
+        text-align: center;
+      }
+      p {
+        font-size: 1rem;
+        font-weight: map-get(fonts.$font-weight, medium);
+        color: colors.$light-color;
+        text-align: center;
+      }
+      p span {
+        display: block;
+      }
+    }
+  }
+}

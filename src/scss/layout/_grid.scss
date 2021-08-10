@@ -1,0 +1,8 @@
+@mixin grid($column, $row, $area, $gap) {
+  display: grid;
+  grid-template-columns: $column;
+  grid-template-rows: $row;
+  grid-template-areas: $area;
+  grid-auto-flow: dense;
+  gap: $gap;
+}

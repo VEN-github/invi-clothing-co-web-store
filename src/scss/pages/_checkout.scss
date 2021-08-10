@@ -1,0 +1,400 @@
+@use '../abstracts/colors';
+@use '../abstracts/fonts';
+@use '../layout/flex';
+@use '../layout/grid';
+
+#checkout-process {
+  .checkout-banner {
+    width: 100%;
+    height: 220px;
+    padding: 2.5em 0;
+    background: colors.$primary-color;
+
+    & img {
+      // position: relative;
+      // top: 100%;
+      // left: 15%;
+      width: 120px;
+      object-fit: cover;
+    }
+  }
+  .checkout-wrapper {
+    @include grid.grid(2fr 1fr, none, none, 50px);
+  }
+  .checkout-container {
+    width: 750px;
+    max-width: 100%;
+    .contact-info {
+      margin-top: 2em;
+      margin-bottom: 2.5em;
+      padding: 1em 2em;
+      border: 1px solid colors.$light-color;
+      border-radius: 15px;
+
+      & h4 {
+        font-size: 1.125rem;
+        font-weight: map-get(fonts.$font-weight, medium);
+        color: colors.$primary-color;
+      }
+
+      & .user {
+        @include flex.flex(flex-start, center, row);
+        margin-bottom: 0.5em;
+        .avatar {
+          width: 100px;
+          height: 100px;
+          margin-right: 1em;
+          color: colors.$primary-color;
+        }
+        .user-details {
+          .user-name {
+            font-size: 1.125rem;
+            font-weight: map-get(fonts.$font-weight, medium);
+            color: colors.$primary-color;
+          }
+          .user-email {
+            font-size: 0.875rem;
+            font-weight: map-get(fonts.$font-weight, medium);
+            color: colors.$primary-color;
+          }
+        }
+        .edit-btn {
+          @include flex.flex(center, center, row);
+          white-space: nowrap;
+          margin-left: auto;
+          padding: 1em 1.5em;
+          font-size: 0.875rem;
+          font-weight: map-get(fonts.$font-weight, medium);
+
+          & a {
+            text-decoration: none;
+            color: colors.$text-color;
+          }
+          .edit-icon {
+            margin-right: 0.4em;
+          }
+        }
+      }
+      .contact-details {
+        margin-top: 1em;
+        font-size: 1rem;
+        font-weight: map-get(fonts.$font-weight, medium);
+        color: colors.$primary-color;
+      }
+      & .first-layer {
+        @include flex.flex(space-between, stretch, row);
+        margin-bottom: 1em;
+        & .payment-details {
+          margin-top: -1.8em;
+          font-size: 1rem;
+          font-weight: map-get(fonts.$font-weight, medium);
+          color: colors.$primary-color;
+          & p {
+            font-size: 0.875rem;
+            font-weight: map-get(fonts.$font-weight, regular);
+          }
+        }
+      }
+      & .second-layer {
+        @include flex.flex(space-between, stretch, row);
+        margin-bottom: 1em;
+
+        & .shipping-details {
+          font-size: 1rem;
+          font-weight: map-get(fonts.$font-weight, medium);
+          color: colors.$primary-color;
+
+          & p {
+            font-size: 0.875rem;
+            font-weight: map-get(fonts.$font-weight, regular);
+          }
+        }
+        & .billing-details {
+          @extend .shipping-details;
+        }
+      }
+      .phone-details {
+        font-size: 1rem;
+        font-weight: map-get(fonts.$font-weight, medium);
+        color: colors.$primary-color;
+
+        & p {
+          font-size: 0.875rem;
+          font-weight: map-get(fonts.$font-weight, regular);
+        }
+      }
+    }
+    .form {
+      margin-top: 2em;
+      margin-bottom: 2.5em;
+      padding: 1em 1em;
+      border: 1px solid colors.$light-color;
+      border-radius: 15px;
+
+      & h4 {
+        margin-bottom: 0.5em;
+        font-size: 1.125rem;
+        font-weight: map-get(fonts.$font-weight, medium);
+        color: colors.$primary-color;
+      }
+      .input-field {
+        margin-bottom: 1em;
+        .input-left {
+          width: 345px;
+          margin-right: 1.3em;
+        }
+        .input-right {
+          width: 345px;
+        }
+        .input-full {
+          width: 100%;
+        }
+      }
+    }
+    .radio-field {
+      position: relative;
+      @include flex.flex(flex-start, stretch, row);
+      margin-bottom: 1em;
+      padding: 1em;
+      color: colors.$primary-color;
+      user-select: none;
+      cursor: pointer;
+
+      & .radio {
+        opacity: 0;
+        cursor: pointer;
+
+        &:checked ~ .checkmark {
+          z-index: -1;
+          background: colors.$secondary-color;
+          border: 0;
+        }
+        &:checked ~ .ship-label {
+          color: colors.$text-color;
+        }
+        &:checked ~ .ship-details {
+          color: colors.$text-color;
+        }
+      }
+      & .checkmark {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        border: 1px solid colors.$light-color;
+        border-radius: 5px;
+        transition: all 0.5s ease-in-out;
+      }
+      &:hover .radio ~ .checkmark {
+        border-color: colors.$accent-color;
+        box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.15);
+      }
+      & .ship-label {
+        @include flex.flex(flex-start, center, row);
+        margin-right: 1em;
+        font-size: 1rem;
+        font-weight: map-get(fonts.$font-weight, medium);
+        transition: all 0.5s ease-in-out;
+
+        & .payment-icon {
+          width: 20px;
+          height: 20px;
+          margin-right: 0.5em;
+        }
+        & .gcash {
+          width: 20px;
+          margin-right: 0.5em;
+          object-fit: cover;
+        }
+      }
+      & .ship-details {
+        display: flex;
+        margin-left: auto;
+        transition: all 0.5s ease-in-out;
+        & .del-time {
+          margin-right: 5em;
+          font-size: 1rem;
+          font-weight: map-get(fonts.$font-weight, medium);
+          text-align: center;
+
+          & .del-details {
+            font-size: 0.875rem;
+            font-weight: map-get(fonts.$font-weight, regular);
+          }
+        }
+        & .ship-fee {
+          font-size: 1rem;
+          font-weight: map-get(fonts.$font-weight, medium);
+          text-align: center;
+
+          & .price {
+            display: flex;
+            justify-content: center;
+            font-size: 0.875rem;
+            font-weight: map-get(fonts.$font-weight, regular);
+            & .peso-sign {
+              width: 18px;
+              height: 18px;
+              margin-right: 0.3em;
+            }
+          }
+        }
+      }
+    }
+    .button-container {
+      @include flex.flex(space-between, center, row);
+      margin-bottom: 5em;
+    }
+    .back-btn {
+      display: inline-block;
+      width: 317px;
+      max-width: 100%;
+      padding: 0.75em 1.5em;
+      white-space: nowrap;
+      &:hover .left-arrow {
+        color: colors.$text-color;
+      }
+    }
+    .next-btn {
+      display: inline-block;
+      width: 317px;
+      max-width: 100%;
+      white-space: nowrap;
+    }
+    .left-arrow {
+      position: relative;
+      top: 3px;
+      left: -20px;
+      height: 100%;
+      color: colors.$accent-color;
+      transition: color 0.5s ease-in-out;
+    }
+    .right-arrow {
+      position: relative;
+      top: 3px;
+      right: -20px;
+      height: 100%;
+      color: colors.$text-color;
+    }
+  }
+  .order-summary {
+    justify-self: center;
+    width: 345px;
+    height: fit-content;
+    margin: 1.5em 0 2.5em 0;
+    padding: 1em 1.5em;
+    background: colors.$text-color;
+    border-radius: 15px;
+    box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.15);
+    & h4 {
+      padding-bottom: 0.3em;
+      font-size: 1.5rem;
+      font-weight: map-get(fonts.$font-weight, medium);
+      color: colors.$primary-color;
+      text-align: center;
+      border-bottom: 1px solid colors.$disabled-color;
+    }
+    .order-items {
+      display: flex;
+      padding: 0.5em 0;
+      border-bottom: 1px solid colors.$disabled-color;
+      & img {
+        width: 120px;
+        object-fit: cover;
+        margin-right: 0.8em;
+        padding: 0.4em;
+        background: #e5e5e5;
+        border-radius: 5px;
+      }
+      & .item-name {
+        font-size: 1.25rem;
+        font-weight: map-get(fonts.$font-weight, semi-bold);
+        color: colors.$primary-color;
+      }
+      & p {
+        font-size: 0.875rem;
+        font-weight: map-get(fonts.$font-weight, regular);
+        color: colors.$primary-color;
+      }
+      & .price-container {
+        @include flex.flex(flex-start, center, row);
+        & .peso-sign {
+          width: 20px;
+          height: 20px;
+          color: colors.$primary-color;
+        }
+        & .price {
+          font-size: 1.125rem;
+          font-weight: map-get(fonts.$font-weight, regular);
+          margin-right: 0.3em;
+          color: colors.$primary-color;
+        }
+        & .qty {
+          font-size: 0.875rem;
+          font-weight: map-get(fonts.$font-weight, regular);
+          color: colors.$primary-color;
+        }
+      }
+    }
+    .discount-field {
+      position: relative;
+      padding: 0.5em 0;
+      border-bottom: 1px solid colors.$disabled-color;
+    }
+    .subtotal-container {
+      padding: 0.5em 0;
+      border-bottom: 1px solid colors.$disabled-color;
+      & .subtotal {
+        @include flex.flex(space-between, stretch, row);
+        & p {
+          font-size: 1rem;
+          font-weight: map-get(fonts.$font-weight, regular);
+          color: colors.$primary-color;
+        }
+        & .price {
+          @include flex.flex(flex-start, center, row);
+          & .peso-sign {
+            width: 19px;
+            height: 19px;
+            margin-right: 0.2em;
+            color: colors.$primary-color;
+          }
+        }
+      }
+      & .shipping {
+        @include flex.flex(space-between, stretch, row);
+        & p {
+          font-size: 1rem;
+          font-weight: map-get(fonts.$font-weight, regular);
+          color: colors.$primary-color;
+        }
+        & .price {
+          @include flex.flex(flex-start, center, row);
+          & .peso-sign {
+            width: 19px;
+            height: 19px;
+            margin-right: 0.2em;
+            color: colors.$primary-color;
+          }
+        }
+      }
+    }
+    .total-container {
+      @include flex.flex(space-between, center, row);
+      padding: 0.5em 0;
+      font-size: 1.125rem;
+      font-weight: map-get(fonts.$font-weight, regular);
+      color: colors.$primary-color;
+      & .total {
+        @include flex.flex(flex-start, center, row);
+        & .peso-sign {
+          width: 18px;
+          height: 18px;
+          margin-right: 0.2em;
+          color: colors.$primary-color;
+        }
+      }
+    }
+  }
+}
