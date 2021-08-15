@@ -1,0 +1,216 @@
+@use '../abstracts/colors';
+@use '../abstracts/fonts';
+@use '../layout/flex';
+@use '../layout/grid';
+@use '../components/banner';
+
+#shop {
+  padding: 8em 0 3em 0;
+  .category-label {
+    font-size: 1rem;
+    font-weight: map-get(fonts.$font-weight, regular);
+    letter-spacing: normal;
+  }
+  .shop-grid {
+    @include grid.grid(auto 1fr, none, none, 30px 100px);
+    padding: 2em 0;
+  }
+  .filter {
+    grid-column: 2/3;
+    grid-row: 1/2;
+    margin-left: auto;
+    .sorting {
+      width: 150px;
+    }
+  }
+  .categories {
+    grid-column: 1/2;
+    grid-row: 2/3;
+    & p {
+      margin-top: 0.3em;
+      font-size: 1.25rem;
+      font-weight: map-get(fonts.$font-weight, medium);
+      color: colors.$primary-color;
+    }
+    & ul {
+      list-style: none;
+    }
+    .category-list {
+      padding: 0.8em 0;
+      border-bottom: 1px solid colors.$disabled-color;
+
+      & li {
+        padding: 0.3em 0;
+        font-size: 1rem;
+        font-weight: map-get(fonts.$font-weight, regular);
+        color: colors.$primary-color;
+        cursor: pointer;
+
+        &:hover {
+          color: colors.$accent-color;
+        }
+      }
+    }
+    .stock-status {
+      padding: 0.8em 0;
+      & li {
+        padding: 0.3em 0;
+        font-size: 1rem;
+        font-weight: map-get(fonts.$font-weight, regular);
+        color: colors.$primary-color;
+
+        & label {
+          font-size: 1rem;
+        }
+      }
+    }
+  }
+  .product-container {
+    grid-column: 2/3;
+    grid-row: 2/3;
+    @include flex.flex(space-between, stretch, row);
+    flex-wrap: wrap;
+    .products {
+      margin: 0 0.5em;
+      padding: 1.5em 0.8em;
+      height: fit-content;
+      transition: all 0.25s ease;
+      & .hidden {
+        opacity: 0;
+      }
+      &:hover {
+        background: #e5e5e5;
+        border-radius: 15px;
+        box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.15);
+      }
+      &:hover .hidden {
+        opacity: 1;
+      }
+      & .labels {
+        @include flex.flex(space-between, center, row);
+        & .product-label {
+          padding: 0.1em 0.3em;
+          background: colors.$sale-color;
+          color: colors.$text-color;
+          border-radius: 5px;
+        }
+        & .wishlist {
+          @include flex.flex(center, center, row);
+          width: 30px;
+          height: 30px;
+          background: colors.$body-color;
+          border-radius: 50%;
+          transition: background 0.5s ease;
+          &:hover {
+            background: colors.$light-color;
+          }
+          & .heart {
+            width: 18px;
+            height: 18px;
+            color: colors.$secondary-color;
+          }
+        }
+      }
+      & img {
+        width: 250px;
+        object-fit: cover;
+        margin-bottom: 1em;
+      }
+      .details {
+        @include flex.flex(center, center, column);
+        & a {
+          margin-bottom: 0.3em;
+          font-size: 1.25rem;
+          font-weight: map-get(fonts.$font-weight, semi-bold);
+          color: colors.$primary-color;
+          text-decoration: none;
+          transition: color 0.5s ease;
+
+          &:hover {
+            color: colors.$accent-color;
+          }
+        }
+        & .color {
+          margin-bottom: 0.3em;
+          font-size: 1.125rem;
+          font-weight: map-get(fonts.$font-weight, regular);
+          color: colors.$primary-color;
+        }
+        .price {
+          display: flex;
+          font-size: 1.125rem;
+          font-weight: map-get(fonts.$font-weight, medium);
+          color: colors.$primary-color;
+          .peso-sign {
+            width: 25px;
+            height: 25px;
+            margin-right: 0.2em;
+            color: colors.$primary-color;
+          }
+        }
+      }
+      & .color-group {
+        @include flex.flex(center, center, row);
+        margin-top: 0.5em;
+        & .color-field {
+          position: relative;
+          margin: 0 1em;
+          cursor: pointer;
+          & .radio {
+            opacity: 0;
+            cursor: pointer;
+
+            &:checked ~ .checkmark {
+              border: 1px solid colors.$secondary-color;
+              box-shadow: inset 0 0 0 3px #e5e5e5;
+            }
+          }
+          & .checkmark {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            width: 32px;
+            height: 32px;
+            border-color: transparent;
+            border-radius: 50%;
+            box-shadow: inset 0 0 0 3px #e5e5e5;
+            transition: all 0.5s ease;
+          }
+
+          &:hover .radio ~ .checkmark {
+            border: 1px solid colors.$accent-color;
+            box-shadow: inset 0 0 0 3px #e5e5e5;
+          }
+        }
+      }
+
+      & .variations {
+        @include flex.flex(space-evenly, center, row);
+        margin-top: 1em;
+        & .size {
+          width: 115px;
+        }
+        & .item-quantity {
+          display: flex;
+          width: 115px;
+        }
+      }
+      & .add-cart {
+        @include flex.flex(center, stretch, row);
+        margin-top: 0.8em;
+        padding: 0 0.5em;
+
+        & .cart-btn {
+          width: 100%;
+
+          & .cart-icon {
+            position: relative;
+            top: 2px;
+          }
+        }
+      }
+    }
+  }
+}

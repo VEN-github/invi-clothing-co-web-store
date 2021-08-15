@@ -33,7 +33,7 @@
     }
   }
   .cart-wrapper {
-    @include grid.grid(1fr 1fr, none, none, 30px);
+    @include grid.grid(1fr auto, none, none, 30px);
   }
   .cart-header {
     @include flex.flex(flex-start, center, row);
@@ -136,7 +136,6 @@
     }
   }
   .order-summary {
-    justify-self: center;
     width: 345px;
     height: 555px;
     margin: 1.5em 0 2.5em 0;

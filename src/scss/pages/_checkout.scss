@@ -19,7 +19,7 @@
     }
   }
   .checkout-wrapper {
-    @include grid.grid(2fr 1fr, none, none, 50px);
+    @include grid.grid(1fr auto, none, none, 50px);
   }
   .checkout-container {
     width: 750px;

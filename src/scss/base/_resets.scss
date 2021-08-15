@@ -40,5 +40,5 @@ main {
   @include flex.flex(space-between, center, row);
 }
 .grid {
-  @include grid.grid(1fr 1fr, none, none, 0);
+  @include grid.grid(auto 1fr, none, none, 0);
 }
