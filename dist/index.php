@@ -20,7 +20,7 @@ include_once "../includes/header.php";
         <nav>
           <ul class="nav-links">
             <li><a href="index.php" class="nav-link active">Home</a></li>
-            <li><a href="#" class="nav-link">Shop</a></li>
+            <li><a href="shop.php" class="nav-link">Shop</a></li>
             <li><a href="#" class="nav-link">About</a></li>
             <li><a href="#" class="nav-link">Contact</a></li>
             <?php if (isset($_SESSION["userdata"])) { ?>

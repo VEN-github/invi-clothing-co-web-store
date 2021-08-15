@@ -1,11 +1,11 @@
 <?php
 //Sign Up function
-require_once('../class/webstoreclass.php');
+require_once "../class/webstoreclass.php";
 $store->signupValidation();
 $store->signup();
-$store->add_cart(); 
-$title = 'Create Account';
-require_once '../includes/header.php'
+$store->add_cart();
+$title = "Create Account";
+require_once "../includes/header.php";
 ?>
   <body>
     <div class="page-container">
@@ -20,7 +20,7 @@ require_once '../includes/header.php'
           <nav>
             <ul class="nav-links">
               <li><a href="index.php" class="nav-link">Home</a></li>
-              <li><a href="#" class="nav-link">Shop</a></li>
+              <li><a href="shop.php" class="nav-link">Shop</a></li>
               <li><a href="#" class="nav-link">About</a></li>
               <li><a href="#" class="nav-link">Contact</a></li>
               <li>
@@ -47,14 +47,12 @@ require_once '../includes/header.php'
                     data-inline="false"
                   ></span
                 ></a>
-                <?php
-                  if(isset($_SESSION['cart'])){
-                    $count = count($_SESSION['cart']);
-                    echo "<span class=\"counter\">$count</span>";
-                  } else{ 
-                    echo "<span class=\"counter\">0</span>";
-                  }
-                ?>  
+                <?php if (isset($_SESSION["cart"])) {
+                  $count = count($_SESSION["cart"]);
+                  echo "<span class=\"counter\">$count</span>";
+                } else {
+                  echo "<span class=\"counter\">0</span>";
+                } ?>  
               </div>
             </div>
             <a
@@ -126,14 +124,14 @@ require_once '../includes/header.php'
                     class="input"
                   />
                 </div>
-                <?php if(isset($_GET['firstNameError'])) { ?>
+                <?php if (isset($_GET["firstNameError"])) { ?>
                 <div class="validation">
                   <span
                     class="iconify error-icon"
                     data-icon="clarity:error-standard-line"
                     data-inline="false"
                   ></span
-                  ><?php echo $_GET['firstNameError']; ?>
+                  ><?php echo $_GET["firstNameError"]; ?>
                 </div>
                 <?php } ?>
                 <div class="input-field">
@@ -145,14 +143,14 @@ require_once '../includes/header.php'
                     class="input"
                   />
                 </div>
-                <?php if(isset($_GET['lastNameError'])) { ?>
+                <?php if (isset($_GET["lastNameError"])) { ?>
                 <div class="validation">
                   <span
                     class="iconify error-icon"
                     data-icon="clarity:error-standard-line"
                     data-inline="false"
                   ></span
-                  ><?php echo $_GET['lastNameError']; ?>
+                  ><?php echo $_GET["lastNameError"]; ?>
                 </div>
                 <?php } ?>
                 <div class="input-field">
@@ -164,14 +162,14 @@ require_once '../includes/header.php'
                     class="input"
                   />
                 </div>
-                <?php if(isset($_GET['emailError'])) { ?>
+                <?php if (isset($_GET["emailError"])) { ?>
                 <div class="validation">
                   <span
                     class="iconify error-icon"
                     data-icon="clarity:error-standard-line"
                     data-inline="false"
                   ></span
-                  ><?php echo $_GET['emailError']; ?>
+                  ><?php echo $_GET["emailError"]; ?>
                 </div>
                 <?php } ?>
                 <div class="input-field">
@@ -190,14 +188,14 @@ require_once '../includes/header.php'
                     ></span>
                   </button>
                 </div>
-                <?php if(isset($_GET['passwordError'])) { ?>
+                <?php if (isset($_GET["passwordError"])) { ?>
                 <div class="validation">
                   <span
                     class="iconify error-icon"
                     data-icon="clarity:error-standard-line"
                     data-inline="false"
                   ></span
-                  ><?php echo $_GET['passwordError']; ?>
+                  ><?php echo $_GET["passwordError"]; ?>
                 </div>
                 <?php } ?>
                 <div class="input-field">
@@ -216,14 +214,14 @@ require_once '../includes/header.php'
                     ></span>
                   </button>
                 </div>
-                <?php if(isset($_GET['confirmPasswordError'])) { ?>
+                <?php if (isset($_GET["confirmPasswordError"])) { ?>
                 <div class="validation">
                   <span
                     class="iconify error-icon"
                     data-icon="clarity:error-standard-line"
                     data-inline="false"
                   ></span
-                  ><?php echo $_GET['confirmPasswordError']; ?>
+                  ><?php echo $_GET["confirmPasswordError"]; ?>
                 </div>
                 <?php } ?>
                 <div class="input-field">
@@ -247,7 +245,7 @@ require_once '../includes/header.php'
           <!-- end of sign up form -->
         </section>
       </main>
-      <?php require_once '../includes/footer.php'?>
+      <?php require_once "../includes/footer.php"; ?>
     </div>
     <script src="./assets/js/header.js"></script>
   </body>

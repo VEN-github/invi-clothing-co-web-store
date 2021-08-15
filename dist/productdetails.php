@@ -3,22 +3,22 @@ require_once "../class/webstoreclass.php";
 $store->login();
 $userID = $store->get_userdata();
 
-$title = "Page not found";
+$title = "Name of Product Here";
 include_once "../includes/header.php";
 ?>
 
 <body>
   <div class="page-container">
     <!-- start of navbar -->
-    <header id="main-header">
+    <header id="main-header" class="bg">
       <div class="container flex">
         <div class="logo">
           <a href="index.php"><img src="./assets/img/logo.png" alt="Logo" /></a>
         </div>
         <nav>
           <ul class="nav-links">
-            <li><a href="index.php" class="nav-link active">Home</a></li>
-            <li><a href="#" class="nav-link">Shop</a></li>
+            <li><a href="index.php" class="nav-link">Home</a></li>
+            <li><a href="shop.php" class="nav-link">Shop</a></li>
             <li><a href="#" class="nav-link">About</a></li>
             <li><a href="#" class="nav-link">Contact</a></li>
             <?php if (isset($_SESSION["userdata"])) { ?>
@@ -132,11 +132,11 @@ include_once "../includes/header.php";
       <div class="container">
         <div class="product-grid">
           <div class="product-highlight">
-            <img src="./assets/img/Anniv - Front - Khaki.png" alt="" />
+            <img src="./assets/img/INVI Warrior - Front - Golden Yellow.png" alt="" />
           </div>
           <div class="product-gallery">
-            <img src="./assets/img/Anniv - Front - Khaki.png" alt="" />
-            <img src="./assets/img/Anniv - Back - Khaki.png" alt="" />
+            <img src="./assets/img/INVI Warrior - Front - Golden Yellow.png" alt="" />
+            <img src="./assets/img/INVI Warrior - Front - Golden Yellow.png" alt="" />
           </div>
           <div class="product-info">
             <div class="label">SALE</div>

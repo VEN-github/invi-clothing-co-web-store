@@ -1,21 +1,21 @@
 <?php
 //login function
-require_once('../class/webstoreclass.php');
+require_once "../class/webstoreclass.php";
 $store->loginValidation();
 $store->login();
-$store->add_cart(); 
+$store->add_cart();
 $userdata = $store->get_userdata();
 
-if(isset($userdata)){
-  if($userdata['access'] != "admin"){
-      header("Location: index.php");
-  }else{
-      header("Location: dashboard.php");
+if (isset($userdata)) {
+  if ($userdata["access"] != "admin") {
+    header("Location: index.php");
+  } else {
+    header("Location: dashboard.php");
   }
 }
 
-$title = 'Login';
-require_once '../includes/header.php'
+$title = "Login";
+require_once "../includes/header.php";
 ?>
   <body>
     <div class="page-container">
@@ -30,7 +30,7 @@ require_once '../includes/header.php'
           <nav>
             <ul class="nav-links">
               <li><a href="index.php" class="nav-link">Home</a></li>
-              <li><a href="#" class="nav-link">Shop</a></li>
+              <li><a href="shop.php" class="nav-link">Shop</a></li>
               <li><a href="#" class="nav-link">About</a></li>
               <li><a href="#" class="nav-link">Contact</a></li>
               <li>
@@ -57,14 +57,12 @@ require_once '../includes/header.php'
                     data-inline="false"
                   ></span
                 ></a>
-                <?php
-                  if(isset($_SESSION['cart'])){
-                    $count = count($_SESSION['cart']);
-                    echo "<span class=\"counter\">$count</span>";
-                  } else{ 
-                    echo "<span class=\"counter\">0</span>";
-                  }
-                ?>  
+                <?php if (isset($_SESSION["cart"])) {
+                  $count = count($_SESSION["cart"]);
+                  echo "<span class=\"counter\">$count</span>";
+                } else {
+                  echo "<span class=\"counter\">0</span>";
+                } ?>  
               </div>
             </div>
             <a
@@ -130,14 +128,14 @@ require_once '../includes/header.php'
                     ></span>
                   </button>
                 </div>
-                <?php if(isset($_GET['error'])) { ?>
+                <?php if (isset($_GET["error"])) { ?>
                 <div class="validation">
                   <span
                     class="iconify error-icon"
                     data-icon="clarity:error-standard-line"
                     data-inline="false"
                   ></span
-                  ><?php echo $_GET['error']; ?>
+                  ><?php echo $_GET["error"]; ?>
                 </div>
                 <?php } ?>
                 <a href="#" class="forgot-pass">Forgot Password?</a>
@@ -170,7 +168,7 @@ require_once '../includes/header.php'
           </div>
         </section>
       </main>
-      <?php require_once '../includes/footer.php'?>
+      <?php require_once "../includes/footer.php"; ?>
     </div>
     <script src="./assets/js/header.js"></script>
   </body>

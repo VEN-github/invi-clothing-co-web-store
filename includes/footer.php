@@ -9,7 +9,7 @@
       <h4>MENU</h4>
       <ul>
         <li><a href="index.php">Home</a></li>
-        <li><a href="#">Shop</a></li>
+        <li><a href="shop.php">Shop</a></li>
         <li><a href="#">About</a></li>
         <li><a href="#">Contact</a></li>
       </ul>
