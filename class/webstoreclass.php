@@ -46,7 +46,7 @@ class WebStore
         "SELECT * FROM account_table WHERE email = ? AND password = ?"
       );
       $stmt->execute([$email, $password]);
-      $row = $stmt->fetch(PDO::FETCH_ASSOC);
+      $row = $stmt->fetch();
       $count = $stmt->rowCount();
 
       if ($count > 0) {
