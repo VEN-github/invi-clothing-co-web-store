@@ -82,7 +82,11 @@
     @include flex.flex(center, center, row);
     & > div {
       display: flex;
-      margin-right: 1.5em;
+      align-items: center;
+
+      &:not(.profile-menu) {
+        margin-right: 1.5em;
+      }
     }
   }
 

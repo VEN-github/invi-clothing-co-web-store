@@ -500,6 +500,11 @@ button {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+#main-header .icon-menu > div:not(.profile-menu) {
   margin-right: 1.5em;
 }
 #main-header .icon-link.visited .cart-icon {
