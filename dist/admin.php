@@ -1,13 +1,12 @@
 <?php
-require_once('../class/webstoreclass.php');
-$userdata = $store->get_userdata();
+require_once "../class/webstoreclass.php";
+$user = $store->get_userdata();
 $store->signup_admin();
 $admins = $store->get_admin();
-$title = 'Admin';
-include_once('../includes/dashboard_header.php');
-include_once('../includes/dashboard_sidebar.php');
-include_once('../includes/dashboard_navbar.php');
-
+$title = "Admin";
+include_once "../includes/dashboard_header.php";
+include_once "../includes/dashboard_sidebar.php";
+include_once "../includes/dashboard_navbar.php";
 ?>
 <div class="modal fade" id="addnewadmin" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
@@ -92,12 +91,12 @@ include_once('../includes/dashboard_navbar.php');
                       </tr>
                   </tfoot>
                   <tbody>
-                  <?php foreach($admins as $admin) { ?>
+                  <?php foreach ($admins as $admin) { ?>
                     <tr>
-                      <td><?= $admin['firstName'];?></td>
-                      <td><?= $admin['lastName'];?></td>
-                      <td><?= $admin['email'];?></td>
-                      <td><?= $admin['contactNumber'];?></td>
+                      <td><?= $admin["firstName"] ?></td>
+                      <td><?= $admin["lastName"] ?></td>
+                      <td><?= $admin["email"] ?></td>
+                      <td><?= $admin["contactNumber"] ?></td>
                     </tr>
                   <?php } ?>
                   </tbody>
@@ -110,5 +109,5 @@ include_once('../includes/dashboard_navbar.php');
 
 </div>
 <!-- End of Main Content -->
-<?php require_once '../includes/dashboard_footer.php' ?>
-<?php require_once '../includes/dashboard_scripts.php' ?>       
+<?php require_once "../includes/dashboard_footer.php"; ?>
+<?php require_once "../includes/dashboard_scripts.php"; ?>        ?>

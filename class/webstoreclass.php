@@ -34,9 +34,6 @@ class WebStore
   // login
   public function login()
   {
-    if (!isset($_SESSION)) {
-      session_start();
-    }
     if (isset($_POST["login"])) {
       $email = $_POST["email"];
       $password = md5($_POST["password"]);
@@ -69,9 +66,6 @@ class WebStore
   // user sign up
   public function signup()
   {
-    if (!isset($_SESSION)) {
-      session_start();
-    }
     if (isset($_POST["signup"])) {
       $firstName = $_POST["firstName"];
       $lastName = $_POST["lastName"];
@@ -89,6 +83,35 @@ class WebStore
       } else {
         header("Location: signup.php?emailError=Email Already Exists");
       }
+    }
+  }
+  // set user data
+  public function set_userdata($array)
+  {
+    if (!isset($_SESSION)) {
+      session_start();
+    }
+
+    $_SESSION["userdata"] = [
+      "ID" => $array["ID"],
+      "firstName" => $array["firstName"],
+      "lastName" => $array["lastName"],
+      "email" => $array["email"],
+      "access" => $array["access"],
+    ];
+
+    return $_SESSION["userdata"];
+  }
+  // get user data
+  public function get_userdata()
+  {
+    if (!isset($_SESSION)) {
+      session_start();
+    }
+    if (isset($_SESSION["userdata"])) {
+      return $_SESSION["userdata"];
+    } else {
+      return null;
     }
   }
   //admin sign up
@@ -200,36 +223,6 @@ class WebStore
       }
     }
   }
-  // set customer data
-  public function set_userdata($array)
-  {
-    if (!isset($_SESSION)) {
-      session_start();
-    }
-
-    $_SESSION["userdata"] = [
-      "firstName" => $array["firstName"],
-      "lastName" => $array["lastName"],
-      "email" => $array["email"],
-      "contactNumber" => $array["contactNumber"],
-      "access" => $array["access"],
-      "ID" => $array["ID"],
-    ];
-
-    return $_SESSION["userdata"];
-  }
-  // get customer data
-  public function get_userdata()
-  {
-    if (!isset($_SESSION)) {
-      session_start();
-    }
-    if (isset($_SESSION["userdata"])) {
-      return $_SESSION["userdata"];
-    } else {
-      return null;
-    }
-  }
   // sign up form validation
   public function signupValidation()
   {
@@ -301,21 +294,19 @@ class WebStore
       "SELECT * FROM account_table WHERE ID = '$ID'"
     );
     $stmt->execute();
-    $user = $stmt->fetch(PDO::FETCH_ASSOC);
+    $user = $stmt->fetch();
     $userCount = $stmt->rowCount();
 
     if ($userCount > 0) {
       return $user;
     } else {
-      return 0;
+      return $this->show_404();
     }
   }
-  // update profile
+
+  // update user profile
   public function update_userdata()
   {
-    if (!isset($_SESSION)) {
-      session_start();
-    }
     if (isset($_POST["update"])) {
       $firstName = $_POST["firstName"];
       $lastName = $_POST["lastName"];
@@ -327,11 +318,11 @@ class WebStore
         "UPDATE account_table SET `firstName` = ?, `lastName` = ?, `contactNumber` = ? WHERE email = '$email'"
       );
       $stmt->execute([$firstName, $lastName, $contactNumber]);
-      $row = $stmt->fetch(PDO::FETCH_ASSOC);
-      $count = $stmt->rowCount();
+      $row = $stmt->fetch();
 
       return $row;
-      echo header("Location: profile.php");
+
+      header("Location: profile.php");
     }
   }
   // delete account
@@ -387,6 +378,7 @@ class WebStore
       return false;
     }
   }
+
   // check product if already exists
   // public function checkProduct($product_name){
   //     $connection = $this->openConnection();
@@ -395,6 +387,7 @@ class WebStore
   //     $count = $stmt->rowCount();
   //     return $count;
   // }
+
   // add products
   public function add_products()
   {
@@ -431,7 +424,7 @@ class WebStore
           "assets/img/" . $_FILES["productImage"]["name"]
         );
 
-        header("Location: products.php");
+        header("Location: addstocks.php");
         // if($this->checkProduct($productName) == 0){
         //     $connection = $this->openConnection();
         //     $stmt = $connection->prepare("INSERT INTO product_table (`productName` , `productDescription` , `categoryID` , `productPrice` , `productColor` , `productImage`) VALUES (?,?,?,?,?,?)");
@@ -447,30 +440,45 @@ class WebStore
     }
   }
   //get product id for variation
-  // public function get_productID(){
-  //     $connection = $this->openConnection();
-  //     $stmt = $connection->prepare("SELECT ID FROM product_table ORDER BY ID DESC");
-  //     $stmt->execute();
-  //     $product = $stmt->fetch();
-  //     return $product;
-  // }
-  // add product variation and stocks
-  // public function add_variations(){
-  //     if(isset($_POST['addStocksBtn'])){
-  //         $count = count($_POST['countRow']);
-  //         $productID = $_POST['productID'];
+  public function get_productID()
+  {
+    $connection = $this->openConnection();
+    $stmt = $connection->prepare(
+      "SELECT ID FROM product_table ORDER BY ID DESC"
+    );
+    $stmt->execute();
+    $product = $stmt->fetch();
+    return $product;
+  }
+  // add product sizes and stocks
+  public function add_variations()
+  {
+    if (isset($_POST["addStocksBtn"])) {
+      $count = count($_POST["countRow"]);
+      $productID = $_POST["productID"];
 
-  //         for($i = 0; $i < $count; $i++){
-  //             $breakdown = $_POST['breakdown'][$i];
-  //             $stock = $_POST['stock'][$i];
-  //             $connection = $this->openConnection();
-  //             $stmt = $connection->prepare("INSERT INTO variation_table ( `productID`, `breakdown` , `stock`) VALUES (?,?,?)");
-  //             $stmt->execute([$productID,$breakdown, $stock]);
-  //         }
-  //         header("Location: products.php");
-  //     }
-  // }
-  // display products
+      for ($i = 0; $i < $count; $i++) {
+        $sizes = $_POST["sizes"][$i];
+        $stocks = $_POST["stocks"][$i];
+        $connection = $this->openConnection();
+        $stmt = $connection->prepare(
+          "INSERT INTO stocks_table ( `productID`, `sizes` , `stocks`) VALUES (?,?,?)"
+        );
+        $stmt->execute([$productID, $sizes, $stocks]);
+      }
+      header("Location: products.php");
+    }
+  }
+
+  // show 404 page
+  public function show_404()
+  {
+    http_response_code(404);
+    header("Location: 404.php");
+    die();
+  }
+
+  // display all products
   public function get_products()
   {
     $connection = $this->openConnection();
@@ -480,9 +488,49 @@ class WebStore
     // $stmt = $connection->prepare("SELECT productName, productDescription, categoryName, productPrice, productColor, productImage, GROUP_CONCAT(breakdown SEPARATOR '<br>' ) AS breakdown, GROUP_CONCAT(stock SEPARATOR '<br>') AS stock FROM (SELECT * FROM product_table ) product LEFT JOIN category_table category ON product.ID = category.ID LEFT JOIN variation_table variation ON product.ID = variation.productID GROUP BY (product.ID) ");
     $stmt->execute();
     $products = $stmt->fetchall();
+    $count = $stmt->rowCount();
 
-    return $products;
+    if ($count > 0) {
+      return $products;
+    } else {
+      return false;
+    }
   }
+
+  //display single product
+  public function get_singleproduct($ID)
+  {
+    $connection = $this->openConnection();
+    $stmt = $connection->prepare("SELECT * FROM product_table WHERE ID = ?");
+    $stmt->execute([$ID]);
+    $product = $stmt->fetch();
+    $count = $stmt->rowCount();
+
+    if ($count > 0) {
+      return $product;
+    } else {
+      return $this->show_404();
+    }
+  }
+
+  //display product sizes and stocks
+  public function view_all_stocks($productID)
+  {
+    $connection = $this->openConnection();
+    $stmt = $connection->prepare(
+      "SELECT * FROM stocks_table WHERE productID = ?"
+    );
+    $stmt->execute([$productID]);
+    $stocks = $stmt->fetchall();
+    $count = $stmt->rowCount();
+
+    if ($count > 0) {
+      return $stocks;
+    } else {
+      return false;
+    }
+  }
+
   // add to cart
   public function add_cart()
   {
@@ -624,31 +672,6 @@ class WebStore
         </div>";
     echo $element;
   }
-  //display product size and corresponding stock
-  // public function get_stock(){
-  //     $connection = $this->openConnection();
-  // $stmt = $connection->prepare("SELECT productID, breakdown, stock FROM variation_table GROUP BY breakdown ORDER BY productID ASC");
-  //     $stmt = $connection->prepare("SELECT productName, productID, productDescription, categoryName, productPrice, productColor, productImage, breakdown, stock FROM (SELECT * FROM product_table ) product LEFT JOIN category_table category ON product.ID = category.ID LEFT JOIN variation_table variation ON product.ID = variation.productID GROUP BY (product.ID) ");
-  //     $stmt->execute();
-  //     $stock = $stmt->fetchall();
-
-  //     return $stock;
-  // }
-
-  //display single product
-  // public function get_singleproduct($ID){
-  //     $connection = $this->openConnection();
-  //     $stmt = $connection->prepare("SELECT * FROM product_table WHERE ID = ?");
-  //     $stmt->execute([$ID]);
-  //     $product = $stmt->fetch();
-  //     $count = $stmt->rowCount();
-
-  //     if($count > 0){
-  //         return $product;
-  //     }else{
-  //         return FALSE;
-  //     }
-  // }
 }
 $store = new WebStore();
 ?>

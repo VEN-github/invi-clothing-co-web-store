@@ -167,10 +167,6 @@ button {
   display: none;
 }
 
-.login-outline-btn {
-  margin: 0 1em 0 0;
-}
-
 .primary-btn {
   z-index: 1;
   padding: 0.75em 1.5em;
@@ -709,6 +705,7 @@ button {
   #main-header .burger-btn {
     position: relative;
     z-index: 2;
+    margin-left: 1.3em;
     cursor: pointer;
   }
   #main-header .burger-btn.open .line1 {
@@ -909,22 +906,10 @@ button {
   padding: 1.5em 0;
 }
 .features .carousel-container .carousel-box {
-  margin: 0 3em;
+  margin: 0 2em;
   padding: 1.5em 0.8em;
   -webkit-transition: all 0.25s ease;
   transition: all 0.25s ease;
-}
-.features .carousel-container .carousel-box .hidden {
-  opacity: 0;
-}
-.features .carousel-container .carousel-box:hover {
-  background: #e5e5e5;
-  border-radius: 15px;
-  -webkit-box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.15);
-          box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.15);
-}
-.features .carousel-container .carousel-box:hover .hidden {
-  opacity: 1;
 }
 .features .carousel-container .carousel-box .labels {
   display: -webkit-box;
@@ -2939,18 +2924,6 @@ textarea:focus {
   -webkit-transition: all 0.25s ease;
   transition: all 0.25s ease;
 }
-#shop .product-container .products .hidden {
-  opacity: 0;
-}
-#shop .product-container .products:hover {
-  background: #e5e5e5;
-  border-radius: 15px;
-  -webkit-box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.15);
-          box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.15);
-}
-#shop .product-container .products:hover .hidden {
-  opacity: 1;
-}
 #shop .product-container .products .labels {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -3320,7 +3293,7 @@ textarea:focus {
   grid-row: 1/3;
 }
 #product-details .product-actions .product-color {
-  margin-bottom: 1.5em;
+  margin-bottom: 1em;
 }
 #product-details .product-actions .product-color p {
   font-size: 1.125rem;

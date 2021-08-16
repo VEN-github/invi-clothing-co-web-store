@@ -1,12 +1,13 @@
 <?php
-require_once('../class/webstoreclass.php');
+require_once "../class/webstoreclass.php";
+$user = $store->get_userdata();
 $product = $store->get_productID();
 $store->add_variations();
 
-$title = 'Add New Product';
-include_once('../includes/dashboard_header.php');
-include_once('../includes/dashboard_sidebar.php');
-include_once('../includes/dashboard_navbar.php');
+$title = "Add New Product";
+include_once "../includes/dashboard_header.php";
+include_once "../includes/dashboard_sidebar.php";
+include_once "../includes/dashboard_navbar.php";
 ?>
 <!-- Begin Page Content -->
 <div class="container-fluid">
@@ -49,7 +50,7 @@ include_once('../includes/dashboard_navbar.php');
                 </tbody>
               </table>
             </div>
-            <input type="hidden" name="productID" value="<?= $product['ID'];?>">
+            <input type="hidden" name="productID" value="<?= $product["ID"] ?>">
             <div class="d-sm-flex justify-content-end">
               <button type="submit" class="btn btn-primary" name="addStocksBtn">
                 Submit
@@ -62,6 +63,6 @@ include_once('../includes/dashboard_navbar.php');
 <!-- /.container-fluid -->
 </div>
 <!-- End of Main Content -->
-<?php require_once '../includes/dashboard_footer.php' ?>
+<?php require_once "../includes/dashboard_footer.php"; ?>
 <script src="./assets/js/variation.js"></script>   
-<?php require_once '../includes/dashboard_scripts.php' ?>    
+<?php require_once "../includes/dashboard_scripts.php"; ?>

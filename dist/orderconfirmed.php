@@ -1,8 +1,7 @@
 <?php
 require_once "../class/webstoreclass.php";
-$ID = $store->login();
-$user = $store->setProfile();
-$userID = $store->get_userdata();
+$userProfile = $store->setProfile();
+$user = $store->get_userdata();
 $title = "Order Confirmed - Checkout";
 include_once "../includes/header.php";
 ?>
@@ -58,7 +57,7 @@ include_once "../includes/header.php";
                 </div>
                 <ul class="menu">
                   <li>
-                    <a href="profile.php?ID=<?php echo $userID["ID"]; ?>"
+                    <a href="profile.php?ID=<?= $user["ID"] ?>"
                       ><span
                         class="iconify"
                         data-icon="fa-solid:user"
@@ -131,9 +130,9 @@ include_once "../includes/header.php";
               />
               <div class="confirmation-details">
                 <p class="confirmation-notif">
-                  Thank you, <?php echo $user["firstName"] .
+                  Thank you, <?= $userProfile["firstName"] .
                     " " .
-                    $user["lastName"]; ?>. Your Order is confirmed
+                    $userProfile["lastName"] ?>. Your Order is confirmed
                 </p>
                 <p>
                   Your order has been placed and will be processed as soon as

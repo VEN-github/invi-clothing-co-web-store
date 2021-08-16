@@ -266,6 +266,7 @@
     .burger-btn {
       position: relative;
       z-index: 2;
+      margin-left: 1.3em;
       cursor: pointer;
 
       &.open .line1 {

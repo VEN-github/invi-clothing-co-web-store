@@ -1,8 +1,6 @@
 <?php
 require_once "../class/webstoreclass.php";
-$store->login();
-$userID = $store->get_userdata();
-
+$user = $store->get_userdata();
 $title = "Page not found";
 include_once "../includes/header.php";
 ?>
@@ -62,7 +60,7 @@ include_once "../includes/header.php";
               </div>          
               <ul class="menu">
                 <li>
-                  <a href="profile.php?ID=<?php echo $userID["ID"]; ?>"
+                  <a href="profile.php?ID=<?= $user["ID"] ?>"
                     ><span
                       class="iconify"
                       data-icon="fa-solid:user"
@@ -115,7 +113,7 @@ include_once "../includes/header.php";
             </div>
           </div>
           <?php } else { ?>
-          <a href="login.php" class="btn login-outline-btn outline-primary-btn">Login</a>
+          <a href="login.php" class="btn outline-primary-btn">Login</a>
           <?php } ?>
           <div class="burger-btn">
             <div class="line1"></div>
@@ -134,7 +132,7 @@ include_once "../includes/header.php";
             <img src="./assets/img/404.svg" alt="404" />
             <h4>Oops! Page not found</h4>
             <p>We can't seem to find the page you're looking for</p>
-            <a href="index.html" class="btn primary-btn back-btn"
+            <a href="index.php" class="btn primary-btn back-btn"
               >Back to Homepage</a
             >
           </div>

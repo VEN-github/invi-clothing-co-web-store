@@ -18,21 +18,9 @@
     @include flex.flex(center, stretch, row);
     padding: 1.5em 0;
     .carousel-box {
-      margin: 0 3em;
+      margin: 0 2em;
       padding: 1.5em 0.8em;
       transition: all 0.25s ease;
-
-      & .hidden {
-        opacity: 0;
-      }
-      &:hover {
-        background: #e5e5e5;
-        border-radius: 15px;
-        box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.15);
-      }
-      &:hover .hidden {
-        opacity: 1;
-      }
       & .labels {
         @include flex.flex(space-between, center, row);
         // & .product-label {

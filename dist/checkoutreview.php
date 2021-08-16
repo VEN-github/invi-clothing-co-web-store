@@ -1,9 +1,9 @@
 <?php
-  require_once('../class/webstoreclass.php');
-  $user = $store->setProfile();
-  $userID = $store->get_userdata();
-  $title = 'Order Review - Checkout';
-  include_once('../includes/header.php');
+require_once "../class/webstoreclass.php";
+$userProfile = $store->setProfile();
+$user = $store->get_userdata();
+$title = "Order Review - Checkout";
+include_once "../includes/header.php";
 ?>
   <body>
     <div class="page-container">
@@ -18,7 +18,9 @@
             <div class="checkout-wrapper">
               <div class="checkout-container">
                 <div class="contact-info">
-                  <form action="orderconfirmed.php?ID=<?php echo $userID['ID'];?>" method="post" id="orderForm">
+                  <form action="orderconfirmed.php?ID=<?= $user[
+                    "ID"
+                  ] ?>" method="post" id="orderForm">
                   <h4>Customer Information</h4>
                   <p class="contact-details">Contact Information:</p>
                   <div class="first-layer">
@@ -29,8 +31,10 @@
                         data-inline="false"
                       ></span>
                       <div class="user-details">
-                        <p class="user-name"><?php echo $user['firstName']." ".$user['lastName'];?></p>
-                        <p class="user-email"><?php echo $user['email'];?></p>
+                        <p class="user-name"><?= $userProfile["firstName"] .
+                          " " .
+                          $userProfile["lastName"] ?></p>
+                        <p class="user-email"><?= $user["email"] ?></p>
                       </div>
                     </div>
                     <div class="payment-details">
@@ -64,7 +68,7 @@
                   <button>
                     <a
                       class="btn outline-primary-btn back-btn"
-                      href="checkoutpayment.php?ID=<?php echo $userID['ID'];?>"
+                      href="checkoutpayment.php?ID=<?= $user["ID"] ?>"
                     >
                       <span
                         class="iconify left-arrow"
@@ -87,29 +91,38 @@
               </div>
 
               <?php
-            if(!isset($_SESSION)){
+              if (!isset($_SESSION)) {
                 session_start();
-            }
-            $subtotal = 0;
-            if(isset($_SESSION['cart'])){
-              echo "<div class=\"order-summary\">
-                      <h4>Order Summary</h4>";      
-              $productID = array_column($_SESSION['cart'], "productID");
+              }
+              $subtotal = 0;
+              if (isset($_SESSION["cart"])) {
+                echo "<div class=\"order-summary\">
+                      <h4>Order Summary</h4>";
+                $productID = array_column($_SESSION["cart"], "productID");
 
-              $connection = $store->openConnection();
-              $stmt = $connection->prepare("SELECT * FROM cart_table");
-              $stmt->execute();
-              
-              while($result = $stmt->fetch(PDO::FETCH_ASSOC)){
-                  foreach($productID as $ID){
-                    if($result['productID'] == $ID){
-                        $store->checkoutElement($result['itemImage'], $result['itemName'], $result['itemColor'], $result['itemPrice'], $result['productID'], $result['itemQty'], $result['subtotal'], $result['ID'] );
-                        $subtotal = $subtotal + $result['subtotal'];
+                $connection = $store->openConnection();
+                $stmt = $connection->prepare("SELECT * FROM cart_table");
+                $stmt->execute();
+
+                while ($result = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                  foreach ($productID as $ID) {
+                    if ($result["productID"] == $ID) {
+                      $store->checkoutElement(
+                        $result["itemImage"],
+                        $result["itemName"],
+                        $result["itemColor"],
+                        $result["itemPrice"],
+                        $result["productID"],
+                        $result["itemQty"],
+                        $result["subtotal"],
+                        $result["ID"]
+                      );
+                      $subtotal = $subtotal + $result["subtotal"];
                     }
                   }
+                }
               }
-            }echo 
-              "<div class=\"subtotal-container\">
+              echo "<div class=\"subtotal-container\">
                 <div class=\"subtotal\">
                   <p>Subtotal:</p>
                   <p class=\"price\">
@@ -146,7 +159,7 @@
                 </div>
               </div>
             </div>";
-          ?>
+              ?>
             </div>
           </div>
         </section>

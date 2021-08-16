@@ -1,13 +1,13 @@
 <?php
-require_once('../class/webstoreclass.php');
+require_once "../class/webstoreclass.php";
+$user = $store->get_userdata();
 $store->add_category();
 $store->add_products();
 $categories = $store->get_categories();
-$title = 'Add New Product';
-include_once('../includes/dashboard_header.php');
-include_once('../includes/dashboard_sidebar.php');
-include_once('../includes/dashboard_navbar.php');
-
+$title = "Add New Product";
+include_once "../includes/dashboard_header.php";
+include_once "../includes/dashboard_sidebar.php";
+include_once "../includes/dashboard_navbar.php";
 ?>
 <div class="modal fade" id="addnewcategory" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
@@ -55,8 +55,10 @@ include_once('../includes/dashboard_navbar.php');
           </label>
           <select class="form-control" name="categoryID">
             <option selected disabled>Select Category</option>
-            <?php foreach($categories as $category) { ?>   
-              <option value="<?= $category['ID'];?>"><?= $category['categoryName'];?></option>
+            <?php foreach ($categories as $category) { ?>   
+              <option value="<?= $category["ID"] ?>"><?= $category[
+  "categoryName"
+] ?></option>
             <?php } ?>
           </select>
         </div>
@@ -106,5 +108,5 @@ include_once('../includes/dashboard_navbar.php');
 <!-- end of container-fluid -->
 </div>
 <!-- End of Main Content -->
-<?php require_once '../includes/dashboard_footer.php' ?>
-<?php require_once '../includes/dashboard_scripts.php' ?>       
+<?php require_once "../includes/dashboard_footer.php"; ?>
+<?php require_once "../includes/dashboard_scripts.php"; ?>        ?> ?> ?> ?> ?> ?>

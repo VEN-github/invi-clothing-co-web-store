@@ -44,10 +44,10 @@ function addVariation(e) {
   countRowInput.setAttribute("name", "countRow[]");
   countRowInput.setAttribute("value", countRow);
   breakdownInput.setAttribute("type", "hidden");
-  breakdownInput.setAttribute("name", "breakdown[]");
+  breakdownInput.setAttribute("name", "sizes[]");
   breakdownInput.setAttribute("value", size);
   stockInput.setAttribute("type", "number");
-  stockInput.setAttribute("name", "stock[]");
+  stockInput.setAttribute("name", "stocks[]");
   stockInput.setAttribute("min", "0");
   stockInput.setAttribute("placeholder", "0");
   stockInput.className = "form-control";

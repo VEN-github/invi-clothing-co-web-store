@@ -1,8 +1,8 @@
 <?php
 require_once "../class/webstoreclass.php";
-$store->login();
-$userID = $store->get_userdata();
-
+$user = $store->get_userdata();
+$categories = $store->get_categories();
+$displayProducts = $store->get_products();
 $title = "Shop";
 include_once "../includes/header.php";
 ?>
@@ -62,7 +62,7 @@ include_once "../includes/header.php";
               </div>          
               <ul class="menu">
                 <li>
-                  <a href="profile.php?ID=<?php echo $userID["ID"]; ?>"
+                  <a href="profile.php?ID=<?= $user["ID"] ?>"
                     ><span
                       class="iconify"
                       data-icon="fa-solid:user"
@@ -115,7 +115,7 @@ include_once "../includes/header.php";
             </div>
           </div>
           <?php } else { ?>
-          <a href="login.php" class="btn login-outline-btn outline-primary-btn">Login</a>
+          <a href="login.php" class="btn outline-primary-btn">Login</a>
           <?php } ?>
           <div class="burger-btn">
             <div class="line1"></div>
@@ -147,12 +147,9 @@ include_once "../includes/header.php";
               <p>Categories</p>
               <ul class="category-list">
                 <li>All Products</li>
-                <li>Tees</li>
-                <li>Accessories</li>
-                <li>Jackets</li>
-                <li>Bottoms</li>
-                <li>December Collection</li>
-                <li>Villain Collection</li>
+                <?php foreach ($categories as $category) { ?>  
+                <li><?= $category["categoryName"] ?></li>
+                <?php } ?>
               </ul>
               <p>Stock Status</p>
               <ul class="stock-status">
@@ -171,6 +168,7 @@ include_once "../includes/header.php";
               </ul>
             </div>
             <div class="product-container">
+            <?php foreach ($displayProducts as $product) { ?>
               <div class="products">
                 <div class="labels">
                   <span class="product-label">SALE</span>
@@ -182,23 +180,27 @@ include_once "../includes/header.php";
                     ></span>
                   </button>
                 </div>
-                <a href="productdetails.html"
-                  ><img
-                    src="./assets/img/INVI Warrior - Front - Golden Yellow.png"
-                    alt="INVI Warrior Shirt"
-                /></a>
+                <a href="productdetails.php?ID=<?= $product["ID"] ?>"
+                  ><?= '<img src="./assets/img/' .
+                    $product["productImage"] .
+                    '" alt="' .
+                    $product["productImage"] .
+                    '">' ?></a>
                 <div class="details">
-                  <a href="productdetails.html">Invincible Warrior</a>
+                  <a href="productdetails.php?ID=<?= $product[
+                    "ID"
+                  ] ?>"><?= $product["productName"] ?></a>
                   <p class="price">
                     <span
                       class="iconify peso-sign"
                       data-icon="clarity:peso-line"
                       data-inline="false"
                     ></span>
-                    450.00
+                    <?= $product["productPrice"] ?>
+                    <span>.00</span>
                   </p>
                 </div>
-                <div class="hidden">
+                <!-- <div class="hidden">
                   <form action="">
                     <div class="color-group">
                       <label class="color-field">
@@ -229,14 +231,8 @@ include_once "../includes/header.php";
                     </div>
                     <div class="variations">
                       <div>
-                        <select name="" id="" class="input size">
-                          <option value="">XS</option>
-                          <option value="">S</option>
-                          <option value="">M</option>
-                          <option value="">L</option>
-                          <option value="">XL</option>
-                          <option value="">2XL</option>
-                          <option value="">3XL</option>
+                        <select name="" id="" class="input size">             
+                          <option value=""></option>
                         </select>
                       </div>
                       <div class="item-quantity">
@@ -263,8 +259,9 @@ include_once "../includes/header.php";
                       </button>
                     </div>
                   </form>
-                </div>
+                </div> -->
               </div>
+              <?php } ?>   
             </div>
           </div>
         </div>

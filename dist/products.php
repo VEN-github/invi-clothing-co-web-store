@@ -1,11 +1,11 @@
 <?php
-require_once('../class/webstoreclass.php');
-$displayproducts = $store->get_products();
-$title = 'My Products';
-include_once('../includes/dashboard_header.php');
-include_once('../includes/dashboard_sidebar.php');
-include_once('../includes/dashboard_navbar.php');
-
+require_once "../class/webstoreclass.php";
+$user = $store->get_userdata();
+$displayProducts = $store->get_products();
+$title = "My Products";
+include_once "../includes/dashboard_header.php";
+include_once "../includes/dashboard_sidebar.php";
+include_once "../includes/dashboard_navbar.php";
 ?>
 
                 <!-- Begin Page Content -->
@@ -52,15 +52,30 @@ include_once('../includes/dashboard_navbar.php');
                                         </tr>
                                     </tfoot>
                                     <tbody>
-                                    <?php foreach($displayproducts as $products) { ?>
+                                    <?php foreach (
+                                      $displayProducts
+                                      as $products
+                                    ) { ?>
                                         <tr>
-                                            <td><?= '<img src="./assets/img/'.$products['productImage'].'" alt="Product Image" width="150px;" height="150px;">'?></td>
-                                            <td><?= $products['productName'];?></td>
-                                            <td><?= $products['productDescription'];?></td>
-                                            <td><?= $products['categoryName'];?></td>
-                                            <td><?= $products['productPrice'];?></td>
-                                            <td><?= $products['productColor'];?></td>
-                                            <td><?= $products['stocks'];?></td>
+                                            <td><?= '<img src="./assets/img/' .
+                                              $products["productImage"] .
+                                              '" alt="Product Image" width="150px;" style="object-fit:cover;">' ?></td>
+                                            <td><?= $products[
+                                              "productName"
+                                            ] ?></td>
+                                            <td><?= $products[
+                                              "productDescription"
+                                            ] ?></td>
+                                            <td><?= $products[
+                                              "categoryName"
+                                            ] ?></td>
+                                            <td><?= $products[
+                                              "productPrice"
+                                            ] ?></td>
+                                            <td><?= $products[
+                                              "productColor"
+                                            ] ?></td>
+                                            <td><?= $products["stocks"] ?></td>
                                         </tr>    
                                     <?php } ?>                                
                                     </tbody>
@@ -73,5 +88,5 @@ include_once('../includes/dashboard_navbar.php');
 
             </div>
             <!-- End of Main Content -->
-            <?php require_once '../includes/dashboard_footer.php' ?>
-            <?php require_once '../includes/dashboard_scripts.php' ?>       
+            <?php require_once "../includes/dashboard_footer.php"; ?>
+            <?php require_once "../includes/dashboard_scripts.php"; ?>        ?> ?> ?> ?> ?> ?> ?> ?> ?> ?>

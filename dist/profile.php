@@ -1,10 +1,10 @@
 <?php
 require_once "../class/webstoreclass.php";
+$store->add_cart();
 $store->update_userdata();
 $store->delete_userdata();
-$store->add_cart();
-$user = $store->setProfile();
-$userID = $store->get_userdata();
+$userProfile = $store->setProfile();
+$user = $store->get_userdata();
 $title = "Profile";
 include_once "../includes/header.php";
 ?>
@@ -65,7 +65,7 @@ include_once "../includes/header.php";
                 </div>
                 <ul class="menu">
                   <li>
-                    <a href="profile.php?ID=<?php echo $userID["ID"]; ?>"
+                    <a href="profile.php?ID=<?= $user["ID"] ?>"
                       ><span
                         class="iconify"
                         data-icon="fa-solid:user"
@@ -146,15 +146,15 @@ include_once "../includes/header.php";
                       data-inline="false"
                     ></span>
                   </button>
-                  <p class="user-name"><?php echo $user["firstName"] .
+                  <p class="user-name"><?= $userProfile["firstName"] .
                     " " .
-                    $user["lastName"]; ?></p>
+                    $userProfile["lastName"] ?></p>
                 </div>
                 <ul class="menu">
                   <li>
-                    <a href="profile.php?ID=<?php echo $userID[
+                    <a href="profile.php?ID=<?= $userProfile[
                       "ID"
-                    ]; ?>" class="visited"
+                    ] ?>" class="visited"
                       ><span
                         class="iconify visited"
                         data-icon="fa-solid:user"
@@ -209,18 +209,18 @@ include_once "../includes/header.php";
                 <h4>Personal Details</h4>
                 <form action="" method="post">
                   <div class="input-field">
-                    <input type="text" name="firstName" id="" class="input left-input" value="<?php echo $user[
+                    <input type="text" name="firstName" id="" class="input left-input" value="<?= $userProfile[
                       "firstName"
-                    ]; ?>" />
-                    <input type="text" name="lastName" id="" class="input" value="<?php echo $user[
+                    ] ?>" />
+                    <input type="text" name="lastName" id="" class="input" value="<?= $userProfile[
                       "lastName"
-                    ]; ?>" />
+                    ] ?>" />
                   </div>
                   <div class="input-field">
                     <input type="text" name="email" id="" class="input left-input disabled"
-                    value="<?php echo $user["email"]; ?>" />
+                    value="<?= $userProfile["email"] ?>" />
                     <input type="text" name="contactNumber" id="" class="input" placeholder="Contact Number"         
-                    value="<?php echo $user["contactNumber"]; ?>" />
+                    value="<?= $userProfile["contactNumber"] ?>" />
                   </div>
                   <!-- <div class="input-field">
                     <input

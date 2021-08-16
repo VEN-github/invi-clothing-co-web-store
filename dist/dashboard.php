@@ -1,11 +1,11 @@
 <?php
 require_once "../class/webstoreclass.php";
-$userdata = $store->get_userdata();
+$user = $store->get_userdata();
 $admins = $store->get_admin();
 $countAdmins = $store->count_admin();
 $countUsers = $store->count_user();
 $countProducts = $store->count_product();
-$displayproducts = $store->get_products();
+$displayProducts = $store->get_products();
 $title = "Dashboard";
 include_once "../includes/dashboard_header.php";
 include_once "../includes/dashboard_sidebar.php";
@@ -266,7 +266,7 @@ include_once "../includes/dashboard_navbar.php";
                                             </tfoot>
                                             <tbody>
                                                 <?php foreach (
-                                                  $displayproducts
+                                                  $displayProducts
                                                   as $products
                                                 ) { ?>
                                                     <tr>

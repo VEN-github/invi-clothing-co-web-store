@@ -1,9 +1,9 @@
 <?php
-  require_once('../class/webstoreclass.php');
-  $user = $store->setProfile();
-  $userID = $store->get_userdata();
-  $title = 'Shipping - Checkout';
-  include_once('../includes/header.php');
+require_once "../class/webstoreclass.php";
+$userProfile = $store->setProfile();
+$user = $store->get_userdata();
+$title = "Shipping - Checkout";
+include_once "../includes/header.php";
 ?>
   <body>
     <div class="page-container">
@@ -26,10 +26,14 @@
                       data-inline="false"
                     ></span>
                     <div class="user-details">
-                      <p class="user-name"><?php echo $user['firstName']." ".$user['lastName'];?></p>
-                      <p class="user-email"><?php echo $user['email'];?></p>
+                      <p class="user-name"><?= $userProfile["firstName"] .
+                        " " .
+                        $userProfile["lastName"] ?></p>
+                      <p class="user-email"><?= $user["email"] ?></p>
                     </div>
-                    <a href="profile.php?ID=<?php echo $userID['ID'];?>" class="btn secondary-btn edit-btn">
+                    <a href="profile.php?ID=<?= $user[
+                      "ID"
+                    ] ?>" class="btn secondary-btn edit-btn">
                       <span
                         class="iconify edit-icon"
                         data-icon="clarity:note-edit-line"
@@ -41,7 +45,9 @@
                 </div>
                 <div class="form">
                   <h4>Choose Shipping Method</h4>
-                  <form action="checkoutpayment.php?ID=<?php echo $userID['ID'];?>" method="post">
+                  <form action="checkoutpayment.php?ID=<?= $user[
+                    "ID"
+                  ] ?>" method="post">
                     <label class="radio-field">
                       <input type="radio" name="delivery" id="ship-method" class="radio" value="40" />
                       <p class="ship-label">Standard Delivery</p>
@@ -91,7 +97,7 @@
                     <button>
                       <a
                         class="btn outline-primary-btn back-btn"
-                        href="checkoutInfo.php?ID=<?php echo $userID['ID'];?>"
+                        href="checkoutInfo.php?ID=<?= $user["ID"] ?>"
                       >
                         <span
                           class="iconify left-arrow"
@@ -113,31 +119,39 @@
                 </form>
               </div>
               <?php
-            if(!isset($_SESSION)){
+              if (!isset($_SESSION)) {
                 session_start();
-            }
-            $subtotal = 0;
-            if(isset($_SESSION['cart'])){
-              echo "<div class=\"order-summary\">
+              }
+              $subtotal = 0;
+              if (isset($_SESSION["cart"])) {
+                echo "<div class=\"order-summary\">
                       <h4>Order Summary</h4>";
-                        
-              
-              $productID = array_column($_SESSION['cart'], "productID");
 
-              $connection = $store->openConnection();
-              $stmt = $connection->prepare("SELECT * FROM cart_table");
-              $stmt->execute();
-              
-              while($result = $stmt->fetch(PDO::FETCH_ASSOC)){
-                  foreach($productID as $ID){
-                    if($result['productID'] == $ID){
-                        $store->checkoutElement($result['itemImage'], $result['itemName'], $result['itemColor'], $result['itemPrice'], $result['productID'], $result['itemQty'], $result['subtotal'], $result['ID'] );
-                        $subtotal = $subtotal + $result['subtotal'];
+                $productID = array_column($_SESSION["cart"], "productID");
+
+                $connection = $store->openConnection();
+                $stmt = $connection->prepare("SELECT * FROM cart_table");
+                $stmt->execute();
+
+                while ($result = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                  foreach ($productID as $ID) {
+                    if ($result["productID"] == $ID) {
+                      $store->checkoutElement(
+                        $result["itemImage"],
+                        $result["itemName"],
+                        $result["itemColor"],
+                        $result["itemPrice"],
+                        $result["productID"],
+                        $result["itemQty"],
+                        $result["subtotal"],
+                        $result["ID"]
+                      );
+                      $subtotal = $subtotal + $result["subtotal"];
                     }
                   }
+                }
               }
-            } echo 
-              "<div class=\"subtotal-container\">
+              echo "<div class=\"subtotal-container\">
                 <div class=\"subtotal\">
                   <p>Subtotal:</p>
                   <p class=\"price\">
@@ -174,7 +188,7 @@
                 </div>
               </div>
             </div>";
-          ?>
+              ?>
             </div>
           </div>
         </section>

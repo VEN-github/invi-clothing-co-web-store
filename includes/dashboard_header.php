@@ -15,7 +15,7 @@
       href="./assets/img/favicon.ico"
       type="image/x-icon"
     />
-    <title><?php echo $title." | "?>INVI Clothing Co.</title>
+    <title><?= $title . " | " ?>INVI Clothing Co.</title>
     <!-- Custom fonts for this template-->
     <link href="../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link

@@ -1,10 +1,7 @@
 <?php
 require_once "../class/webstoreclass.php";
-$store->login();
 $store->add_cart();
-$userID = $store->get_userdata();
-$displayProducts = $store->get_products();
-// $displayStocks = $store->get_stock();
+$user = $store->get_userdata();
 $title = "Home";
 include_once "../includes/header.php";
 ?>
@@ -64,7 +61,7 @@ include_once "../includes/header.php";
               </div>          
               <ul class="menu">
                 <li>
-                  <a href="profile.php?ID=<?php echo $userID["ID"]; ?>"
+                  <a href="profile.php?ID=<?= $user["ID"] ?>"
                     ><span
                       class="iconify"
                       data-icon="fa-solid:user"
@@ -117,7 +114,7 @@ include_once "../includes/header.php";
             </div>
           </div>
           <?php } else { ?>
-          <a href="login.php" class="btn login-outline-btn outline-primary-btn">Login</a>
+          <a href="login.php" class="btn outline-primary-btn">Login</a>
           <?php } ?>
           <div class="burger-btn">
             <div class="line1"></div>
@@ -140,7 +137,7 @@ include_once "../includes/header.php";
               <span>our mission.</span>
             </p>
             <button class="cta">
-              <a class="btn primary-btn" href="#">Shop Now</a>
+              <a class="btn primary-btn" href="shop.php">Shop Now</a>
             </button>
           </div>
           <div class="hero">
@@ -154,7 +151,6 @@ include_once "../includes/header.php";
           <div class="container features">
             <h1>Our products</h1>
             <div class="carousel-container">
-            <?php foreach ($displayProducts as $product) { ?>
               <div class="carousel-box">
                 <div class="labels">
                   <span class="product-label"></span>
@@ -168,89 +164,24 @@ include_once "../includes/header.php";
                 </div>
                 <form action="" method="post">
                 <a href="#"
-                  ><?= '<img src="./assets/img/' .
-                    $product["productImage"] .
-                    '" alt="' .
-                    $product["productImage"] .
-                    '">' ?></a>
-                  <input type="hidden" name="productImage" value="<?= $product[
-                    "productImage"
-                  ] ?>">
+                  ><img src="./assets/img/Logo Tee - Front - Pink.png" alt=""></a>
                 <div class="details">
-                  <a href="#"><?= $product["productName"] ?></a>
-                  <input type="hidden" name="productName" value="<?= $product[
-                    "productName"
-                  ] ?>">
-                  <div class="color">
-                    <?= $product["productColor"] ?>
-                    <input type="hidden" name="productColor" value="<?= $product[
-                      "productColor"
-                    ] ?>">
-                  </div>
+                  <a href="#"></a>
                   <p class="price">
                     <span
                       class="iconify peso-sign"
                       data-icon="clarity:peso-line"
                       data-inline="false"
                     ></span>
-                    <?= $product["productPrice"] ?>
-                    <input type="hidden" name="productPrice" value="<?= $product[
-                      "productPrice"
-                    ] ?>">
+                    450
                     <span>.00</span>
                   </p>
                 </div>
-                <div class="hidden"> 
-                    <div class="variations">
-                      <!-- <div>
-                        <select name="" id="" class="input size">
-                          <option value=""></option>   
-                        </select>
-                      </div> -->
-                      <div class="item-quantity">
-                        <!-- <button type="button" class="minus-btn">-</button>
-                        <input
-                          class="qty-input"
-                          type="text"
-                          name=""
-                          id="quantity"
-                          value=""
-                          min="1"
-                          max=""
-                        />
-                        <button type="button" class="plus-btn">+</button> -->
-                        <input
-                          class="qty-input"
-                          type="number"
-                          name="quantity"
-                          id="quantity"
-                          value="1"
-                          min="1"
-                          max="<?= $product["stocks"] ?>"
-                        />
-                      </div>
-                    </div>
-                    <div class="add-cart">
-                      <button type="submit" name="addCart" class="btn primary-btn cart-btn">
-                        <span
-                          class="iconify cart-icon"
-                          data-icon="gg:shopping-bag"
-                          data-inline="false"
-                        ></span>
-                        Add to Cart
-                      </button>
-                    </div> 
-                    <input type="hidden" name="productID" value="<?= $product[
-                      "ID"
-                    ] ?>">   
-                </div>
-                </form>
               </div>
-              <?php } ?>       
             </div>
-            <!-- <div class="cta">
-              <a href="#" class="btn primary-btn">Shop Now</a>
-            </div> -->
+            <div class="cta">
+              <a href="shop.php" class="btn primary-btn">Shop Now</a>
+            </div>
           </div>
         </section>
         <!-- end of features section -->

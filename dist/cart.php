@@ -1,9 +1,8 @@
 <?php
 require_once "../class/webstoreclass.php";
 session_start();
-// $ID = $store->login();
 $store->add_cart();
-$userID = $store->get_userdata();
+$user = $store->get_userdata();
 $title = "Cart";
 require_once "../includes/header.php";
 
@@ -85,7 +84,7 @@ if (isset($_POST["remove"])) {
                 </div>
                 <ul class="menu">
                   <li>
-                    <a href="profile.php?ID=<?php echo $userID["ID"]; ?>"
+                    <a href="profile.php?ID=<?= $user["ID"] ?>"
                       ><span
                         class="iconify"
                         data-icon="fa-solid:user"
@@ -140,7 +139,7 @@ if (isset($_POST["remove"])) {
             <?php } else { ?>
             <a
               href="login.php"
-              class="btn login-outline-btn outline-primary-btn"
+              class="btn outline-primary-btn"
               >Login</a
             >
             <?php } ?>

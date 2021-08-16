@@ -1,13 +1,16 @@
 <?php
 require_once "../class/webstoreclass.php";
-$store->login();
-$userID = $store->get_userdata();
+$user = $store->get_userdata();
+$ID = $_GET["ID"];
+$product = $store->get_singleproduct($ID);
+$stocks = $store->view_all_stocks($ID);
 
 $title = "Name of Product Here";
 include_once "../includes/header.php";
 ?>
 
 <body>
+  
   <div class="page-container">
     <!-- start of navbar -->
     <header id="main-header" class="bg">
@@ -62,7 +65,7 @@ include_once "../includes/header.php";
               </div>          
               <ul class="menu">
                 <li>
-                  <a href="profile.php?ID=<?php echo $userID["ID"]; ?>"
+                  <a href="profile.php?ID=<?= $user["ID"] ?>"
                     ><span
                       class="iconify"
                       data-icon="fa-solid:user"
@@ -115,7 +118,7 @@ include_once "../includes/header.php";
             </div>
           </div>
           <?php } else { ?>
-          <a href="login.php" class="btn login-outline-btn outline-primary-btn">Login</a>
+          <a href="login.php" class="btn outline-primary-btn">Login</a>
           <?php } ?>
           <div class="burger-btn">
             <div class="line1"></div>
@@ -132,15 +135,27 @@ include_once "../includes/header.php";
       <div class="container">
         <div class="product-grid">
           <div class="product-highlight">
-            <img src="./assets/img/INVI Warrior - Front - Golden Yellow.png" alt="" />
+            <?= '<img src="./assets/img/' .
+              $product["productImage"] .
+              '" alt="' .
+              $product["productImage"] .
+              '">' ?>
           </div>
           <div class="product-gallery">
-            <img src="./assets/img/INVI Warrior - Front - Golden Yellow.png" alt="" />
-            <img src="./assets/img/INVI Warrior - Front - Golden Yellow.png" alt="" />
+            <?= '<img src="./assets/img/' .
+              $product["productImage"] .
+              '" alt="' .
+              $product["productImage"] .
+              '">' ?>
+            <?= '<img src="./assets/img/' .
+              $product["productImage"] .
+              '" alt="' .
+              $product["productImage"] .
+              '">' ?>
           </div>
           <div class="product-info">
             <div class="label">SALE</div>
-            <div class="product-name">Peek A Boo</div>
+            <div class="product-name"><?= $product["productName"] ?></div>
             <div class="reviews">
               <div class="ratings">
                 <span
@@ -180,23 +195,21 @@ include_once "../includes/header.php";
                   data-icon="clarity:peso-line"
                   data-inline="false"
                 ></span>
-                450.00
+                <?= $product["productPrice"] ?>
+                <span>.00</span>
               </p>
             </div>
             <div class="product-description">
               <p>Product Details:</p>
               <div class="details">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                Repellendus, facere maxime culpa cupiditate assumenda labore
-                a officia autem quaerat unde expedita est fugit, nobis
-                debitis reiciendis inventore quo ad eligendi.
+                <?= $product["productDescription"] ?>
               </div>
             </div>
           </div>
           <div class="product-actions">
             <div class="product-color">
-              <p>Color: <span>Khaki</span></p>
-                <form action="" method="post">
+              <p>Color: <span><?= $product["productColor"] ?></span></p>
+                <!-- <form action="" method="post">
                   <div class="color-group">
                     <label class="color-field">
                       <input
@@ -216,7 +229,7 @@ include_once "../includes/header.php";
                       <span class="checkmark" style="background: #fff"></span>
                     </label>
                   </div>
-                </form>
+                </form> -->
               </div>
               <div class="product-size">
                 <div class="size-guide">
@@ -231,13 +244,11 @@ include_once "../includes/header.php";
                 </div>
                 <form action="" method="post">
                   <select name="" id="" class="input size">
-                    <option value="">XS</option>
-                    <option value="">S</option>
-                    <option value="">M</option>
-                    <option value="">L</option>
-                    <option value="">XL</option>
-                    <option value="">2XL</option>
-                    <option value="">3XL</option>
+                    <?php foreach ($stocks as $stock) { ?>
+                    <option value="<?= $stock["sizes"] ?>"><?= $stock[
+  "sizes"
+] ?></option>
+                    <?php } ?>  
                   </select>
                 </form>
               </div>
@@ -252,6 +263,7 @@ include_once "../includes/header.php";
                     id=""
                     value="1"
                     min="1"
+                    max=""
                   />
                   <button class="plus-btn">+</button>
                 </div>
