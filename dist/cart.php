@@ -139,7 +139,7 @@ if (isset($_POST["remove"])) {
             <?php } else { ?>
             <a
               href="login.php"
-              class="btn outline-primary-btn"
+              class="btn outline-primary-btn login-btn"
               >Login</a
             >
             <?php } ?>

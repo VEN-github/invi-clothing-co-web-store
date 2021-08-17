@@ -784,7 +784,7 @@ button {
   }
 }
 @media screen and (max-width: 641px) {
-  #main-header .login-outline-btn {
+  #main-header .login-btn {
     display: none;
   }
   #main-header .login-nav {
@@ -977,7 +977,6 @@ button {
           flex-direction: column;
 }
 .features .carousel-container .carousel-box .details a {
-  margin-bottom: 0.3em;
   font-size: 1.25rem;
   font-weight: 600;
   color: #2c3037;
@@ -3005,7 +3004,6 @@ textarea:focus {
           flex-direction: column;
 }
 #shop .product-container .products .details a {
-  margin-bottom: 0.3em;
   font-size: 1.25rem;
   font-weight: 600;
   color: #2c3037;

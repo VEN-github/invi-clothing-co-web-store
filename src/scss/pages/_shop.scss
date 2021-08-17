@@ -121,7 +121,7 @@
       .details {
         @include flex.flex(center, center, column);
         & a {
-          margin-bottom: 0.3em;
+          // margin-bottom: 0.3em;
           font-size: 1.25rem;
           font-weight: map-get(fonts.$font-weight, semi-bold);
           color: colors.$primary-color;

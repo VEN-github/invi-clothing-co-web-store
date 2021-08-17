@@ -115,7 +115,7 @@ include_once "../includes/header.php";
             </div>
           </div>
           <?php } else { ?>
-          <a href="login.php" class="btn outline-primary-btn">Login</a>
+          <a href="login.php" class="btn outline-primary-btn login-btn">Login</a>
           <?php } ?>
           <div class="burger-btn">
             <div class="line1"></div>
@@ -174,6 +174,9 @@ include_once "../includes/header.php";
                 <a href="productdetails.php?ID=<?= $randomProduct[
                   "ID"
                 ] ?>"><?= $randomProduct["productName"] ?></a>
+                  <p class="color">
+                    <?= $randomProduct["productColor"] ?>
+                  </p>
                   <p class="price">
                     <span
                       class="iconify peso-sign"

@@ -67,7 +67,7 @@ require_once "../includes/header.php";
             </div>
             <a
               href="login.php"
-              class="btn outline-primary-btn"
+              class="btn outline-primary-btn login-btn"
               >Login</a
             >
             <div class="burger-btn">

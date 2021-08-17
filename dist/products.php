@@ -59,7 +59,9 @@ include_once "../includes/dashboard_navbar.php";
                                         <tr>
                                             <td><?= '<img src="./assets/img/' .
                                               $products["coverPhoto"] .
-                                              '" alt="Product Image" width="150px;" style="object-fit:cover;">' ?></td>
+                                              '" alt="' .
+                                              $products["coverPhoto"] .
+                                              '" width="150px;" style="object-fit:cover;">' ?></td>
                                             <td><?= $products[
                                               "productName"
                                             ] ?></td>
