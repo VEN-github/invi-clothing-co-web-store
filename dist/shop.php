@@ -6,7 +6,6 @@ $displayProducts = $store->get_products();
 $title = "Shop";
 include_once "../includes/header.php";
 ?>
-
 <body>
   <div class="page-container">
     <!-- start of navbar -->
@@ -171,21 +170,22 @@ include_once "../includes/header.php";
             <?php foreach ($displayProducts as $product) { ?>
               <div class="products">
                 <div class="labels">
-                  <span class="product-label">SALE</span>
-                  <button class="wishlist">
+                  <span class="product-label"></span>
+                  <!-- <button class="wishlist">
                     <span
                       class="iconify heart"
                       data-icon="ant-design:heart-outlined"
                       data-inline="false"
                     ></span>
-                  </button>
+                  </button> -->
                 </div>
-                <a href="productdetails.php?ID=<?= $product["ID"] ?>"
-                  ><?= '<img src="./assets/img/' .
-                    $product["productImage"] .
-                    '" alt="' .
-                    $product["productImage"] .
-                    '">' ?></a>
+                <a href="productdetails.php?ID=<?= $product[
+                  "ID"
+                ] ?>"><?= '<img src="./assets/img/' .
+  $product["coverPhoto"] .
+  '" alt="' .
+  $product["coverPhoto"] .
+  '">' ?></a>
                 <div class="details">
                   <a href="productdetails.php?ID=<?= $product[
                     "ID"

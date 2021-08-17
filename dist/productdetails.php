@@ -5,12 +5,15 @@ $ID = $_GET["ID"];
 $product = $store->get_singleproduct($ID);
 $stocks = $store->view_all_stocks($ID);
 
+$sizeList = "";
+if (!empty($_POST)) {
+  $sizeList = isset($_POST["sizeList"]) ? $_POST["sizeList"] : "";
+}
+
 $title = $product["productName"];
 include_once "../includes/header.php";
 ?>
-
 <body>
-  
   <div class="page-container">
     <!-- start of navbar -->
     <header id="main-header" class="bg">
@@ -136,28 +139,31 @@ include_once "../includes/header.php";
         <div class="product-grid">
           <div class="product-highlight">
             <?= '<img src="./assets/img/' .
-              $product["productImage"] .
+              $product["coverPhoto"] .
               '" alt="' .
-              $product["productImage"] .
+              $product["coverPhoto"] .
               '">' ?>
           </div>
           <div class="product-gallery">
             <?= '<img src="./assets/img/' .
-              $product["productImage"] .
+              $product["coverPhoto"] .
               '" alt="' .
-              $product["productImage"] .
+              $product["coverPhoto"] .
               '">' ?>
-            <?= '<img src="./assets/img/' .
-              $product["productImage"] .
-              '" alt="' .
-              $product["productImage"] .
-              '">' ?>
+            <?php if (!empty($product["productImage"])) {
+              echo '<img src="./assets/img/' .
+                $product["productImage"] .
+                '" alt="' .
+                $product["productImage"] .
+                '">';
+            } ?>
+
           </div>
           <div class="product-info">
-            <div class="label">SALE</div>
+            <div class="label"></div>
             <div class="product-name"><?= $product["productName"] ?></div>
             <div class="reviews">
-              <div class="ratings">
+              <!-- <div class="ratings">
                 <span
                   class="iconify star"
                   data-icon="ant-design:star-filled"
@@ -179,16 +185,8 @@ include_once "../includes/header.php";
                   data-icon="ant-design:star-filled"
                 ></span>
                 <span class="rating-number">56 Reviews</span>
-              </div>
-              <button class="wishlist" title="Wishlist">
-                <span
-                  class="iconify heart"
-                  data-icon="ant-design:heart-outlined"
-                  data-inline="false"
-                ></span>
-              </button>
-            </div>
-            <div class="product-price">
+              </div> -->
+              <div class="product-price">
               <p class="price">
                 <span
                   class="iconify peso-sign"
@@ -198,6 +196,14 @@ include_once "../includes/header.php";
                 <?= $product["productPrice"] ?>
                 <span>.00</span>
               </p>
+            </div>
+              <button class="wishlist" title="Wishlist">
+                <span
+                  class="iconify heart"
+                  data-icon="ant-design:heart-outlined"
+                  data-inline="false"
+                ></span>
+              </button>
             </div>
             <div class="product-description">
               <p>Product Details:</p>
@@ -242,30 +248,38 @@ include_once "../includes/header.php";
                     Size Guide
                   </button>
                 </div>
-                <form action="" method="post">
-                  <select name="" id="" class="input size">
+                <form action="" method="post" name="sizeForm">
+                  <select name="sizeList" id="" class="input size" onchange="sizeForm.submit();">
+                    <option selected disabled>Select Size</option>
                     <?php foreach ($stocks as $stock) { ?>
-                    <option value="<?= $stock["sizes"] ?>"><?= $stock[
-  "sizes"
-] ?></option>
+                    <option value="<?= $stock["sizes"] ?>" <?php if (
+  $sizeList == $stock["sizes"]
+) {
+  echo "selected";
+} ?>><?= $stock["sizes"] ?></option>
                     <?php } ?>  
                   </select>
                 </form>
               </div>
+              <?php foreach ($stocks as $stock) {
+                if ($sizeList == $stock["sizes"]) {
+                  echo '
               <div class="product-quantity">
                 <p>Quantity:</p>
                 <div class="qty">
-                  <button class="minus-btn">-</button>
+                  <!-- <button class="minus-btn">-</button> -->
                   <input
                     class="qty-input"
-                    type="text"
+                    type="number"
                     name=""
-                    id=""
+                    id="quantity"
                     value="1"
                     min="1"
-                    max="<?= $stock["stocks"] ?>"
-                  />
-                  <button class="plus-btn">+</button>
+                    max="' .
+                    $stock["stocks"] .
+                    '"             
+                    />   
+                  <!-- <button class="plus-btn">+</button> -->
                 </div>
               </div>
               <div class="add-cart">
@@ -277,7 +291,9 @@ include_once "../includes/header.php";
                   ></span>
                   Add to Cart
                 </button>
-              </div>
+              </div>';
+                }
+              } ?> 
               <div class="socials">
                 <p>Share:</p>
                 <span

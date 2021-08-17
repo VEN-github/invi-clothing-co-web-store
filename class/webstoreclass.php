@@ -413,16 +413,20 @@ class WebStore
       $optionCategory = $_POST["categoryID"];
       $productPrice = $_POST["productPrice"];
       $productColor = $_POST["productColor"];
+      $coverPhoto = $_FILES["coverPhoto"]["name"];
       $productImage = $_FILES["productImage"]["name"];
       $minStocks = $_POST["minStocks"];
 
       // check image if already exists
-      if (file_exists("assets/img/" . $_FILES["productImage"]["name"])) {
+      if (
+        file_exists("assets/img/" . $_FILES["coverPhoto"]["name"]) &&
+        file_exists("assets/img/" . $_FILES["productImage"]["name"])
+      ) {
         echo "Image Already Exists";
       } else {
         $connection = $this->openConnection();
         $stmt = $connection->prepare(
-          "INSERT INTO product_table (`productName` , `productDescription` , `categoryID` , `productPrice` , `productColor` , `productImage`, `minStocks`) VALUES (?,?,?,?,?,?, ?)"
+          "INSERT INTO product_table (`productName` , `productDescription` , `categoryID` , `productPrice` , `productColor`, `coverPhoto`, `productImage`, `minStocks`) VALUES (?,?,?,?,?,?, ?, ?)"
         );
         $stmt->execute([
           $productName,
@@ -430,11 +434,16 @@ class WebStore
           $optionCategory,
           $productPrice,
           $productColor,
+          $coverPhoto,
           $productImage,
           $minStocks,
         ]);
 
         // move uploaded image in the image folder
+        move_uploaded_file(
+          $_FILES["coverPhoto"]["tmp_name"],
+          "assets/img/" . $_FILES["coverPhoto"]["name"]
+        );
         move_uploaded_file(
           $_FILES["productImage"]["tmp_name"],
           "assets/img/" . $_FILES["productImage"]["name"]
@@ -470,7 +479,7 @@ class WebStore
   }
 
   // add product sizes and stocks
-  public function add_variations()
+  public function add_stocks()
   {
     if (isset($_POST["addStocksBtn"])) {
       $count = count($_POST["countRow"]);
@@ -502,7 +511,7 @@ class WebStore
   {
     $connection = $this->openConnection();
     $stmt = $connection->prepare(
-      "SELECT product_table.ID, product_table.productName, category_table.categoryName, product_table.productPrice, product_table.productColor, product_table.productImage, product_table.minStocks, GROUP_CONCAT(sizes SEPARATOR '<br>' ) AS sizes, GROUP_CONCAT(stocks SEPARATOR '<br>') AS stocks FROM product_table LEFT JOIN category_table ON product_table.categoryID = category_table.ID LEFT JOIN stocks_table ON product_table.ID = stocks_table.productID GROUP BY (product_table.ID)"
+      "SELECT product_table.ID, product_table.productName, category_table.categoryName, product_table.productPrice, product_table.productColor, product_table.coverPhoto, product_table.productImage, product_table.minStocks, GROUP_CONCAT(sizes SEPARATOR '<br>' ) AS sizes, GROUP_CONCAT(stocks SEPARATOR '<br>') AS stocks FROM product_table LEFT JOIN category_table ON product_table.categoryID = category_table.ID LEFT JOIN stocks_table ON product_table.ID = stocks_table.productID GROUP BY (product_table.ID)"
     );
     $stmt->execute();
     $products = $stmt->fetchall();

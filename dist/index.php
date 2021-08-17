@@ -156,19 +156,19 @@ include_once "../includes/header.php";
               <div class="carousel-box">
                 <div class="labels">
                   <span class="product-label"></span>
-                  <button class="wishlist">
+                  <!-- <button class="wishlist">
                     <span
                       class="iconify heart"
                       data-icon="ant-design:heart-outlined"
                       data-inline="false"
                     ></span>
-                  </button>
+                  </button> -->
                 </div>
                 <a href="productdetails.php?ID=<?= $randomProduct["ID"] ?>"
                   ><?= '<img src="./assets/img/' .
-                    $randomProduct["productImage"] .
+                    $randomProduct["coverPhoto"] .
                     '" alt="' .
-                    $randomProduct["productImage"] .
+                    $randomProduct["coverPhoto"] .
                     '">' ?></a>
                 <div class="details">
                 <a href="productdetails.php?ID=<?= $randomProduct[

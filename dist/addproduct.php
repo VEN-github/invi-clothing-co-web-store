@@ -87,6 +87,10 @@ include_once "../includes/dashboard_navbar.php";
         <input type="text" name="productColor" class="form-control" >
       </div>    
       <div class="form-group">
+        <label>Cover Photo</label>
+        <input type="file" class="form-control-file" name="coverPhoto">
+      </div>
+      <div class="form-group">
         <label>Product Image</label>
         <input type="file" class="form-control-file" name="productImage">
       </div>

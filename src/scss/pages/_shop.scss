@@ -68,9 +68,11 @@
   .product-container {
     grid-column: 2/3;
     grid-row: 2/3;
+
     @include flex.flex(space-between, stretch, row);
     flex-wrap: wrap;
     .products {
+      @include flex.flex(flex-start, center, column);
       margin: 0 0.5em;
       padding: 1.5em 0.8em;
       height: fit-content;
@@ -88,12 +90,12 @@
       // }
       & .labels {
         @include flex.flex(space-between, center, row);
-        & .product-label {
-          padding: 0.1em 0.3em;
-          background: colors.$sale-color;
-          color: colors.$text-color;
-          border-radius: 5px;
-        }
+        // & .product-label {
+        //   padding: 0.1em 0.3em;
+        //   background: colors.$sale-color;
+        //   color: colors.$text-color;
+        //   border-radius: 5px;
+        // }
         & .wishlist {
           @include flex.flex(center, center, row);
           width: 30px;

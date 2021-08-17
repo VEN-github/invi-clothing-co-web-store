@@ -2,7 +2,7 @@
 require_once "../class/webstoreclass.php";
 $user = $store->get_userdata();
 $product = $store->get_productID();
-$store->add_variations();
+$store->add_stocks();
 
 $title = "Add New Product";
 include_once "../includes/dashboard_header.php";
