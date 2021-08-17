@@ -54,147 +54,7 @@ class WebStore
       }
     }
   }
-  // check email if already exists
-  public function checkEmail($email)
-  {
-    $connection = $this->openConnection();
-    $stmt = $connection->prepare("SELECT * FROM account_table WHERE email = ?");
-    $stmt->execute([$email]);
-    $count = $stmt->rowCount();
-    return $count;
-  }
-  // user sign up
-  public function signup()
-  {
-    if (isset($_POST["signup"])) {
-      $firstName = $_POST["firstName"];
-      $lastName = $_POST["lastName"];
-      $email = $_POST["email"];
-      $password = md5($_POST["password"]);
-      $access = $_POST["access"];
 
-      if ($this->checkEmail($email) == 0) {
-        $connection = $this->openConnection();
-        $stmt = $connection->prepare(
-          "INSERT INTO account_table (`firstName`, `lastName`, `email`, `password`, `access`) VALUES (?,?,?,?,?)"
-        );
-        $stmt->execute([$firstName, $lastName, $email, $password, $access]);
-        header("Location: login.php");
-      } else {
-        header("Location: signup.php?emailError=Email Already Exists");
-      }
-    }
-  }
-  // set user data
-  public function set_userdata($array)
-  {
-    if (!isset($_SESSION)) {
-      session_start();
-    }
-
-    $_SESSION["userdata"] = [
-      "ID" => $array["ID"],
-      "firstName" => $array["firstName"],
-      "lastName" => $array["lastName"],
-      "email" => $array["email"],
-      "access" => $array["access"],
-    ];
-
-    return $_SESSION["userdata"];
-  }
-  // get user data
-  public function get_userdata()
-  {
-    if (!isset($_SESSION)) {
-      session_start();
-    }
-    if (isset($_SESSION["userdata"])) {
-      return $_SESSION["userdata"];
-    } else {
-      return null;
-    }
-  }
-  //admin sign up
-  public function signup_admin()
-  {
-    if (isset($_POST["registerBtn"])) {
-      $firstName = $_POST["firstName"];
-      $lastName = $_POST["lastName"];
-      $email = $_POST["email"];
-      $contactNumber = $_POST["contactNumber"];
-      $password = md5($_POST["password"]);
-      $access = $_POST["access"];
-
-      if ($this->checkEmail($email) == 0) {
-        $connection = $this->openConnection();
-        $stmt = $connection->prepare(
-          "INSERT INTO account_table (`firstName` , `lastName` , `email` , `password` , `contactNumber` , `access`) VALUES (?,?,?,?,?,?)"
-        );
-        $stmt->execute([
-          $firstName,
-          $lastName,
-          $email,
-          $password,
-          $contactNumber,
-          $access,
-        ]);
-        header("Location: admin.php");
-      } else {
-        echo "Email Already Exists";
-      }
-    }
-  }
-  // display admin
-  public function get_admin()
-  {
-    $admin = "admin";
-    $connection = $this->openConnection();
-    $stmt = $connection->prepare(
-      "SELECT * FROM account_table WHERE access = '$admin'"
-    );
-    $stmt->execute();
-    $admins = $stmt->fetchall();
-    $count = $stmt->rowCount();
-
-    if ($count > 0) {
-      return $admins;
-    } else {
-      return false;
-    }
-  }
-  // count admin
-  public function count_admin()
-  {
-    $admin = "admin";
-    $connection = $this->openConnection();
-    $stmt = $connection->prepare(
-      "SELECT COUNT(ID) FROM account_table WHERE access = '$admin'"
-    );
-    $stmt->execute();
-    $admins = $stmt->fetchColumn();
-    return $admins;
-  }
-  // count user
-  public function count_user()
-  {
-    $user = "user";
-    $connection = $this->openConnection();
-    $stmt = $connection->prepare(
-      "SELECT COUNT(ID) FROM account_table WHERE access = '$user'"
-    );
-    $stmt->execute();
-    $users = $stmt->fetchColumn();
-    return $users;
-  }
-  // count products
-  public function count_product()
-  {
-    $connection = $this->openConnection();
-    $stmt = $connection->prepare("SELECT COUNT(ID) FROM product_table ");
-    $stmt->execute();
-    $products = $stmt->fetchColumn();
-    return $products;
-  }
   // login form validation
   public function loginValidation()
   {
@@ -223,6 +83,40 @@ class WebStore
       }
     }
   }
+
+  // check email if already exists
+  public function checkEmail($email)
+  {
+    $connection = $this->openConnection();
+    $stmt = $connection->prepare("SELECT * FROM account_table WHERE email = ?");
+    $stmt->execute([$email]);
+    $count = $stmt->rowCount();
+    return $count;
+  }
+
+  // user sign up
+  public function signup()
+  {
+    if (isset($_POST["signup"])) {
+      $firstName = $_POST["firstName"];
+      $lastName = $_POST["lastName"];
+      $email = $_POST["email"];
+      $password = md5($_POST["password"]);
+      $access = $_POST["access"];
+
+      if ($this->checkEmail($email) == 0) {
+        $connection = $this->openConnection();
+        $stmt = $connection->prepare(
+          "INSERT INTO account_table (`firstName`, `lastName`, `email`, `password`, `access`) VALUES (?,?,?,?,?)"
+        );
+        $stmt->execute([$firstName, $lastName, $email, $password, $access]);
+        header("Location: login.php");
+      } else {
+        header("Location: signup.php?emailError=Email Already Exists");
+      }
+    }
+  }
+
   // sign up form validation
   public function signupValidation()
   {
@@ -285,6 +179,38 @@ class WebStore
       }
     }
   }
+
+  // set user data
+  public function set_userdata($array)
+  {
+    if (!isset($_SESSION)) {
+      session_start();
+    }
+
+    $_SESSION["userdata"] = [
+      "ID" => $array["ID"],
+      "firstName" => $array["firstName"],
+      "lastName" => $array["lastName"],
+      "email" => $array["email"],
+      "access" => $array["access"],
+    ];
+
+    return $_SESSION["userdata"];
+  }
+
+  // get user data
+  public function get_userdata()
+  {
+    if (!isset($_SESSION)) {
+      session_start();
+    }
+    if (isset($_SESSION["userdata"])) {
+      return $_SESSION["userdata"];
+    } else {
+      return null;
+    }
+  }
+
   // for profile page
   public function setProfile()
   {
@@ -325,6 +251,7 @@ class WebStore
       header("Location: profile.php");
     }
   }
+
   // delete account
   public function delete_userdata()
   {
@@ -340,6 +267,7 @@ class WebStore
       $this->logout();
     }
   }
+
   // logout
   public function logout()
   {
@@ -349,6 +277,93 @@ class WebStore
     $_SESSION["userdata"] = null;
     unset($_SESSION["userdata"]);
   }
+
+  //admin sign up
+  public function signup_admin()
+  {
+    if (isset($_POST["registerBtn"])) {
+      $firstName = $_POST["firstName"];
+      $lastName = $_POST["lastName"];
+      $email = $_POST["email"];
+      $contactNumber = $_POST["contactNumber"];
+      $password = md5($_POST["password"]);
+      $access = $_POST["access"];
+
+      if ($this->checkEmail($email) == 0) {
+        $connection = $this->openConnection();
+        $stmt = $connection->prepare(
+          "INSERT INTO account_table (`firstName` , `lastName` , `email` , `password` , `contactNumber` , `access`) VALUES (?,?,?,?,?,?)"
+        );
+        $stmt->execute([
+          $firstName,
+          $lastName,
+          $email,
+          $password,
+          $contactNumber,
+          $access,
+        ]);
+        header("Location: admin.php");
+      } else {
+        echo "Email Already Exists";
+      }
+    }
+  }
+
+  // display admin
+  public function get_admin()
+  {
+    $admin = "admin";
+    $connection = $this->openConnection();
+    $stmt = $connection->prepare(
+      "SELECT * FROM account_table WHERE access = '$admin'"
+    );
+    $stmt->execute();
+    $admins = $stmt->fetchall();
+    $count = $stmt->rowCount();
+
+    if ($count > 0) {
+      return $admins;
+    } else {
+      return false;
+    }
+  }
+
+  // count admin
+  public function count_admin()
+  {
+    $admin = "admin";
+    $connection = $this->openConnection();
+    $stmt = $connection->prepare(
+      "SELECT COUNT(ID) FROM account_table WHERE access = '$admin'"
+    );
+    $stmt->execute();
+    $admins = $stmt->fetchColumn();
+    return $admins;
+  }
+
+  // count user
+  public function count_user()
+  {
+    $user = "user";
+    $connection = $this->openConnection();
+    $stmt = $connection->prepare(
+      "SELECT COUNT(ID) FROM account_table WHERE access = '$user'"
+    );
+    $stmt->execute();
+    $users = $stmt->fetchColumn();
+    return $users;
+  }
+
+  // count products
+  public function count_product()
+  {
+    $connection = $this->openConnection();
+    $stmt = $connection->prepare("SELECT COUNT(ID) FROM product_table ");
+    $stmt->execute();
+    $products = $stmt->fetchColumn();
+    return $products;
+  }
+
   // add product category
   public function add_category()
   {
@@ -363,6 +378,7 @@ class WebStore
       header("Location: addproduct.php");
     }
   }
+
   // display product categories
   public function get_categories()
   {
@@ -398,7 +414,7 @@ class WebStore
       $productPrice = $_POST["productPrice"];
       $productColor = $_POST["productColor"];
       $productImage = $_FILES["productImage"]["name"];
-      $productStocks = $_POST["productStocks"];
+      $minStocks = $_POST["minStocks"];
 
       // check image if already exists
       if (file_exists("assets/img/" . $_FILES["productImage"]["name"])) {
@@ -406,7 +422,7 @@ class WebStore
       } else {
         $connection = $this->openConnection();
         $stmt = $connection->prepare(
-          "INSERT INTO product_table (`productName` , `productDescription` , `categoryID` , `productPrice` , `productColor` , `productImage`, `stocks`) VALUES (?,?,?,?,?,?, ?)"
+          "INSERT INTO product_table (`productName` , `productDescription` , `categoryID` , `productPrice` , `productColor` , `productImage`, `minStocks`) VALUES (?,?,?,?,?,?, ?)"
         );
         $stmt->execute([
           $productName,
@@ -415,7 +431,7 @@ class WebStore
           $productPrice,
           $productColor,
           $productImage,
-          $productStocks,
+          $minStocks,
         ]);
 
         // move uploaded image in the image folder
@@ -425,6 +441,7 @@ class WebStore
         );
 
         header("Location: addstocks.php");
+
         // if($this->checkProduct($productName) == 0){
         //     $connection = $this->openConnection();
         //     $stmt = $connection->prepare("INSERT INTO product_table (`productName` , `productDescription` , `categoryID` , `productPrice` , `productColor` , `productImage`) VALUES (?,?,?,?,?,?)");
@@ -439,6 +456,7 @@ class WebStore
       }
     }
   }
+
   //get product id for variation
   public function get_productID()
   {
@@ -450,6 +468,7 @@ class WebStore
     $product = $stmt->fetch();
     return $product;
   }
+
   // add product sizes and stocks
   public function add_variations()
   {
@@ -483,15 +502,32 @@ class WebStore
   {
     $connection = $this->openConnection();
     $stmt = $connection->prepare(
-      "SELECT product_table.ID, product_table.productName, product_table.productDescription, category_table.categoryName, product_table.productPrice, product_table.productColor, product_table.productImage, product_table.stocks FROM product_table INNER JOIN category_table ON product_table.categoryID = category_table.ID "
+      "SELECT product_table.ID, product_table.productName, category_table.categoryName, product_table.productPrice, product_table.productColor, product_table.productImage, product_table.minStocks, GROUP_CONCAT(sizes SEPARATOR '<br>' ) AS sizes, GROUP_CONCAT(stocks SEPARATOR '<br>') AS stocks FROM product_table LEFT JOIN category_table ON product_table.categoryID = category_table.ID LEFT JOIN stocks_table ON product_table.ID = stocks_table.productID GROUP BY (product_table.ID)"
     );
-    // $stmt = $connection->prepare("SELECT productName, productDescription, categoryName, productPrice, productColor, productImage, GROUP_CONCAT(breakdown SEPARATOR '<br>' ) AS breakdown, GROUP_CONCAT(stock SEPARATOR '<br>') AS stock FROM (SELECT * FROM product_table ) product LEFT JOIN category_table category ON product.ID = category.ID LEFT JOIN variation_table variation ON product.ID = variation.productID GROUP BY (product.ID) ");
     $stmt->execute();
     $products = $stmt->fetchall();
     $count = $stmt->rowCount();
 
     if ($count > 0) {
       return $products;
+    } else {
+      return false;
+    }
+  }
+
+  // display random products
+  public function get__random_products()
+  {
+    $connection = $this->openConnection();
+    $stmt = $connection->prepare(
+      "SELECT * FROM product_table ORDER BY RAND() LIMIT 3"
+    );
+    $stmt->execute();
+    $randomProducts = $stmt->fetchall();
+    $count = $stmt->rowCount();
+
+    if ($count > 0) {
+      return $randomProducts;
     } else {
       return false;
     }

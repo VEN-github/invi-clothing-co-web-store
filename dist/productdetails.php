@@ -5,7 +5,7 @@ $ID = $_GET["ID"];
 $product = $store->get_singleproduct($ID);
 $stocks = $store->view_all_stocks($ID);
 
-$title = "Name of Product Here";
+$title = $product["productName"];
 include_once "../includes/header.php";
 ?>
 
@@ -263,7 +263,7 @@ include_once "../includes/header.php";
                     id=""
                     value="1"
                     min="1"
-                    max=""
+                    max="<?= $stock["stocks"] ?>"
                   />
                   <button class="plus-btn">+</button>
                 </div>

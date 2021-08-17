@@ -956,7 +956,7 @@ button {
   color: #ed6a4c;
 }
 .features .carousel-container .carousel-box img {
-  width: 350px;
+  width: 300px;
   -o-object-fit: cover;
      object-fit: cover;
   margin-bottom: 1em;

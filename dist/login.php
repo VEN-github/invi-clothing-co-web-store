@@ -135,7 +135,7 @@ require_once "../includes/header.php";
                     data-icon="clarity:error-standard-line"
                     data-inline="false"
                   ></span
-                  ><?php echo $_GET["error"]; ?>
+                  ><?= $_GET["error"] ?>
                 </div>
                 <?php } ?>
                 <a href="#" class="forgot-pass">Forgot Password?</a>

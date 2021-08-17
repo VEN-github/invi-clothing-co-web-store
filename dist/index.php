@@ -2,6 +2,7 @@
 require_once "../class/webstoreclass.php";
 $store->add_cart();
 $user = $store->get_userdata();
+$randomProducts = $store->get__random_products();
 $title = "Home";
 include_once "../includes/header.php";
 ?>
@@ -151,6 +152,7 @@ include_once "../includes/header.php";
           <div class="container features">
             <h1>Our products</h1>
             <div class="carousel-container">
+            <?php foreach ($randomProducts as $randomProduct) { ?>
               <div class="carousel-box">
                 <div class="labels">
                   <span class="product-label"></span>
@@ -162,22 +164,28 @@ include_once "../includes/header.php";
                     ></span>
                   </button>
                 </div>
-                <form action="" method="post">
-                <a href="#"
-                  ><img src="./assets/img/Logo Tee - Front - Pink.png" alt=""></a>
+                <a href="productdetails.php?ID=<?= $randomProduct["ID"] ?>"
+                  ><?= '<img src="./assets/img/' .
+                    $randomProduct["productImage"] .
+                    '" alt="' .
+                    $randomProduct["productImage"] .
+                    '">' ?></a>
                 <div class="details">
-                  <a href="#"></a>
+                <a href="productdetails.php?ID=<?= $randomProduct[
+                  "ID"
+                ] ?>"><?= $randomProduct["productName"] ?></a>
                   <p class="price">
                     <span
                       class="iconify peso-sign"
                       data-icon="clarity:peso-line"
                       data-inline="false"
                     ></span>
-                    450
+                    <?= $randomProduct["productPrice"] ?>
                     <span>.00</span>
                   </p>
                 </div>
               </div>
+              <?php } ?> 
             </div>
             <div class="cta">
               <a href="shop.php" class="btn primary-btn">Shop Now</a>

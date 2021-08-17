@@ -90,14 +90,15 @@ include_once "../includes/dashboard_navbar.php";
         <label>Product Image</label>
         <input type="file" class="form-control-file" name="productImage">
       </div>
-      <div class="form-group">
-        <label>Stocks</label>
-        <input type="text" class="form-control" name="productStocks">
+      <div class="form-group">     
+        <input type="hidden" class="form-control" name="minStocks" value="10">
       </div>
       <div class="d-sm-flex justify-content-end">
-        <button type="submit" class="btn btn-secondary btn-icon-split mr-4">
-          <span class="text">Cancel</span>
-        </button>
+        <a href="products.php">
+          <button type="button" class="btn btn-secondary btn-icon-split mr-4">
+            <span class="text">Cancel</span>
+          </button>
+        </a>
         <button type="submit"  name="addProductBtn" class="btn btn-primary btn-icon-split"> 
           <span class="text">Submit</span>
         </button>
@@ -109,4 +110,4 @@ include_once "../includes/dashboard_navbar.php";
 </div>
 <!-- End of Main Content -->
 <?php require_once "../includes/dashboard_footer.php"; ?>
-<?php require_once "../includes/dashboard_scripts.php"; ?>        ?> ?> ?> ?> ?> ?>
+<?php require_once "../includes/dashboard_scripts.php"; ?>

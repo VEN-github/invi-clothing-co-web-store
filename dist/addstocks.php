@@ -17,7 +17,7 @@ include_once "../includes/dashboard_navbar.php";
       <div class="card shadow mb-4">
         <!-- Product Variation Form -->
         <div class="card-header py-3">
-          <h6 class="m-0 font-weight-bold text-primary">Add Variation</h6>
+          <h6 class="m-0 font-weight-bold text-primary">Add Size</h6>
         </div>
         <form class=card-body id="addForm">
           <div class="form-group">
@@ -33,7 +33,7 @@ include_once "../includes/dashboard_navbar.php";
       </div>
       <div class="card shadow mb-4">
         <div class="card-header py-3">
-          <h6 class="m-0 font-weight-bold text-primary">Variation List</h6>
+          <h6 class="m-0 font-weight-bold text-primary">Size List</h6>
         </div>
         <div class="card-body">
           <form class="card-body" method="post">

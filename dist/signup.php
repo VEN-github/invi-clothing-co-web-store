@@ -131,7 +131,7 @@ require_once "../includes/header.php";
                     data-icon="clarity:error-standard-line"
                     data-inline="false"
                   ></span
-                  ><?php echo $_GET["firstNameError"]; ?>
+                  ><?= $_GET["firstNameError"] ?>
                 </div>
                 <?php } ?>
                 <div class="input-field">
@@ -150,7 +150,7 @@ require_once "../includes/header.php";
                     data-icon="clarity:error-standard-line"
                     data-inline="false"
                   ></span
-                  ><?php echo $_GET["lastNameError"]; ?>
+                  ><?= $_GET["lastNameError"] ?>
                 </div>
                 <?php } ?>
                 <div class="input-field">
@@ -169,7 +169,7 @@ require_once "../includes/header.php";
                     data-icon="clarity:error-standard-line"
                     data-inline="false"
                   ></span
-                  ><?php echo $_GET["emailError"]; ?>
+                  ><?= $_GET["emailError"] ?>
                 </div>
                 <?php } ?>
                 <div class="input-field">
@@ -195,7 +195,7 @@ require_once "../includes/header.php";
                     data-icon="clarity:error-standard-line"
                     data-inline="false"
                   ></span
-                  ><?php echo $_GET["passwordError"]; ?>
+                  ><?= $_GET["passwordError"] ?>
                 </div>
                 <?php } ?>
                 <div class="input-field">
@@ -221,7 +221,7 @@ require_once "../includes/header.php";
                     data-icon="clarity:error-standard-line"
                     data-inline="false"
                   ></span
-                  ><?php echo $_GET["confirmPasswordError"]; ?>
+                  ><?= $_GET["confirmPasswordError"] ?>
                 </div>
                 <?php } ?>
                 <div class="input-field">

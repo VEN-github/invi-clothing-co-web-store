@@ -33,22 +33,22 @@ include_once "../includes/dashboard_navbar.php";
                                         <tr>
                                             <th>Product Image</th>
                                             <th>Product Name</th>
-                                            <th>Product Description</th>
                                             <th>Product Category</th>
                                             <th>Price</th>
                                             <th>Product Color</th>
-                                            <th>Stock</th>
+                                            <th>Sizes</th>
+                                            <th>Stocks</th>
                                         </tr>
                                     </thead>
                                     <tfoot>
                                         <tr>
                                             <th>Product Image</th>
                                             <th>Product Name</th>
-                                            <th>Product Description</th>
                                             <th>Product Category</th>
                                             <th>Price</th>
                                             <th>Product Color</th>
-                                            <th>Stock</th>
+                                            <th>Sizes</th>
+                                            <th>Stocks</th>
                                         </tr>
                                     </tfoot>
                                     <tbody>
@@ -64,9 +64,6 @@ include_once "../includes/dashboard_navbar.php";
                                               "productName"
                                             ] ?></td>
                                             <td><?= $products[
-                                              "productDescription"
-                                            ] ?></td>
-                                            <td><?= $products[
                                               "categoryName"
                                             ] ?></td>
                                             <td><?= $products[
@@ -75,6 +72,7 @@ include_once "../includes/dashboard_navbar.php";
                                             <td><?= $products[
                                               "productColor"
                                             ] ?></td>
+                                            <td><?= $products["sizes"] ?></td>
                                             <td><?= $products["stocks"] ?></td>
                                         </tr>    
                                     <?php } ?>                                
@@ -89,4 +87,4 @@ include_once "../includes/dashboard_navbar.php";
             </div>
             <!-- End of Main Content -->
             <?php require_once "../includes/dashboard_footer.php"; ?>
-            <?php require_once "../includes/dashboard_scripts.php"; ?>        ?> ?> ?> ?> ?> ?> ?> ?> ?> ?>
+            <?php require_once "../includes/dashboard_scripts.php"; ?>
