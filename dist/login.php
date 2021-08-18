@@ -4,15 +4,6 @@ require_once "../class/webstoreclass.php";
 $store->loginValidation();
 $store->login();
 $store->add_cart();
-$userdata = $store->get_userdata();
-
-if (isset($userdata)) {
-  if ($userdata["access"] != "admin") {
-    header("Location: index.php");
-  } else {
-    header("Location: dashboard.php");
-  }
-}
 
 $title = "Login";
 require_once "../includes/header.php";

@@ -48,7 +48,13 @@ class WebStore
 
       if ($count > 0) {
         $this->set_userdata($row);
-        header("Location: index.php");
+        if (isset($_SESSION["userdata"])) {
+          if ($_SESSION["userdata"]["access"] != "admin") {
+            header("Location: index.php");
+          } else {
+            header("Location: dashboard.php");
+          }
+        }
       } else {
         header("Location: login.php?error=Invalid Email Address or Password.");
       }
@@ -414,19 +420,23 @@ class WebStore
       $productPrice = $_POST["productPrice"];
       $productColor = $_POST["productColor"];
       $coverPhoto = $_FILES["coverPhoto"]["name"];
-      $productImage = $_FILES["productImage"]["name"];
-      $minStocks = $_POST["minStocks"];
+      $productImage1 = $_FILES["productImage1"]["name"];
+      $productImage2 = $_FILES["productImage2"]["name"];
+      $productImage3 = $_FILES["productImage3"]["name"];
+      // $minStocks = $_POST["minStocks"];
 
       // check image if already exists
       if (
         file_exists("assets/img/" . $_FILES["coverPhoto"]["name"]) &&
-        file_exists("assets/img/" . $_FILES["productImage"]["name"])
+        file_exists("assets/img/" . $_FILES["productImage1"]["name"]) &&
+        file_exists("assets/img/" . $_FILES["productImage2"]["name"]) &&
+        file_exists("assets/img/" . $_FILES["productImage3"]["name"])
       ) {
         echo "Image Already Exists";
       } else {
         $connection = $this->openConnection();
         $stmt = $connection->prepare(
-          "INSERT INTO product_table (`productName` , `productDescription` , `categoryID` , `productPrice` , `productColor`, `coverPhoto`, `productImage`, `minStocks`) VALUES (?,?,?,?,?,?, ?, ?)"
+          "INSERT INTO product_table (`productName` , `productDescription` , `categoryID` , `productPrice` , `productColor`, `coverPhoto`, `productImage1`, `productImage2`, productImage3) VALUES (?,?,?,?,?,?,?,?,?)"
         );
         $stmt->execute([
           $productName,
@@ -435,8 +445,10 @@ class WebStore
           $productPrice,
           $productColor,
           $coverPhoto,
-          $productImage,
-          $minStocks,
+          $productImage1,
+          $productImage2,
+          $productImage3,
+          // $minStocks,
         ]);
 
         // move uploaded image in the image folder
@@ -445,8 +457,16 @@ class WebStore
           "assets/img/" . $_FILES["coverPhoto"]["name"]
         );
         move_uploaded_file(
-          $_FILES["productImage"]["tmp_name"],
-          "assets/img/" . $_FILES["productImage"]["name"]
+          $_FILES["productImage1"]["tmp_name"],
+          "assets/img/" . $_FILES["productImage1"]["name"]
+        );
+        move_uploaded_file(
+          $_FILES["productImage2"]["tmp_name"],
+          "assets/img/" . $_FILES["productImage2"]["name"]
+        );
+        move_uploaded_file(
+          $_FILES["productImage3"]["tmp_name"],
+          "assets/img/" . $_FILES["productImage3"]["name"]
         );
 
         header("Location: addstocks.php");
@@ -511,7 +531,7 @@ class WebStore
   {
     $connection = $this->openConnection();
     $stmt = $connection->prepare(
-      "SELECT product_table.ID, product_table.productName, category_table.categoryName, product_table.productPrice, product_table.productColor, product_table.coverPhoto, product_table.productImage, product_table.minStocks, GROUP_CONCAT(sizes SEPARATOR '<br>' ) AS sizes, GROUP_CONCAT(stocks SEPARATOR '<br>') AS stocks FROM product_table LEFT JOIN category_table ON product_table.categoryID = category_table.ID LEFT JOIN stocks_table ON product_table.ID = stocks_table.productID GROUP BY (product_table.ID)"
+      "SELECT product_table.ID, product_table.productName, category_table.categoryName, product_table.productPrice, product_table.productColor, product_table.coverPhoto, product_table.productImage1, product_table.productImage2,product_table.productImage3, GROUP_CONCAT(sizes SEPARATOR '<br>' ) AS sizes, GROUP_CONCAT(stocks SEPARATOR '<br>') AS stocks FROM product_table LEFT JOIN category_table ON product_table.categoryID = category_table.ID LEFT JOIN stocks_table ON product_table.ID = stocks_table.productID GROUP BY (product_table.ID)"
     );
     $stmt->execute();
     $products = $stmt->fetchall();
@@ -546,7 +566,10 @@ class WebStore
   public function get_singleproduct($ID)
   {
     $connection = $this->openConnection();
-    $stmt = $connection->prepare("SELECT * FROM product_table WHERE ID = ?");
+    // $stmt = $connection->prepare("SELECT * FROM product_table WHERE ID = ?");
+    $stmt = $connection->prepare(
+      "SELECT productName, productDescription, categoryName, productPrice, productColor, coverPhoto, productImage1, productImage2, productImage3 FROM (SELECT * FROM product_table WHERE product_table.ID = ?) product LEFT JOIN category_table category ON product.categoryID = category.categoryName"
+    );
     $stmt->execute([$ID]);
     $product = $stmt->fetch();
     $count = $stmt->rowCount();

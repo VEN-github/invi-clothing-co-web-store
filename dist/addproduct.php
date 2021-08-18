@@ -86,17 +86,27 @@ include_once "../includes/dashboard_navbar.php";
         <label>Product Color</label>
         <input type="text" name="productColor" class="form-control" >
       </div>    
-      <div class="form-group">
-        <label>Cover Photo</label>
-        <input type="file" class="form-control-file" name="coverPhoto">
+      <div class="form-row">
+        <div class="form-group col-md-2">
+          <label>Cover Photo</label>
+          <input type="file" class="form-control-file" name="coverPhoto">
+        </div>
+        <div class="form-group col-md-2">
+          <label>Product Image 1</label>
+          <input type="file" class="form-control-file" name="productImage1">
+        </div>       
+        <div class="form-group col-md-2">
+          <label>Product Image 2</label>
+          <input type="file" class="form-control-file" name="productImage2">
+        </div>       
+        <div class="form-group col-md-2">
+          <label>Product Image 3</label>
+          <input type="file" class="form-control-file" name="productImage3">
+        </div>       
       </div>
-      <div class="form-group">
-        <label>Product Image</label>
-        <input type="file" class="form-control-file" name="productImage">
-      </div>
-      <div class="form-group">     
+      <!-- <div class="form-group">     
         <input type="hidden" class="form-control" name="minStocks" value="10">
-      </div>
+      </div> -->
       <div class="d-sm-flex justify-content-end">
         <a href="products.php">
           <button type="button" class="btn btn-secondary btn-icon-split mr-4">

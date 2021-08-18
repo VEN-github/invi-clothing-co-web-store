@@ -115,16 +115,14 @@ main {
 .minus-btn {
   font-size: 1.5rem;
   width: 45px;
-  color: #2c3037;
   border: 1px solid #545454;
   border-right: none;
   border-radius: 5px 0 0 5px;
 }
 
-.plus-btn {
+.plus-btn:not(.disabled) {
   font-size: 1.5rem;
   width: 45px;
-  color: #2c3037;
   border: 1px solid #545454;
   border-left: none;
   border-radius: 0 5px 5px 0;
@@ -1220,7 +1218,7 @@ button {
 }
 
 .qty-input {
-  width: 45%;
+  width: 45px;
   padding: 1em 0;
   font-size: 0.875rem;
   font-weight: 400;
@@ -1229,13 +1227,24 @@ button {
   background: none;
   outline: none;
   border: 1px solid #545454;
-  border-radius: 5px;
+  border-radius: 0;
+  border-right: none;
+  border-left: none;
+  -webkit-appearance: textfield;
+     -moz-appearance: textfield;
+          appearance: textfield;
+  pointer-events: none;
+  cursor: default;
 }
 .qty-input::-webkit-inner-spin-button {
-  opacity: 1;
+  -webkit-appearance: none;
+          appearance: none;
+  margin: 0;
 }
 .qty-input::-webkit-outer-spin-button {
-  opacity: 1;
+  -webkit-appearance: none;
+          appearance: none;
+  margin: 0;
 }
 
 .cart-qty-input {
@@ -3167,8 +3176,8 @@ textarea:focus {
 }
 #product-details .product-gallery img {
   padding: 0.2em;
-  width: 100px;
-  height: 100px;
+  width: 85px;
+  height: 85px;
   -o-object-fit: contain;
      object-fit: contain;
   background: #fff;

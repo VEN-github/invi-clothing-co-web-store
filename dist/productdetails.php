@@ -4,7 +4,6 @@ $user = $store->get_userdata();
 $ID = $_GET["ID"];
 $product = $store->get_singleproduct($ID);
 $stocks = $store->view_all_stocks($ID);
-
 $sizeList = "";
 if (!empty($_POST)) {
   $sizeList = isset($_POST["sizeList"]) ? $_POST["sizeList"] : "";
@@ -150,11 +149,25 @@ include_once "../includes/header.php";
               '" alt="' .
               $product["coverPhoto"] .
               '">' ?>
-            <?php if (!empty($product["productImage"])) {
+            <?php if (!empty($product["productImage1"])) {
               echo '<img src="./assets/img/' .
-                $product["productImage"] .
+                $product["productImage1"] .
                 '" alt="' .
-                $product["productImage"] .
+                $product["productImage1"] .
+                '">';
+            } ?>
+            <?php if (!empty($product["productImage2"])) {
+              echo '<img src="./assets/img/' .
+                $product["productImage2"] .
+                '" alt="' .
+                $product["productImage2"] .
+                '">';
+            } ?>
+            <?php if (!empty($product["productImage3"])) {
+              echo '<img src="./assets/img/' .
+                $product["productImage3"] .
+                '" alt="' .
+                $product["productImage3"] .
                 '">';
             } ?>
 
@@ -250,50 +263,44 @@ include_once "../includes/header.php";
                 </div>
                 <form action="" method="post" name="sizeForm">
                   <select name="sizeList" id="" class="input size" onchange="sizeForm.submit();">
-                    <option selected disabled>Select Size</option>
-                    <?php foreach ($stocks as $stock) { ?>
-                    <option value="<?= $stock["sizes"] ?>" <?php if (
+                      <option selected disabled>Select Size</option>
+                      <?php foreach ($stocks as $stock) { ?>
+                      <option value="<?= $stock["sizes"] ?>" <?php if (
   $sizeList == $stock["sizes"]
-) {
-  echo "selected";
-} ?>><?= $stock["sizes"] ?></option>
-                    <?php } ?>  
+) { ?> selected <?php } ?> ><?= $stock["sizes"] ?></option><?php } ?>  
                   </select>
                 </form>
               </div>
-              <?php foreach ($stocks as $stock) {
-                if ($sizeList == $stock["sizes"]) {
-                  echo '
-              <div class="product-quantity">
-                <p>Quantity:</p>
-                <div class="qty">
-                  <!-- <button class="minus-btn">-</button> -->
-                  <input
-                    class="qty-input"
-                    type="number"
-                    name=""
-                    id="quantity"
-                    value="1"
-                    min="1"
-                    max="' .
-                    $stock["stocks"] .
-                    '"             
-                    />   
-                  <!-- <button class="plus-btn">+</button> -->
-                </div>
-              </div>
-              <div class="add-cart">
-                <button class="btn primary-btn cart-btn">
-                  <span
-                    class="iconify cart-icon"
-                    data-icon="gg:shopping-bag"
-                    data-inline="false"
-                  ></span>
-                  Add to Cart
-                </button>
-              </div>';
-                }
-              } ?> 
+              <?php foreach ($stocks as $stock) { ?>  
+                <?php if ($sizeList == $stock["sizes"]) { ?>
+                  <div class="product-quantity">
+                    <p>Quantity:</p>
+                    <div class="qty">
+                      <button class="minus-btn">-</button>
+                      <input
+                        class="qty-input"
+                        type="number"
+                        name=""
+                        id="quantity"
+                        value="1"
+                        min="1"
+                        max="<?= $stock["stocks"] ?>"             
+                        />   
+                      <button class="plus-btn">+</button>
+                    </div>
+                  </div>
+                  <div class="add-cart">
+                    <button class="btn primary-btn cart-btn">
+                      <span
+                        class="iconify cart-icon"
+                        data-icon="gg:shopping-bag"
+                        data-inline="false"
+                      ></span>
+                      Add to Cart
+                    </button>
+                  </div>
+                <?php } ?>
+              <?php } ?>
               <div class="socials">
                 <p>Share:</p>
                 <span
@@ -319,6 +326,65 @@ include_once "../includes/header.php";
   </div>
   <script src="./assets/js/header.js"></script>
   <script src="./assets/js/user.js"></script>
+  <script>
+  // QUANTITY
+  // SETTING DEFAULT ATTRIBUTE TO DISABLED MINUS BUTTON
+  document.querySelector(".minus-btn").setAttribute("disabled", "disabled");
+  document.querySelector(".minus-btn").style.cursor="not-allowed";
+
+  // TAKING VALUE TO INCREMENT DECREMENT INPUT VALUE
+  let valueCount;
+
+  // SETTING MAX VALUE
+  let maxValue = "<?php foreach ($stocks as $stock) { ?> <?php if (
+   $sizeList == $stock["sizes"]
+ ) { ?> <?= $stock["stocks"] ?> <?php } ?> <?php } ?>"
+
+  // PLUS BUTTON
+  document.querySelector(".plus-btn").addEventListener("click", () => {
+    //GETTING VALUE INPUT
+    valueCount = document.querySelector("#quantity").value;
+
+    //INPUT VALUE INCREMENT BY 1
+    valueCount++;
+
+    //SETTING INCREMENT INPUT VALUE
+    document.querySelector("#quantity").value = valueCount;
+    //SETTING INCREMENT MAX VALUE
+    document.querySelector("#quantity").max = maxValue;
+
+    if (valueCount > 1) {
+      document.querySelector(".minus-btn").removeAttribute("disabled");
+      document.querySelector(".minus-btn").classList.remove("disabled");
+      document.querySelector(".minus-btn").style.cursor="pointer";
+    }
+    if (valueCount == maxValue) {
+      document.querySelector(".plus-btn").setAttribute("disabled", "disabled");
+      document.querySelector(".plus-btn").style.cursor="not-allowed";
+    }
+  });
+  // MINUS BUTTON
+  document.querySelector(".minus-btn").addEventListener("click", () => {
+    //GETTING VALUE INPUT
+    valueCount = document.querySelector("#quantity").value;
+
+    //INPUT VALUE DECREMENT BY 1
+    valueCount--;
+
+    //SETTING DECREMENT INPUT VALUE
+    document.querySelector("#quantity").value = valueCount;
+
+    if (valueCount == 1) {
+      document.querySelector(".minus-btn").setAttribute("disabled", "disabled");
+      document.querySelector(".minus-btn").style.cursor="not-allowed";
+    }
+    if (valueCount != maxValue){
+      document.querySelector(".plus-btn").removeAttribute("disabled");
+      document.querySelector(".plus-btn").classList.remove("disabled");
+      document.querySelector(".plus-btn").style.cursor="pointer";
+    }
+  });
+  </script>
   <!-- <script src="./assets/js/cart.js"></script> -->
 </body>
 </html>
