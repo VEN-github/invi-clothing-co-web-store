@@ -450,7 +450,6 @@ class WebStore
           $productImage3,
           // $minStocks,
         ]);
-
         // move uploaded image in the image folder
         move_uploaded_file(
           $_FILES["coverPhoto"]["tmp_name"],

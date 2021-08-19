@@ -120,7 +120,7 @@ main {
   border-radius: 5px 0 0 5px;
 }
 
-.plus-btn:not(.disabled) {
+.plus-btn {
   font-size: 1.5rem;
   width: 45px;
   border: 1px solid #545454;

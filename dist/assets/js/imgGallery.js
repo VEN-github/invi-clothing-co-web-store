@@ -1,0 +1,1 @@
+function imageGallery(){const c=document.querySelector(".product-highlight img"),e=document.querySelectorAll(".product-gallery img");e.forEach(e=>{e.addEventListener("click",function(){var e=this.src;c.src=e})})}imageGallery();

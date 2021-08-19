@@ -170,7 +170,6 @@ include_once "../includes/header.php";
                 $product["productImage3"] .
                 '">';
             } ?>
-
           </div>
           <div class="product-info">
             <div class="label"></div>
@@ -326,6 +325,7 @@ include_once "../includes/header.php";
   </div>
   <script src="./assets/js/header.js"></script>
   <script src="./assets/js/user.js"></script>
+  <script src="./assets/js/imgGallery.js"></script>
   <script>
   // QUANTITY
   // SETTING DEFAULT ATTRIBUTE TO DISABLED MINUS BUTTON
