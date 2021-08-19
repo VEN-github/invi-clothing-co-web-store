@@ -1,6 +1,6 @@
 <?php
-    require_once('../class/webstoreclass.php');
-    $userdata = $store->get_userdata();
+require_once "../class/webstoreclass.php";
+$userdata = $store->get_userdata();
 ?>
 <!-- Sidebar -->
         <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">

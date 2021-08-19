@@ -209,7 +209,7 @@ include_once "../includes/header.php";
                 <span>.00</span>
               </p>
             </div>
-              <button class="wishlist" title="Wishlist">
+              <button class="wishlist" title="Add to Wishlist">
                 <span
                   class="iconify heart"
                   data-icon="ant-design:heart-outlined"
