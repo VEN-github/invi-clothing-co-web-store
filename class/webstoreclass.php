@@ -484,6 +484,20 @@ class WebStore
       }
     }
   }
+  // delete products
+  public function delete_products()
+  {
+    if (isset($_POST["cancel"])) {
+      $ID = $_POST["productID"];
+      $connection = $this->openConnection();
+      $stmt = $connection->prepare(
+        "DELETE FROM product_table WHERE ID = '$ID'"
+      );
+      $stmt->execute();
+
+      header("Location: products.php");
+    }
+  }
 
   //get product id for variation
   public function get_productID()
@@ -504,14 +518,24 @@ class WebStore
       $count = count($_POST["countRow"]);
       $productID = $_POST["productID"];
 
-      for ($i = 0; $i < $count; $i++) {
-        $sizes = $_POST["sizes"][$i];
-        $stocks = $_POST["stocks"][$i];
+      if (empty($count)) {
+        $sizes = $_POST["sizes"];
+        $stocks = $_POST["stocks"];
         $connection = $this->openConnection();
         $stmt = $connection->prepare(
           "INSERT INTO stocks_table ( `productID`, `sizes` , `stocks`) VALUES (?,?,?)"
         );
         $stmt->execute([$productID, $sizes, $stocks]);
+      } else {
+        for ($i = 0; $i < $count; $i++) {
+          $sizes = $_POST["sizes"][$i];
+          $stocks = $_POST["stocks"][$i];
+          $connection = $this->openConnection();
+          $stmt = $connection->prepare(
+            "INSERT INTO stocks_table ( `productID`, `sizes` , `stocks`) VALUES (?,?,?)"
+          );
+          $stmt->execute([$productID, $sizes, $stocks]);
+        }
       }
       header("Location: products.php");
     }

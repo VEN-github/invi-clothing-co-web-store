@@ -217,6 +217,7 @@
     .cart-btn {
       @include flex.flex(center, stretch, row);
       width: 100%;
+      box-shadow: none;
 
       .cart-icon {
         align-self: center;

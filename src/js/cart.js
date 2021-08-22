@@ -35,25 +35,56 @@
 //   priceTotal();
 // });
 
-const price = document.querySelectorAll("#price");
-const quantity = document.querySelectorAll("#quantity");
-const total = document.querySelectorAll("#total-price");
-const subtotal = document.querySelector("#subtotal");
-const inputSubtotal = document.querySelector("#input-subtotal");
-const cartSubtotal = document.querySelectorAll("#cart-subtotal");
+// const price = document.querySelectorAll("#price");
+// const quantity = document.querySelectorAll("#quantity");
+// const total = document.querySelectorAll("#total-price");
+// const subtotal = document.querySelector("#subtotal");
+// const inputSubtotal = document.querySelector("#input-subtotal");
+// const cartSubtotal = document.querySelectorAll("#cart-subtotal");
 
-function subTotal() {
-  quantity.forEach((element) => {
-    element.addEventListener("change", () => {
-      let subTotal = 0;
-      for (i = 0; i < price.length; i++) {
-        total[i].innerText = price[i].value * quantity[i].value;
-        subTotal = subTotal + price[i].value * quantity[i].value;
-        cartSubtotal[i].value = price[i].value * quantity[i].value;
-      }
-      subtotal.innerText = subTotal;
-      inputSubtotal.value = subTotal;
-    });
+// function subTotal() {
+//   quantity.forEach((element) => {
+//     element.addEventListener("change", () => {
+//       let subTotal = 0;
+//       for (i = 0; i < price.length; i++) {
+//         total[i].innerText = price[i].value * quantity[i].value;
+//         subTotal = subTotal + price[i].value * quantity[i].value;
+//         cartSubtotal[i].value = price[i].value * quantity[i].value;
+//       }
+//       subtotal.innerText = subTotal;
+//       inputSubtotal.value = subTotal;
+//     });
+//   });
+// }
+// subTotal();
+
+const cartBtn = document.querySelector("#cart-btn");
+
+if (cartBtn) {
+  cartBtn.addEventListener("click", () => {
+    console.log("click");
+    cartNumbers();
   });
 }
-subTotal();
+
+function onLoadCartNumbers() {
+  let productNumbers = localStorage.getItem("cartNumbers");
+
+  if (productNumbers) {
+    document.querySelector("#counter").textContent = productNumbers;
+  }
+}
+function cartNumbers() {
+  let productNumbers = localStorage.getItem("cartNumbers");
+
+  productNumbers = parseInt(productNumbers);
+
+  if (productNumbers) {
+    localStorage.setItem("cartNumbers", productNumbers + 1);
+    document.querySelector("#counter").textContent = productNumbers + 1;
+  } else {
+    localStorage.setItem("cartNumbers", 1);
+    document.querySelector("#counter").textContent = 1;
+  }
+}
+onLoadCartNumbers();

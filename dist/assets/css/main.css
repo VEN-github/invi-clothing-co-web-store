@@ -3419,6 +3419,8 @@ textarea:focus {
       -ms-flex-direction: row;
           flex-direction: row;
   width: 100%;
+  -webkit-box-shadow: none;
+          box-shadow: none;
 }
 #product-details .add-cart .cart-btn .cart-icon {
   -ms-flex-item-align: center;

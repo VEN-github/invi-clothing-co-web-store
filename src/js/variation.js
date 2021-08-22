@@ -1,119 +1,90 @@
-// const form = document.querySelector("#addForm");
-// const table = document
-//   .querySelector(".variation-table")
-//   .getElementsByTagName("tbody")[0];
+const addSizeBtn = document.querySelector("#addSize");
+const stockInfo = document.querySelector("#stockInfo");
+const stockInput = document.querySelector("#stocks");
+const sizeInfo = document.querySelector("#sizeInfo");
+const sizeInput = document.querySelector("#size");
+const sizeList = document.querySelector("#sizeList");
+const buttons = document.querySelector("#buttons");
+const cancelBtn = document.querySelector("#cancel");
+const form = document.querySelector("#addForm");
+const table = document
+  .querySelector(".variation-table")
+  .getElementsByTagName("tbody")[0];
 
-// // form submit event
-// form.addEventListener("submit", addVariation);
-// table.addEventListener("click", removeRow);
-
-// // add Variation
-// function addVariation(e) {
-//   e.preventDefault();
-
-//   const newRow = table.insertRow();
-//   const newSize = newRow.insertCell(0);
-//   const stock = newRow.insertCell(1);
-//   const action = newRow.insertCell(2);
-
-//   const countRow = table.getElementsByTagName("tr").length;
-
-//   // get input value
-//   const size = document.querySelector("#size").value;
-
-//   //add text node with input value
-//   const newSizeValue = document.createTextNode(size);
-
-//   //create delete button
-//   const deleteBtn = document.createElement("button");
-//   const span = document.createElement("span");
-//   const icon = document.createElement("i");
-
-//   //create input button
-//   const countRowInput = document.createElement("input");
-//   const stockInput = document.createElement("input");
-//   const breakdownInput = document.createElement("input");
-
-//   // add class to del button
-//   deleteBtn.className = "btn btn-danger delete";
-//   span.className = "icon text-white-50";
-//   icon.className = "fas fa-trash-alt";
-
-//   // add class to input button
-//   countRowInput.setAttribute("type", "hidden");
-//   countRowInput.setAttribute("name", "countRow[]");
-//   countRowInput.setAttribute("value", countRow);
-//   breakdownInput.setAttribute("type", "hidden");
-//   breakdownInput.setAttribute("name", "sizes[]");
-//   breakdownInput.setAttribute("value", size);
-//   stockInput.setAttribute("type", "number");
-//   stockInput.setAttribute("name", "stocks[]");
-//   stockInput.setAttribute("min", "0");
-//   stockInput.setAttribute("placeholder", "0");
-//   stockInput.className = "form-control";
-
-//   // append span to del
-//   deleteBtn.appendChild(span);
-//   // append icon to span
-//   span.appendChild(icon);
-
-//   //append cells to table
-//   newSize.appendChild(countRowInput);
-//   newSize.appendChild(breakdownInput);
-//   newSize.appendChild(newSizeValue);
-//   stock.appendChild(stockInput);
-//   action.appendChild(deleteBtn);
-// }
-// // function removeRow(e) {
-// //   if (e.target.classList.contains("delete")) {
-// //     console.log(e);
-// // const deleteRow = e.target.parentNode.parentNode;
-// // deleteRow.parentNode.removeRow(deleteRow);
-// //   }
-// // }
-
-const variantBtn = document.querySelector("#add-variant");
-const variantInfo = document.querySelector("#variant-info");
-const variantList = document.querySelector("#variant-list");
-const priceContainer = document.querySelector("#priceContainer");
-const stockContainer = document.querySelector("#stockContainer");
-const price = document.querySelector("#price");
-const stock = document.querySelector("#stock");
-const image = document.querySelector("#image");
-const images = document.querySelector("#images");
-const variation = document.querySelector("#variation");
-const variationName = document.querySelector("#variantName");
-const opt = document.querySelector("#option");
-const cancel = document.querySelector("#cancel");
-const optBtn = document.querySelector("#add-option");
-const inputOpt = document.querySelector("#input-option");
-const deleteBtn = document.querySelector("#delBtn");
-
-variantBtn.addEventListener("click", () => {
-  variantInfo.style.display = "block";
-  variantList.style.display = "block";
-  priceContainer.style.display = "none";
-  stockContainer.style.display = "none";
-  price.value = "";
-  stock.value = "";
-  image.value = "";
-  images.style.opacity = "0";
-  variation.style.display = "none";
+addSizeBtn.addEventListener("click", () => {
+  sizeInfo.style.display = "block";
+  sizeList.style.display = "block";
+  buttons.style.display = "block";
+  stockInfo.style.display = "none";
+  stockInput.value = "";
 });
+
 cancel.addEventListener("click", () => {
-  variantInfo.style.display = "none";
-  variantList.style.display = "none";
-  priceContainer.style.display = "block";
-  stockContainer.style.display = "block";
-  images.style.opacity = "1";
-  variation.style.display = "block";
-  variationName.value = "";
-  opt.value = "";
+  sizeInfo.style.display = "none";
+  sizeList.style.display = "none";
+  buttons.style.display = "none";
+  stockInfo.style.display = "block";
+  sizeInput.value = "";
+  table.innerHTML = "";
 });
-optBtn.addEventListener("click", () => {
-  const opt = document
-    .querySelector("#option")
-    .parentNode.parentNode.cloneNode(true);
-  let addedOpt = opt;
-  inputOpt.prepend(addedOpt);
+
+// form submit event
+form.addEventListener("submit", (e) => {
+  e.preventDefault();
+
+  const newRow = table.insertRow();
+  const newSize = newRow.insertCell(0);
+  const stock = newRow.insertCell(1);
+  const action = newRow.insertCell(2);
+  const countRow = table.getElementsByTagName("tr").length;
+
+  //get input value
+  const size = document.querySelector("#size").value;
+
+  //add text node with input value
+  // const newSizeValue = document.createTextNode(size);
+
+  //create delete button
+  const deleteBtn = document.createElement("button");
+
+  //create input button
+  const countRowInput = document.createElement("input");
+  const stockInput = document.createElement("input");
+  const breakdownInput = document.createElement("input");
+
+  // add class to del button
+  deleteBtn.setAttribute("type", "button");
+  deleteBtn.setAttribute("onclick", "removeRow(this)");
+  deleteBtn.className = "btn btn-danger delete";
+
+  // add class to input button
+  countRowInput.setAttribute("type", "hidden");
+  countRowInput.setAttribute("name", "countRow[]");
+  countRowInput.setAttribute("value", countRow);
+  breakdownInput.setAttribute("type", "text");
+  breakdownInput.setAttribute("name", "sizes[]");
+  breakdownInput.setAttribute("value", size);
+  breakdownInput.className = "form-control";
+  stockInput.setAttribute("type", "number");
+  stockInput.setAttribute("name", "stocks[]");
+  stockInput.setAttribute("min", "0");
+  stockInput.setAttribute("placeholder", "0");
+  stockInput.className = "form-control";
+
+  // append text node
+  deleteBtn.appendChild(document.createTextNode("X"));
+
+  //append cells to table
+  newSize.appendChild(countRowInput);
+  newSize.appendChild(breakdownInput);
+  // newSize.appendChild(newSizeValue);
+  stock.appendChild(stockInput);
+  action.appendChild(deleteBtn);
 });
+
+// delete row
+function removeRow(e) {
+  const td = e.parentNode;
+  const tr = td.parentNode;
+  tr.parentNode.removeChild(tr);
+}

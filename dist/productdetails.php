@@ -4,6 +4,7 @@ $user = $store->get_userdata();
 $ID = $_GET["ID"];
 $product = $store->get_singleproduct($ID);
 $stocks = $store->view_all_stocks($ID);
+
 $sizeList = "";
 if (!empty($_POST)) {
   $sizeList = isset($_POST["sizeList"]) ? $_POST["sizeList"] : "";
@@ -42,13 +43,7 @@ include_once "../includes/header.php";
             <div class="shopping-container">
               <a href="cart.php">
                 <span class="iconify cart-icon" data-icon="gg:shopping-bag" data-inline="false"></span></a>
-
-                <?php if (isset($_SESSION["cart"])) {
-                  $count = count($_SESSION["cart"]);
-                  echo "<span class=\"counter\">$count</span>";
-                } else {
-                  echo "<span class=\"counter\">0</span>";
-                } ?>             
+                <span id="counter" class="counter">0</span>        
             </div>
             
             <div class="profile-menu">
@@ -137,39 +132,29 @@ include_once "../includes/header.php";
       <div class="container">
         <div class="product-grid">
           <div class="product-highlight">
-            <?= '<img src="./assets/img/' .
-              $product["coverPhoto"] .
-              '" alt="' .
-              $product["coverPhoto"] .
-              '">' ?>
+            <img src="./assets/img/<?= $product[
+              "coverPhoto"
+            ] ?>" alt="<?= $product["coverPhoto"] ?>">
           </div>
           <div class="product-gallery">
-            <?= '<img src="./assets/img/' .
-              $product["coverPhoto"] .
-              '" alt="' .
-              $product["coverPhoto"] .
-              '">' ?>
-            <?php if (!empty($product["productImage1"])) {
-              echo '<img src="./assets/img/' .
-                $product["productImage1"] .
-                '" alt="' .
-                $product["productImage1"] .
-                '">';
-            } ?>
-            <?php if (!empty($product["productImage2"])) {
-              echo '<img src="./assets/img/' .
-                $product["productImage2"] .
-                '" alt="' .
-                $product["productImage2"] .
-                '">';
-            } ?>
-            <?php if (!empty($product["productImage3"])) {
-              echo '<img src="./assets/img/' .
-                $product["productImage3"] .
-                '" alt="' .
-                $product["productImage3"] .
-                '">';
-            } ?>
+            <img src="./assets/img/<?= $product[
+              "coverPhoto"
+            ] ?>" alt="<?= $product["coverPhoto"] ?>">
+            <?php if (!empty($product["productImage1"])) { ?>
+              <img src="./assets/img/<?= $product[
+                "productImage1"
+              ] ?>" alt="<?= $product["productImage1"] ?>">
+            <?php } ?>
+            <?php if (!empty($product["productImage2"])) { ?>
+              <img src="./assets/img/<?= $product[
+                "productImage2"
+              ] ?>" alt="<?= $product["productImage2"] ?>">
+            <?php } ?>
+            <?php if (!empty($product["productImage3"])) { ?>
+              <img src="./assets/img/<?= $product[
+                "productImage3"
+              ] ?>" alt="<?= $product["productImage3"] ?>">
+            <?php } ?>
           </div>
           <div class="product-info">
             <div class="label"></div>
@@ -249,57 +234,94 @@ include_once "../includes/header.php";
                   </div>
                 </form> -->
               </div>
-              <div class="product-size">
-                <div class="size-guide">
-                  <p>Size:</p>
-                  <button class="size-chart">
-                    <span
-                      class="iconify ruler"
-                      data-icon="bx:bx-ruler"
-                    ></span>
-                    Size Guide
-                  </button>
-                </div>
-                <form action="" method="post" name="sizeForm">
-                  <select name="sizeList" id="" class="input size" onchange="sizeForm.submit();">
-                      <option selected disabled>Select Size</option>
-                      <?php foreach ($stocks as $stock) { ?>
-                      <option value="<?= $stock["sizes"] ?>" <?php if (
-  $sizeList == $stock["sizes"]
-) { ?> selected <?php } ?> ><?= $stock["sizes"] ?></option><?php } ?>  
-                  </select>
-                </form>
-              </div>
-              <?php foreach ($stocks as $stock) { ?>  
-                <?php if ($sizeList == $stock["sizes"]) { ?>
-                  <div class="product-quantity">
-                    <p>Quantity:</p>
-                    <div class="qty">
-                      <button class="minus-btn">-</button>
-                      <input
-                        class="qty-input"
-                        type="number"
-                        name=""
-                        id="quantity"
-                        value="1"
-                        min="1"
-                        max="<?= $stock["stocks"] ?>"             
-                        />   
-                      <button class="plus-btn">+</button>
+              <?php foreach ($stocks as $stock) { ?>
+                <?php if (is_null($stock["sizes"])) { ?>
+                  <?php if ($sizeList == $stock["sizes"]) { ?>
+                    <div class="product-quantity">
+                      <p>Quantity:</p>
+                      <div class="qty">
+                        <button class="minus-btn">-</button>
+                        <input
+                          class="qty-input"
+                          type="number"
+                          name=""
+                          id="quantity"
+                          value="1"
+                          min="1"
+                          max="<?= $stock["stocks"] ?>"             
+                          />   
+                        <button class="plus-btn">+</button>
+                      </div>
                     </div>
-                  </div>
-                  <div class="add-cart">
-                    <button class="btn primary-btn cart-btn">
-                      <span
-                        class="iconify cart-icon"
-                        data-icon="gg:shopping-bag"
-                        data-inline="false"
-                      ></span>
-                      Add to Cart
-                    </button>
-                  </div>
+                    <div class="add-cart">
+                      <button type="button" id="cart-btn" class="btn primary-btn cart-btn">
+                        <span
+                          class="iconify cart-icon"
+                          data-icon="gg:shopping-bag"
+                          data-inline="false"
+                        ></span>
+                        Add to Cart
+                      </button>
+                    </div>
+                  <?php } ?>
                 <?php } ?>
               <?php } ?>
+
+              <?php if (!is_null($stock["sizes"])) { ?>
+                <div class="product-size">
+                  <div class="size-guide">
+                    <p>Size:</p>
+                    <button class="size-chart">
+                      <span
+                        class="iconify ruler"
+                        data-icon="bx:bx-ruler"
+                      ></span>
+                      Size Guide
+                    </button>
+                  </div>
+                  <form action="" method="post" name="sizeForm">
+                    <select name="sizeList" id="" class="input size" onchange="sizeForm.submit();">
+                        <option selected disabled>Select Size</option>
+                        <?php foreach ($stocks as $stock) { ?>
+                        <option value="<?= $stock["sizes"] ?>" <?php if (
+  $sizeList == $stock["sizes"]
+) { ?> selected="selected" <?php } ?> ><?= $stock[
+   "sizes"
+ ] ?></option><?php } ?>  
+                    </select>
+                  </form>
+                </div>
+                <?php foreach ($stocks as $stock) { ?>  
+                  <?php if ($sizeList == $stock["sizes"]) { ?>
+                    <div class="product-quantity">
+                      <p>Quantity:</p>
+                      <div class="qty">
+                        <button class="minus-btn">-</button>
+                        <input
+                          class="qty-input"
+                          type="number"
+                          name=""
+                          id="quantity"
+                          value="1"
+                          min="1"
+                          max="<?= $stock["stocks"] ?>"             
+                          />   
+                        <button class="plus-btn">+</button>
+                      </div>
+                    </div>
+                    <div class="add-cart">
+                      <button type="button" id="cart-btn" class="btn primary-btn cart-btn">
+                        <span
+                          class="iconify cart-icon"
+                          data-icon="gg:shopping-bag"
+                          data-inline="false"
+                        ></span>
+                        Add to Cart
+                      </button>
+                    </div>
+                  <?php } ?>
+                <?php } ?>
+              <?php } ?>  
               <div class="socials">
                 <p>Share:</p>
                 <span
@@ -326,64 +348,79 @@ include_once "../includes/header.php";
   <script src="./assets/js/header.js"></script>
   <script src="./assets/js/user.js"></script>
   <script src="./assets/js/imgGallery.js"></script>
+  <script src="./assets/js/cart.js"></script>
   <script>
   // QUANTITY
   // SETTING DEFAULT ATTRIBUTE TO DISABLED MINUS BUTTON
-  document.querySelector(".minus-btn").setAttribute("disabled", "disabled");
-  document.querySelector(".minus-btn").style.cursor="not-allowed";
+  const minusBtn = document.querySelector(".minus-btn");
+  const plusBtn = document.querySelector(".plus-btn");
+
+  // MINUS BTN
+  if(minusBtn){
+    minusBtn.setAttribute("disabled", "disabled");
+    minusBtn.style.cursor="not-allowed";
+
+    minusBtn.addEventListener('click', ()=>{
+      //GETTING VALUE INPUT
+      valueCount = document.querySelector("#quantity").value;
+
+      //INPUT VALUE DECREMENT BY 1
+      valueCount--;
+
+      //SETTING DECREMENT INPUT VALUE
+      document.querySelector("#quantity").value = valueCount;
+
+      if (valueCount == 1) {
+        minusBtn.setAttribute("disabled", "disabled");
+        minusBtn.style.cursor="not-allowed";
+      }
+      if (valueCount != maxValue){
+        plusBtn.removeAttribute("disabled");
+        plusBtn.classList.remove("disabled");
+        plusBtn.style.cursor="pointer";
+      }
+    });
+  }
 
   // TAKING VALUE TO INCREMENT DECREMENT INPUT VALUE
-  let valueCount;
+  let valueCount = 1;
 
   // SETTING MAX VALUE
   let maxValue = "<?php foreach ($stocks as $stock) { ?> <?php if (
    $sizeList == $stock["sizes"]
  ) { ?> <?= $stock["stocks"] ?> <?php } ?> <?php } ?>"
 
+  if (valueCount == maxValue) {
+      plusBtn.setAttribute("disabled", "disabled");
+      plusBtn.style.cursor="not-allowed";
+  }
+
   // PLUS BUTTON
-  document.querySelector(".plus-btn").addEventListener("click", () => {
-    //GETTING VALUE INPUT
-    valueCount = document.querySelector("#quantity").value;
+  if(plusBtn){
+    plusBtn.addEventListener("click", () => {
+      //GETTING VALUE INPUT
+      valueCount = document.querySelector("#quantity").value;
 
-    //INPUT VALUE INCREMENT BY 1
-    valueCount++;
+      //INPUT VALUE INCREMENT BY 1
+      valueCount++;
 
-    //SETTING INCREMENT INPUT VALUE
-    document.querySelector("#quantity").value = valueCount;
-    //SETTING INCREMENT MAX VALUE
-    document.querySelector("#quantity").max = maxValue;
+      //SETTING INCREMENT INPUT VALUE
+      document.querySelector("#quantity").value = valueCount;
+      //SETTING INCREMENT MAX VALUE
+      document.querySelector("#quantity").max = maxValue;
 
-    if (valueCount > 1) {
-      document.querySelector(".minus-btn").removeAttribute("disabled");
-      document.querySelector(".minus-btn").classList.remove("disabled");
-      document.querySelector(".minus-btn").style.cursor="pointer";
-    }
-    if (valueCount == maxValue) {
-      document.querySelector(".plus-btn").setAttribute("disabled", "disabled");
-      document.querySelector(".plus-btn").style.cursor="not-allowed";
-    }
-  });
-  // MINUS BUTTON
-  document.querySelector(".minus-btn").addEventListener("click", () => {
-    //GETTING VALUE INPUT
-    valueCount = document.querySelector("#quantity").value;
+      if (valueCount > 1) {
+        minusBtn.removeAttribute("disabled");
+        minusBtn.classList.remove("disabled");
+        minusBtn.style.cursor="pointer";
+      }
 
-    //INPUT VALUE DECREMENT BY 1
-    valueCount--;
-
-    //SETTING DECREMENT INPUT VALUE
-    document.querySelector("#quantity").value = valueCount;
-
-    if (valueCount == 1) {
-      document.querySelector(".minus-btn").setAttribute("disabled", "disabled");
-      document.querySelector(".minus-btn").style.cursor="not-allowed";
-    }
-    if (valueCount != maxValue){
-      document.querySelector(".plus-btn").removeAttribute("disabled");
-      document.querySelector(".plus-btn").classList.remove("disabled");
-      document.querySelector(".plus-btn").style.cursor="pointer";
-    }
-  });
+      if (valueCount == maxValue) {
+        plusBtn.setAttribute("disabled", "disabled");
+        plusBtn.style.cursor="not-allowed";
+      }
+    });
+  }
   </script>
   <!-- <script src="./assets/js/cart.js"></script> -->
 </body>
