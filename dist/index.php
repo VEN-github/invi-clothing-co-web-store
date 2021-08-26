@@ -1,8 +1,7 @@
 <?php
 require_once "../class/webstoreclass.php";
-$store->add_cart();
 $user = $store->get_userdata();
-$randomProducts = $store->get__random_products();
+$randomProducts = $store->get_random_products();
 $title = "Home";
 include_once "../includes/header.php";
 ?>
@@ -37,13 +36,7 @@ include_once "../includes/header.php";
             <div class="shopping-container">
               <a href="cart.php">
                 <span class="iconify cart-icon" data-icon="gg:shopping-bag" data-inline="false"></span></a>
-
-                <?php if (isset($_SESSION["cart"])) {
-                  $count = count($_SESSION["cart"]);
-                  echo "<span class=\"counter\">$count</span>";
-                } else {
-                  echo "<span class=\"counter\">0</span>";
-                } ?>             
+                <span id="counter" class="counter">0</span>               
             </div>
             
             <div class="profile-menu">
@@ -271,6 +264,6 @@ include_once "../includes/header.php";
   </div>
   <script src="./assets/js/header.js"></script>
   <script src="./assets/js/user.js"></script>
-  <!-- <script src="./assets/js/cart.js"></script> -->
+  <script src="./assets/js/cart.js"></script>
 </body>
 </html>

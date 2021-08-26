@@ -4,15 +4,6 @@ $userProfile = $store->setProfile();
 $user = $store->get_userdata();
 $title = "Information - Checkout";
 include_once "../includes/header.php";
-
-if (isset($_POST["checkout"])) {
-  if (isset($_SESSION["userdata"])) {
-    $ID = $user["ID"];
-    header("Location: checkoutInfo.php?ID=$ID");
-  } else {
-    header("Location: login.php");
-  }
-}
 ?>
   <body>
     <div class="page-container">

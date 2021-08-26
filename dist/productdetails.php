@@ -157,6 +157,7 @@ include_once "../includes/header.php";
             <?php } ?>
           </div>
           <div class="product-info">
+            <input type="hidden" id="productID" value="<?= $product["ID"] ?>">
             <div class="label"></div>
             <div class="product-name"><?= $product["productName"] ?></div>
             <div class="reviews">
@@ -184,16 +185,18 @@ include_once "../includes/header.php";
                 <span class="rating-number">56 Reviews</span>
               </div> -->
               <div class="product-price">
-              <p class="price">
-                <span
-                  class="iconify peso-sign"
-                  data-icon="clarity:peso-line"
-                  data-inline="false"
-                ></span>
-                <?= $product["productPrice"] ?>
-                <span>.00</span>
-              </p>
-            </div>
+                <p class="price">
+                  <span
+                    class="iconify peso-sign"
+                    data-icon="clarity:peso-line"
+                    data-inline="false"
+                  ></span>
+                  <span id="productPrice" ><?= $product[
+                    "productPrice"
+                  ] ?></span>
+                  <span>.00</span>
+                </p>
+              </div>
               <button class="wishlist" title="Add to Wishlist">
                 <span
                   class="iconify heart"
@@ -211,7 +214,9 @@ include_once "../includes/header.php";
           </div>
           <div class="product-actions">
             <div class="product-color">
-              <p>Color: <span><?= $product["productColor"] ?></span></p>
+              <p>Color: <span id="productColor"><?= $product[
+                "productColor"
+              ] ?></span></p>
                 <!-- <form action="" method="post">
                   <div class="color-group">
                     <label class="color-field">
@@ -280,7 +285,7 @@ include_once "../includes/header.php";
                     </button>
                   </div>
                   <form action="" method="post" name="sizeForm">
-                    <select name="sizeList" id="" class="input size" onchange="sizeForm.submit();">
+                    <select name="sizeList" id="sizeOpt" class="input size" onchange="sizeForm.submit();">
                         <option selected disabled>Select Size</option>
                         <?php foreach ($stocks as $stock) { ?>
                         <option value="<?= $stock["sizes"] ?>" <?php if (

@@ -3,7 +3,6 @@
 require_once "../class/webstoreclass.php";
 $store->loginValidation();
 $store->login();
-$store->add_cart();
 
 $title = "Login";
 require_once "../includes/header.php";
@@ -48,12 +47,7 @@ require_once "../includes/header.php";
                     data-inline="false"
                   ></span
                 ></a>
-                <?php if (isset($_SESSION["cart"])) {
-                  $count = count($_SESSION["cart"]);
-                  echo "<span class=\"counter\">$count</span>";
-                } else {
-                  echo "<span class=\"counter\">0</span>";
-                } ?>  
+                <span id="counter" class="counter">0</span>     
               </div>
             </div>
             <a
@@ -162,5 +156,6 @@ require_once "../includes/header.php";
       <?php require_once "../includes/footer.php"; ?>
     </div>
     <script src="./assets/js/header.js"></script>
+    <script src="./assets/js/cart.js"></script>
   </body>
 </html>

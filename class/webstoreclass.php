@@ -568,7 +568,7 @@ class WebStore
   }
 
   // display random products
-  public function get__random_products()
+  public function get_random_products()
   {
     $connection = $this->openConnection();
     $stmt = $connection->prepare(
@@ -591,7 +591,7 @@ class WebStore
     $connection = $this->openConnection();
     // $stmt = $connection->prepare("SELECT * FROM product_table WHERE ID = ?");
     $stmt = $connection->prepare(
-      "SELECT productName, productDescription, categoryName, productPrice, productColor, coverPhoto, productImage1, productImage2, productImage3 FROM (SELECT * FROM product_table WHERE product_table.ID = ?) product LEFT JOIN category_table category ON product.categoryID = category.categoryName"
+      "SELECT product.ID, productName, productDescription, categoryName, productPrice, productColor, coverPhoto, productImage1, productImage2, productImage3 FROM (SELECT * FROM product_table WHERE product_table.ID = ?) product LEFT JOIN category_table category ON product.categoryID = category.categoryName"
     );
     $stmt->execute([$ID]);
     $product = $stmt->fetch();
@@ -622,117 +622,18 @@ class WebStore
     }
   }
 
-  // add to cart
-  public function add_cart()
+  public function checkout()
   {
-    if (isset($_POST["addCart"])) {
-      $productID = $_POST["productID"];
-      $productImage = $_POST["productImage"];
-      $productName = $_POST["productName"];
-      $productColor = $_POST["productColor"];
-      $productPrice = $_POST["productPrice"];
-      $quantity = $_POST["quantity"];
-      $subtotal = $_POST["productPrice"] * $_POST["quantity"];
-
-      $connection = $this->openConnection();
-      $stmt = $connection->prepare(
-        "INSERT INTO cart_table (`productID`, `itemImage`, `itemName`, `itemColor`, `itemPrice`, `itemQty`, `subtotal`) VALUES (?,?,?,?,?,?,?)"
-      );
-      $stmt->execute([
-        $productID,
-        $productImage,
-        $productName,
-        $productColor,
-        $productPrice,
-        $quantity,
-        $subtotal,
-      ]);
-
-      if (isset($_SESSION["cart"])) {
-        $itemID = array_column($_SESSION["cart"], "productID");
-
-        if (in_array($_POST["productID"], $itemID)) {
-          echo "<script>alert('Product Already in the Cart')</script>";
-          echo "<script>window.location='index.php'</script>";
-        } else {
-          $count = count($_SESSION["cart"]);
-          $item = ["productID" => $_POST["productID"]];
-
-          $_SESSION["cart"][$count] = $item;
-          // print_r($_SESSION['cart']);
-        }
+    if (isset($_POST["checkout"])) {
+      if (isset($_SESSION["userdata"])) {
+        $ID = $_SESSION["userdata"]["ID"];
+        header("Location: checkoutInfo.php?ID=$ID");
       } else {
-        $item = ["productID" => $_POST["productID"]];
-
-        $_SESSION["cart"][0] = $item;
-        // print_r($_SESSION['cart']);
+        header("Location: login.php");
       }
     }
   }
-  // cart page
-  public function cartElement(
-    $productImage,
-    $productName,
-    $productColor,
-    $productPrice,
-    $stock,
-    $productID,
-    $quantity,
-    $subtotal
-  ) {
-    $element = "<form action = \"cart.php?action=remove&ID=$productID\" method=\"post\" id=\"cartForm\"></form>
-            <form action = \"checkoutInfo.php\" method=\"post\" name=\"checkoutForm\" id=\"checkoutForm\"></form>
-            <div class=\"cart-items\">
-                <input type=\"hidden\" name=\"productID\" value=\"$productID\" form=\"checkoutForm\">
-                <img src=\"./assets/img/$productImage\" alt=\"$productImage\" />
-                <input type=\"hidden\" name=\"productImage\" value=\"$productImage\" form=\"checkoutForm\">
-                <div class=\"item-label\">
-                    <p class=\"item-name\">$productName <input type=\"hidden\" name=\"productName\" value=\"$productName\" form=\"checkoutForm\"></p>
-                    <p>Color: $productColor <input type=\"hidden\" name=\"productColor\" value=\"$productColor\" form=\"checkoutForm\"></p>
-                    <!-- <p>Size: Medium</p> -->
-                </div>
-                <div class=\"item-price\">
-                    <span
-                        class=\"iconify peso-sign\"
-                        data-icon=\"clarity:peso-line\"
-                        data-inline=\"false\"
-                    ></span>
-                    <p>$productPrice.00<input type=\"hidden\" name=\"productPrice\" id=\"price\" value=\"$productPrice\" form=\"checkoutForm\"></p>
-                </div>
-                <div class=\"item-quantity\">
-                    <!-- <button type=\"button\" class=\"minus-btn\">-</button> -->
-                    <input
-                        class=\"cart-qty-input\"
-                        type=\"number\"
-                        name=\"quantity\"
-                        id=\"quantity\"          
-                        value=\"$quantity\"
-                        min=\"1\"
-                        max=\"$stock\"
-                        form=\"checkoutForm\"
-                    />
-                    <!-- <button type=\"button\" class=\"plus-btn\">+</button> -->
-                </div>
-                <div class=\"item-total\">
-                    <span
-                        class=\"iconify peso-sign\"
-                        data-icon=\"clarity:peso-line\"
-                        data-inline=\"false\"
-                    ></span>
-                    <p id=\"total-price\">$subtotal</p>
-                    <p>.00</p>
-                    <input type=\"hidden\" name=\"subtotal\" id=\"cart-subtotal\" value=\"$subtotal\" form=\"checkoutForm\">
-                </div>
-                <button type = \"submit\" name = \"remove\" form=\"cartForm\">
-                    <span
-                        class=\"iconify del-icon\"
-                        data-icon=\"carbon:trash-can\"
-                        data-inline=\"false\"
-                    ></span>
-                </button>
-            </div>";
-    echo $element;
-  }
+
   // checkout page
   public function checkoutElement(
     $productImage,

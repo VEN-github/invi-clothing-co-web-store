@@ -1247,19 +1247,6 @@ button {
   margin: 0;
 }
 
-.cart-qty-input {
-  width: 150px;
-  padding: 1em 0;
-  font-size: 0.875rem;
-  font-weight: 400;
-  text-align: center;
-  color: #2c3037;
-  background: none;
-  outline: none;
-  border: 1px solid #545454;
-  border-radius: 5px;
-}
-
 textarea {
   padding: 1em;
   font-family: "Montserrat", sans-serif;
@@ -1836,7 +1823,7 @@ textarea:focus {
   -webkit-box-direction: normal;
       -ms-flex-direction: row;
           flex-direction: row;
-  width: 930px;
+  width: 900px;
   max-width: 100%;
   margin-top: 2.5em;
   padding-bottom: 0.5em;
@@ -1846,13 +1833,13 @@ textarea:focus {
   border-bottom: 1px solid #c4c4c4;
 }
 #cart .cart-header .label-item {
-  margin-right: 20em;
+  width: 49%;
 }
 #cart .cart-header .label-price {
-  margin-right: 5.5em;
+  width: 15%;
 }
 #cart .cart-header .label-quantity {
-  margin-right: 6em;
+  width: 21%;
 }
 #cart .cart-items {
   display: -webkit-box;
@@ -1868,13 +1855,13 @@ textarea:focus {
   -webkit-box-direction: normal;
       -ms-flex-direction: row;
           flex-direction: row;
-  width: 930px;
+  width: 900px;
   max-width: 100%;
   padding: 1em 0;
   border-bottom: 1px solid #c4c4c4;
 }
 #cart .cart-items img {
-  width: 160px;
+  width: 130px;
   -o-object-fit: cover;
      object-fit: cover;
   margin-right: 1.2em;
@@ -1883,7 +1870,7 @@ textarea:focus {
   border-radius: 5px;
 }
 #cart .cart-items .item-label {
-  width: 22%;
+  width: 30%;
 }
 #cart .cart-items .item-label p {
   font-size: 0.875rem;

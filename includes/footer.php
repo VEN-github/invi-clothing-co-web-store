@@ -33,7 +33,7 @@
         <h4>SUBSCRIBE</h4>
         <div class="subscribe-input">
           <form action="">
-            <input type="email" name="" id="" placeholder="Email Address" class="input input-for-footer" />
+            <input type="email" placeholder="Email Address" class="input input-for-footer" />
             <button type="submit" class="button-input">
               <span class="iconify send-btn" data-icon="carbon:send-alt-filled" data-inline="false"></span>
             </button>

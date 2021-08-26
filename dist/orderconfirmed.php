@@ -40,7 +40,7 @@ include_once "../includes/header.php";
                     data-inline="false"
                   ></span
                 ></a>
-                <span class="counter">0</span>
+                <span id="counter" class="counter">0</span>   
               </div>
               <div class="profile-menu">
                 <div class="hover">
@@ -170,5 +170,6 @@ include_once "../includes/header.php";
     </div>
     <script src="./assets/js/header.js"></script>
     <script src="./assets/js/user.js"></script>
+    <script src="./assets/js/cart.js"></script>
   </body>
 </html>

@@ -37,7 +37,7 @@
   }
   .cart-header {
     @include flex.flex(flex-start, center, row);
-    width: 930px;
+    width: 900px;
     max-width: 100%;
     margin-top: 2.5em;
     padding-bottom: 0.5em;
@@ -47,23 +47,25 @@
     border-bottom: 1px solid colors.$disabled-color;
 
     .label-item {
-      margin-right: 20em;
+      width: 49%;
     }
     .label-price {
-      margin-right: 5.5em;
+      width: 15%;
     }
     .label-quantity {
-      margin-right: 6em;
+      width: 21%;
+
+      // margin-right: 6em;
     }
   }
   .cart-items {
     @include flex.flex(flex-start, center, row);
-    width: 930px;
+    width: 900px;
     max-width: 100%;
     padding: 1em 0;
     border-bottom: 1px solid colors.$disabled-color;
     & img {
-      width: 160px;
+      width: 130px;
       object-fit: cover;
       margin-right: 1.2em;
       padding: 0.8em;
@@ -71,7 +73,7 @@
       border-radius: 5px;
     }
     .item-label {
-      width: 22%;
+      width: 30%;
       & p {
         font-size: 0.875rem;
         font-weight: map-get(fonts.$font-weight, regular);
