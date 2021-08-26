@@ -68,8 +68,8 @@ function displayCart() {
 
   let cartPage = document.querySelector("#cart");
   if (
-    (cartItems === null && cartPage) ||
-    localStorage.getItem("cartNumbers") == 0
+    cartItems === null ||
+    (localStorage.getItem("cartNumbers") == 0 && cartPage)
   ) {
     cartPage.innerHTML = "";
     cartPage.innerHTML += `
