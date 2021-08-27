@@ -46,10 +46,12 @@ function setProducts(product) {
   if (productSize) {
     sizeValue = productSize.value;
   }
-  let cartItems = localStorage.getItem("productsInCart");
-  cartItems = JSON.parse(cartItems);
 
-  cartItems.push({
+  if (localStorage.getItem("productsInCart")) {
+    product = JSON.parse(localStorage.getItem("productsInCart"));
+  }
+
+  product.push({
     itemID: itemID,
     productID: productID,
     productImage: productImg,
@@ -59,7 +61,7 @@ function setProducts(product) {
     productPrice: productPrice,
     Quantity: qty,
   });
-  localStorage.setItem("productsInCart", JSON.stringify(cartItems));
+  localStorage.setItem("productsInCart", JSON.stringify(product));
 }
 
 function displayCart() {
@@ -67,22 +69,21 @@ function displayCart() {
   cartItems = JSON.parse(cartItems);
 
   let cartPage = document.querySelector("#cart");
-  if (
-    cartItems === null ||
-    (localStorage.getItem("cartNumbers") == 0 && cartPage)
-  ) {
-    cartPage.innerHTML = "";
-    cartPage.innerHTML += `
-    <div class="container">
-      <div class="empty-cart">
-        <img src="./assets/img/empty-cart.svg" alt="Empty Cart" />
-        <div class="empty-cart-details">
-          <h3>Your Cart is Currently Empty</h3>
-          <p>Looks like you haven't added anything to cart yet</p>
+  if (cartItems === null || localStorage.getItem("cartNumbers") == 0) {
+    if (cartPage) {
+      cartPage.innerHTML = "";
+      cartPage.innerHTML += `
+      <div class="container">
+        <div class="empty-cart">
+          <img src="./assets/img/empty-cart.svg" alt="Empty Cart" />
+          <div class="empty-cart-details">
+            <h3>Your Cart is Currently Empty</h3>
+            <p>Looks like you haven't added anything to cart yet</p>
+          </div>
+          <button><a href="shop.php" class="btn primary-btn">Shop Now</a></button>
         </div>
-        <button><a href="shop.php" class="btn primary-btn">Shop Now</a></button>
-      </div>
-    </div>`;
+      </div>`;
+    }
   } else if (cartPage) {
     cartPage.innerHTML = "";
     cartPage.innerHTML += `

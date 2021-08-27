@@ -879,7 +879,7 @@ button {
       -ms-flex-direction: column;
           flex-direction: column;
   padding: 3em 0 8em 0;
-  overflow: auto;
+  overflow: hidden;
 }
 .features h1 {
   font-size: 4rem;

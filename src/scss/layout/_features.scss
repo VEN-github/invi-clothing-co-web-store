@@ -6,7 +6,7 @@
 .features {
   @include flex.flex(space-around, center, column);
   padding: 3em 0 8em 0;
-  overflow: auto;
+  overflow: hidden;
   & h1 {
     font-size: 4rem;
     font-weight: map-get(fonts.$font-weight, semi-bold);

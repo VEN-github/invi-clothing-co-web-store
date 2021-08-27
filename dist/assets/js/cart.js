@@ -1,14 +1,14 @@
-const cartBtn=document.querySelector("#cart-btn");let products=[];function onLoadCartNumbers(){var t=localStorage.getItem("cartNumbers");t&&(document.querySelector("#counter").textContent=t)}function cartNumbers(t){var e=localStorage.getItem("cartNumbers");(e=parseInt(e))?(localStorage.setItem("cartNumbers",e+1),document.querySelector("#counter").textContent=e+1):(localStorage.setItem("cartNumbers",1),document.querySelector("#counter").textContent=1),setProducts(t)}function setProducts(t){var e=document.querySelector("#productID").value,n=document.querySelector(".product-highlight img").src,a=document.querySelector(".product-name").textContent,i=document.querySelector("#productPrice").textContent,i=parseInt(i),o=document.querySelector("#productColor").textContent,r=document.querySelector("#sizeOpt"),s=document.querySelector("#quantity").value,s=parseInt(s);let c;var l=document.querySelector("#counter").textContent,l=parseInt(l);r&&(c=r.value);let u=localStorage.getItem("productsInCart");u=JSON.parse(u),u.push({itemID:l,productID:e,productImage:n,productName:a,productColor:o,productSize:c,productPrice:i,Quantity:s}),localStorage.setItem("productsInCart",JSON.stringify(u))}function displayCart(){var t=localStorage.getItem("productsInCart"),t=JSON.parse(t);let e=document.querySelector("#cart");null===t||0==localStorage.getItem("cartNumbers")&&e?(e.innerHTML="",e.innerHTML+=`
-    <div class="container">
-      <div class="empty-cart">
-        <img src="./assets/img/empty-cart.svg" alt="Empty Cart" />
-        <div class="empty-cart-details">
-          <h3>Your Cart is Currently Empty</h3>
-          <p>Looks like you haven't added anything to cart yet</p>
+const cartBtn=document.querySelector("#cart-btn");let products=[];function onLoadCartNumbers(){var t=localStorage.getItem("cartNumbers");t&&(document.querySelector("#counter").textContent=t)}function cartNumbers(t){var e=localStorage.getItem("cartNumbers");(e=parseInt(e))?(localStorage.setItem("cartNumbers",e+1),document.querySelector("#counter").textContent=e+1):(localStorage.setItem("cartNumbers",1),document.querySelector("#counter").textContent=1),setProducts(t)}function setProducts(t){var e=document.querySelector("#productID").value,n=document.querySelector(".product-highlight img").src,a=document.querySelector(".product-name").textContent,i=document.querySelector("#productPrice").textContent,i=parseInt(i),o=document.querySelector("#productColor").textContent,r=document.querySelector("#sizeOpt"),s=document.querySelector("#quantity").value,s=parseInt(s);let c;var l=document.querySelector("#counter").textContent,l=parseInt(l);r&&(c=r.value),(t=localStorage.getItem("productsInCart")?JSON.parse(localStorage.getItem("productsInCart")):t).push({itemID:l,productID:e,productImage:n,productName:a,productColor:o,productSize:c,productPrice:i,Quantity:s}),localStorage.setItem("productsInCart",JSON.stringify(t))}function displayCart(){var t=localStorage.getItem("productsInCart"),t=JSON.parse(t);let e=document.querySelector("#cart");null===t||0==localStorage.getItem("cartNumbers")?e&&(e.innerHTML="",e.innerHTML+=`
+      <div class="container">
+        <div class="empty-cart">
+          <img src="./assets/img/empty-cart.svg" alt="Empty Cart" />
+          <div class="empty-cart-details">
+            <h3>Your Cart is Currently Empty</h3>
+            <p>Looks like you haven't added anything to cart yet</p>
+          </div>
+          <button><a href="shop.php" class="btn primary-btn">Shop Now</a></button>
         </div>
-        <button><a href="shop.php" class="btn primary-btn">Shop Now</a></button>
-      </div>
-    </div>`):e&&(e.innerHTML="",e.innerHTML+=`
+      </div>`):e&&(e.innerHTML="",e.innerHTML+=`
     <div class="banner">Your Cart</div>
       <div class="container">
         <div class="cart-wrapper">
