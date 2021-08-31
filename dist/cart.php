@@ -1,7 +1,7 @@
 <?php
 require_once "../class/webstoreclass.php";
 $user = $store->get_userdata();
-$store->checkout();
+// $store->checkout();
 $title = "Cart";
 require_once "../includes/header.php";
 ?>
@@ -145,5 +145,6 @@ require_once "../includes/header.php";
     <script src="./assets/js/header.js"></script>
     <script src="./assets/js/user.js"></script>
     <script src="./assets/js/cart.js"></script>
+    <script src="./assets/js/checkout.js"></script>
   </body>
 </html>

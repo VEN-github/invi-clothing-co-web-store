@@ -1,4 +1,4 @@
-const cartBtn=document.querySelector("#cart-btn");let products=[];function onLoadCartNumbers(){var t=localStorage.getItem("cartNumbers");t&&(document.querySelector("#counter").textContent=t)}function cartNumbers(t){var e=localStorage.getItem("cartNumbers");(e=parseInt(e))?(localStorage.setItem("cartNumbers",e+1),document.querySelector("#counter").textContent=e+1):(localStorage.setItem("cartNumbers",1),document.querySelector("#counter").textContent=1),setProducts(t)}function setProducts(t){var e=document.querySelector("#productID").value,n=document.querySelector(".product-highlight img").src,a=document.querySelector(".product-name").textContent,i=document.querySelector("#productPrice").textContent,i=parseInt(i),o=document.querySelector("#productColor").textContent,r=document.querySelector("#sizeOpt"),s=document.querySelector("#quantity").value,s=parseInt(s);let c;var l=document.querySelector("#counter").textContent,l=parseInt(l);r&&(c=r.value),(t=localStorage.getItem("productsInCart")?JSON.parse(localStorage.getItem("productsInCart")):t).push({itemID:l,productID:e,productImage:n,productName:a,productColor:o,productSize:c,productPrice:i,Quantity:s}),localStorage.setItem("productsInCart",JSON.stringify(t))}function displayCart(){var t=localStorage.getItem("productsInCart"),t=JSON.parse(t);let e=document.querySelector("#cart");null===t||0==localStorage.getItem("cartNumbers")?e&&(e.innerHTML="",e.innerHTML+=`
+let itemCode,productID,productImg,productName,productColor,sizeValue,productPrice,qty=0,maxVal;document.querySelector("#productID")&&(productID=document.querySelector("#productID").value),document.querySelector(".product-highlight img")&&(productImg=document.querySelector(".product-highlight img").src),document.querySelector(".product-name")&&(productName=document.querySelector(".product-name").textContent),document.querySelector("#productColor")&&(productColor=document.querySelector("#productColor").textContent),document.querySelector("#sizeOpt")&&(sizeValue=document.querySelector("#sizeOpt").value),document.querySelector("#productPrice")&&(productPrice=document.querySelector("#productPrice").textContent,productPrice=parseInt(productPrice.replace(/,/g,""))),document.querySelector("#quantity")&&(maxVal=document.querySelector("#quantity").max,maxVal=parseInt(maxVal)),itemCode=null!=sizeValue?productName+" "+sizeValue:productName;let products={itemCode:itemCode,productID:productID,productImage:productImg,productName:productName,productColor:productColor,productSize:sizeValue,productPrice:productPrice,Quantity:qty,maxValue:maxVal};const cartBtn=document.querySelector("#cart-btn");function setProducts(t){let e=localStorage.getItem("productsInCart");e=JSON.parse(e);var n=document.querySelector("#quantity").value,n=parseInt(n);null!=e?(null==e[t.itemCode]&&(e={...e,[t.itemCode]:t}),e[t.itemCode].Quantity+=n):(t.Quantity=n,e={[t.itemCode]:t}),e[t.itemCode].Quantity<=e[t.itemCode].maxValue&&(localStorage.setItem("productsInCart",JSON.stringify(e)),cartNumbers())}function onLoadCartNumbers(){var t=localStorage.getItem("cartNumbers");t&&(document.querySelector("#counter").textContent=t)}function cartNumbers(){var t=localStorage.getItem("cartNumbers"),t=parseInt(t),e=document.querySelector("#quantity").value,e=parseInt(e);t?(localStorage.setItem("cartNumbers",t+e),document.querySelector("#counter").textContent=t+e):(localStorage.setItem("cartNumbers",e),document.querySelector("#counter").textContent=e)}function displayCart(){var t=localStorage.getItem("productsInCart"),t=JSON.parse(t);let e=document.querySelector("#cart");null===t||0==localStorage.getItem("cartNumbers")?e&&(e.innerHTML="",e.innerHTML+=`
       <div class="container">
         <div class="empty-cart">
           <img src="./assets/img/empty-cart.svg" alt="Empty Cart" />
@@ -20,11 +20,11 @@ const cartBtn=document.querySelector("#cart-btn");let products=[];function onLoa
               <p>Total</p>
             </div>`,Object.values(t).map(t=>{void 0===t.productSize?document.querySelector(".cart-container").innerHTML+=`
         <div class="cart-items">
-          <input type="hidden" value="${t.itemID}">
+          <input type="hidden" class="item-code" value="${t.itemCode}">
           <img src="${t.productImage}" alt="${t.productImage}" />
           <div class="item-label">
             <p class="item-name">${t.productName}</p>
-            <p>Color: ${t.productColor}</p>
+            <p>Color: <span class="item-color">${t.productColor}</span></p>
           </div>
           <div class="item-price">
             <span
@@ -42,6 +42,7 @@ const cartBtn=document.querySelector("#cart-btn");let products=[];function onLoa
               name=""
               value="${t.Quantity}"
               min="1"
+              max="${t.maxValue}"
             />
             <button type="button" class="plus-btn" onclick="plus(this)">+</button>
           </div>
@@ -51,7 +52,7 @@ const cartBtn=document.querySelector("#cart-btn");let products=[];function onLoa
               data-icon="clarity:peso-line"
               data-inline="false"
             ></span>
-            <p class="total-price">${t.productPrice*t.Quantity}.00</p>
+            <p class="total-price">${t.productPrice*t.Quantity}</p>
           </div>
           <button type="button" onclick="removeItem(this)">
             <span
@@ -62,12 +63,12 @@ const cartBtn=document.querySelector("#cart-btn");let products=[];function onLoa
           </button>
         </div>`:document.querySelector(".cart-container").innerHTML+=`
         <div class="cart-items">
-          <input type="hidden" value="${t.itemID}">
+          <input type="hidden" class="item-code" value="${t.itemCode}">
           <img src="${t.productImage}" alt="${t.productImage}" />
           <div class="item-label">
             <p class="item-name">${t.productName}</p>
-            <p>Color: ${t.productColor}</p>
-            <p class="item-size">Size: ${t.productSize}</p>
+            <p>Color: <span class="item-color">${t.productColor}</span></p>
+            <p>Size:<span class="item-size">${t.productSize}</span></p>
           </div>
           <div class="item-price">
             <span
@@ -75,7 +76,7 @@ const cartBtn=document.querySelector("#cart-btn");let products=[];function onLoa
               data-icon="clarity:peso-line"
               data-inline="false"
             ></span>
-            <p>${t.productPrice}.00</p>
+            <p>${t.productPrice}</p>
           </div>
           <div class="item-quantity">
             <button type="button" class="minus-btn" onclick="minus(this)">-</button>
@@ -85,6 +86,7 @@ const cartBtn=document.querySelector("#cart-btn");let products=[];function onLoa
               name=""
               value="${t.Quantity}"
               min="1"
+              max="${t.maxValue}"
             />
             <button type="button" class="plus-btn" onclick="plus(this)">+</button>
           </div>
@@ -94,7 +96,7 @@ const cartBtn=document.querySelector("#cart-btn");let products=[];function onLoa
               data-icon="clarity:peso-line"
               data-inline="false"
             ></span>
-            <p class="total-price">${t.productPrice*t.Quantity}.00</p>
+            <p class="total-price">${t.productPrice*t.Quantity}</p>
           </div>
           <button type="button" onclick="removeItem(this)">
             <span
@@ -131,7 +133,7 @@ const cartBtn=document.querySelector("#cart-btn");let products=[];function onLoa
           </div>
           <div class="checkout">
             <form method="post">
-              <button type="submit"
+              <button type="button"
                 class="btn primary-btn checkout-btn"
                 name="checkout"
                 id="checkout"
@@ -146,4 +148,4 @@ const cartBtn=document.querySelector("#cart-btn");let products=[];function onLoa
           </div>
         </div>
       </div>
-    </div>`),minusBtnProperty(),subTotal()}function minusBtnProperty(){const t=document.querySelectorAll(".minus-btn");t.forEach(t=>{t.nextElementSibling.classList.contains("quantity")&&1==t.nextElementSibling.value&&(t.setAttribute("disabled","disabled"),t.style.cursor="not-allowed")})}function minus(n){if(n.nextElementSibling.classList.contains("quantity")){var a=n.nextElementSibling.value;1==(n.nextElementSibling.value=--a)&&(n.setAttribute("disabled","disabled"),n.style.cursor="not-allowed");let t=n.parentNode.previousElementSibling.childNodes[3].textContent;const i=n.parentNode.nextElementSibling.childNodes[3];a=i.textContent,a=parseInt(a);t=parseInt(t),t=a-t,i.innerText=t.toFixed(2);a=n.parentNode.previousElementSibling.childNodes[3].textContent,a=parseInt(a);let e=document.querySelector("#subtotal-price");n=parseInt(e.textContent);e.innerText=n-a}}function plus(n){if(n.previousElementSibling.classList.contains("quantity")){var a=n.previousElementSibling.value;1<(n.previousElementSibling.value=++a)&&(n.previousElementSibling.previousElementSibling.removeAttribute("disabled"),n.previousElementSibling.previousElementSibling.classList.remove("disabled"),n.previousElementSibling.previousElementSibling.style.cursor="pointer");let t=n.parentNode.previousElementSibling.childNodes[3].textContent;const i=n.parentNode.nextElementSibling.childNodes[3];a=i.textContent,a=parseInt(a);t=parseInt(t),t=a+t,i.innerText=t.toFixed(2);a=n.parentNode.previousElementSibling.childNodes[3].textContent,a=parseInt(a);let e=document.querySelector("#subtotal-price");n=parseInt(e.textContent);e.innerText=n+a}}function subTotal(){const t=document.querySelector("#subtotal-price"),e=document.querySelectorAll(".total-price");let n=0;e.forEach(t=>{totalPrice=parseInt(t.textContent),n+=totalPrice}),t&&(t.innerText+=n)}function removeItem(t){var e=localStorage.getItem("cartNumbers"),e=parseInt(e);let n=localStorage.getItem("productsInCart");n=JSON.parse(n);let a=t.parentNode.childNodes[1].value;t=n.filter(t=>t.itemID!=a);localStorage.setItem("productsInCart",JSON.stringify(t)),e&&(localStorage.setItem("cartNumbers",e-1),document.querySelector("#counter").textContent=e-1),displayCart()}cartBtn&&cartBtn.addEventListener("click",()=>{cartNumbers(products)}),displayCart(),onLoadCartNumbers();
+    </div>`),numberWithCommas(),minusBtnProperty(),plusBtnProperty(),subTotal()}function numberWithCommas(){const t=document.querySelectorAll(".item-price p"),e=document.querySelectorAll(".total-price");document.querySelector("#subtotal-price");t.forEach(t=>{let e=t.textContent;e=parseInt(e);var n=e.toLocaleString(void 0,{minimumFractionDigits:2,maximumFractionDigits:2});t.innerText=n}),e.forEach(t=>{let e=t.textContent;e=parseInt(e);var n=e.toLocaleString(void 0,{minimumFractionDigits:2,maximumFractionDigits:2});t.innerText=n})}function minusBtnProperty(){const t=document.querySelectorAll(".minus-btn");t.forEach(t=>{t.nextElementSibling.classList.contains("quantity")&&1==t.nextElementSibling.value&&(t.setAttribute("disabled","disabled"),t.style.cursor="not-allowed")})}function plusBtnProperty(){const t=document.querySelectorAll(".plus-btn");t.forEach(t=>{t.previousElementSibling.classList.contains("quantity")&&t.previousElementSibling.value==t.previousElementSibling.max&&(t.setAttribute("disabled","disabled"),t.style.cursor="not-allowed")})}function minus(a){if(a.nextElementSibling.classList.contains("quantity")){var r=a.nextElementSibling.value,l=a.nextElementSibling.max;1==(a.nextElementSibling.value=--r)&&(a.setAttribute("disabled","disabled"),a.style.cursor="not-allowed"),r!=l&&(a.nextElementSibling.nextElementSibling.removeAttribute("disabled"),a.nextElementSibling.nextElementSibling.classList.remove("disabled"),a.nextElementSibling.nextElementSibling.style.cursor="pointer");let t=a.parentNode.previousElementSibling.childNodes[3].textContent;const c=a.parentNode.nextElementSibling.childNodes[3];let e=c.textContent;e=parseInt(e.replace(/,/g,"")),t=parseInt(t.replace(/,/g,"")),t=e-t,c.innerText=t.toLocaleString(void 0,{minimumFractionDigits:2,maximumFractionDigits:2});let n=a.parentNode.previousElementSibling.childNodes[3].textContent;n=parseInt(n.replace(/,/g,""));let i=document.querySelector("#subtotal-price");a=parseInt(i.textContent.replace(/,/g,""));let o=0;o=a-n,i.innerText=o.toLocaleString()}}function plus(a){if(a.previousElementSibling.classList.contains("quantity")){var r=a.previousElementSibling.value,l=a.previousElementSibling.max;1<(a.previousElementSibling.value=++r)&&(a.previousElementSibling.previousElementSibling.removeAttribute("disabled"),a.previousElementSibling.previousElementSibling.classList.remove("disabled"),a.previousElementSibling.previousElementSibling.style.cursor="pointer"),r==l&&(a.setAttribute("disabled","disabled"),a.style.cursor="not-allowed");let t=a.parentNode.previousElementSibling.childNodes[3].textContent;const c=a.parentNode.nextElementSibling.childNodes[3];let e=c.textContent;e=parseInt(e.replace(/,/g,"")),t=parseInt(t.replace(/,/g,"")),t=e+t,c.innerText=t.toLocaleString(void 0,{minimumFractionDigits:2,maximumFractionDigits:2});let n=a.parentNode.previousElementSibling.childNodes[3].textContent;n=parseInt(n.replace(/,/g,""));let i=document.querySelector("#subtotal-price");a=parseInt(i.textContent.replace(/,/g,""));let o=0;o=a+n,i.innerText=o.toLocaleString()}}function subTotal(){const t=document.querySelector("#subtotal-price"),e=document.querySelectorAll(".total-price");let n=0;e.forEach(t=>{totalPrice=parseInt(t.textContent.replace(/,/g,"")),n+=totalPrice}),t&&(t.innerText+=n.toLocaleString())}function removeItem(t){var e=localStorage.getItem("cartNumbers"),e=parseInt(e),n=localStorage.getItem("productsInCart"),n=JSON.parse(n);let i=t.parentNode.childNodes[1].value;t=t.previousElementSibling.previousElementSibling.childNodes[3].value;n=Object.values(n).filter(t=>t.itemCode!==i),e&&(localStorage.setItem("cartNumbers",e-t),document.querySelector("#counter").textContent=e-t),localStorage.setItem("productsInCart",JSON.stringify(n)),displayCart()}cartBtn&&cartBtn.addEventListener("click",()=>{setProducts(products)}),displayCart(),onLoadCartNumbers();

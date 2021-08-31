@@ -191,9 +191,9 @@ include_once "../includes/header.php";
                     data-icon="clarity:peso-line"
                     data-inline="false"
                   ></span>
-                  <span id="productPrice" ><?= $product[
-                    "productPrice"
-                  ] ?></span>
+                  <span id="productPrice" ><?= number_format(
+                    $product["productPrice"]
+                  ) ?></span>
                   <span>.00</span>
                 </p>
               </div>

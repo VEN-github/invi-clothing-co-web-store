@@ -1,13 +1,87 @@
+let itemCode;
+let productID;
+let productImg;
+let productName;
+let productColor;
+let sizeValue;
+let productPrice;
+let qty = 0;
+let maxVal;
+
+if (document.querySelector("#productID")) {
+  productID = document.querySelector("#productID").value;
+}
+if (document.querySelector(".product-highlight img")) {
+  productImg = document.querySelector(".product-highlight img").src;
+}
+if (document.querySelector(".product-name")) {
+  productName = document.querySelector(".product-name").textContent;
+}
+if (document.querySelector("#productColor")) {
+  productColor = document.querySelector("#productColor").textContent;
+}
+if (document.querySelector("#sizeOpt")) {
+  sizeValue = document.querySelector("#sizeOpt").value;
+}
+if (document.querySelector("#productPrice")) {
+  productPrice = document.querySelector("#productPrice").textContent;
+  productPrice = parseInt(productPrice.replace(/,/g, ""));
+}
+if (document.querySelector("#quantity")) {
+  maxVal = document.querySelector("#quantity").max;
+  maxVal = parseInt(maxVal);
+}
+if (sizeValue != undefined) {
+  itemCode = productName + " " + sizeValue;
+} else {
+  itemCode = productName;
+}
+let products = {
+  itemCode: itemCode,
+  productID: productID,
+  productImage: productImg,
+  productName: productName,
+  productColor: productColor,
+  productSize: sizeValue,
+  productPrice: productPrice,
+  Quantity: qty,
+  maxValue: maxVal,
+};
+
 const cartBtn = document.querySelector("#cart-btn");
-
-let products = [];
-
 if (cartBtn) {
   cartBtn.addEventListener("click", () => {
-    cartNumbers(products);
+    setProducts(products);
   });
 }
+function setProducts(product) {
+  let cartItems = localStorage.getItem("productsInCart");
+  cartItems = JSON.parse(cartItems);
 
+  let qty = document.querySelector("#quantity").value;
+  qty = parseInt(qty);
+
+  if (cartItems != null) {
+    if (cartItems[product.itemCode] == undefined) {
+      cartItems = {
+        ...cartItems,
+        [product.itemCode]: product,
+      };
+    }
+    cartItems[product.itemCode].Quantity += qty;
+  } else {
+    product.Quantity = qty;
+    cartItems = {
+      [product.itemCode]: product,
+    };
+  }
+  if (
+    cartItems[product.itemCode].Quantity <= cartItems[product.itemCode].maxValue
+  ) {
+    localStorage.setItem("productsInCart", JSON.stringify(cartItems));
+    cartNumbers();
+  }
+}
 function onLoadCartNumbers() {
   let productNumbers = localStorage.getItem("cartNumbers");
 
@@ -15,53 +89,19 @@ function onLoadCartNumbers() {
     document.querySelector("#counter").textContent = productNumbers;
   }
 }
-function cartNumbers(product) {
+function cartNumbers() {
   let productNumbers = localStorage.getItem("cartNumbers");
-
   productNumbers = parseInt(productNumbers);
 
-  if (productNumbers) {
-    localStorage.setItem("cartNumbers", productNumbers + 1);
-    document.querySelector("#counter").textContent = productNumbers + 1;
-  } else {
-    localStorage.setItem("cartNumbers", 1);
-    document.querySelector("#counter").textContent = 1;
-  }
-  setProducts(product);
-}
-
-function setProducts(product) {
-  const productID = document.querySelector("#productID").value;
-  const productImg = document.querySelector(".product-highlight img").src;
-  const productName = document.querySelector(".product-name").textContent;
-  let productPrice = document.querySelector("#productPrice").textContent;
-  productPrice = parseInt(productPrice);
-  const productColor = document.querySelector("#productColor").textContent;
-  const productSize = document.querySelector("#sizeOpt");
   let qty = document.querySelector("#quantity").value;
   qty = parseInt(qty);
-  let sizeValue;
-  let itemID = document.querySelector("#counter").textContent;
-  itemID = parseInt(itemID);
-  if (productSize) {
-    sizeValue = productSize.value;
+  if (productNumbers) {
+    localStorage.setItem("cartNumbers", productNumbers + qty);
+    document.querySelector("#counter").textContent = productNumbers + qty;
+  } else {
+    localStorage.setItem("cartNumbers", qty);
+    document.querySelector("#counter").textContent = qty;
   }
-
-  if (localStorage.getItem("productsInCart")) {
-    product = JSON.parse(localStorage.getItem("productsInCart"));
-  }
-
-  product.push({
-    itemID: itemID,
-    productID: productID,
-    productImage: productImg,
-    productName: productName,
-    productColor: productColor,
-    productSize: sizeValue,
-    productPrice: productPrice,
-    Quantity: qty,
-  });
-  localStorage.setItem("productsInCart", JSON.stringify(product));
 }
 
 function displayCart() {
@@ -101,11 +141,11 @@ function displayCart() {
       if (item.productSize === undefined) {
         document.querySelector(".cart-container").innerHTML += `
         <div class="cart-items">
-          <input type="hidden" value="${item.itemID}">
+          <input type="hidden" class="item-code" value="${item.itemCode}">
           <img src="${item.productImage}" alt="${item.productImage}" />
           <div class="item-label">
             <p class="item-name">${item.productName}</p>
-            <p>Color: ${item.productColor}</p>
+            <p>Color: <span class="item-color">${item.productColor}</span></p>
           </div>
           <div class="item-price">
             <span
@@ -113,7 +153,7 @@ function displayCart() {
               data-icon="clarity:peso-line"
               data-inline="false"
             ></span>
-            <p>${item.productPrice}.00</p>
+            <p>${item.productPrice}</p>
           </div>
           <div class="item-quantity">
             <button type="button" class="minus-btn" onclick="minus(this)">-</button>
@@ -123,6 +163,7 @@ function displayCart() {
               name=""
               value="${item.Quantity}"
               min="1"
+              max="${item.maxValue}"
             />
             <button type="button" class="plus-btn" onclick="plus(this)">+</button>
           </div>
@@ -132,7 +173,7 @@ function displayCart() {
               data-icon="clarity:peso-line"
               data-inline="false"
             ></span>
-            <p class="total-price">${item.productPrice * item.Quantity}.00</p>
+            <p class="total-price">${item.productPrice * item.Quantity}</p>
           </div>
           <button type="button" onclick="removeItem(this)">
             <span
@@ -145,12 +186,12 @@ function displayCart() {
       } else {
         document.querySelector(".cart-container").innerHTML += `
         <div class="cart-items">
-          <input type="hidden" value="${item.itemID}">
+          <input type="hidden" class="item-code" value="${item.itemCode}">
           <img src="${item.productImage}" alt="${item.productImage}" />
           <div class="item-label">
             <p class="item-name">${item.productName}</p>
-            <p>Color: ${item.productColor}</p>
-            <p class="item-size">Size: ${item.productSize}</p>
+            <p>Color: <span class="item-color">${item.productColor}</span></p>
+            <p>Size:<span class="item-size">${item.productSize}</span></p>
           </div>
           <div class="item-price">
             <span
@@ -158,7 +199,7 @@ function displayCart() {
               data-icon="clarity:peso-line"
               data-inline="false"
             ></span>
-            <p>${item.productPrice}.00</p>
+            <p>${item.productPrice}</p>
           </div>
           <div class="item-quantity">
             <button type="button" class="minus-btn" onclick="minus(this)">-</button>
@@ -168,6 +209,7 @@ function displayCart() {
               name=""
               value="${item.Quantity}"
               min="1"
+              max="${item.maxValue}"
             />
             <button type="button" class="plus-btn" onclick="plus(this)">+</button>
           </div>
@@ -177,7 +219,7 @@ function displayCart() {
               data-icon="clarity:peso-line"
               data-inline="false"
             ></span>
-            <p class="total-price">${item.productPrice * item.Quantity}.00</p>
+            <p class="total-price">${item.productPrice * item.Quantity}</p>
           </div>
           <button type="button" onclick="removeItem(this)">
             <span
@@ -218,7 +260,7 @@ function displayCart() {
           </div>
           <div class="checkout">
             <form method="post">
-              <button type="submit"
+              <button type="button"
                 class="btn primary-btn checkout-btn"
                 name="checkout"
                 id="checkout"
@@ -235,10 +277,34 @@ function displayCart() {
       </div>
     </div>`;
   }
+  numberWithCommas();
   minusBtnProperty();
+  plusBtnProperty();
   subTotal();
 }
+function numberWithCommas() {
+  const price = document.querySelectorAll(".item-price p");
+  const totalPrice = document.querySelectorAll(".total-price");
 
+  price.forEach((p) => {
+    let originalPrice = p.textContent;
+    originalPrice = parseInt(originalPrice);
+    let price = originalPrice.toLocaleString(undefined, {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    });
+    p.innerText = price;
+  });
+  totalPrice.forEach((tP) => {
+    let total = tP.textContent;
+    total = parseInt(total);
+    let totalPrice = total.toLocaleString(undefined, {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    });
+    tP.innerText = totalPrice;
+  });
+}
 function minusBtnProperty() {
   const minusBtn = document.querySelectorAll(".minus-btn");
 
@@ -253,44 +319,66 @@ function minusBtnProperty() {
     }
   });
 }
+function plusBtnProperty() {
+  const plusBtn = document.querySelectorAll(".plus-btn");
+
+  plusBtn.forEach((e) => {
+    if (e.previousElementSibling.classList.contains("quantity")) {
+      let valueCount = e.previousElementSibling.value;
+      let maxValue = e.previousElementSibling.max;
+
+      if (valueCount == maxValue) {
+        e.setAttribute("disabled", "disabled");
+        e.style.cursor = "not-allowed";
+      }
+    }
+  });
+}
 
 function minus(e) {
   if (e.nextElementSibling.classList.contains("quantity")) {
     let valueCount = e.nextElementSibling.value;
+    let maxValue = e.nextElementSibling.max;
 
     valueCount--;
-
     e.nextElementSibling.value = valueCount;
 
     if (valueCount == 1) {
       e.setAttribute("disabled", "disabled");
       e.style.cursor = "not-allowed";
     }
+    if (valueCount != maxValue) {
+      e.nextElementSibling.nextElementSibling.removeAttribute("disabled");
+      e.nextElementSibling.nextElementSibling.classList.remove("disabled");
+      e.nextElementSibling.nextElementSibling.style.cursor = "pointer";
+    }
     let price = e.parentNode.previousElementSibling.childNodes[3].textContent;
     const totalPrice = e.parentNode.nextElementSibling.childNodes[3];
     let total = totalPrice.textContent;
-    total = parseInt(total);
-    price = parseInt(price);
+    total = parseInt(total.replace(/,/g, ""));
+    price = parseInt(price.replace(/,/g, ""));
 
     price = total - price;
-    totalPrice.innerText = price.toFixed(2);
+    totalPrice.innerText = price.toLocaleString(undefined, {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    });
 
     let originalPrice =
       e.parentNode.previousElementSibling.childNodes[3].textContent;
-    originalPrice = parseInt(originalPrice);
+    originalPrice = parseInt(originalPrice.replace(/,/g, ""));
     let subtotal = document.querySelector("#subtotal-price");
-    let subTotal = parseInt(subtotal.textContent);
+    let subTotal = parseInt(subtotal.textContent.replace(/,/g, ""));
 
     let addedPrice = 0;
     addedPrice = subTotal - originalPrice;
-
-    subtotal.innerText = addedPrice;
+    subtotal.innerText = addedPrice.toLocaleString();
   }
 }
 function plus(e) {
   if (e.previousElementSibling.classList.contains("quantity")) {
     let valueCount = e.previousElementSibling.value;
-
+    let maxValue = e.previousElementSibling.max;
     valueCount++;
 
     e.previousElementSibling.value = valueCount;
@@ -304,26 +392,32 @@ function plus(e) {
       );
       e.previousElementSibling.previousElementSibling.style.cursor = "pointer";
     }
+    if (valueCount == maxValue) {
+      e.setAttribute("disabled", "disabled");
+      e.style.cursor = "not-allowed";
+    }
 
     let price = e.parentNode.previousElementSibling.childNodes[3].textContent;
     const totalPrice = e.parentNode.nextElementSibling.childNodes[3];
     let total = totalPrice.textContent;
-    total = parseInt(total);
-    price = parseInt(price);
-
+    total = parseInt(total.replace(/,/g, ""));
+    price = parseInt(price.replace(/,/g, ""));
     price = total + price;
-    totalPrice.innerText = price.toFixed(2);
+    totalPrice.innerText = price.toLocaleString(undefined, {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    });
 
     let originalPrice =
       e.parentNode.previousElementSibling.childNodes[3].textContent;
-    originalPrice = parseInt(originalPrice);
-    let subtotal = document.querySelector("#subtotal-price");
-    let subTotal = parseInt(subtotal.textContent);
 
+    originalPrice = parseInt(originalPrice.replace(/,/g, ""));
+    let subtotal = document.querySelector("#subtotal-price");
+    let subTotal = parseInt(subtotal.textContent.replace(/,/g, ""));
     let addedPrice = 0;
     addedPrice = subTotal + originalPrice;
 
-    subtotal.innerText = addedPrice;
+    subtotal.innerText = addedPrice.toLocaleString();
   }
 }
 
@@ -331,31 +425,34 @@ function subTotal() {
   const subtotal = document.querySelector("#subtotal-price");
   const total = document.querySelectorAll(".total-price");
   let subTotal = 0;
-
   total.forEach((t) => {
-    totalPrice = parseInt(t.textContent);
+    totalPrice = parseInt(t.textContent.replace(/,/g, ""));
     subTotal += totalPrice;
   });
   if (subtotal) {
-    subtotal.innerText += subTotal;
+    subtotal.innerText += subTotal.toLocaleString();
   }
 }
 
-function removeItem(e) {
+function removeItem(btn) {
   let productNumbers = localStorage.getItem("cartNumbers");
   productNumbers = parseInt(productNumbers);
 
   let cartItems = localStorage.getItem("productsInCart");
   cartItems = JSON.parse(cartItems);
 
-  let itemID = e.parentNode.childNodes[1].value;
-  let products = cartItems.filter((product) => product.itemID != itemID);
-  localStorage.setItem("productsInCart", JSON.stringify(products));
+  let itemCode = btn.parentNode.childNodes[1].value;
+  let qty =
+    btn.previousElementSibling.previousElementSibling.childNodes[3].value;
+  cartItems = Object.values(cartItems).filter(
+    (product) => product.itemCode !== itemCode
+  );
 
   if (productNumbers) {
-    localStorage.setItem("cartNumbers", productNumbers - 1);
-    document.querySelector("#counter").textContent = productNumbers - 1;
+    localStorage.setItem("cartNumbers", productNumbers - qty);
+    document.querySelector("#counter").textContent = productNumbers - qty;
   }
+  localStorage.setItem("productsInCart", JSON.stringify(cartItems));
   displayCart();
 }
 

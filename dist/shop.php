@@ -194,7 +194,7 @@ include_once "../includes/header.php";
                       data-icon="clarity:peso-line"
                       data-inline="false"
                     ></span>
-                    <?= $product["productPrice"] ?>
+                    <?= number_format($product["productPrice"]) ?>
                     <span>.00</span>
                   </p>
                 </div>
