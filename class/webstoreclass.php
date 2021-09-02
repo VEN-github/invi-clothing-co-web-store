@@ -633,37 +633,6 @@ class WebStore
       }
     }
   }
-
-  // checkout page
-  public function checkoutElement(
-    $productImage,
-    $productName,
-    $productColor,
-    $productPrice,
-    $productID,
-    $quantity,
-    $subtotal,
-    $cartID
-  ) {
-    $element = "<div class=\"order-items\">
-            <img src=\"./assets/img/$productImage\" alt=\"$productImage\" />
-            <div class=\"item-label\">
-                <p class=\"item-name\">$productName</p>
-                <p>Color: $productColor</p>
-                <!-- <p>Size: Medium</p> -->
-                <p class=\"price-container\">
-                    <span
-                        class=\"iconify peso-sign\"
-                        data-icon=\"clarity:peso-line\"
-                        data-inline=\"false\"
-                    ></span>
-                    <span class=\"price\">$productPrice.00</span>
-                    <span class=\"qty\">x $quantity</span>
-                </p>
-            </div>
-        </div>";
-    echo $element;
-  }
 }
 $store = new WebStore();
 ?>

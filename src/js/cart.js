@@ -141,6 +141,7 @@ function displayCart() {
       if (item.productSize === undefined) {
         document.querySelector(".cart-container").innerHTML += `
         <div class="cart-items">
+          <input type="hidden" class="item-ID" value="${item.productID}">
           <input type="hidden" class="item-code" value="${item.itemCode}">
           <img src="${item.productImage}" alt="${item.productImage}" />
           <div class="item-label">
@@ -182,16 +183,21 @@ function displayCart() {
               data-inline="false"
             ></span>
           </button>
+          <input
+            type="hidden"
+            value="${item.Quantity}"
+          />
         </div>`;
       } else {
         document.querySelector(".cart-container").innerHTML += `
         <div class="cart-items">
+          <input type="hidden" class="item-ID" value="${item.productID}">
           <input type="hidden" class="item-code" value="${item.itemCode}">
           <img src="${item.productImage}" alt="${item.productImage}" />
           <div class="item-label">
             <p class="item-name">${item.productName}</p>
             <p>Color: <span class="item-color">${item.productColor}</span></p>
-            <p>Size:<span class="item-size">${item.productSize}</span></p>
+            <p>Size: <span class="item-size">${item.productSize}</span></p>
           </div>
           <div class="item-price">
             <span
@@ -228,6 +234,10 @@ function displayCart() {
               data-inline="false"
             ></span>
           </button>
+          <input
+            type="hidden"
+            value="${item.Quantity}"
+          />
         </div>`;
       }
     });
@@ -352,6 +362,7 @@ function minus(e) {
       e.nextElementSibling.nextElementSibling.classList.remove("disabled");
       e.nextElementSibling.nextElementSibling.style.cursor = "pointer";
     }
+
     let price = e.parentNode.previousElementSibling.childNodes[3].textContent;
     const totalPrice = e.parentNode.nextElementSibling.childNodes[3];
     let total = totalPrice.textContent;
@@ -441,9 +452,8 @@ function removeItem(btn) {
   let cartItems = localStorage.getItem("productsInCart");
   cartItems = JSON.parse(cartItems);
 
-  let itemCode = btn.parentNode.childNodes[1].value;
-  let qty =
-    btn.previousElementSibling.previousElementSibling.childNodes[3].value;
+  let itemCode = btn.parentNode.childNodes[3].value;
+  let qty = btn.nextElementSibling.value;
   cartItems = Object.values(cartItems).filter(
     (product) => product.itemCode !== itemCode
   );
