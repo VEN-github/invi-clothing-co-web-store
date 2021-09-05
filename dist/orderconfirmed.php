@@ -144,7 +144,7 @@ include_once "../includes/header.php";
                 </p>
               </div>
               <div class="button-container">
-                <a class="btn secondary-btn left-btn" href="#">
+                <a class="btn secondary-btn left-btn" href="shop.php">
                   <span
                     class="iconify left-arrow"
                     data-icon="dashicons:arrow-left-alt"

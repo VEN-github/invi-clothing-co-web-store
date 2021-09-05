@@ -145,82 +145,14 @@ include_once "../includes/header.php";
                   </div>
                 </form>
               </div>
-              <?php
-              if (!isset($_SESSION)) {
-                session_start();
-              }
-              $subtotal = 0;
-              if (isset($_SESSION["cart"])) {
-                echo "<div class=\"order-summary\">
-                      <h4>Order Summary</h4>";
-
-                $productID = array_column($_SESSION["cart"], "productID");
-
-                $connection = $store->openConnection();
-                $stmt = $connection->prepare("SELECT * FROM cart_table");
-                $stmt->execute();
-
-                while ($result = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                  foreach ($productID as $ID) {
-                    if ($result["productID"] == $ID) {
-                      $store->checkoutElement(
-                        $result["itemImage"],
-                        $result["itemName"],
-                        $result["itemColor"],
-                        $result["itemPrice"],
-                        $result["productID"],
-                        $result["itemQty"],
-                        $result["subtotal"],
-                        $result["ID"]
-                      );
-                      $subtotal = $subtotal + $result["subtotal"];
-                    }
-                  }
-                }
-              }
-              echo "<div class=\"subtotal-container\">
-                <div class=\"subtotal\">
-                  <p>Subtotal:</p>
-                  <p class=\"price\">
-                    <span
-                      class=\"iconify peso-sign\"
-                      data-icon=\"clarity:peso-line\"
-                      data-inline=\"false\"
-                    ></span>
-                    <span>$subtotal.00</span>
-                  </p>
-                </div>
-                <div class=\"shipping\">
-                  <p>Shipping:</p>
-                  <p class=\"price\">
-                    <span
-                      class=\"iconify peso-sign\"
-                      data-icon=\"clarity:peso-line\"
-                      data-inline=\"false\"
-                    ></span>
-                    <span id=\"shipping-fee\">0</span>
-                    <span>.00</span>
-                  </p>
-                </div>
+              <div class="order-summary">
               </div>
-              <div class=\"total-container\">
-                Total:
-                <div class=\"total\">
-                  <span
-                    class=\"iconify peso-sign\"
-                    data-icon=\"clarity:peso-line\"
-                    data-inline=\"false\"
-                  ></span>
-                  <span>$subtotal.00</span>
-                </div>
-              </div>
-            </div>";
-              ?>
             </div>
           </div>
         </section>
       </main>
     </div>
+    <script src="./assets/js/checkout.js"></script>
     <script src="./assets/js/ship.js"></script>
   </body>
 </html>

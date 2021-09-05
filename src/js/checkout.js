@@ -1,70 +1,94 @@
-const checkout = document.querySelector("#checkout");
-if (checkout) {
-  checkout.addEventListener("click", () => {
-    const cartItems = document.querySelectorAll(".cart-items");
-    for (let i = 0; i < cartItems.length; i++) {
-      console.log(cartItems);
-      let itemID = document.querySelectorAll(".item-ID")[i].value;
-      let itemCode = document.querySelectorAll(".item-code")[i].value;
-      let itemImg = document.querySelectorAll(".cart-items img")[i].src;
-      let itemName = document.querySelectorAll(".item-name")[i].textContent;
-      let itemColor = document.querySelectorAll(".item-color")[i].textContent;
-      let itemPrice = document.querySelectorAll(".item-price p")[i].textContent;
-      let itemSize = document.querySelectorAll(".item-size")[i].textContent;
-      let itemQty = document.querySelectorAll(".quantity")[i].value;
-      let products = {
-        itemCode: itemCode,
-        productID: itemID,
-        productImage: itemImg,
-        productName: itemName,
-        productColor: itemColor,
-        productSize: itemSize,
-        productPrice: itemPrice,
-        Quantity: itemQty,
-      };
-      console.log(products);
-      setProducts(products, itemQty);
-    }
-    totalCost();
-  });
-}
-function setProducts(product, qty) {
-  let checkoutItems = localStorage.getItem("checkoutContainer");
-  checkoutItems = JSON.parse(checkoutItems);
+function displayCheckoutItems() {
+  let cartItems = localStorage.getItem("productsInCart");
+  cartItems = JSON.parse(cartItems);
+  let totalCost = localStorage.getItem("totalCost");
 
-  if (checkoutItems != null) {
-    if (checkoutItems[product.itemCode] == undefined) {
-      checkoutItems = {
-        ...checkoutItems,
-        [product.itemCode]: product,
-      };
-    }
-    checkoutItems[product.itemCode].Quantity = qty;
-  } else {
-    product.Quantity = qty;
-    checkoutItems = {
-      [product.itemCode]: product,
-    };
+  let orderItems = document.querySelector(".order-summary");
+
+  if (cartItems && orderItems) {
+    orderItems.innerHTML += `<h4>Order Summary</h4>`;
+    Object.values(cartItems).map((item) => {
+      if (item.productSize === undefined) {
+        orderItems.innerHTML += `
+        <div class="order-items">
+          <img src="${item.productImage}" alt="${item.productImage}" />
+          <div class="item-label">
+            <p class="item-name">${item.productName}</p>
+            <p>Color: ${item.productColor}</p>
+            <p class="price-container">
+              <span
+                class="iconify peso-sign"
+                data-icon="clarity:peso-line"
+                data-inline="false"
+              ></span>
+              <span class="price">${item.productPrice}.00</span>
+              <span class="qty">x ${item.NewQuantity}</span>
+            </p>
+          </div>
+        </div>`;
+      } else {
+        orderItems.innerHTML += `
+        <div class="order-items">
+          <img src="${item.productImage}" alt="${item.productImage}" />
+          <div class="item-label">
+            <p class="item-name">${item.productName}</p>
+            <p>Color: ${item.productColor}</p>
+            <p>Size: ${item.productSize}</p>
+            <p class="price-container">
+              <span
+                class="iconify peso-sign"
+                data-icon="clarity:peso-line"
+                data-inline="false"
+              ></span>
+              <span class="price">${item.productPrice}.00</span>
+              <span class="qty">x ${item.NewQuantity}</span>
+            </p>
+          </div>
+        </div>`;
+      }
+    });
+    orderItems.innerHTML += `
+    <div class="discount-field">
+      <form action="">
+        <input
+          type="text"
+          name=""
+          id=""
+          placeholder="Discount Code"
+          class="input input-discount"
+        />
+        <button type="submit" class="apply-btn">Apply</button>
+      </form>
+    </div>`;
+    orderItems.innerHTML += `       
+      <div class="subtotal-container">
+        <div class="subtotal">
+          <p>Subtotal:</p>
+          <p class="price">
+            <span
+              class="iconify peso-sign"
+              data-icon="clarity:peso-line"
+              data-inline="false"
+            ></span>
+            <span>${totalCost}.00</span>
+          </p>
+        </div>
+        <div class="shipping">
+          <p>Shipping:</p>
+          <p>Calculated at next step</p>
+        </div>
+      </div>
+      <div class="total-container">
+        Total:
+        <div class="total">
+          <span
+            class="iconify peso-sign"
+            data-icon="clarity:peso-line"
+            data-inline="false"
+          ></span>
+          <span>${totalCost}.00</span>
+        </div>
+      </div>`;
   }
-  localStorage.setItem("checkoutContainer", JSON.stringify(checkoutItems));
 }
-
-function totalCost() {
-  const subtotal = document.querySelector("#subtotal-price").textContent;
-
-  localStorage.setItem("totalCost", subtotal);
-}
-
-// function displayCheckoutItems() {
-//   let checkoutItems = localStorage.getItem("checkoutContainer");
-//   checkoutItems = JSON.parse(checkoutItems);
-
-//   let orderItems = document.querySelector(".order-items");
-
-//   if(checkoutItems && orderItems){
-//     Object.values(checkoutItems).map((item)=>{
-//       if(item.productSize)
-//     })
-//   }
-
-// }
+displayCheckoutItems();

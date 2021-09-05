@@ -95,7 +95,7 @@ main {
 
 .apply-btn {
   position: absolute;
-  top: 9.5px;
+  top: 16%;
   right: 2px;
   padding: 0.75em 1.5em;
   font-size: 1rem;
@@ -2408,16 +2408,16 @@ textarea:focus {
   border-bottom: 1px solid #c4c4c4;
 }
 #checkout-process .order-summary .order-items img {
-  width: 120px;
-  -o-object-fit: cover;
-     object-fit: cover;
+  width: 100px;
+  -o-object-fit: contain;
+     object-fit: contain;
   margin-right: 0.8em;
   padding: 0.4em;
   background: #e5e5e5;
   border-radius: 5px;
 }
 #checkout-process .order-summary .order-items .item-name {
-  font-size: 1.25rem;
+  font-size: 1rem;
   font-weight: 600;
   color: #2c3037;
 }

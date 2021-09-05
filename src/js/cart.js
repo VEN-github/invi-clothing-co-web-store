@@ -45,6 +45,7 @@ let products = {
   productSize: sizeValue,
   productPrice: productPrice,
   Quantity: qty,
+  NewQuantity: qty,
   maxValue: maxVal,
 };
 
@@ -69,8 +70,10 @@ function setProducts(product) {
       };
     }
     cartItems[product.itemCode].Quantity += qty;
+    cartItems[product.itemCode].NewQuantity += qty;
   } else {
     product.Quantity = qty;
+    product.NewQuantity = qty;
     cartItems = {
       [product.itemCode]: product,
     };
@@ -162,7 +165,7 @@ function displayCart() {
               class="qty-input quantity"
               type="number"
               name=""
-              value="${item.Quantity}"
+              value="${item.NewQuantity}"
               min="1"
               max="${item.maxValue}"
             />
@@ -174,7 +177,7 @@ function displayCart() {
               data-icon="clarity:peso-line"
               data-inline="false"
             ></span>
-            <p class="total-price">${item.productPrice * item.Quantity}</p>
+            <p class="total-price">${item.productPrice * item.NewQuantity}</p>
           </div>
           <button type="button" onclick="removeItem(this)">
             <span
@@ -185,6 +188,7 @@ function displayCart() {
           </button>
           <input
             type="hidden"
+            class="qty"
             value="${item.Quantity}"
           />
         </div>`;
@@ -213,7 +217,7 @@ function displayCart() {
               class="qty-input quantity"
               type="number"
               name=""
-              value="${item.Quantity}"
+              value="${item.NewQuantity}"
               min="1"
               max="${item.maxValue}"
             />
@@ -225,7 +229,7 @@ function displayCart() {
               data-icon="clarity:peso-line"
               data-inline="false"
             ></span>
-            <p class="total-price">${item.productPrice * item.Quantity}</p>
+            <p class="total-price">${item.productPrice * item.NewQuantity}</p>
           </div>
           <button type="button" onclick="removeItem(this)">
             <span
@@ -236,6 +240,7 @@ function displayCart() {
           </button>
           <input
             type="hidden"
+            class="qty"
             value="${item.Quantity}"
           />
         </div>`;
@@ -270,10 +275,10 @@ function displayCart() {
           </div>
           <div class="checkout">
             <form method="post">
-              <button type="button"
+              <button type="submit"
                 class="btn primary-btn checkout-btn"
                 name="checkout"
-                id="checkout"
+                onclick="checkoutItems(this)"
                 >Proceed to Checkout
                 <span
                   class="iconify right-arrow"
@@ -449,11 +454,12 @@ function removeItem(btn) {
   let productNumbers = localStorage.getItem("cartNumbers");
   productNumbers = parseInt(productNumbers);
 
-  let cartItems = localStorage.getItem("productsInCart");
+  let cartItems = localStorage["productsInCart"];
   cartItems = JSON.parse(cartItems);
 
   let itemCode = btn.parentNode.childNodes[3].value;
   let qty = btn.nextElementSibling.value;
+
   cartItems = Object.values(cartItems).filter(
     (product) => product.itemCode !== itemCode
   );
@@ -466,5 +472,65 @@ function removeItem(btn) {
   displayCart();
 }
 
+function checkoutItems() {
+  const cart = document.querySelectorAll(".cart-items");
+
+  for (let i = 0; i < cart.length; i++) {
+    let cartItems = localStorage.getItem("productsInCart");
+    cartItems = JSON.parse(cartItems);
+    let itemID = document.querySelectorAll(".item-ID")[i].value;
+    let itemCode = document.querySelectorAll(".item-code")[i].value;
+    let itemImg = document.querySelectorAll(".cart-items img")[i].src;
+    let itemName = document.querySelectorAll(".item-name")[i].textContent;
+    let itemColor = document.querySelectorAll(".item-color")[i].textContent;
+    let itemSize;
+    let itemPrice = document.querySelectorAll(".item-price p")[i].textContent;
+    itemPrice = parseInt(itemPrice.replace(/,/g, ""));
+    let itemQty = document.querySelectorAll(".qty")[i].value;
+    itemQty = parseInt(itemQty);
+    let itemNewQty = document.querySelectorAll(".quantity")[i].value;
+    itemNewQty = parseInt(itemNewQty);
+    let itemMaxValue = document.querySelectorAll(".quantity")[i].max;
+    itemMaxValue = parseInt(itemMaxValue);
+    if (
+      cart[i].children[3].lastElementChild.children[0].classList.contains(
+        "item-size"
+      )
+    ) {
+      itemSize = cart[i].children[3].lastElementChild.children[0].textContent;
+    }
+    let products = {
+      itemCode: itemCode,
+      productID: itemID,
+      productImage: itemImg,
+      productName: itemName,
+      productColor: itemColor,
+      productSize: itemSize,
+      productPrice: itemPrice,
+      Quantity: itemQty,
+      NewQuantity: itemNewQty,
+      maxValue: itemMaxValue,
+    };
+    if (cartItems[products.itemCode] == undefined) {
+      cartItems = {
+        ...cartItems,
+        [i]: products,
+      };
+    } else {
+      cartItems = {
+        ...cartItems,
+        [products.itemCode]: products,
+      };
+    }
+    localStorage.setItem("productsInCart", JSON.stringify(cartItems));
+  }
+  totalCost();
+}
+
+function totalCost() {
+  const subtotal = document.querySelector("#subtotal-price").textContent;
+
+  localStorage.setItem("totalCost", subtotal);
+}
 displayCart();
 onLoadCartNumbers();

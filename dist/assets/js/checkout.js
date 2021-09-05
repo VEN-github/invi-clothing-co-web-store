@@ -1,1 +1,74 @@
-const checkout=document.querySelector("#checkout");function setProducts(e,t){let o=localStorage.getItem("checkoutContainer");o=JSON.parse(o),null!=o?(null==o[e.itemCode]&&(o={...o,[e.itemCode]:e}),o[e.itemCode].Quantity=t):(e.Quantity=t,o={[e.itemCode]:e}),localStorage.setItem("checkoutContainer",JSON.stringify(o))}function totalCost(){var e=document.querySelector("#subtotal-price").textContent;localStorage.setItem("totalCost",e)}checkout&&checkout.addEventListener("click",()=>{var t=document.querySelectorAll(".cart-items");for(let e=0;e<t.length;e++){console.log(t);var o=document.querySelectorAll(".item-ID")[e].value,c=document.querySelectorAll(".item-code")[e].value,l=document.querySelectorAll(".cart-items img")[e].src,r=document.querySelectorAll(".item-name")[e].textContent,u=document.querySelectorAll(".item-color")[e].textContent,n=document.querySelectorAll(".item-price p")[e].textContent,i=document.querySelectorAll(".item-size")[e].textContent,m=document.querySelectorAll(".quantity")[e].value,n={itemCode:c,productID:o,productImage:l,productName:r,productColor:u,productSize:i,productPrice:n,Quantity:m};console.log(n),setProducts(n,m)}totalCost()});
+function displayCheckoutItems(){var a=localStorage.getItem("productsInCart"),a=JSON.parse(a),s=localStorage.getItem("totalCost");let i=document.querySelector(".order-summary");a&&i&&(i.innerHTML+="<h4>Order Summary</h4>",Object.values(a).map(a=>{void 0===a.productSize?i.innerHTML+=`
+        <div class="order-items">
+          <img src="${a.productImage}" alt="${a.productImage}" />
+          <div class="item-label">
+            <p class="item-name">${a.productName}</p>
+            <p>Color: ${a.productColor}</p>
+            <p class="price-container">
+              <span
+                class="iconify peso-sign"
+                data-icon="clarity:peso-line"
+                data-inline="false"
+              ></span>
+              <span class="price">${a.productPrice}.00</span>
+              <span class="qty">x ${a.NewQuantity}</span>
+            </p>
+          </div>
+        </div>`:i.innerHTML+=`
+        <div class="order-items">
+          <img src="${a.productImage}" alt="${a.productImage}" />
+          <div class="item-label">
+            <p class="item-name">${a.productName}</p>
+            <p>Color: ${a.productColor}</p>
+            <p>Size: ${a.productSize}</p>
+            <p class="price-container">
+              <span
+                class="iconify peso-sign"
+                data-icon="clarity:peso-line"
+                data-inline="false"
+              ></span>
+              <span class="price">${a.productPrice}.00</span>
+              <span class="qty">x ${a.NewQuantity}</span>
+            </p>
+          </div>
+        </div>`}),i.innerHTML+=`
+    <div class="discount-field">
+      <form action="">
+        <input
+          type="text"
+          name=""
+          id=""
+          placeholder="Discount Code"
+          class="input input-discount"
+        />
+        <button type="submit" class="apply-btn">Apply</button>
+      </form>
+    </div>`,i.innerHTML+=`       
+      <div class="subtotal-container">
+        <div class="subtotal">
+          <p>Subtotal:</p>
+          <p class="price">
+            <span
+              class="iconify peso-sign"
+              data-icon="clarity:peso-line"
+              data-inline="false"
+            ></span>
+            <span>${s}.00</span>
+          </p>
+        </div>
+        <div class="shipping">
+          <p>Shipping:</p>
+          <p>Calculated at next step</p>
+        </div>
+      </div>
+      <div class="total-container">
+        Total:
+        <div class="total">
+          <span
+            class="iconify peso-sign"
+            data-icon="clarity:peso-line"
+            data-inline="false"
+          ></span>
+          <span>${s}.00</span>
+        </div>
+      </div>`)}displayCheckoutItems();

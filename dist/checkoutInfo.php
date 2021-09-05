@@ -168,14 +168,12 @@ include_once "../includes/header.php";
                 </form>
               </div>
               <div class="order-summary">
-                <h4>Order Summary</h4>
-                <div class="order-items">
-                </div>
               </div>
             </div>
           </div>
         </section>
       </main>
     </div>
+    <script src="./assets/js/checkout.js"></script>
   </body>
 </html>
