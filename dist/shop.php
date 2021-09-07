@@ -194,8 +194,10 @@ include_once "../includes/header.php";
                       data-icon="clarity:peso-line"
                       data-inline="false"
                     ></span>
-                    <?= number_format($product["productPrice"]) ?>
-                    <span>.00</span>
+                    <?= sprintf(
+                      "%01.2f",
+                      number_format($product["productPrice"])
+                    ) ?>
                   </p>
                 </div>
                 <!-- <div class="hidden">

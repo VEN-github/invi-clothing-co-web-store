@@ -66,11 +66,11 @@ $userdata = $store->get_userdata();
             </li> -->
 
             <!-- Nav Item - Charts -->
-            <!-- <li class="nav-item">
-                <a class="nav-link" href="charts.html">
-                    <i class="fas fa-fw fa-chart-area"></i>
-                    <span>Charts</span></a>
-            </li> -->
+            <li class="nav-item">
+                <a class="nav-link" href="supplier.php">
+                <i class="fas fa-truck-moving"></i>
+                <span>Supplier</span></a>
+            </li>
 
             <!-- Nav Item - Tables -->
             <!-- <li class="nav-item">

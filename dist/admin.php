@@ -110,4 +110,4 @@ include_once "../includes/dashboard_navbar.php";
 </div>
 <!-- End of Main Content -->
 <?php require_once "../includes/dashboard_footer.php"; ?>
-<?php require_once "../includes/dashboard_scripts.php"; ?>        ?>
+<?php require_once "../includes/dashboard_scripts.php"; ?>

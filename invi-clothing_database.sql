@@ -82,12 +82,14 @@ CREATE TABLE `product_table` (
   `categoryID` int(11) NOT NULL,
   `productPrice` int(11) NOT NULL,
   `productColor` varchar(255) NOT NULL,
-  `productImage` varchar(255) NOT NULL,
-  `minStocks` int(11) NOT NULL,
+  `coverPhoto` varchar(255) NOT NULL,
+  `productImage1` varchar(255) DEFAULT NULL,
+  `productImage2` varchar(255) DEFAULT NULL,
+  `productImage3` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`ID`),
   KEY `fk_categoryID_idx` (`categoryID`),
   CONSTRAINT `fk_categoryID` FOREIGN KEY (`categoryID`) REFERENCES `category_table` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -96,7 +98,7 @@ CREATE TABLE `product_table` (
 
 LOCK TABLES `product_table` WRITE;
 /*!40000 ALTER TABLE `product_table` DISABLE KEYS */;
-INSERT INTO `product_table` VALUES (1,'Peek A Boo','- 220 gsm CVC Shirt w/ necktape & sleeve label\r\n- Silkscreen print\r\n- Free Decals',1,450,'Khaki','Anniv - Front - Khaki.png',0),(2,'INVI Hoodie','- 220 gsm CVC Shirt w/ necktape & sleeve label\r\n- Silkscreen print\r\n- Free Decals',2,1000,'Black','Hoodie.png',0),(3,'INVI Beanie','- 220 gsm CVC Shirt w/ necktape & sleeve label\r\n- Silkscreen print\r\n- Free Decals',3,250,'Yellow','Beanie - Yellow.png',0),(4,'INVI Face Mask','dasdasdasd',3,250,'Black','Face Mask.png',10),(5,'INVI x Itachi Uchiha','asdsadasd',1,500,'Black','Itachi - Front - Black.png',10);
+INSERT INTO `product_table` VALUES (2,'INVI Face Mask','sdsd',3,250,'Black','Face Mask.png','','',''),(3,'Peek A Boo','adsad',1,450,'Khaki','Anniv - Front - Khaki.png','Anniv - Back - Khaki.png','SIZE CHART.png',''),(4,'Peek A Boo','asdsad',1,450,'White','Anniv - Front - White.png','Anniv - Back - White.png','SIZE CHART.png',''),(5,'INVI Bucket Hat','sasa',3,250,'Black','Bucket Hat - Black.png','','',''),(6,'INVI Hoodie','etret',2,1000,'Black','Hoodie.png','','',''),(7,'INVI Beanie','sdsad',3,250,'Orange','Beanie - Orange.png','','',''),(8,'3 - tone Heayweight','sadsad',1,500,'Gray - Maroon - Navy Blue','3Tone - Front - Maroon.png','3Tone - Back - Maroon.png','SIZE CHART.png',''),(9,'INVI x Itachi Uchiha','adsdas',1,500,'Black','Itachi - Front - Black.png','Itachi - Back - Black.png','SIZE CHART.png',''),(10,'INVI Warrior','dasdsad',1,450,'Golden Yellow','GOLD.jpg','GOLD 2.jpg','SIZE CHART.png',''),(11,'INVI x Donquixote Doflamingo','dqwdqw',1,500,'Black','Doffy - Front - Black.png','Doffy - Back - Black.png','SIZE CHART.png',''),(12,'Logo Tee','dsfsdfdsfds',1,450,'Fuchsia Pink','Logo Tee - Front - Pink.png','Logo Tee - Back - Pink.png','SIZE CHART.png',''),(13,'INVI Warrior','fsdfsdf',1,450,'White','INVI Warrior - Front - White.png','INVI Warrior - Back - White.png','DSC_0891.JPG','DSC_0892.JPG'),(14,'3-Tone Heavyweight','fdsfdsfsd',1,500,'Orange-White-Royal Blue','3Tone - Front - White.png','3Tone - Back - White.png','SIZE CHART.png','');
 /*!40000 ALTER TABLE `product_table` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -110,12 +112,12 @@ DROP TABLE IF EXISTS `stocks_table`;
 CREATE TABLE `stocks_table` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `productID` int(11) NOT NULL,
-  `sizes` varchar(255) NOT NULL,
+  `sizes` varchar(255) DEFAULT NULL,
   `stocks` int(11) NOT NULL,
   PRIMARY KEY (`ID`),
   KEY `fk_productID_idx` (`productID`),
   CONSTRAINT `fk_productID` FOREIGN KEY (`productID`) REFERENCES `product_table` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=40 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -124,7 +126,7 @@ CREATE TABLE `stocks_table` (
 
 LOCK TABLES `stocks_table` WRITE;
 /*!40000 ALTER TABLE `stocks_table` DISABLE KEYS */;
-INSERT INTO `stocks_table` VALUES (1,1,'XS',2),(2,1,'S',2),(3,1,'M',12),(4,1,'L',12),(5,1,'XL',5),(6,1,'2XL',2),(7,1,'3XL',1),(8,2,'S',11),(9,2,'M',9),(10,2,'L',10),(11,3,'Standard Size',20),(12,4,'Standard Size',30),(13,5,'XS',2),(14,5,'S',2),(15,5,'M',10),(16,5,'L',12),(17,5,'XL',5),(18,5,'2XL',2),(19,5,'3XL',1);
+INSERT INTO `stocks_table` VALUES (1,2,NULL,20),(2,3,'XS',1),(3,3,'S',2),(4,3,'M',10),(5,4,'XS',5),(6,4,'XL',2),(7,5,NULL,30),(8,6,'S',2),(9,6,'M',5),(10,6,'L',1),(11,7,NULL,15),(12,8,'XS',5),(13,8,'S',2),(14,8,'M',10),(15,9,'XS',3),(16,9,'S',3),(17,9,'M',15),(18,9,'L',15),(19,9,'XL',5),(20,9,'2XL',2),(21,9,'3XL',1),(22,10,'S',5),(23,10,'M',5),(24,10,'L',10),(25,10,'XL',5),(26,10,'2XL',5),(27,11,'XS',5),(28,11,'S',15),(29,11,'M',10),(30,12,'XS',5),(31,12,'S',3),(32,12,'M',10),(33,12,'L',15),(34,13,'S',5),(35,13,'M',3),(36,13,'XL',13),(37,13,'2XL',5),(38,14,'XS',58),(39,14,'2XL',45);
 /*!40000 ALTER TABLE `stocks_table` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -137,4 +139,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-08-17 18:03:21
+-- Dump completed on 2021-09-07 17:03:47
