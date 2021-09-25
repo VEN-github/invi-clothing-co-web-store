@@ -76,6 +76,15 @@ main {
   gap: 0;
 }
 
+.disabled-btn {
+  padding: 0.75em 1.5em;
+  font-size: 1.125rem;
+  font-weight: 500;
+  background: #c4c4c4;
+  color: #fff;
+  pointer-events: none;
+}
+
 .button-input {
   position: absolute;
   top: 0;

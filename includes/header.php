@@ -26,6 +26,7 @@
     <link rel="stylesheet" href="./assets/css/main.css" />
     <!-- icons -->
     <script src="https://code.iconify.design/1/1.0.7/iconify.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <title><?= $title . " | " ?>INVI Clothing Co.</title>
   </head>
 </html>

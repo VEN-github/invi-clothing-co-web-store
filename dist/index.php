@@ -8,117 +8,7 @@ include_once "../includes/header.php";
 
 <body>
   <div class="page-container">
-    <!-- start of navbar -->
-    <header id="main-header">
-      <div class="container flex">
-        <div class="logo">
-          <a href="index.php"><img src="./assets/img/logo.png" alt="Logo" /></a>
-        </div>
-        <nav>
-          <ul class="nav-links">
-            <li><a href="index.php" class="nav-link active">Home</a></li>
-            <li><a href="shop.php" class="nav-link">Shop</a></li>
-            <li><a href="#" class="nav-link">About</a></li>
-            <li><a href="#" class="nav-link">Contact</a></li>
-            <?php if (isset($_SESSION["userdata"])) { ?>
-            <?php } else { ?>
-            <li>
-              <a href="login.php" class="login-nav btn outline-primary-btn">Login</a>
-            </li>
-            <?php } ?>
-          </ul>
-        </nav>
-        <div class="side-menu">
-          <div class="icon-menu">
-            <div>
-              <span class="iconify search-icon" data-icon="fe:search" data-inline="false"></span>
-            </div>
-            <div class="shopping-container">
-              <a href="cart.php">
-                <span class="iconify cart-icon" data-icon="gg:shopping-bag" data-inline="false"></span></a>
-                <span id="counter" class="counter">0</span>               
-            </div>
-            
-            <div class="profile-menu">
-            <?php if (isset($_SESSION["userdata"])) { ?>
-              <div class="hover">
-                <span
-                  class="iconify user-icon"
-                  data-icon="carbon:user-avatar"
-                  data-inline="false"
-                ></span>
-                <span
-                  class="iconify arrow"
-                  data-icon="dashicons:arrow-down-alt2"
-                  data-inline="false"
-                ></span>
-              </div>          
-              <ul class="menu">
-                <li>
-                  <a href="profile.php?ID=<?= $user["ID"] ?>"
-                    ><span
-                      class="iconify"
-                      data-icon="fa-solid:user"
-                      data-inline="false"
-                    ></span
-                    >Profile</a
-                  >
-                </li>
-                <li>
-                  <a href="#">
-                    <span
-                      class="iconify"
-                      data-icon="ant-design:home-filled"
-                      data-inline="false"
-                    ></span
-                    >Addresses</a
-                  >
-                </li>
-                <li>
-                  <a href="#"
-                    ><span
-                      class="iconify"
-                      data-icon="fa-solid:shopping-bag"
-                      data-inline="false"
-                    ></span
-                    >Orders</a
-                  >
-                </li>
-                <li>
-                  <a href="#"
-                    ><span
-                      class="iconify"
-                      data-icon="emojione-monotone:heart-suit"
-                      data-inline="false"
-                    ></span
-                    >Wishlist</a
-                  >
-                </li>
-                <li>
-                  <a href="../includes/logout.php"
-                    ><span
-                      class="iconify"
-                      data-icon="ls:logout"
-                      data-inline="false"
-                    ></span
-                    >Logout</a
-                  >
-                </li>
-              </ul>
-            </div>
-          </div>
-          <?php } else { ?>
-          <a href="login.php" class="btn outline-primary-btn login-btn">Login</a>
-          <?php } ?>
-          <div class="burger-btn">
-            <div class="line1"></div>
-            <div class="line2"></div>
-            <div class="line3"></div>
-          </div>
-        </div>
-      </div>
-    </header>
-    <!-- end of navbar -->
+    <?php include_once "../includes/navbar.php"; ?>
     <main>
       <!-- start of hero section -->
       <section class="showcase">
@@ -142,51 +32,64 @@ include_once "../includes/header.php";
       <!-- end of hero section -->
       <!-- start of features section -->
       <section>
+        <?php if ($randomProducts) { ?>
           <div class="container features">
             <h1>Our products</h1>
             <div class="carousel-container">
             <?php foreach ($randomProducts as $randomProduct) { ?>
-              <div class="carousel-box">
-                <div class="labels">
-                  <span class="product-label"></span>
-                  <!-- <button class="wishlist">
-                    <span
-                      class="iconify heart"
-                      data-icon="ant-design:heart-outlined"
-                      data-inline="false"
-                    ></span>
-                  </button> -->
-                </div>
-                <a href="productdetails.php?ID=<?= $randomProduct["ID"] ?>"
-                  ><?= '<img src="./assets/img/' .
-                    $randomProduct["coverPhoto"] .
-                    '" alt="' .
-                    $randomProduct["coverPhoto"] .
-                    '">' ?></a>
-                <div class="details">
-                <a href="productdetails.php?ID=<?= $randomProduct[
-                  "ID"
-                ] ?>"><?= $randomProduct["productName"] ?></a>
-                  <p class="color">
-                    <?= $randomProduct["productColor"] ?>
-                  </p>
-                  <p class="price">
-                    <span
-                      class="iconify peso-sign"
-                      data-icon="clarity:peso-line"
-                      data-inline="false"
-                    ></span>
-                    <?= $randomProduct["productPrice"] ?>
-                    <span>.00</span>
-                  </p>
-                </div>
-              </div>
+              <?php $stocks = $store->view_single_stock(
+                $randomProduct["ID"]
+              ); ?>
+                <?php if (
+                  $randomProduct["ID"] &&
+                  $randomProduct["netSales"] &&
+                  $stocks
+                ) { ?>
+                  <div class="carousel-box">
+                    <div class="labels">
+                      <span class="product-label"></span>
+                      <!-- <button class="wishlist">
+                        <span
+                          class="iconify heart"
+                          data-icon="ant-design:heart-outlined"
+                          data-inline="false"
+                        ></span>
+                      </button> -->
+                    </div>
+                    <a href="productdetails.php?ID=<?= $randomProduct["ID"] ?>"
+                      ><?= '<img src="./assets/img/' .
+                        $randomProduct["coverPhoto"] .
+                        '" alt="' .
+                        $randomProduct["coverPhoto"] .
+                        '">' ?></a>
+                    <div class="details">
+                    <a href="productdetails.php?ID=<?= $randomProduct[
+                      "ID"
+                    ] ?>"><?= $randomProduct["productName"] ?></a>
+                      <p class="color">
+                        <?= $randomProduct["productColor"] ?>
+                      </p>
+                      <p class="price">
+                        <span
+                          class="iconify peso-sign"
+                          data-icon="clarity:peso-line"
+                          data-inline="false"
+                        ></span>
+                        <?= $randomProduct["netSales"] ?>
+                        <span>.00</span>
+                      </p>
+                    </div>
+                  </div>
+                <?php } ?>
               <?php } ?> 
             </div>
             <div class="cta">
               <a href="shop.php" class="btn primary-btn">Shop Now</a>
             </div>
           </div>
+          <?php } else { ?>
+            <div class="container features"><h1>No Data Available</h1></div>
+          <?php } ?>  
         </section>
         <!-- end of features section -->
       <!-- start of ads section -->

@@ -21,7 +21,22 @@ if (document.querySelector("#productColor")) {
   productColor = document.querySelector("#productColor").textContent;
 }
 if (document.querySelector("#sizeOpt")) {
-  sizeValue = document.querySelector("#sizeOpt").value;
+  const sizeForm = document.querySelector("#sizeOpt");
+  sizeForm.addEventListener("change", selectSize);
+
+  function selectSize(e) {
+    e.preventDefault();
+
+    sizeValue = sizeForm.options[sizeForm.selectedIndex].text;
+    console.log(productName);
+    console.log(sizeValue);
+    products.productSize = sizeValue;
+    products.itemCode = productName + " " + sizeValue;
+
+    maxVal = sizeForm.options[sizeForm.selectedIndex].dataset.stock;
+    maxVal = parseInt(maxVal);
+    products.maxValue = maxVal;
+  }
 }
 if (document.querySelector("#productPrice")) {
   productPrice = document.querySelector("#productPrice").textContent;
@@ -31,9 +46,7 @@ if (document.querySelector("#quantity")) {
   maxVal = document.querySelector("#quantity").max;
   maxVal = parseInt(maxVal);
 }
-if (sizeValue != undefined) {
-  itemCode = productName + " " + sizeValue;
-} else {
+if (sizeValue == undefined) {
   itemCode = productName;
 }
 let products = {
@@ -48,7 +61,6 @@ let products = {
   NewQuantity: qty,
   maxValue: maxVal,
 };
-
 const cartBtn = document.querySelector("#cart-btn");
 if (cartBtn) {
   cartBtn.addEventListener("click", () => {
@@ -61,7 +73,7 @@ function setProducts(product) {
 
   let qty = document.querySelector("#quantity").value;
   qty = parseInt(qty);
-
+  console.log(qty);
   if (cartItems != null) {
     if (cartItems[product.itemCode] == undefined) {
       cartItems = {
@@ -79,12 +91,20 @@ function setProducts(product) {
     };
   }
   if (
-    cartItems[product.itemCode].Quantity <= cartItems[product.itemCode].maxValue
+    cartItems[product.itemCode].NewQuantity <=
+    cartItems[product.itemCode].maxValue
   ) {
     localStorage.setItem("productsInCart", JSON.stringify(cartItems));
     cartNumbers();
+    location.href = "cart.php";
+  } else {
+    Swal.fire({
+      icon: "error",
+      text: "Please select a value that is no more than " + product.maxValue,
+    });
   }
 }
+
 function onLoadCartNumbers() {
   let productNumbers = localStorage.getItem("cartNumbers");
 
@@ -98,6 +118,7 @@ function cartNumbers() {
 
   let qty = document.querySelector("#quantity").value;
   qty = parseInt(qty);
+
   if (productNumbers) {
     localStorage.setItem("cartNumbers", productNumbers + qty);
     document.querySelector("#counter").textContent = productNumbers + qty;
@@ -334,6 +355,7 @@ function minusBtnProperty() {
     }
   });
 }
+
 function plusBtnProperty() {
   const plusBtn = document.querySelectorAll(".plus-btn");
 
@@ -456,7 +478,6 @@ function removeItem(btn) {
 
   let cartItems = localStorage["productsInCart"];
   cartItems = JSON.parse(cartItems);
-
   let itemCode = btn.parentNode.childNodes[3].value;
   let qty = btn.nextElementSibling.value;
 

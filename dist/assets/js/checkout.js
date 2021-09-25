@@ -31,19 +31,7 @@ function displayCheckoutItems(){var a=localStorage.getItem("productsInCart"),a=J
               <span class="qty">x ${a.NewQuantity}</span>
             </p>
           </div>
-        </div>`}),i.innerHTML+=`
-    <div class="discount-field">
-      <form action="">
-        <input
-          type="text"
-          name=""
-          id=""
-          placeholder="Discount Code"
-          class="input input-discount"
-        />
-        <button type="submit" class="apply-btn">Apply</button>
-      </form>
-    </div>`,i.innerHTML+=`       
+        </div>`}),i.innerHTML+=`       
       <div class="subtotal-container">
         <div class="subtotal">
           <p>Subtotal:</p>

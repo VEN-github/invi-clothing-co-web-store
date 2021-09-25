@@ -47,19 +47,6 @@ function displayCheckoutItems() {
         </div>`;
       }
     });
-    orderItems.innerHTML += `
-    <div class="discount-field">
-      <form action="">
-        <input
-          type="text"
-          name=""
-          id=""
-          placeholder="Discount Code"
-          class="input input-discount"
-        />
-        <button type="submit" class="apply-btn">Apply</button>
-      </form>
-    </div>`;
     orderItems.innerHTML += `       
       <div class="subtotal-container">
         <div class="subtotal">

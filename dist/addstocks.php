@@ -1,102 +1,146 @@
 <?php
 require_once "../class/webstoreclass.php";
 $user = $store->get_userdata();
-$product = $store->get_productID();
-$store->delete_products();
-$store->add_stocks();
-
-$title = "Add New Product";
+$ID = $_GET["ID"];
+$product = $store->get_singleID($ID);
+$title = "Add Stocks";
 include_once "../includes/dashboard_header.php";
-include_once "../includes/dashboard_sidebar.php";
-include_once "../includes/dashboard_navbar.php";
 ?>
-<!-- Begin Page Content -->
-<div class="container-fluid">
-
-<!-- Page Heading -->
-  <h1 class="h3 mb-4 text-gray-800">Add New Product</h1>
-      <div id="stockInfo" class="card shadow mb-4">
-        <!-- Stock Info -->
-        <div class="card-header py-3">
-          <h6 class="m-0 font-weight-bold text-primary">Stock Information</h6>
-        </div>
-        <form class=card-body method="post">
-          <div class="form-group">
-            <label>Stock</label>
-            <input type="text" class="form-control" name="stocks[]" id="stocks" >
+  <body id="page-top">
+    <?php $store->stock_in(); ?>
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+      <?php include_once "../includes/dashboard_sidebar.php"; ?>
+      <!-- Content Wrapper -->
+      <div id="content-wrapper" class="d-flex flex-column">
+          <!-- Main Content -->
+          <div id="content">
+            <?php include_once "../includes/dashboard_navbar.php"; ?>
+              <!-- Begin Page Content -->
+              <div class="container-fluid">
+                <!-- Page Heading -->
+                <h1 class="h3 mb-4 text-gray-800">Add Stocks</h1>
+                <!-- production cost, sales, and stocks Form -->
+                <div id="stockInfo" class="card shadow mb-4" >
+                  <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-gray-800">Stock Information</h6>
+                  </div>
+                  <div class="card-body">
+                    <form>
+                      <div class="form-group">
+                        <label>Stock</label>
+                        <input type="number" class="form-control stocks" name="wholeStock" min="0" value="1" form="stockForm">
+                      </div>
+                      <input type="hidden" name="noSize" id="noSize" value="" form="stockForm">
+                      <input type="hidden" name="productID" value="<?= $product[
+                        "ID"
+                      ] ?>" form="stockForm">
+                      <div class="form-group">
+                        <button type="button" id="addSize" class="btn btn-outline-info">
+                          <span class="icon text">
+                            <i class="fas fa-plus"></i>
+                          </span>
+                          <span class="text">Add Size</span>
+                        </button>
+                      </div>                     
+                    </form>
+                  </div>
+                </div>
+                <div id="sizeInfo" class="card shadow mb-4" style="display:none;">
+                  <!-- Size Info -->
+                  <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-gray-800">Stock Information</h6>
+                    <div class="dropdown no-arrow">
+                      <button type="button" id="close" class="btn btn-sm btn-outline-secondary btn-circle">
+                        <span class="icon text">
+                          <i class="fas fa-times"></i>
+                        </span>
+                      </button>
+                    </div>
+                  </div>         
+                  <div class="card-body">
+                    <form method="post" id="stockForm">
+                      <div class="table-responsive">
+                        <table
+                          class="table table-bordered text-center"
+                          width="100%"
+                          cellspacing="0"
+                        >
+                        <thead class="bg-gray-600 text-gray-100">
+                          <tr>
+                            <th>Size</th>
+                            <th>Stock Quantity</th>
+                          </tr>
+                        </thead>
+                        <tbody class="text-gray-900">
+                          <tr>
+                            <td><input class="form-control" name="size[]" value="XS" readonly></td>
+                            <td><input type="number" class="form-control stocks" name="stocks[]" min="0" value="1"></td>
+                          </tr>
+                          <tr>
+                            <td><input class="form-control" name="size[]" value="S" readonly></td>
+                            <td><input type="number" class="form-control stocks" name="stocks[]" min="0" value="1"></td>
+                          </tr>
+                          <tr>
+                            <td><input class="form-control" name="size[]" value="M" readonly></td>
+                            <td><input type="number" class="form-control stocks" name="stocks[]" min="0" value="1"></td>
+                          </tr>
+                          <tr>
+                            <td><input class="form-control" name="size[]" value="L" readonly></td>
+                            <td><input type="number" class="form-control stocks" name="stocks[]" min="0" value="1"></td>
+                          </tr>
+                          <tr>
+                            <td><input class="form-control" name="size[]" value="XL" readonly></td>
+                            <td><input type="number" class="form-control stocks" name="stocks[]" min="0" value="1"></td>
+                          </tr>
+                          <tr>
+                            <td><input class="form-control" name="size[]" value="2XL" readonly></td>
+                            <td><input type="number" class="form-control stocks" name="stocks[]" min="0" value="1"></td>
+                          </tr>
+                          <tr>
+                            <td><input class="form-control" name="size[]" value="3XL" readonly></td>
+                            <td><input type="number" class="form-control stocks" name="stocks[]" min="0" value="1"></td>
+                          </tr>
+                        </tbody>
+                        <tfoot class="bg-gray-600 text-gray-100">
+                          <tr>
+                            <th>Size</th>
+                            <th>Stock Quantity</th>
+                          </tr>
+                        </tfoot>
+                      </table>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+                <div class="card body mb-4 py-1">
+                  <div class="d-flex flex-row-reverse">
+                    <div class="p-2">
+                      <button type="submit" name="addStock" class="btn btn-secondary btn-icon-split" form="stockForm">
+                        <span class="text">Add</span>
+                      </button>
+                    </div>              
+                    <div class="p-2">
+                      <a href="products.php" class="btn btn-light btn-icon-split">
+                        <span class="text">Cancel</span>
+                      </a>
+                    </div>
+                  </div>              
+                </div>
+              </div>
+              <!-- /.container-fluid -->
           </div>
-          <input type="hidden" name="countRow[]" id="productID" value="0">
-          <input type="hidden" name="productID" value="<?= $product["ID"] ?>">
-          <div class="form-group">
-            <button type="button" id="addSize" class="btn btn-primary btn-icon-split mr-4">
-              <span class="text">Add Size <i class="fas fa-plus"></i></span>
-            </button>
-          </div>
-          <div class="d-sm-flex justify-content-end">
-            <button type="submit" name="cancel" class="btn btn-secondary btn-icon-split mr-4">
-              <span class="text">Cancel</span>
-            </button>
-            <button type="submit" name="addStocksBtn" class="btn btn-primary">
-              Submit
-            </button>
-          </div>
-        </form>
-      </div>
-      <div id="sizeInfo" class="card shadow mb-4" style="display:none;">
-        <!-- Size Info -->
-        <div class="card-header py-3">
-          <h6 class="m-0 font-weight-bold text-primary">Add Size</h6>
-        </div>
-        <form class=card-body id="addForm">
-          <div class="form-group">
-            <label>Size</label>
-            <input type="text" class="form-control" id="size" >
-          </div>
-          <div class="d-sm-flex justify-content-end">
-            <button type="submit" class="btn btn-primary">
-              Add
-            </button>
-          </div>
-        </form>
-      </div>
-      <div id="sizeList" class="card shadow mb-4" style="display:none;">
-        <!-- Size List -->
-        <div class="card-header py-3">
-          <h6 class="m-0 font-weight-bold text-primary">Size List</h6>
-        </div>
-        <div class="card-body">
-          <form class="card-body" method="post" id="stocksForm">
-            <div class="table-responsive">
-              <table class="table table-bordered variation-table" id="dataTable" width="100%" cellspacing="0">
-                <thead>
-                  <tr>
-                    <th>Size</th>
-                    <th>Stock</th>
-                    <th>Action</th>
-                  </tr>
-                </thead>
-                <tbody> 
-                </tbody>
-              </table>
-            </div>
-            <input type="hidden" name="productID" value="<?= $product["ID"] ?>">
-          </form>
-        </div>
-      </div>
-      <div id="buttons" class="card shadow mb-4 py-3 px-4" style="display:none;">
-        <div class="d-sm-flex justify-content-end">
-          <button type="button" id="cancel" class="btn btn-secondary btn-icon-split mr-4">
-            <span class="text">Cancel</span>
-          </button>
-          <button type="submit" class="btn btn-primary" name="addStocksBtn" form="stocksForm">
-            Submit
-          </button>
-        </div>
-      </div>
-</div>
-<!-- /.container-fluid -->
-</div>
-<!-- End of Main Content -->
-<?php require_once "../includes/dashboard_footer.php"; ?>
-<script src="./assets/js/variation.js"></script>   
-<?php require_once "../includes/dashboard_scripts.php"; ?>
+          <!-- End of Main Content -->
+          <?php require_once "../includes/dashboard_footer.php"; ?>
+      </div> 
+      <!-- End of Content Wrapper -->
+    </div>
+    <!-- End of Page Wrapper -->
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+      <i class="fas fa-angle-up"></i>
+    </a>
+    <?php require_once "../includes/dashboard_scripts.php"; ?>
+    <script src="./assets/js/stock.js"></script>
+  </body>
+</html>

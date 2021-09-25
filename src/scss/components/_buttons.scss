@@ -1,6 +1,17 @@
 @use '../abstracts/colors';
 @use '../abstracts/fonts';
 @use './media';
+
+// disabled btn
+.disabled-btn {
+  padding: 0.75em 1.5em;
+  font-size: 1.125rem;
+  font-weight: map-get(fonts.$font-weight, medium);
+  background: colors.$disabled-color;
+  color: colors.$text-color;
+  pointer-events: none;
+}
+
 // button inside the input field
 .button-input {
   position: absolute;

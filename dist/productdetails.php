@@ -3,13 +3,7 @@ require_once "../class/webstoreclass.php";
 $user = $store->get_userdata();
 $ID = $_GET["ID"];
 $product = $store->get_singleproduct($ID);
-$stocks = $store->view_all_stocks($ID);
-
-$sizeList = "";
-if (!empty($_POST)) {
-  $sizeList = isset($_POST["sizeList"]) ? $_POST["sizeList"] : "";
-}
-
+$stocks = $store->view_single_stock($ID);
 $title = $product["productName"];
 include_once "../includes/header.php";
 ?>
@@ -140,20 +134,20 @@ include_once "../includes/header.php";
             <img src="./assets/img/<?= $product[
               "coverPhoto"
             ] ?>" alt="<?= $product["coverPhoto"] ?>">
-            <?php if (!empty($product["productImage1"])) { ?>
+            <?php if (!empty($product["image1"])) { ?>
               <img src="./assets/img/<?= $product[
-                "productImage1"
-              ] ?>" alt="<?= $product["productImage1"] ?>">
+                "image1"
+              ] ?>" alt="<?= $product["image1"] ?>">
             <?php } ?>
-            <?php if (!empty($product["productImage2"])) { ?>
+            <?php if (!empty($product["image2"])) { ?>
               <img src="./assets/img/<?= $product[
-                "productImage2"
-              ] ?>" alt="<?= $product["productImage2"] ?>">
+                "image2"
+              ] ?>" alt="<?= $product["image2"] ?>">
             <?php } ?>
-            <?php if (!empty($product["productImage3"])) { ?>
+            <?php if (!empty($product["image3"])) { ?>
               <img src="./assets/img/<?= $product[
-                "productImage3"
-              ] ?>" alt="<?= $product["productImage3"] ?>">
+                "image3"
+              ] ?>" alt="<?= $product["image3"] ?>">
             <?php } ?>
           </div>
           <div class="product-info">
@@ -192,7 +186,7 @@ include_once "../includes/header.php";
                     data-inline="false"
                   ></span>
                   <span id="productPrice" ><?= number_format(
-                    $product["productPrice"]
+                    $product["netSales"]
                   ) ?></span>
                   <span>.00</span>
                 </p>
@@ -240,92 +234,95 @@ include_once "../includes/header.php";
                 </form> -->
               </div>
               <?php foreach ($stocks as $stock) { ?>
-                <?php if (is_null($stock["sizes"])) { ?>
-                  <?php if ($sizeList == $stock["sizes"]) { ?>
-                    <div class="product-quantity">
-                      <p>Quantity:</p>
-                      <div class="qty">
-                        <button class="minus-btn">-</button>
-                        <input
-                          class="qty-input"
-                          type="number"
-                          name=""
-                          id="quantity"
-                          value="1"
-                          min="1"
-                          max="<?= $stock["stocks"] ?>"             
-                          />   
-                        <button class="plus-btn">+</button>
-                      </div>
+                <?php if (is_null($stock["size"])) { ?>
+                  <div class="product-quantity">
+                    <p>Quantity:</p>
+                    <div class="qty">
+                      <button class="minus-btn" onclick="minus(this)">-</button>
+                      <input
+                        class="qty-input"
+                        type="number"
+                        name=""
+                        id="quantity"
+                        value="1"
+                        min="1"
+                        max="<?= $stock["stock"] ?>"             
+                        />   
+                      <button class="plus-btn" onclick="plus(this)">+</button>
                     </div>
-                    <div class="add-cart">
-                      <button type="button" id="cart-btn" class="btn primary-btn cart-btn">
-                        <span
-                          class="iconify cart-icon"
-                          data-icon="gg:shopping-bag"
-                          data-inline="false"
-                        ></span>
-                        Add to Cart
-                      </button>
-                    </div>
-                  <?php } ?>
+                  </div>
+                  <div class="add-cart">
+                    <button type="button" id="cart-btn" class="<?= $stock[
+                      "stock"
+                    ] == 0
+                      ? "btn disabled-btn cart-btn"
+                      : "btn primary-btn cart-btn" ?> ">
+                      <?= $stock["stock"] == 0
+                        ? "Out of Stock"
+                        : '<span
+                        class="iconify cart-icon"
+                        data-icon="gg:shopping-bag"
+                        data-inline="false"
+                      ></span>
+                      Add to Cart' ?>
+                    </button>
+                  </div>
                 <?php } ?>
               <?php } ?>
-
-              <?php if (!is_null($stock["sizes"])) { ?>
+              <?php if (!is_null($stock["size"])) { ?>       
                 <div class="product-size">
                   <div class="size-guide">
                     <p>Size:</p>
-                    <button class="size-chart">
-                      <span
-                        class="iconify ruler"
-                        data-icon="bx:bx-ruler"
-                      ></span>
-                      Size Guide
-                    </button>
+                      <?php if (!empty($product["sizeGuide"])) { ?>
+                        <button type="button" id="size-chart" class="size-chart" onclick="sizeGuide(this)">
+                          <span
+                            class="iconify ruler"
+                            data-icon="bx:bx-ruler"
+                          ></span>
+                          Size Guide
+                        </button>
+                      <?php } ?>
                   </div>
                   <form action="" method="post" name="sizeForm">
-                    <select name="sizeList" id="sizeOpt" class="input size" onchange="sizeForm.submit();">
+                    <select name="sizeList" id="sizeOpt" class="input size">
                         <option selected disabled>Select Size</option>
                         <?php foreach ($stocks as $stock) { ?>
-                        <option value="<?= $stock["sizes"] ?>" <?php if (
-  $sizeList == $stock["sizes"]
-) { ?> selected="selected" <?php } ?> ><?= $stock[
-   "sizes"
- ] ?></option><?php } ?>  
+                          <option value="<?= $stock[
+                            "ID"
+                          ] ?>" data-stock= <?= $stock["stock"] ?> ><?= $stock[
+   "size"
+ ] ?></option>          
+                        <?php } ?>  
                     </select>
                   </form>
                 </div>
-                <?php foreach ($stocks as $stock) { ?>  
-                  <?php if ($sizeList == $stock["sizes"]) { ?>
-                    <div class="product-quantity">
-                      <p>Quantity:</p>
-                      <div class="qty">
-                        <button class="minus-btn">-</button>
-                        <input
-                          class="qty-input"
-                          type="number"
-                          name=""
-                          id="quantity"
-                          value="1"
-                          min="1"
-                          max="<?= $stock["stocks"] ?>"             
-                          />   
-                        <button class="plus-btn">+</button>
-                      </div>
-                    </div>
-                    <div class="add-cart">
-                      <button type="button" id="cart-btn" class="btn primary-btn cart-btn">
-                        <span
-                          class="iconify cart-icon"
-                          data-icon="gg:shopping-bag"
-                          data-inline="false"
-                        ></span>
-                        Add to Cart
-                      </button>
-                    </div>
-                  <?php } ?>
-                <?php } ?>
+                <div class="product-quantity" style="display:none;">
+                  <p>Quantity:</p>
+                  <div class="qty">
+                    <button class="minus-btn" onclick="minus(this)">-</button>
+                    <input
+                      class="qty-input"
+                      type="number"
+                      name=""
+                      id="quantity"
+                      value="1"
+                      min="1"            
+                      />   
+                    <button class="plus-btn" onclick="plus(this)">+</button>
+                  </div>
+                </div>
+                <div class="add-cart" style="display:none;">
+                  <button type="button" id="cart-btn" class="btn primary-btn cart-btn" >
+                    <span
+                      class="iconify cart-icon"
+                      data-icon="gg:shopping-bag"
+                      data-inline="false"
+                    ></span>Add to Cart
+                  </button>
+                  <button id="disabled-btn" class="btn disabled-btn cart-btn" style="display:none;">
+                    Out of Stock
+                  </button>
+                </div>  
               <?php } ?>  
               <div class="socials">
                 <p>Share:</p>
@@ -354,79 +351,18 @@ include_once "../includes/header.php";
   <script src="./assets/js/user.js"></script>
   <script src="./assets/js/imgGallery.js"></script>
   <script src="./assets/js/cart.js"></script>
+  <script src="./assets/js/qty.js"></script>
   <script>
-  // QUANTITY
-  // SETTING DEFAULT ATTRIBUTE TO DISABLED MINUS BUTTON
-  const minusBtn = document.querySelector(".minus-btn");
-  const plusBtn = document.querySelector(".plus-btn");
-
-  // MINUS BTN
-  if(minusBtn){
-    minusBtn.setAttribute("disabled", "disabled");
-    minusBtn.style.cursor="not-allowed";
-
-    minusBtn.addEventListener('click', ()=>{
-      //GETTING VALUE INPUT
-      valueCount = document.querySelector("#quantity").value;
-
-      //INPUT VALUE DECREMENT BY 1
-      valueCount--;
-
-      //SETTING DECREMENT INPUT VALUE
-      document.querySelector("#quantity").value = valueCount;
-
-      if (valueCount == 1) {
-        minusBtn.setAttribute("disabled", "disabled");
-        minusBtn.style.cursor="not-allowed";
-      }
-      if (valueCount != maxValue){
-        plusBtn.removeAttribute("disabled");
-        plusBtn.classList.remove("disabled");
-        plusBtn.style.cursor="pointer";
-      }
-    });
-  }
-
-  // TAKING VALUE TO INCREMENT DECREMENT INPUT VALUE
-  let valueCount = 1;
-
-  // SETTING MAX VALUE
-  let maxValue = "<?php foreach ($stocks as $stock) { ?> <?php if (
-   $sizeList == $stock["sizes"]
- ) { ?> <?= $stock["stocks"] ?> <?php } ?> <?php } ?>"
-
-  if (valueCount == maxValue) {
-      plusBtn.setAttribute("disabled", "disabled");
-      plusBtn.style.cursor="not-allowed";
-  }
-
-  // PLUS BUTTON
-  if(plusBtn){
-    plusBtn.addEventListener("click", () => {
-      //GETTING VALUE INPUT
-      valueCount = document.querySelector("#quantity").value;
-
-      //INPUT VALUE INCREMENT BY 1
-      valueCount++;
-
-      //SETTING INCREMENT INPUT VALUE
-      document.querySelector("#quantity").value = valueCount;
-      //SETTING INCREMENT MAX VALUE
-      document.querySelector("#quantity").max = maxValue;
-
-      if (valueCount > 1) {
-        minusBtn.removeAttribute("disabled");
-        minusBtn.classList.remove("disabled");
-        minusBtn.style.cursor="pointer";
-      }
-
-      if (valueCount == maxValue) {
-        plusBtn.setAttribute("disabled", "disabled");
-        plusBtn.style.cursor="not-allowed";
-      }
-    });
-  }
+    function sizeGuide(){
+      Swal.fire({
+        width: 700,
+        imageUrl: './assets/img/<?= $product["sizeGuide"] ?>' ,
+        imageWidth: 580,
+        imageAlt: '<?= $product["sizeGuide"] ?>',
+        showConfirmButton: false,
+        showCloseButton: true,
+      })
+    }
   </script>
-  <!-- <script src="./assets/js/cart.js"></script> -->
 </body>
 </html>

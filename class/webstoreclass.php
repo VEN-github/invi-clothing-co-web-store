@@ -200,7 +200,6 @@ class WebStore
       "email" => $array["email"],
       "access" => $array["access"],
     ];
-
     return $_SESSION["userdata"];
   }
 
@@ -293,9 +292,31 @@ class WebStore
       $email = $_POST["email"];
       $contactNumber = $_POST["contactNumber"];
       $password = md5($_POST["password"]);
+      $pass = $_POST["password"];
+      $confirmPassword = $_POST["confirmPassword"];
       $access = $_POST["access"];
 
-      if ($this->checkEmail($email) == 0) {
+      if (
+        empty($firstName) ||
+        empty($lastName) ||
+        empty($email) ||
+        empty($contactNumber) ||
+        empty($password) ||
+        empty($confirmPassword)
+      ) {
+        echo "<script> Swal.fire({
+          icon: 'error',
+          title: 'Empty Field',
+          text: 'Please input missing field',
+        });
+        </script>";
+      } elseif ($pass !== $confirmPassword) {
+        echo "<script> Swal.fire({
+          icon: 'error',
+          text: 'Password does not match.',
+        });
+        </script>";
+      } elseif ($this->checkEmail($email) == 0) {
         $connection = $this->openConnection();
         $stmt = $connection->prepare(
           "INSERT INTO account_table (`firstName` , `lastName` , `email` , `password` , `contactNumber` , `access`) VALUES (?,?,?,?,?,?)"
@@ -308,9 +329,21 @@ class WebStore
           $contactNumber,
           $access,
         ]);
-        header("Location: admin.php");
+        echo "<script>  
+        Swal.fire({
+          position: 'center',
+          icon: 'success',
+          title: 'Admin Added',
+          showConfirmButton: false,
+          timer: 1000
+        },function(){ window.location.href = 'admin.php';});
+      </script>";
       } else {
-        echo "Email Already Exists";
+        echo "<script> Swal.fire({
+          icon: 'error',
+          text: 'Email Already Exists.',
+        });
+        </script>";
       }
     }
   }
@@ -318,10 +351,9 @@ class WebStore
   // display admin
   public function get_admin()
   {
-    $admin = "admin";
     $connection = $this->openConnection();
     $stmt = $connection->prepare(
-      "SELECT * FROM account_table WHERE access = '$admin'"
+      "SELECT * FROM account_table WHERE access = 'admin'"
     );
     $stmt->execute();
     $admins = $stmt->fetchall();
@@ -334,6 +366,48 @@ class WebStore
     }
   }
 
+  // update admin
+  public function update_admin()
+  {
+    if (isset($_POST["updateAdmin"])) {
+      $adminID = $_POST["adminID"];
+      $firstName = $_POST["firstName"];
+      $lastName = $_POST["lastName"];
+      $email = $_POST["email"];
+      $contactNumber = $_POST["contactNumber"];
+
+      if (
+        empty($firstName) ||
+        empty($lastName) ||
+        empty($email) ||
+        empty($contactNumber)
+      ) {
+        echo "<script> Swal.fire({
+          icon: 'error',
+          title: 'Empty Field',
+          text: 'Please input missing field',
+        });
+        </script>";
+      } else {
+        $connection = $this->openConnection();
+        $stmt = $connection->prepare(
+          "UPDATE account_table SET `firstName` = ? , `lastName` = ? , `email` = ? , `contactNumber`= ?  WHERE ID = '$adminID'"
+        );
+        $stmt->execute([$firstName, $lastName, $email, $contactNumber]);
+        $row = $stmt->fetch();
+        echo "<script>  
+        Swal.fire({
+          position: 'center',
+          icon: 'success',
+          title: 'Admin Updated',
+          showConfirmButton: false,
+          timer: 1000
+        },function(){ window.location.href = 'admin.php';});
+      </script>";
+        return $row;
+      }
+    }
+  }
   // count admin
   public function count_admin()
   {
@@ -373,15 +447,32 @@ class WebStore
   // add product category
   public function add_category()
   {
-    if (isset($_POST["categoryBtn"])) {
-      $productCategory = $_POST["productCategory"];
+    if (isset($_POST["addCategory"])) {
+      $productCategory = $_POST["categoryName"];
 
-      $connection = $this->openConnection();
-      $stmt = $connection->prepare(
-        "INSERT INTO category_table (`categoryName`) VALUES (?)"
-      );
-      $stmt->execute([$productCategory]);
-      header("Location: addproduct.php");
+      if (empty($productCategory)) {
+        echo "<script> Swal.fire({
+          icon: 'error',
+          title: 'Empty Field',
+          text: 'Please input missing field',
+        });
+        </script>";
+      } else {
+        $connection = $this->openConnection();
+        $stmt = $connection->prepare(
+          "INSERT INTO category_table (`categoryName`) VALUES (?)"
+        );
+        $stmt->execute([$productCategory]);
+        echo "<script>  
+        Swal.fire({
+          position: 'center',
+          icon: 'success',
+          title: 'Material Added',
+          showConfirmButton: false,
+          timer: 1000
+        },function(){ window.location.href = 'addProduct.php';});
+      </script>";
+      }
     }
   }
 
@@ -401,140 +492,164 @@ class WebStore
     }
   }
 
-  // check product if already exists
-  // public function checkProduct($product_name){
-  //     $connection = $this->openConnection();
-  //     $stmt = $connection->prepare("SELECT LOWER('productName') FROM product_table WHERE productName = ?");
-  //     $stmt->execute([strtolower($product_name)]);
-  //     $count = $stmt->rowCount();
-  //     return $count;
-  // }
-
   // add products
   public function add_products()
   {
-    if (isset($_POST["addProductBtn"])) {
+    if (isset($_POST["addProduct"])) {
+      if (isset($_POST["category"])) {
+        $category = $_POST["category"];
+      }
       $productName = $_POST["productName"];
       $productDescription = $_POST["productDescription"];
-      $optionCategory = $_POST["categoryID"];
-      $productPrice = $_POST["productPrice"];
       $productColor = $_POST["productColor"];
       $coverPhoto = $_FILES["coverPhoto"]["name"];
-      $productImage1 = $_FILES["productImage1"]["name"];
-      $productImage2 = $_FILES["productImage2"]["name"];
-      $productImage3 = $_FILES["productImage3"]["name"];
-      // $minStocks = $_POST["minStocks"];
-
-      // check image if already exists
+      $image1 = $_FILES["image1"]["name"];
+      $image2 = $_FILES["image2"]["name"];
+      $image3 = $_FILES["image3"]["name"];
+      $sizeGuide = $_FILES["sizeGuide"]["name"];
       if (
-        file_exists("assets/img/" . $_FILES["coverPhoto"]["name"]) &&
-        file_exists("assets/img/" . $_FILES["productImage1"]["name"]) &&
-        file_exists("assets/img/" . $_FILES["productImage2"]["name"]) &&
-        file_exists("assets/img/" . $_FILES["productImage3"]["name"])
+        empty(isset($_POST["category"])) ||
+        empty($productName) ||
+        empty($productDescription) ||
+        empty($productColor) ||
+        empty($coverPhoto)
       ) {
-        echo "Image Already Exists";
+        echo "<script> Swal.fire({
+          icon: 'error',
+          title: 'Empty Field',
+          text: 'Please input missing field',
+        });
+        </script>";
       } else {
         $connection = $this->openConnection();
         $stmt = $connection->prepare(
-          "INSERT INTO product_table (`productName` , `productDescription` , `categoryID` , `productPrice` , `productColor`, `coverPhoto`, `productImage1`, `productImage2`, productImage3) VALUES (?,?,?,?,?,?,?,?,?)"
+          "INSERT INTO product_table (`categoryID`, `productName`, `productDescription`, `productColor`, `coverPhoto`, `image1`, `image2`, `image3`, `sizeGuide`) VALUES (?,?,?,?,?,?,?,?,?)"
         );
         $stmt->execute([
+          $category,
           $productName,
           $productDescription,
-          $optionCategory,
-          $productPrice,
           $productColor,
           $coverPhoto,
-          $productImage1,
-          $productImage2,
-          $productImage3,
-          // $minStocks,
+          $image1,
+          $image2,
+          $image3,
+          $sizeGuide,
         ]);
-        // move uploaded image in the image folder
         move_uploaded_file(
           $_FILES["coverPhoto"]["tmp_name"],
-          "assets/img/" . $_FILES["coverPhoto"]["name"]
+          "assets/img/" . $coverPhoto
         );
         move_uploaded_file(
-          $_FILES["productImage1"]["tmp_name"],
-          "assets/img/" . $_FILES["productImage1"]["name"]
+          $_FILES["image1"]["tmp_name"],
+          "assets/img/" . $image1
         );
         move_uploaded_file(
-          $_FILES["productImage2"]["tmp_name"],
-          "assets/img/" . $_FILES["productImage2"]["name"]
+          $_FILES["image2"]["tmp_name"],
+          "assets/img/" . $image2
         );
         move_uploaded_file(
-          $_FILES["productImage3"]["tmp_name"],
-          "assets/img/" . $_FILES["productImage3"]["name"]
+          $_FILES["image3"]["tmp_name"],
+          "assets/img/" . $image3
+        );
+        move_uploaded_file(
+          $_FILES["sizeGuide"]["tmp_name"],
+          "assets/img/" . $sizeGuide
         );
 
-        header("Location: addstocks.php");
-
-        // if($this->checkProduct($productName) == 0){
-        //     $connection = $this->openConnection();
-        //     $stmt = $connection->prepare("INSERT INTO product_table (`productName` , `productDescription` , `categoryID` , `productPrice` , `productColor` , `productImage`) VALUES (?,?,?,?,?,?)");
-        //     $stmt->execute([$productName, $productDescription, $optionCategory, $productPrice, $productColor, $productImage]);
-
-        //     move_uploaded_file($_FILES['productImage']['tmp_name'], "assets/img/".$_FILES['productImage']['name']);
-        //     header("Location: addvariation.php");
-        // }else{
-        //     echo 'Product Already Exists';
-        // header("Location: addproduct.php?productError=Product Already Exists.");
-        // }
+        header("Location: products.php");
       }
     }
   }
-  // delete products
-  public function delete_products()
-  {
-    if (isset($_POST["cancel"])) {
-      $ID = $_POST["productID"];
-      $connection = $this->openConnection();
-      $stmt = $connection->prepare(
-        "DELETE FROM product_table WHERE ID = '$ID'"
-      );
-      $stmt->execute();
 
-      header("Location: products.php");
+  // add costing
+  public function costing()
+  {
+    if (isset($_POST["finishProduct"])) {
+      $raw = isset($_POST["raw"]);
+      if (isset($_POST["materialID"])) {
+        $count = count($_POST["materialID"]);
+      }
+      $netSales = $_POST["netSales"];
+      $productCost = $_POST["productCost"];
+      $netIncome = $_POST["netIncome"];
+      $productID = $_POST["productID"];
+
+      if (
+        empty($raw) ||
+        empty($netSales) ||
+        empty($productCost) ||
+        empty($netIncome)
+      ) {
+        echo "<script> Swal.fire({
+          icon: 'error',
+          title: 'Empty Field',
+          text: 'Please input missing field',
+        });
+        </script>";
+      } else {
+        $count = count($_POST["materialID"]);
+        for ($i = 0; $i < $count; $i++) {
+          $materialID = $_POST["materialID"][$i];
+          $materialQty = $_POST["qty"][$i];
+          $connection = $this->openConnection();
+          $stmt = $connection->prepare(
+            "INSERT INTO costing_table ( `productID`, `materialID`, `materialQty`, `netSales`, `productCost`, `netIncome`) VALUES (?,?,?,?,?,?)"
+          );
+          $stmt->execute([
+            $productID,
+            $materialID,
+            $materialQty,
+            $netSales,
+            $productCost,
+            $netIncome,
+          ]);
+        }
+        header("Location: products.php");
+      }
     }
   }
 
-  //get product id for variation
-  public function get_productID()
+  //display single product ID
+  public function get_singleID($ID)
   {
     $connection = $this->openConnection();
-    $stmt = $connection->prepare(
-      "SELECT ID FROM product_table ORDER BY ID DESC"
-    );
-    $stmt->execute();
+    $stmt = $connection->prepare("SELECT * FROM product_table WHERE ID = ?");
+    $stmt->execute([$ID]);
     $product = $stmt->fetch();
-    return $product;
+    $count = $stmt->rowCount();
+
+    if ($count > 0) {
+      return $product;
+    } else {
+      return $this->show_dashboard404();
+    }
   }
 
-  // add product sizes and stocks
-  public function add_stocks()
+  // add stock qty
+  public function stock_in()
   {
-    if (isset($_POST["addStocksBtn"])) {
-      $count = count($_POST["countRow"]);
+    if (isset($_POST["addStock"])) {
       $productID = $_POST["productID"];
+      $wholeStock = $_POST["wholeStock"];
+      $noSize = $_POST["noSize"];
 
-      if (empty($count)) {
-        $sizes = $_POST["sizes"];
-        $stocks = $_POST["stocks"];
+      if (empty($noSize)) {
         $connection = $this->openConnection();
         $stmt = $connection->prepare(
-          "INSERT INTO stocks_table ( `productID`, `sizes` , `stocks`) VALUES (?,?,?)"
+          "INSERT INTO stocks_table ( `productID`, `stock`) VALUES (?,?)"
         );
-        $stmt->execute([$productID, $sizes, $stocks]);
+        $stmt->execute([$productID, $wholeStock]);
       } else {
+        $count = count($_POST["size"]);
         for ($i = 0; $i < $count; $i++) {
-          $sizes = $_POST["sizes"][$i];
-          $stocks = $_POST["stocks"][$i];
+          $size = $_POST["size"][$i];
+          $stock = $_POST["stocks"][$i];
           $connection = $this->openConnection();
           $stmt = $connection->prepare(
-            "INSERT INTO stocks_table ( `productID`, `sizes` , `stocks`) VALUES (?,?,?)"
+            "INSERT INTO stocks_table ( `productID`, `size`, `stock`) VALUES (?,?,?)"
           );
-          $stmt->execute([$productID, $sizes, $stocks]);
+          $stmt->execute([$productID, $size, $stock]);
         }
       }
       header("Location: products.php");
@@ -549,12 +664,20 @@ class WebStore
     die();
   }
 
+  // show 404 page in dashboard
+  public function show_dashboard404()
+  {
+    http_response_code(404);
+    header("Location: dashboard404.php");
+    die();
+  }
+
   // display all products
   public function get_products()
   {
     $connection = $this->openConnection();
     $stmt = $connection->prepare(
-      "SELECT product_table.ID, product_table.productName, category_table.categoryName, product_table.productPrice, product_table.productColor, product_table.coverPhoto, product_table.productImage1, product_table.productImage2,product_table.productImage3, GROUP_CONCAT(sizes SEPARATOR '<br>' ) AS sizes, GROUP_CONCAT(stocks SEPARATOR '<br>') AS stocks FROM product_table LEFT JOIN category_table ON product_table.categoryID = category_table.ID LEFT JOIN stocks_table ON product_table.ID = stocks_table.productID GROUP BY (product_table.ID)"
+      "SELECT product.ID, productName, categoryName, productColor, coverPhoto, netSales, productCost, netIncome FROM (SELECT * FROM product_table) product LEFT JOIN category_table category ON product.categoryID = category.ID LEFT JOIN costing_table costing ON product.ID = costing.productID GROUP BY product.ID"
     );
     $stmt->execute();
     $products = $stmt->fetchall();
@@ -572,7 +695,7 @@ class WebStore
   {
     $connection = $this->openConnection();
     $stmt = $connection->prepare(
-      "SELECT * FROM product_table ORDER BY RAND() LIMIT 3"
+      "SELECT product.ID, productName, productColor, coverPhoto, netSales FROM (SELECT * FROM product_table) product LEFT JOIN costing_table costing ON product.ID = costing.productID GROUP BY product.ID ORDER BY RAND() LIMIT 3"
     );
     $stmt->execute();
     $randomProducts = $stmt->fetchall();
@@ -589,9 +712,8 @@ class WebStore
   public function get_singleproduct($ID)
   {
     $connection = $this->openConnection();
-    // $stmt = $connection->prepare("SELECT * FROM product_table WHERE ID = ?");
     $stmt = $connection->prepare(
-      "SELECT product.ID, productName, productDescription, categoryName, productPrice, productColor, coverPhoto, productImage1, productImage2, productImage3 FROM (SELECT * FROM product_table WHERE product_table.ID = ?) product LEFT JOIN category_table category ON product.categoryID = category.categoryName"
+      "SELECT product.ID, productName, productDescription, categoryName, netSales, productColor, coverPhoto, image1, image2, image3, sizeGuide FROM (SELECT * FROM product_table WHERE product_table.ID = ?) product LEFT JOIN category_table category ON product.categoryID = category.ID LEFT JOIN costing_table costing ON product.ID = costing.productID"
     );
     $stmt->execute([$ID]);
     $product = $stmt->fetch();
@@ -604,8 +726,8 @@ class WebStore
     }
   }
 
-  //display product sizes and stocks
-  public function view_all_stocks($productID)
+  //display product sizes and stocks every single product
+  public function view_single_stock($productID)
   {
     $connection = $this->openConnection();
     $stmt = $connection->prepare(
@@ -622,6 +744,25 @@ class WebStore
     }
   }
 
+  //display product sizes and stocks
+  public function view_all_stocks($productID)
+  {
+    $connection = $this->openConnection();
+    $stmt = $connection->prepare(
+      "SELECT GROUP_CONCAT(size SEPARATOR '<br>') as size, GROUP_CONCAT(stock SEPARATOR '<br>') as stock, SUM(stock) as totalStocks FROM stocks_table WHERE productID = ? GROUP BY productID"
+    );
+    $stmt->execute([$productID]);
+    $stocks = $stmt->fetchall();
+    $count = $stmt->rowCount();
+
+    if ($count > 0) {
+      return $stocks;
+    } else {
+      return false;
+    }
+  }
+
+  // check if the customer signed in or not before checkout
   public function checkout()
   {
     if (isset($_POST["checkout"])) {
@@ -630,6 +771,324 @@ class WebStore
         header("Location: checkoutInfo.php?ID=$ID");
       } else {
         header("Location: login.php");
+      }
+    }
+  }
+
+  // add raw materials
+  public function add_material()
+  {
+    if (isset($_POST["addMaterials"])) {
+      $materialName = $_POST["materialName"];
+      $unitPrice = $_POST["unitPrice"];
+      $stockQty = $_POST["stockQty"];
+      if (isset($_POST["supplierID"])) {
+        $supplierID = $_POST["supplierID"];
+      }
+
+      if (
+        empty($materialName) ||
+        empty($unitPrice) ||
+        empty($stockQty) ||
+        empty(isset($_POST["supplierID"]))
+      ) {
+        echo "<script> Swal.fire({
+          icon: 'error',
+          title: 'Empty Field',
+          text: 'Please input missing field',
+        });
+        </script>";
+      } else {
+        $connection = $this->openConnection();
+        $stmt = $connection->prepare(
+          "INSERT INTO rawmaterials_table (`materialName` , `unitPrice` , `stockQty` , `supplierID`) VALUES (?,?,?,?)"
+        );
+        $stmt->execute([$materialName, $unitPrice, $stockQty, $supplierID]);
+        echo "<script>  
+          Swal.fire({
+            position: 'center',
+            icon: 'success',
+            title: 'Material Added',
+            showConfirmButton: false,
+            timer: 1000
+          },function(){ window.location.href = 'materials.php';});
+        </script>";
+      }
+    }
+  }
+
+  // display raw materials
+  public function get_all_materials()
+  {
+    $connection = $this->openConnection();
+    $stmt = $connection->prepare(
+      "SELECT materials.ID, materialName, unitPrice, stockQty, supplierID, supplierName FROM rawmaterials_table materials LEFT JOIN supplier_table supplier ON materials.supplierID = supplier.ID"
+    );
+    $stmt->execute();
+    $materials = $stmt->fetchall();
+    $count = $stmt->rowCount();
+
+    if ($count > 0) {
+      return $materials;
+    } else {
+      return false;
+    }
+  }
+
+  // display used raw materials
+  public function used_materials($rawID)
+  {
+    $connection = $this->openConnection();
+    $stmt = $connection->prepare(
+      "SELECT SUM(materialQty) as materialQty FROM costing_table WHERE costing_table.materialID = ? GROUP BY costing_table.materialID"
+    );
+    $stmt->execute([$rawID]);
+    $usedMaterials = $stmt->fetchall();
+    $count = $stmt->rowCount();
+
+    if ($count > 0) {
+      return $usedMaterials;
+    } else {
+      return false;
+    }
+  }
+
+  // display added inventory raw materials
+  public function get_added_stock_materials($rawID)
+  {
+    $connection = $this->openConnection();
+    $stmt = $connection->prepare(
+      "SELECT stockQty, SUM(addedQty) as addedQty FROM inventorymaterial_table inventory LEFT JOIN rawmaterials_table materials ON inventory.materialID = materials.ID WHERE inventory.materialID = ? GROUP BY inventory.materialID"
+    );
+    $stmt->execute([$rawID]);
+    $addedInventoryMaterials = $stmt->fetchall();
+    $count = $stmt->rowCount();
+
+    if ($count > 0) {
+      return $addedInventoryMaterials;
+    } else {
+      return false;
+    }
+  }
+
+  // update raw materials
+  public function update_material()
+  {
+    if (isset($_POST["updateMaterial"])) {
+      $materialID = $_POST["materialID"];
+      $materialName = $_POST["materialName"];
+      $unitPrice = $_POST["unitPrice"];
+      $stockQty = $_POST["stockQty"];
+      $supplierID = $_POST["supplierID"];
+
+      if (empty($materialName) || empty($unitPrice) || empty($stockQty)) {
+        echo "<script> Swal.fire({
+          icon: 'error',
+          title: 'Empty Field',
+          text: 'Please input missing field',
+        });
+        </script>";
+      } else {
+        $connection = $this->openConnection();
+        $stmt = $connection->prepare(
+          "UPDATE rawmaterials_table SET `materialName` = ?, `unitPrice` = ?, `stockQty` = ?, `supplierID` = ? WHERE ID = '$materialID'"
+        );
+        $stmt->execute([$materialName, $unitPrice, $stockQty, $supplierID]);
+        $row = $stmt->fetch();
+        echo "<script>  
+      Swal.fire({
+        position: 'center',
+        icon: 'success',
+        title: 'Material Updated',
+        showConfirmButton: false,
+        timer: 1000
+      },function(){ window.location.href = 'materials.php';});
+      </script>";
+        return $row;
+      }
+    }
+  }
+
+  // inventory raw material
+  public function add_inventory_materials()
+  {
+    if (isset($_POST["addInventoryMaterials"])) {
+      $addedStockQty = $_POST["addedStockQty"];
+      if (isset($_POST["material"])) {
+        $material = $_POST["material"];
+      }
+
+      if (empty($addedStockQty) || empty(isset($_POST["material"]))) {
+        echo "<script> Swal.fire({
+            icon: 'error',
+            title: 'Empty Field',
+            text: 'Please input missing field',
+          });
+          </script>";
+      } else {
+        $connection = $this->openConnection();
+        $stmt = $connection->prepare(
+          "INSERT INTO inventorymaterial_table (`materialID` , `addedQty`) VALUES (?,?)"
+        );
+        $stmt->execute([$material, $addedStockQty]);
+        echo "<script>  
+            Swal.fire({
+              position: 'center',
+              icon: 'success',
+              title: 'Inventory Added',
+              showConfirmButton: false,
+              timer: 1000
+            },function(){ window.location.href = 'inventorymaterial.php';});
+          </script>";
+      }
+    }
+  }
+
+  // display inventory added raw materials
+  public function get_inventory_materials_added()
+  {
+    $connection = $this->openConnection();
+    $stmt = $connection->prepare(
+      "SELECT inventory.ID, materialID, materialName, addedQty, dateTime FROM (SELECT * FROM inventorymaterial_table) inventory LEFT JOIN rawmaterials_table materials ON inventory.materialID = materials.ID"
+    );
+    $stmt->execute();
+    $inventoryMaterials = $stmt->fetchall();
+    $count = $stmt->rowCount();
+
+    if ($count > 0) {
+      return $inventoryMaterials;
+    } else {
+      return false;
+    }
+  }
+
+  // update inventory raw materials
+  public function update_inventory_material()
+  {
+    if (isset($_POST["updateInventoryMaterial"])) {
+      $inventoryMaterialID = $_POST["inventoryMaterialID"];
+      $material = $_POST["material"];
+      $addedStockQty = $_POST["addedStockQty"];
+
+      if (empty($addedStockQty)) {
+        echo "<script> Swal.fire({
+          icon: 'error',
+          title: 'Empty Field',
+          text: 'Please input missing field',
+        });
+        </script>";
+      } else {
+        $connection = $this->openConnection();
+        $stmt = $connection->prepare(
+          "UPDATE inventorymaterial_table SET `materialID` = ?, `addedQty` = ? WHERE ID = '$inventoryMaterialID'"
+        );
+        $stmt->execute([$material, $addedStockQty]);
+        $row = $stmt->fetch();
+        echo "<script>
+      Swal.fire({
+        position: 'center',
+        icon: 'success',
+        title: 'Inventory Updated',
+        showConfirmButton: false,
+        timer: 1000
+      },function(){ window.location.href = 'inventorymaterial.php';});
+      </script>";
+        return $row;
+      }
+    }
+  }
+
+  // add supplier
+  public function add_supplier()
+  {
+    if (isset($_POST["supplier"])) {
+      $supplierName = $_POST["supplierName"];
+      $supplierAddress = $_POST["supplierAddress"];
+      $supplierContactNo = $_POST["supplierContactNo"];
+
+      if (
+        empty($supplierName) ||
+        empty($supplierAddress) ||
+        empty($supplierContactNo)
+      ) {
+        echo "<script> Swal.fire({
+          icon: 'error',
+          title: 'Empty Field',
+          text: 'Please input missing field',
+        });
+        </script>";
+      } else {
+        $connection = $this->openConnection();
+        $stmt = $connection->prepare(
+          "INSERT INTO supplier_table (`supplierName` , `supplierAddress` , `supplierContactNumber`) VALUES (?,?,?)"
+        );
+        $stmt->execute([$supplierName, $supplierAddress, $supplierContactNo]);
+        echo "<script>  
+          Swal.fire({
+            position: 'center',
+            icon: 'success',
+            title: 'Supplier Added',
+            showConfirmButton: false,
+            timer: 1000
+          },function(){ window.location.href = 'supplier.php';});
+        </script>";
+      }
+    }
+  }
+
+  // display supplier
+  public function get_all_supplier()
+  {
+    $connection = $this->openConnection();
+    $stmt = $connection->prepare("SELECT * FROM supplier_table");
+    $stmt->execute();
+    $supplier = $stmt->fetchall();
+    $count = $stmt->rowCount();
+
+    if ($count > 0) {
+      return $supplier;
+    } else {
+      return false;
+    }
+  }
+
+  // update supplier
+  public function update_supplier()
+  {
+    if (isset($_POST["updateSupplier"])) {
+      $supplierID = $_POST["supplierID"];
+      $supplierName = $_POST["supplierName"];
+      $supplierAddress = $_POST["supplierAddress"];
+      $supplierContactNo = $_POST["supplierContactNo"];
+
+      if (
+        empty($supplierName) ||
+        empty($supplierAddress) ||
+        empty($supplierContactNo)
+      ) {
+        echo "<script> Swal.fire({
+          icon: 'error',
+          title: 'Empty Field',
+          text: 'Please input missing field',
+        });
+        </script>";
+      } else {
+        $connection = $this->openConnection();
+        $stmt = $connection->prepare(
+          "UPDATE supplier_table SET `supplierName` = ?, `supplierAddress` = ?, `supplierContactNumber` = ? WHERE ID = '$supplierID'"
+        );
+        $stmt->execute([$supplierName, $supplierAddress, $supplierContactNo]);
+        $row = $stmt->fetch();
+        echo "<script>  
+        Swal.fire({
+          position: 'center',
+          icon: 'success',
+          title: 'Supplier Updated',
+          showConfirmButton: false,
+          timer: 1000
+        },function(){ window.location.href = 'supplier.php';});
+        </script>";
+        return $row;
       }
     }
   }

@@ -1,130 +1,152 @@
 <?php
 require_once "../class/webstoreclass.php";
 $user = $store->get_userdata();
-$store->add_category();
-$store->add_products();
-$categories = $store->get_categories();
 $title = "Add New Product";
 include_once "../includes/dashboard_header.php";
-include_once "../includes/dashboard_sidebar.php";
-include_once "../includes/dashboard_navbar.php";
 ?>
-<div class="modal fade" id="addnewcategory" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Add New Category</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <form action="" method="POST">
-        <div class="modal-body">
-          <div class="form-group">
-            <label>Category Name</label>
-            <input type="text" name="productCategory" class="form-control">
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="submit" name="categoryBtn" class="btn btn-primary">Add</button>
-        </div>
-      </form>
-    </div>
-  </div>
-</div>
-<!-- Begin Page Content -->
-<div class="container-fluid">
-
-<!-- Page Heading -->
-  <h1 class="h3 mb-4 text-gray-800">Add New Product</h1>
-
-  <div class="card shadow mb-4">
-    <!-- Product Information Form -->
-    <div class="card-header py-3">
-      <h6 class="m-0 font-weight-bold text-primary">Product Information</h6>
-    </div>
-    <form class="card-body" method="post" enctype="multipart/form-data" id="productForm">
-      <div class="form-group">
-          <i class="fas fa-asterisk fa-xs" style="color:red"></i>
-          <label>Product Category
-            <button type="button" class="btn btn-primary btn-icon-split" data-toggle="modal" data-target="#addnewcategory">
-              <span class="icon text-white-50">
-                  <i class="fas fa-plus"></i>
-              </span>
-            </button>
-          </label>
-          <select class="form-control" name="categoryID" required>
-            <option selected disabled>Select Category</option>
-            <?php foreach ($categories as $category) { ?>   
-              <option value="<?= $category["ID"] ?>"><?= $category[
+  <body id="page-top">
+    <?php
+    $store->add_category();
+    $categories = $store->get_categories();
+    $store->add_products();
+    ?>
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+      <?php include_once "../includes/dashboard_sidebar.php"; ?>
+      <!-- Content Wrapper -->
+      <div id="content-wrapper" class="d-flex flex-column">
+          <!-- Main Content -->
+          <div id="content">
+            <?php include_once "../includes/dashboard_navbar.php"; ?>
+              <!-- Begin Page Content -->
+              <div class="container-fluid">
+                <!-- Category Modal Form -->
+                <div class="modal fade" id="categoryModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                  <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLongTitle">Add New Category</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                        <form method="post" id="categoryForm">
+                          <div class="form-group">
+                            <label>Category Name</label>
+                            <input type="text" name="categoryName" class="form-control" placeholder="Category Name">
+                          </div>
+                        </form>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-light" data-dismiss="modal">Cancel</button>
+                        <button type="submit" name="addCategory" class="btn btn-secondary" form="categoryForm">Add</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- End of Modal Form -->
+                <!-- Page Heading -->
+                <h1 class="h3 mb-4 text-gray-800">Add New Product</h1>
+                <!-- Product Form -->
+                <div class="card shadow mb-4">
+                  <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-gray-800">Product Information</h6>
+                  </div>
+                  <div class="card-body">
+                    <form method="post" enctype="multipart/form-data" id="productForm">
+                      <div class="form-group">
+                        <label>Category 
+                          <button type="button" class="btn btn-secondary btn-icon-split" data-toggle="modal" data-target="#categoryModal">
+                            <span class="icon text">
+                              <i class="fas fa-plus"></i>
+                            </span>
+                          </button>
+                        </label>
+                        <select class="form-control" name="category">
+                          <option selected="selected" disabled="disabled">Select Category</option>
+                          <?php foreach ($categories as $category) { ?>
+                          <option value="<?= $category["ID"] ?>"><?= $category[
   "categoryName"
 ] ?></option>
-            <?php } ?>
-          </select>
-        </div>
-      <div class="form-group">
-        <i class="fas fa-asterisk fa-xs" style="color:red"></i>
-        <label>Product Name</label>
-        <input type="text" name="productName" class="form-control" required>
-      </div>
-      <div class="form-group">
-        <i class="fas fa-asterisk fa-xs" style="color:red"></i>
-        <label>Product Description</label>
-        <textarea class="form-control" name="productDescription" rows="3" required></textarea>
-      </div>
-      <div class="form-group">
-        <i class="fas fa-asterisk fa-xs" style="color:red"></i>
-        <label>Product Price</label>
-        <div class="input-group mb-3">
-          <div class="input-group-prepend">
-            <span class="input-group-text">P</span>
+                          <?php } ?>
+                        </select>
+                      </div>
+                      <div class="form-group">
+                        <label>Product Name</label>
+                        <input type="text" name="productName" class="form-control" placeholder="Product Name">
+                      </div>
+                      <div class="form-group">
+                        <label>Product Description</label>
+                        <textarea class="form-control" name="productDescription" rows="3" placeholder="Product Description"></textarea>
+                      </div>
+                      <div class="form-group">
+                        <label>Color</label>
+                        <input type="text" name="productColor" class="form-control" placeholder="Color">
+                      </div>
+                      <div class="row">
+                        <div class="col-lg-3">
+                          <div class="form-group">
+                            <label>Cover Photo</label>
+                            <input type="file" name="coverPhoto" class="form-control-file">
+                          </div>
+                        </div>
+                        <div class="col-lg-3">
+                          <div class="form-group">
+                            <label>Image 1</label>
+                            <input type="file" name="image1" class="form-control-file">
+                          </div>
+                        </div>
+                        <div class="col-lg-3">
+                          <div class="form-group">
+                            <label>Image 2</label>
+                            <input type="file" name="image2" class="form-control-file">
+                          </div>
+                        </div>
+                        <div class="col-lg-3">
+                          <div class="form-group">
+                            <label>Image 3</label>
+                            <input type="file" name="image3" class="form-control-file">
+                          </div>
+                        </div>
+                        <div class="col-lg-3">
+                          <div class="form-group">
+                            <label>Size Guide</label>
+                            <input type="file" name="sizeGuide" class="form-control-file">
+                          </div>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+                <div class="card body mb-4 py-1">
+                  <div class="d-flex flex-row-reverse">
+                    <div class="p-2">
+                      <button type="submit" name="addProduct" class="btn btn-secondary btn-icon-split" form="productForm">
+                        <span class="text">Submit</span>
+                      </button>
+                    </div>              
+                    <div class="p-2">
+                      <a href="products.php" class="btn btn-secondary btn-icon-split">
+                        <span class="text">Cancel</span>
+                      </a>
+                    </div>
+                  </div>              
+                </div>
+              </div>
+              <!-- /.container-fluid -->
           </div>
-          <input type="text" name="productPrice" id="price" class="form-control" aria-label="Amount (to the nearest dollar)" placeholder="Price" required>
-          <div class="input-group-append">
-            <span class="input-group-text">.00</span>
-          </div>
-        </div>
-      </div>
-      <div id="stockContainer" class="form-group">
-        <i class="fas fa-asterisk fa-xs" style="color:red"></i>
-        <label>Product Color</label>
-        <input type="text" name="productColor" class="form-control" required>
-      </div>  
-      <div class="form-row">
-        <div class="form-group col-md-2">
-          <i class="fas fa-asterisk fa-xs" style="color:red"></i>
-          <label>Cover Photo</label>
-          <input type="file" class="form-control-file" name="coverPhoto" required>
-        </div>
-        <div class="form-group col-md-2">
-          <label>Product Image 1</label>
-          <input type="file" class="form-control-file" name="productImage1">
-        </div>       
-        <div class="form-group col-md-2">
-          <label>Product Image 2</label>
-          <input type="file" class="form-control-file" name="productImage2">
-        </div>       
-        <div class="form-group col-md-2">
-          <label>Product Image 3</label>
-          <input type="file" class="form-control-file" name="productImage3">
-        </div>       
-      </div>
-      <div class="d-sm-flex justify-content-end">
-        <a href="products.php">
-          <button type="button" class="btn btn-secondary btn-icon-split mr-4">
-            <span class="text">Cancel</span>
-          </button>
-        </a>
-        <button type="submit"  name="addProductBtn" class="btn btn-primary btn-icon-split"> 
-          <span class="text">Next</span>
-        </button>
+          <!-- End of Main Content -->
+          <?php require_once "../includes/dashboard_footer.php"; ?>
+      </div> 
+      <!-- End of Content Wrapper -->
     </div>
-    </form>
-  </div>
-</div>
-<!-- end of container-fluid -->
-</div>
-<!-- End of Main Content -->
-<?php require_once "../includes/dashboard_footer.php"; ?>
-<?php require_once "../includes/dashboard_scripts.php"; ?>
+    <!-- End of Page Wrapper -->
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+      <i class="fas fa-angle-up"></i>
+    </a>
+    <?php require_once "../includes/dashboard_scripts.php"; ?>
+    <script src="./assets/js/stock.js"></script>
+  </body>
+</html>

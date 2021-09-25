@@ -9,61 +9,7 @@ require_once "../includes/header.php";
 ?>
   <body>
     <div class="page-container">
-      <!-- start of navbar -->
-      <header id="main-header" class="bg">
-        <div class="container flex">
-          <div class="logo">
-            <a href="index.php"
-              ><img src="./assets/img/logo.png" alt="Logo"
-            /></a>
-          </div>
-          <nav>
-            <ul class="nav-links">
-              <li><a href="index.php" class="nav-link">Home</a></li>
-              <li><a href="shop.php" class="nav-link">Shop</a></li>
-              <li><a href="#" class="nav-link">About</a></li>
-              <li><a href="#" class="nav-link">Contact</a></li>
-              <li>
-                <a href="login.php" class="login-nav btn outline-primary-btn"
-                  >Login</a
-                >
-              </li>
-            </ul>
-          </nav>
-          <div class="side-menu">
-            <div class="icon-menu">
-              <div>
-                <span
-                  class="iconify search-icon"
-                  data-icon="fe:search"
-                  data-inline="false"
-                ></span>
-              </div>
-              <div class="shopping-container">
-                <a href="cart.php">
-                  <span
-                    class="iconify cart-icon"
-                    data-icon="gg:shopping-bag"
-                    data-inline="false"
-                  ></span
-                ></a>
-                <span id="counter" class="counter">0</span>     
-              </div>
-            </div>
-            <a
-              href="login.php"
-              class="btn outline-primary-btn login-btn"
-              >Login</a
-            >
-            <div class="burger-btn">
-              <div class="line1"></div>
-              <div class="line2"></div>
-              <div class="line3"></div>
-            </div>
-          </div>
-        </div>
-      </header>
-      <!-- end of navbar -->
+      <?php include_once "../includes/navbar.php"; ?>
       <main>
         <section class="login-wrapper">
           <div class="container">
