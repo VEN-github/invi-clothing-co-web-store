@@ -18,11 +18,10 @@
         <li><a href="#" class="nav-link <?= $title === "Contact"
           ? "active"
           : "" ?>">Contact</a></li>
-        <?php if (isset($_SESSION["userdata"])) { ?>
-        <?php } else { ?>
-        <li>
-          <a href="login.php" class="login-nav btn outline-primary-btn">Login</a>
-        </li>
+        <?php if (!isset($_SESSION["userdata"])) { ?>  
+          <li>
+            <a href="login.php" class="login-nav btn outline-primary-btn">Login</a>
+          </li>
         <?php } ?>
       </ul>
     </nav>
