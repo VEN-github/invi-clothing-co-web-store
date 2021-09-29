@@ -280,7 +280,9 @@ class WebStore
       session_start();
     }
     $_SESSION["userdata"] = null;
+    $_SESSION["checkout"] = null;
     unset($_SESSION["userdata"]);
+    unset($_SESSION["checkout"]);
   }
 
   //admin sign up
@@ -766,11 +768,258 @@ class WebStore
   public function checkout()
   {
     if (isset($_POST["checkout"])) {
+      if (!isset($_SESSION)) {
+        session_start();
+      }
+      $_SESSION["checkout"] = null;
+      unset($_SESSION["checkout"]);
       if (isset($_SESSION["userdata"])) {
         $ID = $_SESSION["userdata"]["ID"];
         header("Location: checkoutInfo.php?ID=$ID");
       } else {
         header("Location: login.php");
+      }
+    }
+  }
+
+  // list of regions
+  public function region()
+  {
+    $connection = $this->openConnection();
+    $stmt = $connection->prepare("SELECT * FROM provinces");
+    $stmt->execute();
+    $regions = $stmt->fetchall();
+    $count = $stmt->rowCount();
+
+    if ($count > 0) {
+      return $regions;
+    } else {
+      return false;
+    }
+  }
+
+  // checkout process
+  public function checkout_process()
+  {
+    if (isset($_POST["proceedShip"])) {
+      if (!isset($_SESSION)) {
+        session_start();
+      }
+      $_SESSION["checkout"]["method"] = null;
+      $_SESSION["checkout"]["sf"] = null;
+      unset($_SESSION["checkout"]["method"]);
+      unset($_SESSION["checkout"]["sf"]);
+      $firstName = $_POST["firstName"];
+      $lastName = $_POST["lastName"];
+      $address1 = $_POST["address1"];
+      $address2 = $_POST["address2"];
+      $city = $_POST["city"];
+      $postalCode = $_POST["postalCode"];
+      if (isset($_POST["region"])) {
+        $region = $_POST["region"];
+      }
+      if (isset($_POST["country"])) {
+        $country = $_POST["country"];
+      }
+      $phoneNumber = $_POST["phoneNumber"];
+      if (isset($_POST["primaryAddress"])) {
+        $primaryAddress = $_POST["primaryAddress"];
+      }
+      if (
+        empty($firstName) ||
+        empty($lastName) ||
+        empty($address1) ||
+        empty($city) ||
+        empty($postalCode) ||
+        empty(isset($_POST["region"])) ||
+        empty(isset($_POST["country"])) ||
+        empty($phoneNumber)
+      ) {
+        echo "<script> Swal.fire({
+          icon: 'error',
+          title: 'Empty Field',
+          text: 'Please input missing field',
+        });
+        </script>";
+      } else {
+        $_SESSION["checkout"]["firstName"] = $firstName;
+        $_SESSION["checkout"]["lastName"] = $lastName;
+        $_SESSION["checkout"]["address1"] = $address1;
+        $_SESSION["checkout"]["address2"] = $address2;
+        $_SESSION["checkout"]["city"] = $city;
+        $_SESSION["checkout"]["postalCode"] = $postalCode;
+        $_SESSION["checkout"]["region"] = $region;
+        $_SESSION["checkout"]["country"] = $country;
+        $_SESSION["checkout"]["phoneNumber"] = $phoneNumber;
+        $_SESSION["checkout"]["primaryAddress"] = $primaryAddress;
+
+        if (isset($_SESSION["userdata"])) {
+          $ID = $_SESSION["userdata"]["ID"];
+          header("Location: checkoutship.php?ID=$ID");
+        }
+      }
+    }
+    if (isset($_POST["proceedPayment"])) {
+      if (!isset($_SESSION)) {
+        session_start();
+      }
+      if (isset($_POST["delivery"])) {
+        $delivery = $_POST["delivery"];
+      }
+      $sf = $_POST["sFee"];
+      if (empty(isset($_POST["delivery"]))) {
+        echo "<script> Swal.fire({
+            icon: 'error',
+            title: 'Empty Field',
+            text: 'Please select shipping method',
+          });
+          </script>";
+      } else {
+        $_SESSION["checkout"]["method"] = $delivery;
+        $_SESSION["checkout"]["sf"] = $sf;
+        if (isset($_SESSION["userdata"])) {
+          $ID = $_SESSION["userdata"]["ID"];
+          header("Location: checkoutpayment.php?ID=$ID");
+        }
+      }
+    }
+    if (isset($_POST["backShip"])) {
+      if (!isset($_SESSION)) {
+        session_start();
+      }
+      $_SESSION["checkout"]["method"] = null;
+      $_SESSION["checkout"]["sf"] = null;
+      unset($_SESSION["checkout"]["method"]);
+      unset($_SESSION["checkout"]["sf"]);
+      if (isset($_SESSION["userdata"])) {
+        $ID = $_SESSION["userdata"]["ID"];
+        header("Location: checkoutship.php?ID=$ID");
+      }
+    }
+    if (isset($_POST["proceedReview"])) {
+      if (!isset($_SESSION)) {
+        session_start();
+      }
+      if (isset($_POST["payment"])) {
+        $payment = $_POST["payment"];
+      }
+      if (empty(isset($_POST["payment"]))) {
+        echo "<script> Swal.fire({
+            icon: 'error',
+            title: 'Empty Field',
+            text: 'Please select payment method',
+          });
+          </script>";
+      } else {
+        $_SESSION["checkout"]["payment"] = $payment;
+        if (isset($_SESSION["userdata"])) {
+          $ID = $_SESSION["userdata"]["ID"];
+          header("Location: checkoutreview.php?ID=$ID");
+        }
+      }
+    }
+  }
+
+  // get checkout
+  public function get_checkout()
+  {
+    if (!isset($_SESSION)) {
+      session_start();
+    }
+    if (isset($_SESSION["checkout"])) {
+      return $_SESSION["checkout"];
+    } else {
+      return null;
+    }
+  }
+
+  // sales
+  public function sales()
+  {
+    if (isset($_POST["complete"])) {
+      $count = count($_POST["productID"]);
+      $shipMethod = $_POST["deliveryMethod"];
+      $shipFee = $_POST["sf"];
+      $paymentMethod = $_POST["payment"];
+      $totalAmount = $_POST["totalAmount"];
+      $acctID = $_POST["acctID"];
+      $paymentStatus = $_POST["paymentStatus"];
+      $orderStatus = $_POST["orderStatus"];
+
+      for ($i = 0; $i < $count; $i++) {
+        $productID = $_POST["productID"][$i];
+        $stockID = $_POST["stockID"][$i];
+        $salesQty = $_POST["salesQty"][$i];
+        $connection = $this->openConnection();
+        $stmt = $connection->prepare(
+          "INSERT INTO sales_table ( `productID`, `stockID`, `salesQty`, `shipMethod`, `shipFee`, `paymentMethod`, `totalAmount`, `accountId`, `paymentStatus`, `orderStatus`) VALUES (?,?,?,?,?,?,?,?,?,?)"
+        );
+        $stmt->execute([
+          $productID,
+          $stockID,
+          $salesQty,
+          $shipMethod,
+          $shipFee,
+          $paymentMethod,
+          $totalAmount,
+          $acctID,
+          $paymentStatus,
+          $orderStatus,
+        ]);
+      }
+      if (!isset($_SESSION)) {
+        session_start();
+      }
+      $_SESSION["checkout"] = null;
+      unset($_SESSION["checkout"]);
+      if (isset($_SESSION["userdata"])) {
+        $ID = $_SESSION["userdata"]["ID"];
+        header("Location: orderConfirmed.php?ID=$ID");
+      }
+    }
+  }
+
+  // shipping address
+  public function shipping_address()
+  {
+    if (isset($_POST["complete"])) {
+      $acctID = $_POST["acctID"];
+      $firstName = $_POST["firstName"];
+      $lastName = $_POST["lastName"];
+      $address1 = $_POST["address1"];
+      $address2 = $_POST["address2"];
+      $city = $_POST["city"];
+      $postalCode = $_POST["postalCode"];
+      $region = $_POST["region"];
+      $country = $_POST["country"];
+      $phoneNumber = $_POST["phoneNumber"];
+      $primaryAddress = $_POST["primaryAddress"];
+
+      $connection = $this->openConnection();
+      $stmt = $connection->prepare(
+        "INSERT INTO address_table (`firstName`, `lastName`, `address1`, `address2`, `city`, `postalCode`, `region`, `country`, `phoneNumber`, `addressType`, `accountID`) VALUES (?,?,?,?,?,?,?,?,?,?,?)"
+      );
+      $stmt->execute([
+        $firstName,
+        $lastName,
+        $address1,
+        $address2,
+        $city,
+        $postalCode,
+        $region,
+        $country,
+        $phoneNumber,
+        $primaryAddress,
+        $acctID,
+      ]);
+      if (!isset($_SESSION)) {
+        session_start();
+      }
+      $_SESSION["checkout"] = null;
+      unset($_SESSION["checkout"]);
+      if (isset($_SESSION["userdata"])) {
+        $ID = $_SESSION["userdata"]["ID"];
+        header("Location: orderConfirmed.php?ID=$ID");
       }
     }
   }

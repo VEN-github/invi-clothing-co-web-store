@@ -125,6 +125,7 @@ include_once "../includes/header.php";
               </div>
               <?php foreach ($stocks as $stock) { ?>
                 <?php if (is_null($stock["size"])) { ?>
+                  <input type="hidden" id="stockID" value="<?= $stock["ID"] ?>">
                   <div class="product-quantity">
                     <p>Quantity:</p>
                     <div class="qty">

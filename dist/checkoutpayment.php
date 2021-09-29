@@ -4,15 +4,17 @@ $userProfile = $store->setProfile();
 $user = $store->get_userdata();
 $title = "Payment - Checkout";
 include_once "../includes/header.php";
+$store->checkout_process();
+$checkout = $store->get_checkout();
 ?>
   <body>
     <div class="page-container">
       <main>
         <section id="checkout-process">
           <div class="checkout-banner">
-            <!-- <div class="container">
+            <div class="container">
               <img src="./assets/img/logo.png" alt="Logo" />
-            </div> -->
+            </div>
           </div>
           <div class="container">
             <div class="checkout-wrapper">
@@ -43,13 +45,19 @@ include_once "../includes/header.php";
                     >
                   </div>
                 </div>
-                <form action="checkoutreview.php?ID=<?= $user[
-                  "ID"
-                ] ?>" method="post">
+                <form method="post">
                   <div class="form">
                     <h4>Choose Payment Method</h4>
-                    <label class="radio-field">
-                      <input type="radio" name="payment" id="" value="Cash on Delivery (COD)" class="radio" />
+                    <label class="radio-field" id="cod" <?= !empty(
+                      $checkout["payment"]
+                    ) && $checkout["payment"] == "paypal"
+                      ? "style='pointer-events:none'"
+                      : "" ?>>
+                      <input type="radio" name="payment" value="Cash on Delivery (COD)" class="radio"
+                        <?= !empty($checkout["payment"]) &&
+                        $checkout["payment"] == "Cash on Delivery (COD)"
+                          ? "checked=checked"
+                          : "" ?>/>
                       <p class="ship-label">
                         <span
                           class="iconify payment-icon"
@@ -60,81 +68,30 @@ include_once "../includes/header.php";
                       </p>
                       <span class="checkmark"></span>
                     </label>
-                    <label class="radio-field">
-                      <input type="radio" name="payment" id="" value="Credit / Debit Card" class="radio" />
+                    <label class="radio-field" id="paypal">
+                      <input type="radio" name="payment" id="paypalRadio" value="PayPal" class="radio" <?= !empty(
+                        $checkout["payment"]
+                      ) && $checkout["payment"] == "PayPal"
+                        ? "checked=checked"
+                        : "" ?>/>
                       <p class="ship-label">
-                        <span
-                          class="iconify payment-icon"
-                          data-icon="wpf:bank-cards"
-                          data-inline="false"
-                        ></span
-                        >Credit / Debit Card
+                        <span class="iconify payment-icon" data-icon="icons8:paypal"></span>
+                        PayPal
                       </p>
                       <span class="checkmark"></span>
                     </label>
-                    <label class="radio-field">
-                      <input type="radio" name="payment" id="" value="Gcash" class="radio" />
-                      <p class="ship-label">
-                        <img
-                          src="assets/img/gcash-icon.png"
-                          alt="Gcash"
-                          class="gcash"
-                        />
-                        Gcash
-                      </p>
-                      <span class="checkmark"></span>
-                    </label>
-                    <label class="radio-field">
-                      <input type="radio" name="payment" id="" value="Paymaya" class="radio" />
-                      <p class="ship-label">
-                        <img
-                          src="assets/img/paymaya-icon.png"
-                          alt="Paymaya"
-                          class="payment-icon"
-                        />
-                        Paymaya
-                      </p>
-                      <span class="checkmark"></span>
-                    </label>
-                  </div>
-                  <div class="form">
-                    <h4>Billing Address</h4>
-                    <label class="radio-field">
-                      <input
-                        type="radio"
-                        name="billingAdd"
-                        id=""
-                        class="radio"
-                      />
-                      <p class="ship-label">Same as shipping address</p>
-                      <span class="checkmark"></span>
-                    </label>
-                    <label class="radio-field">
-                      <input
-                        type="radio"
-                        name="billingAdd"
-                        id=""
-                        class="radio"
-                      />
-                      <p class="ship-label">Use a different Billing address</p>
-                      <span class="checkmark"></span>
-                    </label>
+                    <div id="paypal-buttons-container"></div>
                   </div>
                   <div class="button-container">
-                    <button>
-                      <a
-                        class="btn outline-primary-btn back-btn"
-                        href="checkoutship.php?ID=<?= $user["ID"] ?>"
-                      >
-                        <span
-                          class="iconify left-arrow"
-                          data-icon="dashicons:arrow-left-alt"
-                          data-inline="false"
-                        ></span
-                        >Back to Shipping</a
-                      >
+                    <button type="submit" name="backShip" class="btn outline-primary-btn back-btn">
+                      <span
+                        class="iconify left-arrow"
+                        data-icon="dashicons:arrow-left-alt"
+                        data-inline="false"
+                      ></span>
+                      Back to Shipping
                     </button>
-                    <button type="submit" name="proceed" class="btn primary-btn next-btn">
+                    <button type="submit" name="proceedReview" class="btn primary-btn next-btn">
                       Proceed to Order Review
                       <span
                         class="iconify right-arrow"
@@ -154,5 +111,6 @@ include_once "../includes/header.php";
     </div>
     <script src="./assets/js/checkout.js"></script>
     <script src="./assets/js/ship.js"></script>
+    <script src="./assets/js/paypal.js"></script>
   </body>
 </html>

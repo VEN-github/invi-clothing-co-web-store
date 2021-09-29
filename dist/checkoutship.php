@@ -4,15 +4,17 @@ $userProfile = $store->setProfile();
 $user = $store->get_userdata();
 $title = "Shipping - Checkout";
 include_once "../includes/header.php";
+$store->checkout_process();
+$checkout = $store->get_checkout();
 ?>
   <body>
     <div class="page-container">
       <main>
         <section id="checkout-process">
           <div class="checkout-banner">
-            <!-- <div class="container">
+            <div class="container">
               <img src="./assets/img/logo.png" alt="Logo" />
-            </div> -->
+            </div>
           </div>
           <div class="container">
             <div class="checkout-wrapper">
@@ -45,16 +47,24 @@ include_once "../includes/header.php";
                 </div>
                 <div class="form">
                   <h4>Choose Shipping Method</h4>
-                  <form action="checkoutpayment.php?ID=<?= $user[
-                    "ID"
-                  ] ?>" method="post">
+                  <form method="post" id="sf-method">
                     <label class="radio-field">
-                      <input type="radio" name="delivery" id="ship-method" class="radio" value="40" />
+                      <input type="radio" name="delivery" id="ship-method" class="radio" value="Standard Delivery" <?= !empty(
+                        $checkout["method"]
+                      ) &&
+                      $checkout["method"] == "Standard Delivery" &&
+                      !empty($checkout["sf"])
+                        ? "checked=checked"
+                        : "" ?>/>
                       <p class="ship-label">Standard Delivery</p>
                       <div class="ship-details">
                         <div class="del-time">
                           Delivery time
-                          <p class="del-details">2-3 Days</p>
+                          <p class="del-details"><?= !empty(
+                            $checkout["region"] == "Metro Manila"
+                          )
+                            ? "2-3 Days"
+                            : "5-7 Days" ?></p>
                         </div>
                         <div class="ship-fee">
                           Shipping Fee
@@ -64,19 +74,33 @@ include_once "../includes/header.php";
                               data-icon="clarity:peso-line"
                               data-inline="false"
                             ></span>
-                            <span>40.00</span>
+                            <span id="sf"><?= !empty(
+                              $checkout["region"] == "Metro Manila"
+                            )
+                              ? "100.00"
+                              : "180.00" ?></span>
                           </p>
                         </div>
                       </div>
                       <span class="checkmark"></span>
                     </label>
+                    <?php date_default_timezone_set("Asia/Manila"); ?>
+                    <?= $checkout["region"] == "Metro Manila" &&
+                    (date("H") >= 8 && date("H") < 15)
+                      ? '
                     <label class="radio-field">
-                      <input type="radio" name="delivery" id="ship-method" class="radio" value="100" />
+                      <input type="radio" name="delivery" id="ship-method" class="radio" value="Express Delivery"' .
+                        (!empty($checkout["method"]) &&
+                        $checkout["method"] == "Express Delivery" &&
+                        !empty($checkout["sf"])
+                          ? "checked=checked"
+                          : "") .
+                        '/>
                       <p class="ship-label">Express Delivery</p>
                       <div class="ship-details">
                         <div class="del-time">
                           Delivery time
-                          <p class="del-details">-</p>
+                          <p class="del-details">Same Day</p>
                         </div>
                         <div class="ship-fee">
                           Shipping Fee
@@ -86,12 +110,13 @@ include_once "../includes/header.php";
                               data-icon="clarity:peso-line"
                               data-inline="false"
                             ></span>
-                            <span>100.00</span>
+                            <span id="sf">200.00</span>
                           </p>
                         </div>
                       </div>
                       <span class="checkmark"></span>
-                    </label>
+                    </label>'
+                      : "" ?>
                   </div>
                   <div class="button-container">
                     <button>
@@ -107,7 +132,7 @@ include_once "../includes/header.php";
                         >Back to Information</a
                       >
                     </button>
-                    <button type="submit" name="proceed" class="btn primary-btn next-btn">
+                    <button type="submit" name="proceedPayment" id="proceedPayment" class="btn primary-btn next-btn">
                       Proceed to Payment
                       <span
                         class="iconify right-arrow"

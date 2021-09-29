@@ -2037,6 +2037,7 @@ textarea:focus {
   background: #2c3037;
 }
 #checkout-process .checkout-banner img {
+  margin-left: 19em;
   width: 120px;
   -o-object-fit: cover;
      object-fit: cover;

@@ -3,6 +3,7 @@ let productID;
 let productImg;
 let productName;
 let productColor;
+let stockID;
 let sizeValue;
 let productPrice;
 let qty = 0;
@@ -28,15 +29,18 @@ if (document.querySelector("#sizeOpt")) {
     e.preventDefault();
 
     sizeValue = sizeForm.options[sizeForm.selectedIndex].text;
-    console.log(productName);
-    console.log(sizeValue);
+    stockID = sizeForm.options[sizeForm.selectedIndex].value;
     products.productSize = sizeValue;
+    products.stockID = stockID;
     products.itemCode = productName + " " + sizeValue;
 
     maxVal = sizeForm.options[sizeForm.selectedIndex].dataset.stock;
     maxVal = parseInt(maxVal);
     products.maxValue = maxVal;
   }
+}
+if (document.querySelector("#stockID")) {
+  stockID = document.querySelector("#stockID").value;
 }
 if (document.querySelector("#productPrice")) {
   productPrice = document.querySelector("#productPrice").textContent;
@@ -55,6 +59,7 @@ let products = {
   productImage: productImg,
   productName: productName,
   productColor: productColor,
+  stockID: stockID,
   productSize: sizeValue,
   productPrice: productPrice,
   Quantity: qty,
@@ -73,7 +78,6 @@ function setProducts(product) {
 
   let qty = document.querySelector("#quantity").value;
   qty = parseInt(qty);
-  console.log(qty);
   if (cartItems != null) {
     if (cartItems[product.itemCode] == undefined) {
       cartItems = {
@@ -167,6 +171,7 @@ function displayCart() {
         <div class="cart-items">
           <input type="hidden" class="item-ID" value="${item.productID}">
           <input type="hidden" class="item-code" value="${item.itemCode}">
+          <input type="hidden" class="stock-ID" value="${item.stockID}">
           <img src="${item.productImage}" alt="${item.productImage}" />
           <div class="item-label">
             <p class="item-name">${item.productName}</p>
@@ -218,6 +223,7 @@ function displayCart() {
         <div class="cart-items">
           <input type="hidden" class="item-ID" value="${item.productID}">
           <input type="hidden" class="item-code" value="${item.itemCode}">
+          <input type="hidden" class="stock-ID" value="${item.stockID}">
           <img src="${item.productImage}" alt="${item.productImage}" />
           <div class="item-label">
             <p class="item-name">${item.productName}</p>
@@ -501,6 +507,7 @@ function checkoutItems() {
     cartItems = JSON.parse(cartItems);
     let itemID = document.querySelectorAll(".item-ID")[i].value;
     let itemCode = document.querySelectorAll(".item-code")[i].value;
+    let stockID = document.querySelectorAll(".stock-ID")[i].value;
     let itemImg = document.querySelectorAll(".cart-items img")[i].src;
     let itemName = document.querySelectorAll(".item-name")[i].textContent;
     let itemColor = document.querySelectorAll(".item-color")[i].textContent;
@@ -514,11 +521,11 @@ function checkoutItems() {
     let itemMaxValue = document.querySelectorAll(".quantity")[i].max;
     itemMaxValue = parseInt(itemMaxValue);
     if (
-      cart[i].children[3].lastElementChild.children[0].classList.contains(
+      cart[i].children[4].lastElementChild.children[0].classList.contains(
         "item-size"
       )
     ) {
-      itemSize = cart[i].children[3].lastElementChild.children[0].textContent;
+      itemSize = cart[i].children[4].lastElementChild.children[0].textContent;
     }
     let products = {
       itemCode: itemCode,
@@ -526,6 +533,7 @@ function checkoutItems() {
       productImage: itemImg,
       productName: itemName,
       productColor: itemColor,
+      stockID: stockID,
       productSize: itemSize,
       productPrice: itemPrice,
       Quantity: itemQty,
@@ -544,6 +552,8 @@ function checkoutItems() {
       };
     }
     localStorage.setItem("productsInCart", JSON.stringify(cartItems));
+    localStorage.removeItem("shippingFee");
+    localStorage.removeItem("total");
   }
   totalCost();
 }

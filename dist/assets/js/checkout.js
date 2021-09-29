@@ -1,4 +1,7 @@
-function displayCheckoutItems(){var a=localStorage.getItem("productsInCart"),a=JSON.parse(a),s=localStorage.getItem("totalCost");let i=document.querySelector(".order-summary");a&&i&&(i.innerHTML+="<h4>Order Summary</h4>",Object.values(a).map(a=>{void 0===a.productSize?i.innerHTML+=`
+function displayCheckoutItems(){var a=localStorage.getItem("productsInCart"),a=JSON.parse(a),e=localStorage.getItem("totalCost");let s=document.querySelector(".order-summary");a&&s&&(s.innerHTML+="<h4>Order Summary</h4>",Object.values(a).map(a=>{void 0===a.productSize?s.innerHTML+=`
+        <input type="hidden" name="productID[]" value="${a.productID}" form="orderForm" />
+        <input type="hidden" name="stockID[]" value="${a.stockID}" form="orderForm" />
+        <input type="hidden" name="salesQty[]" value="${a.NewQuantity}"  form="orderForm" />
         <div class="order-items">
           <img src="${a.productImage}" alt="${a.productImage}" />
           <div class="item-label">
@@ -14,7 +17,10 @@ function displayCheckoutItems(){var a=localStorage.getItem("productsInCart"),a=J
               <span class="qty">x ${a.NewQuantity}</span>
             </p>
           </div>
-        </div>`:i.innerHTML+=`
+        </div>`:s.innerHTML+=`
+        <input type="hidden" name="productID[]" value="${a.productID}" form="orderForm" />
+        <input type="hidden" name="stockID[]" value="${a.stockID}" form="orderForm" />
+        <input type="hidden" name="salesQty[]" value="${a.NewQuantity}" form="orderForm" />
         <div class="order-items">
           <img src="${a.productImage}" alt="${a.productImage}" />
           <div class="item-label">
@@ -31,7 +37,7 @@ function displayCheckoutItems(){var a=localStorage.getItem("productsInCart"),a=J
               <span class="qty">x ${a.NewQuantity}</span>
             </p>
           </div>
-        </div>`}),i.innerHTML+=`       
+        </div>`}),s.innerHTML+=`       
       <div class="subtotal-container">
         <div class="subtotal">
           <p>Subtotal:</p>
@@ -41,12 +47,13 @@ function displayCheckoutItems(){var a=localStorage.getItem("productsInCart"),a=J
               data-icon="clarity:peso-line"
               data-inline="false"
             ></span>
-            <span>${s}.00</span>
+            <span id="subtotal">${e}.00</span>
           </p>
         </div>
         <div class="shipping">
           <p>Shipping:</p>
-          <p>Calculated at next step</p>
+          <p id="shipping-fee" class="price">Calculated at next step</p>
+          <input type="hidden" name="sFee" id="shipping-input" form="sf-method"/>
         </div>
       </div>
       <div class="total-container">
@@ -57,6 +64,6 @@ function displayCheckoutItems(){var a=localStorage.getItem("productsInCart"),a=J
             data-icon="clarity:peso-line"
             data-inline="false"
           ></span>
-          <span>${s}.00</span>
+          <span id="total-cost">${e}.00</span>
         </div>
       </div>`)}displayCheckoutItems();

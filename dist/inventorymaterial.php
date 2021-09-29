@@ -198,6 +198,7 @@ $materials = $store->get_all_materials();
                           <th>Material Name</th>
                           <th>Added Stock</th>
                           <th>Date & Time</th>
+                          <th>Added By</th>
                           <th>Action</th>
                         </tr>
                     </thead>
@@ -212,6 +213,9 @@ $materials = $store->get_all_materials();
                             <td><?= $inventoryMaterial["materialName"] ?></td>
                             <td><?= $inventoryMaterial["addedQty"] ?></td>
                             <td><?= $inventoryMaterial["dateTime"] ?></td>
+                            <td><?= $user["firstName"] .
+                              " " .
+                              $user["lastName"] ?></td>
                             <td>
                               <button type="button" class="editInventoryMaterial btn btn-sm btn-secondary btn-circle" href="javascript:;" data-toggle="modal" data-target="#editInventoryMaterialModal" data-inventory_material_id="<?= $inventoryMaterial[
                                 "ID"
@@ -233,6 +237,7 @@ $materials = $store->get_all_materials();
                           <th>Material Name</th>
                           <th>Added Stock</th>
                           <th>Date & Time</th>
+                          <th>Added By</th>
                           <th>Action</th>
                         </tr>
                     </tfoot>

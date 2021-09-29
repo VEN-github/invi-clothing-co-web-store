@@ -10,6 +10,9 @@ function displayCheckoutItems() {
     Object.values(cartItems).map((item) => {
       if (item.productSize === undefined) {
         orderItems.innerHTML += `
+        <input type="hidden" name="productID[]" value="${item.productID}" form="orderForm" />
+        <input type="hidden" name="stockID[]" value="${item.stockID}" form="orderForm" />
+        <input type="hidden" name="salesQty[]" value="${item.NewQuantity}"  form="orderForm" />
         <div class="order-items">
           <img src="${item.productImage}" alt="${item.productImage}" />
           <div class="item-label">
@@ -28,6 +31,9 @@ function displayCheckoutItems() {
         </div>`;
       } else {
         orderItems.innerHTML += `
+        <input type="hidden" name="productID[]" value="${item.productID}" form="orderForm" />
+        <input type="hidden" name="stockID[]" value="${item.stockID}" form="orderForm" />
+        <input type="hidden" name="salesQty[]" value="${item.NewQuantity}" form="orderForm" />
         <div class="order-items">
           <img src="${item.productImage}" alt="${item.productImage}" />
           <div class="item-label">
@@ -57,12 +63,13 @@ function displayCheckoutItems() {
               data-icon="clarity:peso-line"
               data-inline="false"
             ></span>
-            <span>${totalCost}.00</span>
+            <span id="subtotal">${totalCost}.00</span>
           </p>
         </div>
         <div class="shipping">
           <p>Shipping:</p>
-          <p>Calculated at next step</p>
+          <p id="shipping-fee" class="price">Calculated at next step</p>
+          <input type="hidden" name="sFee" id="shipping-input" form="sf-method"/>
         </div>
       </div>
       <div class="total-container">
@@ -73,7 +80,7 @@ function displayCheckoutItems() {
             data-icon="clarity:peso-line"
             data-inline="false"
           ></span>
-          <span>${totalCost}.00</span>
+          <span id="total-cost">${totalCost}.00</span>
         </div>
       </div>`;
   }

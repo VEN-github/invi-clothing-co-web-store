@@ -1,1 +1,8 @@
-const sf=document.querySelector("#shipping-fee");document.querySelectorAll("#ship-method").forEach(e=>{e.addEventListener("click",()=>{var e=document.querySelector("input[type=radio]:checked");sf.innerText=e.value})});
+const shipping=document.querySelector("#shipping-input"),sf=document.querySelector("#shipping-fee"),method=document.querySelectorAll("#ship-method"),proceed=document.querySelector("#proceedPayment");function totalCost(){let e=document.querySelector("#total-cost").textContent;e=parseInt(e.replace(/,/g,"")),localStorage.setItem("shippingFee",shipping.value),localStorage.setItem("total",e)}function sFee(){var e=localStorage.getItem("shippingFee");let t=localStorage.getItem("total");t=parseInt(t);let n=document.querySelector("#total-cost");sf&&e&&n&&t&&(sf.innerHTML="",sf.innerHTML+=`<span class="iconify peso-sign"
+    data-icon="clarity:peso-line"
+    data-inline="false"></span>
+    <span>${e}</span>`,n.innerHTML="",n.innerHTML+=`<input type="hidden" name="totalAmount" value="${t}" form="orderForm"/>
+    ${t.toLocaleString(void 0,{minimumFractionDigits:2,maximumFractionDigits:2})}`)}method&&method.forEach(o=>{o.addEventListener("change",()=>{var e=o.nextElementSibling.nextElementSibling.children[1].children[0].children[1].textContent;sf.innerHTML=`<span class="iconify peso-sign"
+        data-icon="clarity:peso-line"
+        data-inline="false"></span>
+        <span>${e}</span>`,shipping.value=e;e=parseInt(e);let t=document.querySelector("#subtotal").textContent;t=parseInt(t.replace(/,/g,""));let n=t+e;document.querySelector("#total-cost").innerHTML=n.toLocaleString(void 0,{minimumFractionDigits:2,maximumFractionDigits:2})})}),proceed&&proceed.addEventListener("click",()=>{totalCost()}),sFee();
