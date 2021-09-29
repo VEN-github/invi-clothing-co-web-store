@@ -1162,6 +1162,7 @@ class WebStore
   public function add_inventory_materials()
   {
     if (isset($_POST["addInventoryMaterials"])) {
+      $adminID = $_POST["adminID"];
       $addedStockQty = $_POST["addedStockQty"];
       if (isset($_POST["material"])) {
         $material = $_POST["material"];
@@ -1177,9 +1178,9 @@ class WebStore
       } else {
         $connection = $this->openConnection();
         $stmt = $connection->prepare(
-          "INSERT INTO inventorymaterial_table (`materialID` , `addedQty`) VALUES (?,?)"
+          "INSERT INTO inventorymaterial_table (`materialID` , `addedQty`, `adminID`) VALUES (?,?,?)"
         );
-        $stmt->execute([$material, $addedStockQty]);
+        $stmt->execute([$material, $addedStockQty, $adminID]);
         echo "<script>  
             Swal.fire({
               position: 'center',
@@ -1198,7 +1199,7 @@ class WebStore
   {
     $connection = $this->openConnection();
     $stmt = $connection->prepare(
-      "SELECT inventory.ID, materialID, materialName, addedQty, dateTime FROM (SELECT * FROM inventorymaterial_table) inventory LEFT JOIN rawmaterials_table materials ON inventory.materialID = materials.ID"
+      "SELECT inventory.ID, materialID, materialName, addedQty, dateTime, account.firstName as addedByName, account.lastName as addedByLastName, account2.firstName as editByName, account2.lastName as editByLastName FROM (SELECT * FROM inventorymaterial_table) inventory LEFT JOIN rawmaterials_table materials ON inventory.materialID = materials.ID LEFT JOIN account_table account ON inventory.adminID = account.ID LEFT JOIN account_table account2 ON inventory.editBy = account2.ID"
     );
     $stmt->execute();
     $inventoryMaterials = $stmt->fetchall();
@@ -1216,6 +1217,7 @@ class WebStore
   {
     if (isset($_POST["updateInventoryMaterial"])) {
       $inventoryMaterialID = $_POST["inventoryMaterialID"];
+      $adminID = $_POST["adminID"];
       $material = $_POST["material"];
       $addedStockQty = $_POST["addedStockQty"];
 
@@ -1229,9 +1231,9 @@ class WebStore
       } else {
         $connection = $this->openConnection();
         $stmt = $connection->prepare(
-          "UPDATE inventorymaterial_table SET `materialID` = ?, `addedQty` = ? WHERE ID = '$inventoryMaterialID'"
+          "UPDATE inventorymaterial_table SET `materialID` = ?, `addedQty` = ?, dateTime = now(), `editBY` = ? WHERE ID = '$inventoryMaterialID'"
         );
-        $stmt->execute([$material, $addedStockQty]);
+        $stmt->execute([$material, $addedStockQty, $adminID]);
         $row = $stmt->fetch();
         echo "<script>
       Swal.fire({
