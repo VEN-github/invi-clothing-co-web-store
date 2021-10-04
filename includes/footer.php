@@ -1,8 +1,8 @@
 <?php
   
   require_once "../class/webstoreclass.php";
-  require_once "../PHPMailer/src/PHPMailer.php";
-  require_once "../PHPMailer/src/SMTP.php";
+  require("../PHPMailer/src/PHPMailer.php");
+  require("../PHPMailer/src/SMTP.php");
   $store->subscribe();
 ?>
 

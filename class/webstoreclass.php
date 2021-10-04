@@ -1355,7 +1355,7 @@ class WebStore
       
       $mail = new PHPMailer\PHPMailer\PHPMailer();
 
-      $mail->SMTPDebug = 3;
+      $mail->SMTPDebug = 1;
 
       $mail->isSMTP();
 
@@ -1373,7 +1373,7 @@ class WebStore
       $mail->From = "inviclothing.co@gmail.com";
       $mail->FromName = "INVI Clothing Co.";
 
-      $mail->addAddress($mailTo, "FreeCoder");
+      $mail->addAddress($mailTo, "Wendell Zaragosa");
 
       $mail->isHTML(true);
 
