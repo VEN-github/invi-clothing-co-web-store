@@ -37,6 +37,10 @@ include_once "../includes/dashboard_header.php";
                         <input type="text" name="supplierName" class="form-control" placeholder="Supplier Name">
                       </div>
                       <div class="form-group">
+                        <label>Email Address</label>
+                        <input type="email" name="supplierEmail" class="form-control" placeholder="Email Address"> 
+                      </div>
+                      <div class="form-group">
                         <label>Address</label>
                         <input type="text" name="supplierAddress" class="form-control" placeholder="Address"> 
                       </div>
@@ -70,6 +74,10 @@ include_once "../includes/dashboard_header.php";
                       <div class="form-group">
                         <label>Supplier Name</label>
                         <input type="text" name="supplierName" id="supplierName" class="form-control">
+                      </div>
+                      <div class="form-group">
+                        <label>Email Address</label>
+                        <input type="text" name="supplierEmail" id="supplierEmail" class="form-control">
                       </div>
                       <div class="form-group">
                         <label>Address</label>
@@ -132,6 +140,7 @@ include_once "../includes/dashboard_header.php";
                         <tr>
                           <th>#</th>
                           <th>Name</th>
+                          <th>Email Address</th>
                           <th>Address</th>
                           <th>Contact Number</th>
                         </tr>
@@ -142,6 +151,7 @@ include_once "../includes/dashboard_header.php";
                         <tr>
                           <td><?= $supplier["ID"] ?></td>
                           <td><?= $supplier["supplierName"] ?></td>
+                          <td><?= $supplier["supplierEmail"] ?></td>
                           <td><?= $supplier["supplierAddress"] ?></td>
                           <td><?= $supplier["supplierContactNumber"] ?></td>
                         </tr>
@@ -152,6 +162,7 @@ include_once "../includes/dashboard_header.php";
                         <tr>
                           <th>#</th>
                           <th>Name</th>
+                          <th>Email Address</th>
                           <th>Address</th>
                           <th>Contact Number</th>
                         </tr>
@@ -182,11 +193,13 @@ include_once "../includes/dashboard_header.php";
                     id="dataTable"
                     width="100%"
                     cellspacing="0"
+                    data-order='[[ 0, "desc" ]]'
                   >
                     <thead class="bg-gray-600 text-gray-100">
                         <tr>
                           <th>#</th>
                           <th>Name</th>
+                          <th>Email Address</th>
                           <th>Address</th>
                           <th>Contact Number</th>
                           <th>Action</th>
@@ -198,6 +211,7 @@ include_once "../includes/dashboard_header.php";
                         <tr>
                           <td><?= $supplier["ID"] ?></td>
                           <td><?= $supplier["supplierName"] ?></td>
+                          <td><?= $supplier["supplierEmail"] ?></td>
                           <td><?= $supplier["supplierAddress"] ?></td>
                           <td><?= $supplier["supplierContactNumber"] ?></td>
                           <td>
@@ -205,6 +219,8 @@ include_once "../includes/dashboard_header.php";
                               "ID"
                             ] ?>" data-supplier_name="<?= $supplier[
   "supplierName"
+] ?>" data-supplier_email="<?= $supplier[
+  "supplierEmail"
 ] ?>" data-supplier_address="<?= $supplier[
   "supplierAddress"
 ] ?>" data-supplier_contact_number="<?= $supplier["supplierContactNumber"] ?>">
@@ -221,6 +237,7 @@ include_once "../includes/dashboard_header.php";
                         <tr>
                           <th>#</th>
                           <th>Name</th>
+                          <th>Email Address</th>
                           <th>Address</th>
                           <th>Contact Number</th>
                           <th>Action</th>
@@ -248,11 +265,13 @@ include_once "../includes/dashboard_header.php";
         $('.editSupplier').click(function() {
         var supplierID = $(this).data('supplier_id');
         var supplierName = $(this).data('supplier_name');
+        var supplierEmail = $(this).data('supplier_email');
         var supplierAddress = $(this).data('supplier_address');
         var supplierContactNumber = $(this).data('supplier_contact_number');
 
         $('#supplierID').val(supplierID);
         $('#supplierName').val(supplierName);
+        $('#supplierEmail').val(supplierEmail);
         $('#supplierAddress').val(supplierAddress);
         $('#supplierContactNumber').val(supplierContactNumber);
         } );

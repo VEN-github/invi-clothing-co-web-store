@@ -3,7 +3,7 @@ require_once "../class/webstoreclass.php";
 $user = $store->get_userdata();
 $ID = $_GET["ID"];
 $product = $store->get_singleproduct($ID);
-$stocks = $store->view_single_stock($ID);
+$stocks = $store->view_all_stocks($ID);
 $title = $product["productName"];
 include_once "../includes/header.php";
 ?>
@@ -137,25 +137,167 @@ include_once "../includes/header.php";
                         id="quantity"
                         value="1"
                         min="1"
-                        max="<?= $stock["stock"] ?>"             
+                        max="<?php $soldProducts = $store->sold_products(
+                          $ID,
+                          $stock["ID"]
+                        ); ?>
+                            <?php $addedInventory = $store->get_added_stock_products(
+                              $ID,
+                              $stock["ID"]
+                            ); ?>
+                            <?php if (
+                              is_array($soldProducts) &&
+                              is_array($addedInventory)
+                            ) { ?>
+                              <?php foreach (
+                                $soldProducts
+                                as $index => $value
+                              ) { ?>
+                                      <?= $addedInventory[$index]["stock"] +
+                                        $addedInventory[$index]["addedQty"] -
+                                        $soldProducts[$index]["salesQty"] ?>
+                                      <?php } ?>
+                                      <?php } elseif (
+                              is_array($addedInventory)
+                            ) { ?> 
+                                      <?php foreach (
+                                        $addedInventory
+                                        as $addedStock
+                                      ) { ?>
+                                        <?= $addedStock["stock"] +
+                                          $addedStock["addedQty"] ?>
+                                      <?php } ?> 
+                                    <?php } elseif (
+                              is_array($soldProducts)
+                            ) { ?> 
+                                      <?php foreach (
+                                        $soldProducts
+                                        as $sold
+                                      ) { ?>
+                                        <?= $stock["stock"] -
+                                          $sold["salesQty"] ?>
+                                      <?php } ?>    
+                                    <?php } else { ?>
+                                      <?= $stock["stock"] ?> 
+                                    <?php } ?>"             
                         />   
                       <button class="plus-btn" onclick="plus(this)">+</button>
                     </div>
                   </div>
                   <div class="add-cart">
-                    <button type="button" id="cart-btn" class="<?= $stock[
-                      "stock"
-                    ] == 0
-                      ? "btn disabled-btn cart-btn"
-                      : "btn primary-btn cart-btn" ?> ">
-                      <?= $stock["stock"] == 0
-                        ? "Out of Stock"
-                        : '<span
-                        class="iconify cart-icon"
-                        data-icon="gg:shopping-bag"
-                        data-inline="false"
-                      ></span>
-                      Add to Cart' ?>
+                    <button type="button" id="cart-btn" class="<?php $soldProducts = $store->sold_products(
+                      $ID,
+                      $stock["ID"]
+                    ); ?>
+                            <?php $addedInventory = $store->get_added_stock_products(
+                              $ID,
+                              $stock["ID"]
+                            ); ?>
+                            <?php if (
+                              is_array($soldProducts) &&
+                              is_array($addedInventory)
+                            ) { ?>
+                              <?php foreach (
+                                $soldProducts
+                                as $index => $value
+                              ) { ?>
+                                      <?= $addedInventory[$index]["stock"] +
+                                        $addedInventory[$index]["addedQty"] -
+                                        $soldProducts[$index]["salesQty"] ==
+                                      0
+                                        ? "btn disabled-btn cart-btn"
+                                        : "btn primary-btn cart-btn" ?>
+                                      <?php } ?>
+                                      <?php } elseif (
+                              is_array($addedInventory)
+                            ) { ?> 
+                                      <?php foreach (
+                                        $addedInventory
+                                        as $addedStock
+                                      ) { ?>
+                                        <?= $addedStock["stock"] +
+                                          $addedStock["addedQty"] ==
+                                        0
+                                          ? "btn disabled-btn cart-btn"
+                                          : "btn primary-btn cart-btn" ?>
+                                      <?php } ?> 
+                                    <?php } elseif (
+                              is_array($soldProducts)
+                            ) { ?> 
+                                      <?php foreach (
+                                        $soldProducts
+                                        as $sold
+                                      ) { ?>
+                                        <?= $stock["stock"] -
+                                          $sold["salesQty"] ==
+                                        0
+                                          ? "btn disabled-btn cart-btn"
+                                          : "btn primary-btn cart-btn" ?>
+                                      <?php } ?>    
+                                    <?php } else { ?>
+                                      <?= $stock["stock"] == 0
+                                        ? "btn disabled-btn cart-btn"
+                                        : "btn primary-btn cart-btn" ?> 
+                                    <?php } ?>"/>
+                          <?php $soldProducts = $store->sold_products(
+                            $ID,
+                            $stock["ID"]
+                          ); ?>
+                  <?php $addedInventory = $store->get_added_stock_products(
+                    $ID,
+                    $stock["ID"]
+                  ); ?>
+                  <?php if (
+                    is_array($soldProducts) &&
+                    is_array($addedInventory)
+                  ) { ?>
+                    <?php foreach ($soldProducts as $index => $value) { ?>
+                            <?= $addedInventory[$index]["stock"] +
+                              $addedInventory[$index]["addedQty"] -
+                              $soldProducts[$index]["salesQty"] ==
+                            0
+                              ? "Out of Stock"
+                              : '<span
+                              class="iconify cart-icon"
+                              data-icon="gg:shopping-bag"
+                              data-inline="false"
+                            ></span>
+                            Add to Cart' ?>
+                            <?php } ?>
+                            <?php } elseif (is_array($addedInventory)) { ?> 
+                            <?php foreach ($addedInventory as $addedStock) { ?>
+                              <?= $addedStock["stock"] +
+                                $addedStock["addedQty"] ==
+                              0
+                                ? "Out of Stock"
+                                : '<span
+                                class="iconify cart-icon"
+                                data-icon="gg:shopping-bag"
+                                data-inline="false"
+                              ></span>
+                              Add to Cart' ?>
+                            <?php } ?> 
+                          <?php } elseif (is_array($soldProducts)) { ?> 
+                            <?php foreach ($soldProducts as $sold) { ?>
+                              <?= $stock["stock"] - $sold["salesQty"] == 0
+                                ? "Out of Stock"
+                                : '<span
+                                class="iconify cart-icon"
+                                data-icon="gg:shopping-bag"
+                                data-inline="false"
+                              ></span>
+                              Add to Cart' ?>
+                            <?php } ?>    
+                          <?php } else { ?>
+                            <?= $stock["stock"] == 0
+                              ? "Out of Stock"
+                              : '<span
+                              class="iconify cart-icon"
+                              data-icon="gg:shopping-bag"
+                              data-inline="false"
+                            ></span>
+                            Add to Cart' ?> 
+                          <?php } ?>
                     </button>
                   </div>
                 <?php } ?>
@@ -180,7 +322,52 @@ include_once "../includes/header.php";
                         <?php foreach ($stocks as $stock) { ?>
                           <option value="<?= $stock[
                             "ID"
-                          ] ?>" data-stock= <?= $stock["stock"] ?> ><?= $stock[
+                          ] ?>" <?php $soldProducts = $store->sold_products(
+  $ID,
+  $stock["ID"]
+); ?>
+                              <?php $addedInventory = $store->get_added_stock_products(
+                                $ID,
+                                $stock["ID"]
+                              ); ?>
+                              <?php if (
+                                is_array($soldProducts) &&
+                                is_array($addedInventory)
+                              ) { ?>
+                                <?php foreach (
+                                  $soldProducts
+                                  as $index => $value
+                                ) { ?>
+                                      data-stock = <?= $addedInventory[$index][
+                                        "stock"
+                                      ] +
+                                        $addedInventory[$index]["addedQty"] -
+                                        $soldProducts[$index]["salesQty"] ?>
+                                        <?php } ?>
+                                        <?php } elseif (
+                                is_array($addedInventory)
+                              ) { ?> 
+                                        <?php foreach (
+                                          $addedInventory
+                                          as $addedStock
+                                        ) { ?>
+                                          data-stock = <?= $addedStock[
+                                            "stock"
+                                          ] + $addedStock["addedQty"] ?>
+                                        <?php } ?> 
+                                      <?php } elseif (
+                                is_array($soldProducts)
+                              ) { ?> 
+                                        <?php foreach (
+                                          $soldProducts
+                                          as $sold
+                                        ) { ?>
+                                          data-stock = <?= $stock["stock"] -
+                                            $sold["salesQty"] ?>
+                                        <?php } ?>    
+                                      <?php } else { ?>
+                                        data-stock = <?= $stock["stock"] ?> 
+                                      <?php } ?> ><?= $stock[
    "size"
  ] ?></option>          
                         <?php } ?>  

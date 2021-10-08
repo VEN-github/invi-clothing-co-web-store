@@ -37,9 +37,7 @@ include_once "../includes/header.php";
             <h1>Our products</h1>
             <div class="carousel-container">
             <?php foreach ($randomProducts as $randomProduct) { ?>
-              <?php $stocks = $store->view_single_stock(
-                $randomProduct["ID"]
-              ); ?>
+              <?php $stocks = $store->view_all_stocks($randomProduct["ID"]); ?>
                 <?php if (
                   $randomProduct["ID"] &&
                   $randomProduct["netSales"] &&

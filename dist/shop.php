@@ -54,12 +54,14 @@ include_once "../includes/header.php";
             <div class="product-container">
             <?php if ($displayProducts) { ?>
               <?php foreach ($displayProducts as $product) { ?>
-                <?php $stocks = $store->view_single_stock($product["ID"]); ?>
-                <?php if (
-                  $product["ID"] &&
-                  $product["netSales"] &&
-                  $stocks
-                ) { ?>
+                <?php $stocks = $store->view_all_stocks($product["ID"]); ?>
+                  <?php foreach ($stocks as $stock) { ?>
+                  <?php } ?>
+                  <?php if (
+                    $product["ID"] &&
+                    $product["netSales"] &&
+                    ($stock["stock"] || $stock["size"])
+                  ) { ?>
                   <div class="products">
                     <div class="labels">
                       <span class="product-label"></span>

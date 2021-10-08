@@ -111,6 +111,36 @@ include_once "../includes/dashboard_header.php";
               </div>
             </div>
             <!-- End of Edit Materials Modal Form -->
+            <!-- Supplier Contact Modal Form -->
+            <div class="modal fade" id="supplierContactModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+              <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Contact Supplier</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <form method="post" id="supplierContactForm">
+                      <div class="form-group">
+                        <label>Recipient</label>
+                        <input type="text" name="supplierEmail" id="supplierEmailAdd" class="form-control">
+                      </div>
+                      <div class="form-group">
+                        <label>Message</label>
+                        <textarea class="form-control" name="message" id="msg"></textarea>
+                      </div>
+                    </form>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-light" data-dismiss="modal">Cancel</button>
+                    <input type="submit" name="contactSupplier" class="btn btn-secondary" form="supplierContactForm" value="Send Message">
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- Supplier Contact Modal Form -->
             <!-- Page Heading -->
             <div
               class="d-sm-flex align-items-center justify-content-between mb-4 d-print-none"
@@ -153,7 +183,7 @@ include_once "../includes/dashboard_header.php";
                     <thead class="text-info">
                         <tr>
                           <th>#</th>
-                          <th>Material Name</th>
+                          <th>Raw Material</th>
                           <th>Unit Price</th>
                           <th>Total Stock Quantity</th>
                           <th>Total Price</th>
@@ -331,7 +361,6 @@ include_once "../includes/dashboard_header.php";
                                     0
                                   ) { ?>
                                     <?= '<p class="text-danger">Out Of Stock</p>' ?>
-                                  <?php  ?>
                                 <?php } elseif (
                                     $material["stockQty"] -
                                       $used["materialQty"] <=
@@ -361,7 +390,7 @@ include_once "../includes/dashboard_header.php";
                     <tfoot class="text-info">
                         <tr>
                           <th>#</th>
-                          <th>Material Name</th>
+                          <th>Raw Material</th>
                           <th>Unit Price</th>
                           <th>Total Stock Quantity</th>
                           <th>Total Price</th>
@@ -397,11 +426,12 @@ include_once "../includes/dashboard_header.php";
                     id="dataTable"
                     width="100%"
                     cellspacing="0"
+                    data-order='[[ 0, "desc" ]]'
                   >
                     <thead class="bg-gray-600 text-gray-100">
                       <tr>
                         <th>#</th>
-                        <th>Material Name</th>
+                        <th>Raw Material</th>
                         <th>Unit Price</th>
                         <th>Total Stock Quantity</th>
                         <th>Total Price</th>
@@ -608,19 +638,142 @@ include_once "../includes/dashboard_header.php";
                             <?php } ?>  
                             </td>
                             <td>
-                              <button type="button" class="editMaterial btn btn-sm btn-secondary btn-circle" href="javascript:;" data-toggle="modal" data-target="#editMaterialModal" data-material_id="<?= $material[
-                                "ID"
-                              ] ?>" data-material_name="<?= $material[
+                              <div class="dropdown no-arrow">
+                                <a class="dropdown-toggle btn btn-secondary btn-circle btn-sm href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="fas fa-ellipsis-v fa-sm fa-fw"></i>
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">   
+                                  <a class="editMaterial dropdown-item" href="javascript:;" data-toggle="modal" data-target="#editMaterialModal" data-material_id="<?= $material[
+                                    "ID"
+                                  ] ?>" data-material_name="<?= $material[
   "materialName"
 ] ?>" data-unit_price = <?= $material[
   "unitPrice"
 ] ?> data-stock_qty="<?= $material[
    "stockQty"
- ] ?>" data-supplier_id="<?= $material["supplierID"] ?>">
-                                <span class="icon text">
-                                  <i class="fas fa-edit"></i>
-                                </span>
-                              </button>        
+ ] ?>" data-supplier_id="<?= $material["supplierID"] ?>">Edit
+                                  </a>
+                                  <?php
+                                  $itemUsed = $store->used_materials(
+                                    $material["ID"]
+                                  );
+                                  $addedInventory = $store->get_added_stock_materials(
+                                    $material["ID"]
+                                  );
+                                  ?>
+                                  <?php if (
+                                    is_array($itemUsed) &&
+                                    is_array($addedInventory)
+                                  ) { ?>
+                                    <?php foreach (
+                                      $itemUsed
+                                      as $index => $value
+                                    ) { ?>
+                                      <?php if (
+                                        $addedInventory[$index]["stockQty"] +
+                                          $addedInventory[$index]["addedQty"] -
+                                          $itemUsed[$index]["materialQty"] <=
+                                        0
+                                      ) { ?>
+                                        <a class="contactSupplier dropdown-item" href="javascript:;" data-toggle="modal" data-target="#supplierContactModal"  data-material_name="<?= $material[
+                                          "materialName"
+                                        ] ?>" data-supplier_email="<?= $material[
+  "supplierEmail"
+] ?>">Contact Supplier
+                                        </a>
+                                        </a>
+                                      <?php } elseif (
+                                        $addedInventory[$index]["stockQty"] +
+                                          $addedInventory[$index]["addedQty"] -
+                                          $itemUsed[$index]["materialQty"] <=
+                                        10
+                                      ) { ?>
+                                      <a class="contactSupplier dropdown-item" href="javascript:;" data-toggle="modal" data-target="#supplierContactModal"  data-material_name="<?= $material[
+                                        "materialName"
+                                      ] ?>" data-supplier_email="<?= $material[
+  "supplierEmail"
+] ?>">Contact Supplier
+                                      </a>
+                                      <?php } ?> 
+                                    <?php } ?> 
+                                  <?php } elseif (
+                                    is_array($addedInventory)
+                                  ) { ?> 
+                                    <?php foreach (
+                                      $addedInventory
+                                      as $addedStock
+                                    ) { ?>
+                                      <?php if (
+                                        $addedStock["stockQty"] +
+                                          $addedStock["addedQty"] <=
+                                        0
+                                      ) { ?>
+                                      <a class="contactSupplier dropdown-item" href="javascript:;" data-toggle="modal" data-target="#supplierContactModal"  data-material_name="<?= $material[
+                                        "materialName"
+                                      ] ?>" data-supplier_email="<?= $material[
+  "supplierEmail"
+] ?>">Contact Supplier
+                                      </a>
+                                      <?php } elseif (
+                                        $addedStock["stockQty"] +
+                                          $addedStock["addedQty"] <=
+                                        10
+                                      ) { ?>
+                                        <a class="contactSupplier dropdown-item" href="javascript:;" data-toggle="modal" data-target="#supplierContactModal"  data-material_name="<?= $material[
+                                          "materialName"
+                                        ] ?>" data-supplier_email="<?= $material[
+  "supplierEmail"
+] ?>">Contact Supplier
+                                    </a>
+                                      <?php } ?>
+                                    <?php } ?>
+                                  <?php } elseif (is_array($itemUsed)) { ?>
+                                    <?php foreach ($itemUsed as $used) { ?>
+                                      <?php if (
+                                        $material["stockQty"] -
+                                          $used["materialQty"] <=
+                                        0
+                                      ) { ?>
+                                        <a class="contactSupplier dropdown-item" href="javascript:;" data-toggle="modal" data-target="#supplierContactModal"  data-material_name="<?= $material[
+                                          "materialName"
+                                        ] ?>" data-supplier_email="<?= $material[
+  "supplierEmail"
+] ?>">Contact Supplier
+                                      </a>
+                                    <?php } elseif (
+                                        $material["stockQty"] -
+                                          $used["materialQty"] <=
+                                        10
+                                      ) { ?> 
+                                      <a class="contactSupplier dropdown-item" href="javascript:;" data-toggle="modal" data-target="#supplierContactModal"  data-material_name="<?= $material[
+                                        "materialName"
+                                      ] ?>" data-supplier_email="<?= $material[
+  "supplierEmail"
+] ?>">Contact Supplier
+                                      </a>
+                                    <?php } ?>
+                                  <?php } ?>
+                                <?php } else { ?>
+                                  <?php if ($material["stockQty"] <= 0) { ?>
+                                    <a class="contactSupplier dropdown-item" href="javascript:;" data-toggle="modal" data-target="#supplierContactModal"  data-material_name="<?= $material[
+                                      "materialName"
+                                    ] ?>" data-supplier_email="<?= $material[
+  "supplierEmail"
+] ?>">Contact Supplier
+                                    </a>
+                                  <?php } elseif (
+                                    $material["stockQty"] <= 10
+                                  ) { ?>  
+                                    <a class="contactSupplier dropdown-item" href="javascript:;" data-toggle="modal" data-target="#supplierContactModal"  data-material_name="<?= $material[
+                                      "materialName"
+                                    ] ?>" data-supplier_email="<?= $material[
+  "supplierEmail"
+] ?>">Contact Supplier
+                                    </a>
+                                  <?php } ?>  
+                                <?php } ?>   
+                                </div>
+                              </div>
                             </td>
                           </tr>
                         <?php } ?>  
@@ -629,7 +782,7 @@ include_once "../includes/dashboard_header.php";
                     <tfoot class="bg-gray-600 text-gray-100">
                         <tr>
                           <th>#</th>
-                          <th>Material Name</th>
+                          <th>Raw Material</th>
                           <th>Unit Price</th>
                           <th>Total Stock Quantity</th>
                           <th>Total Price</th>
@@ -659,19 +812,28 @@ include_once "../includes/dashboard_header.php";
     </a>
     <?php require_once "../includes/dashboard_scripts.php"; ?>
     <script>
-        $('.editMaterial').click(function() {
-        var materialID = $(this).data('material_id');
-        var materialName = $(this).data('material_name');
-        var unitPrice = $(this).data('unit_price');
-        var stockQty = $(this).data('stock_qty');
-        var supplierID = $(this).data('supplier_id');
+      $('.editMaterial').click(function() {
+      var materialID = $(this).data('material_id');
+      var materialName = $(this).data('material_name');
+      var unitPrice = $(this).data('unit_price');
+      var stockQty = $(this).data('stock_qty');
+      var supplierID = $(this).data('supplier_id');
 
-        $('#materialID').val(materialID);
-        $('#materialName').val(materialName);
-        $('#unitPrice').val(unitPrice);
-        $('#stockQty').val(stockQty);
-        $('#supplierID').val(supplierID);
-        } );
+      $('#materialID').val(materialID);
+      $('#materialName').val(materialName);
+      $('#unitPrice').val(unitPrice);
+      $('#stockQty').val(stockQty);
+      $('#supplierID').val(supplierID);
+      } );
+    </script>
+    <script>
+      $('.contactSupplier').click(function() {
+      var materialName = $(this).data('material_name');
+      var supplierEmail = $(this).data('supplier_email');
+
+      $('#msg').val('Item ' + materialName + ' is at low inventory <add quantity here>' );
+      $('#supplierEmailAdd').val(supplierEmail);
+      } );
     </script>
     <script>
       const setDate = new Date();

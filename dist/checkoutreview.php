@@ -22,6 +22,7 @@ $store->shipping_address();
               <div class="checkout-container">
                 <div class="contact-info">
                   <form method="post" id="orderForm">
+                    <input type="hidden" name="orderID" id="orderID">
                     <input type="hidden" name="acctID" id="" value="<?= $user[
                       "ID"
                     ] ?>">
@@ -67,9 +68,9 @@ $store->shipping_address();
                     <input type="hidden" name="paymentStatus" value="<?= $checkout[
                       "payment"
                     ] === "PayPal"
-                      ? "Fulfilled"
+                      ? "Paid"
                       : "Pending" ?>">
-                    <input type="hidden" name="orderStatus" value="Processing">
+                    <input type="hidden" name="orderStatus" value="Placed">
                     <h4>Customer Information</h4>
                     <p class="contact-details">Contact Information:</p>
                     <div class="first-layer">
@@ -154,10 +155,15 @@ $store->shipping_address();
     <script src="./assets/js/ship.js"></script>
     <script>
       const completeBtn = document.querySelector("#complete");
-
+      
       if (completeBtn) {
-        completeBtn.addEventListener("click", () => {
-          localStorage.clear();
+        completeBtn.addEventListener("click", () => {   
+          document.querySelector("#orderID").value = Math.random().toString(16).slice(2);
+          localStorage.removeItem('productsInCart');
+          localStorage.removeItem('cartNumbers');
+          localStorage.removeItem('totalCost');
+          localStorage.removeItem('shippingFee');
+          localStorage.removeItem('total');
         });
       }
     </script>

@@ -22,7 +22,21 @@
     <!-- Divider -->
     <hr class="sidebar-divider">
 
+    <!-- Nav Item - Orders -->
+    <li class="nav-item">
+        <a class="nav-link" href="orders.php">
+            <i class="fas fa-clipboard-list"></i>
+            <span>Orders</span>
+        </a>
+    </li>
 
+    <!-- Nav Item - Sales -->
+    <li class="nav-item">
+        <a class="nav-link" href="sales.php">
+            <i class="fas fa-coins"></i>
+            <span>Sales</span>
+        </a>
+    </li>
 
     <!-- Nav Item - Products -->
     <li class="nav-item">
@@ -49,7 +63,7 @@
         </a>
         <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
-                <a class="collapse-item" href="#">Products</a>
+                <a class="collapse-item" href="inventoryproducts.php">Products</a>
                 <a class="collapse-item" href="inventorymaterial.php">Raw Materials</a>
             </div>
         </div>
@@ -62,14 +76,6 @@
             <span>Supplier</span>
         </a>
     </li>
-
-    <!-- Nav Item - Charts -->
-    <!-- <li class="nav-item">
-        <a class="nav-link" href="charts.html">
-            <i class="fas fa-fw fa-chart-area"></i>
-            <span>Charts</span>
-        </a>
-    </li> -->
 
     <!-- Nav Item - Tables -->
     <!-- <li class="nav-item">

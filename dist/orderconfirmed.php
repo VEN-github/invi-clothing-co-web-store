@@ -28,10 +28,10 @@ include_once "../includes/header.php";
                   Your order has been placed and will be processed as soon as
                   possible.
                 </p>
-                <!-- <p>
+                <p>
                   You will be receiving an email shortly with confirmation of
                   your order.
-                </p> -->
+                </p>
               </div>
               <div class="button-container">
                 <a class="btn secondary-btn left-btn" href="shop.php">

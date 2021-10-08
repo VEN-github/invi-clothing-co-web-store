@@ -129,6 +129,7 @@ include_once "../includes/dashboard_header.php";
                     id="dataTable"
                     width="100%"
                     cellspacing="0"
+                    data-order='[[ 0, "desc" ]]'
                   >
                     <thead class="bg-gray-600 text-gray-100">
                         <tr>

@@ -267,9 +267,8 @@ class WebStore
         "DELETE FROM account_table WHERE email = '$email'"
       );
       $stmt->execute();
-
-      header("Location: index.php");
       $this->logout();
+      header("Location: index.php");
     }
   }
 
@@ -355,7 +354,7 @@ class WebStore
   {
     $connection = $this->openConnection();
     $stmt = $connection->prepare(
-      "SELECT * FROM account_table WHERE access = 'admin'"
+      "SELECT * FROM account_table WHERE access = 'admin' ORDER BY ID DESC"
     );
     $stmt->execute();
     $admins = $stmt->fetchall();
@@ -410,41 +409,6 @@ class WebStore
       }
     }
   }
-  // count admin
-  public function count_admin()
-  {
-    $admin = "admin";
-    $connection = $this->openConnection();
-    $stmt = $connection->prepare(
-      "SELECT COUNT(ID) FROM account_table WHERE access = '$admin'"
-    );
-    $stmt->execute();
-    $admins = $stmt->fetchColumn();
-    return $admins;
-  }
-
-  // count user
-  public function count_user()
-  {
-    $user = "user";
-    $connection = $this->openConnection();
-    $stmt = $connection->prepare(
-      "SELECT COUNT(ID) FROM account_table WHERE access = '$user'"
-    );
-    $stmt->execute();
-    $users = $stmt->fetchColumn();
-    return $users;
-  }
-
-  // count products
-  public function count_product()
-  {
-    $connection = $this->openConnection();
-    $stmt = $connection->prepare("SELECT COUNT(ID) FROM product_table ");
-    $stmt->execute();
-    $products = $stmt->fetchColumn();
-    return $products;
-  }
 
   // add product category
   public function add_category()
@@ -482,7 +446,9 @@ class WebStore
   public function get_categories()
   {
     $connection = $this->openConnection();
-    $stmt = $connection->prepare("SELECT * FROM category_table");
+    $stmt = $connection->prepare(
+      "SELECT * FROM category_table ORDER BY ID DESC"
+    );
     $stmt->execute();
     $categories = $stmt->fetchall();
     $count = $stmt->rowCount();
@@ -679,7 +645,7 @@ class WebStore
   {
     $connection = $this->openConnection();
     $stmt = $connection->prepare(
-      "SELECT product.ID, productName, categoryName, productColor, coverPhoto, netSales, productCost, netIncome FROM (SELECT * FROM product_table) product LEFT JOIN category_table category ON product.categoryID = category.ID LEFT JOIN costing_table costing ON product.ID = costing.productID GROUP BY product.ID"
+      "SELECT product.ID, productName, categoryName, productColor, coverPhoto, netSales, productCost, netIncome FROM (SELECT * FROM product_table) product LEFT JOIN category_table category ON product.categoryID = category.ID LEFT JOIN costing_table costing ON product.ID = costing.productID GROUP BY product.ID ORDER BY product.ID DESC"
     );
     $stmt->execute();
     $products = $stmt->fetchall();
@@ -715,7 +681,7 @@ class WebStore
   {
     $connection = $this->openConnection();
     $stmt = $connection->prepare(
-      "SELECT product.ID, productName, productDescription, categoryName, netSales, productColor, coverPhoto, image1, image2, image3, sizeGuide FROM (SELECT * FROM product_table WHERE product_table.ID = ?) product LEFT JOIN category_table category ON product.categoryID = category.ID LEFT JOIN costing_table costing ON product.ID = costing.productID"
+      "SELECT product.ID, productName, productDescription, categoryName, netSales, netIncome, productColor, coverPhoto, image1, image2, image3, sizeGuide FROM (SELECT * FROM product_table WHERE product_table.ID = ?) product LEFT JOIN category_table category ON product.categoryID = category.ID LEFT JOIN costing_table costing ON product.ID = costing.productID"
     );
     $stmt->execute([$ID]);
     $product = $stmt->fetch();
@@ -729,11 +695,11 @@ class WebStore
   }
 
   //display product sizes and stocks every single product
-  public function view_single_stock($productID)
+  public function view_all_stocks($productID)
   {
     $connection = $this->openConnection();
     $stmt = $connection->prepare(
-      "SELECT * FROM stocks_table WHERE productID = ?"
+      "SELECT * FROM product_table product LEFT JOIN stocks_table stocks ON product.ID = stocks.productID WHERE product.ID = ?"
     );
     $stmt->execute([$productID]);
     $stocks = $stmt->fetchall();
@@ -746,12 +712,12 @@ class WebStore
     }
   }
 
-  //display product sizes and stocks
-  public function view_all_stocks($productID)
+  //sum stocks
+  public function sum_stocks($productID)
   {
     $connection = $this->openConnection();
     $stmt = $connection->prepare(
-      "SELECT GROUP_CONCAT(size SEPARATOR '<br>') as size, GROUP_CONCAT(stock SEPARATOR '<br>') as stock, SUM(stock) as totalStocks FROM stocks_table WHERE productID = ? GROUP BY productID"
+      "SELECT SUM(stock) as totalStocks FROM stocks_table WHERE productID = ?"
     );
     $stmt->execute([$productID]);
     $stocks = $stmt->fetchall();
@@ -938,6 +904,7 @@ class WebStore
   {
     if (isset($_POST["complete"])) {
       $count = count($_POST["productID"]);
+      $orderID = $_POST["orderID"];
       $shipMethod = $_POST["deliveryMethod"];
       $shipFee = $_POST["sf"];
       $paymentMethod = $_POST["payment"];
@@ -952,9 +919,10 @@ class WebStore
         $salesQty = $_POST["salesQty"][$i];
         $connection = $this->openConnection();
         $stmt = $connection->prepare(
-          "INSERT INTO sales_table ( `productID`, `stockID`, `salesQty`, `shipMethod`, `shipFee`, `paymentMethod`, `totalAmount`, `accountId`, `paymentStatus`, `orderStatus`) VALUES (?,?,?,?,?,?,?,?,?,?)"
+          "INSERT INTO sales_table ( `orderID`,`productID`, `stockID`, `salesQty`, `shipMethod`, `shipFee`, `paymentMethod`, `totalAmount`, `accountId`, `paymentStatus`, `orderStatus`) VALUES (?,?,?,?,?,?,?,?,?,?,?)"
         );
         $stmt->execute([
+          $orderID,
           $productID,
           $stockID,
           $salesQty,
@@ -1024,6 +992,492 @@ class WebStore
     }
   }
 
+  // display order
+  public function get_orders()
+  {
+    $connection = $this->openConnection();
+    $stmt = $connection->prepare(
+      "SELECT orderID, firstName, lastName, email,coverPhoto, productName, productColor, size, salesQty, totalAmount, paymentMethod, paymentStatus, shipMethod, orderStatus, orderDate FROM sales_table sales  LEFT JOIN account_table account ON sales.accountID = account.ID LEFT JOIN product_table product ON sales.productID = product.ID LEFT JOIN stocks_table stocks ON sales.stockID = stocks.ID ORDER BY orderDate DESC"
+    );
+    $stmt->execute();
+    $orders = $stmt->fetchall();
+    $count = $stmt->rowCount();
+
+    if ($count > 0) {
+      return $orders;
+    } else {
+      return false;
+    }
+  }
+
+  // count pending orders
+  public function count_orders()
+  {
+    $connection = $this->openConnection();
+    $stmt = $connection->prepare(
+      "SELECT COUNT(DISTINCT(orderID)) FROM sales_table WHERE orderStatus = 'Placed' OR orderStatus = 'Processing' OR orderStatus = 'Shipped'"
+    );
+    $stmt->execute();
+    $orders = $stmt->fetchColumn();
+    $count = $stmt->rowCount();
+
+    if ($count > 0) {
+      return $orders;
+    } else {
+      return false;
+    }
+  }
+
+  // update payment status
+  public function update_payment_status()
+  {
+    if (isset($_POST["updatePaymentStatus"])) {
+      $orderID = $_POST["orderID"];
+      if (isset($_POST["paymentStatus"])) {
+        $paymentStatus = $_POST["paymentStatus"];
+      }
+
+      if (empty(isset($_POST["paymentStatus"]))) {
+        echo "<script> Swal.fire({
+        icon: 'error',
+        title: 'Empty Field',
+        text: 'Please select status',
+      });
+      </script>";
+      } else {
+        $connection = $this->openConnection();
+        $stmt = $connection->prepare(
+          "UPDATE sales_table SET `paymentStatus` = ? WHERE orderID = '$orderID'"
+        );
+        $stmt->execute([$paymentStatus]);
+        $row = $stmt->fetch();
+        echo "<script>
+              Swal.fire({
+              position: 'center',
+              icon: 'success',
+              title: 'Payment Status Updated',
+              showConfirmButton: false,
+              timer: 1000
+              },function(){ window.location.href = 'orders.php';});
+          </script>";
+        return $row;
+      }
+    }
+  }
+
+  // update order status
+  public function update_order_status()
+  {
+    if (isset($_POST["updateOrderStatus"])) {
+      $orderID = $_POST["orderID"];
+      if (isset($_POST["orderStatus"])) {
+        $orderStatus = $_POST["orderStatus"];
+      }
+
+      if (empty(isset($_POST["orderStatus"]))) {
+        echo "<script> Swal.fire({
+        icon: 'error',
+        title: 'Empty Field',
+        text: 'Please select status',
+      });
+      </script>";
+      } else {
+        $connection = $this->openConnection();
+        $stmt = $connection->prepare(
+          "UPDATE sales_table SET `orderStatus` = ? WHERE orderID = '$orderID'"
+        );
+        $stmt->execute([$orderStatus]);
+        $row = $stmt->fetch();
+        echo "<script>
+              Swal.fire({
+              position: 'center',
+              icon: 'success',
+              title: 'Order Status Updated',
+              showConfirmButton: false,
+              timer: 1000
+              },function(){ window.location.href = 'orders.php';});
+          </script>";
+        return $row;
+      }
+    }
+  }
+
+  // display sales
+  public function get_sales()
+  {
+    $connection = $this->openConnection();
+    $stmt = $connection->prepare(
+      "SELECT sales.productID as productID, orderID, productName, productColor, size, salesQty, totalAmount,orderDate FROM sales_table sales LEFT JOIN product_table product ON sales.productID = product.ID LEFT JOIN stocks_table stocks ON sales.stockID = stocks.ID WHERE paymentStatus = 'Paid' ORDER BY orderDate DESC"
+    );
+    $stmt->execute();
+    $sales = $stmt->fetchall();
+    $count = $stmt->rowCount();
+
+    if ($count > 0) {
+      return $sales;
+    } else {
+      return false;
+    }
+  }
+
+  // display top selling products
+  public function get_top_selling_products()
+  {
+    $connection = $this->openConnection();
+    $stmt = $connection->prepare(
+      "SELECT sales.productID as productID, productName, productColor, size, SUM(salesQty) as salesQty FROM sales_table sales LEFT JOIN product_table product ON sales.productID = product.ID LEFT JOIN stocks_table stocks ON sales.stockID = stocks.ID WHERE paymentStatus = 'Paid' AND YEAR(orderDate) = YEAR(CURRENT_DATE()) AND
+      MONTH(orderDate) = MONTH(CURRENT_DATE()) GROUP BY sales.stockID ORDER BY SUM(salesQty) DESC LIMIT 5"
+    );
+    $stmt->execute();
+    $topSales = $stmt->fetchall();
+    $count = $stmt->rowCount();
+
+    if ($count > 0) {
+      return $topSales;
+    } else {
+      return false;
+    }
+  }
+
+  // display top selling categories
+  public function get_top_selling_category()
+  {
+    $connection = $this->openConnection();
+    $stmt = $connection->prepare(
+      "SELECT categoryName, SUM(salesQty) as salesQty FROM sales_table sales LEFT JOIN product_table product ON sales.productID = product.ID LEFT JOIN category_table category ON product.categoryID = category.ID WHERE paymentStatus = 'Paid' AND YEAR(orderDate) = YEAR(CURRENT_DATE()) AND 
+      MONTH(orderDate) = MONTH(CURRENT_DATE()) GROUP BY categoryName ORDER BY SUM(salesQty)"
+    );
+    $stmt->execute();
+    $topCategories = $stmt->fetchall();
+    $count = $stmt->rowCount();
+
+    if ($count > 0) {
+      return $topCategories;
+    } else {
+      return false;
+    }
+  }
+
+  // display total sales today
+  public function get_total_sales_today()
+  {
+    $connection = $this->openConnection();
+    $stmt = $connection->prepare(
+      "SELECT SUM(DISTINCT totalAmount) as totalAmount, DATE_FORMAT(orderDate, '%Y-%m-%d') FROM sales_table WHERE paymentStatus = 'Paid' AND DATE(orderDate) = CURDATE() GROUP BY orderID"
+    );
+    $stmt->execute();
+    $totalSales = $stmt->fetchall();
+    $count = $stmt->rowCount();
+
+    if ($count > 0) {
+      return $totalSales;
+    } else {
+      return false;
+    }
+  }
+
+  // display total sales this month
+  public function get_sales_this_month()
+  {
+    $connection = $this->openConnection();
+    $stmt = $connection->prepare(
+      "SELECT SUM(DISTINCT totalAmount) as totalAmount FROM sales_table WHERE paymentStatus = 'Paid' AND YEAR(orderDate) = YEAR(CURRENT_DATE()) AND 
+      MONTH(orderDate) = MONTH(CURRENT_DATE()) GROUP BY orderID"
+    );
+    $stmt->execute();
+    $salesMonth = $stmt->fetchall();
+    $count = $stmt->rowCount();
+
+    if ($count > 0) {
+      return $salesMonth;
+    } else {
+      return false;
+    }
+  }
+
+  // get total net income
+  public function get_total_net_income()
+  {
+    $connection = $this->openConnection();
+    $stmt = $connection->prepare(
+      "SELECT productID, salesQty as salesQty FROM sales_table WHERE paymentStatus = 'Paid' AND YEAR(orderDate) = YEAR(CURRENT_DATE()) AND 
+      MONTH(orderDate) = MONTH(CURRENT_DATE())"
+    );
+    $stmt->execute();
+    $totalIncome = $stmt->fetchall();
+    $count = $stmt->rowCount();
+
+    if ($count > 0) {
+      return $totalIncome;
+    } else {
+      return false;
+    }
+  }
+
+  // display total sales this jan
+  public function get_jan_sales()
+  {
+    $connection = $this->openConnection();
+    $stmt = $connection->prepare(
+      "SELECT SUM(DISTINCT totalAmount) as totalAmount FROM sales_table WHERE paymentStatus = 'Paid' AND YEAR(orderDate) = YEAR(CURRENT_DATE()) AND 
+      MONTH(orderDate) = 01 GROUP BY orderID"
+    );
+    $stmt->execute();
+    $janSales = $stmt->fetchall();
+    $count = $stmt->rowCount();
+
+    if ($count > 0) {
+      return $janSales;
+    } else {
+      return false;
+    }
+  }
+
+  // display total sales this feb
+  public function get_feb_sales()
+  {
+    $connection = $this->openConnection();
+    $stmt = $connection->prepare(
+      "SELECT SUM(DISTINCT totalAmount) as totalAmount FROM sales_table WHERE paymentStatus = 'Paid' AND YEAR(orderDate) = YEAR(CURRENT_DATE()) AND 
+      MONTH(orderDate) = 02 GROUP BY orderID"
+    );
+    $stmt->execute();
+    $febSales = $stmt->fetchall();
+    $count = $stmt->rowCount();
+
+    if ($count > 0) {
+      return $febSales;
+    } else {
+      return false;
+    }
+  }
+
+  // display total sales this mar
+  public function get_mar_sales()
+  {
+    $connection = $this->openConnection();
+    $stmt = $connection->prepare(
+      "SELECT SUM(DISTINCT totalAmount) as totalAmount FROM sales_table WHERE paymentStatus = 'Paid' AND YEAR(orderDate) = YEAR(CURRENT_DATE()) AND 
+      MONTH(orderDate) = 03 GROUP BY orderID"
+    );
+    $stmt->execute();
+    $marSales = $stmt->fetchall();
+    $count = $stmt->rowCount();
+
+    if ($count > 0) {
+      return $marSales;
+    } else {
+      return false;
+    }
+  }
+
+  // display total sales this apr
+  public function get_apr_sales()
+  {
+    $connection = $this->openConnection();
+    $stmt = $connection->prepare(
+      "SELECT SUM(DISTINCT totalAmount) as totalAmount FROM sales_table WHERE paymentStatus = 'Paid' AND YEAR(orderDate) = YEAR(CURRENT_DATE()) AND 
+      MONTH(orderDate) = 04 GROUP BY orderID"
+    );
+    $stmt->execute();
+    $aprSales = $stmt->fetchall();
+    $count = $stmt->rowCount();
+
+    if ($count > 0) {
+      return $aprSales;
+    } else {
+      return false;
+    }
+  }
+
+  // display total sales this may
+  public function get_may_sales()
+  {
+    $connection = $this->openConnection();
+    $stmt = $connection->prepare(
+      "SELECT SUM(DISTINCT totalAmount) as totalAmount FROM sales_table WHERE paymentStatus = 'Paid' AND YEAR(orderDate) = YEAR(CURRENT_DATE()) AND 
+      MONTH(orderDate) = 05 GROUP BY orderID"
+    );
+    $stmt->execute();
+    $maySales = $stmt->fetchall();
+    $count = $stmt->rowCount();
+
+    if ($count > 0) {
+      return $maySales;
+    } else {
+      return false;
+    }
+  }
+
+  // display total sales this jun
+  public function get_jun_sales()
+  {
+    $connection = $this->openConnection();
+    $stmt = $connection->prepare(
+      "SELECT SUM(DISTINCT totalAmount) as totalAmount FROM sales_table WHERE paymentStatus = 'Paid' AND YEAR(orderDate) = YEAR(CURRENT_DATE()) AND 
+      MONTH(orderDate) = 06 GROUP BY orderID"
+    );
+    $stmt->execute();
+    $junSales = $stmt->fetchall();
+    $count = $stmt->rowCount();
+
+    if ($count > 0) {
+      return $junSales;
+    } else {
+      return false;
+    }
+  }
+
+  // display total sales this jul
+  public function get_jul_sales()
+  {
+    $connection = $this->openConnection();
+    $stmt = $connection->prepare(
+      "SELECT SUM(DISTINCT totalAmount) as totalAmount FROM sales_table WHERE paymentStatus = 'Paid' AND YEAR(orderDate) = YEAR(CURRENT_DATE()) AND 
+      MONTH(orderDate) = 07 GROUP BY orderID"
+    );
+    $stmt->execute();
+    $julSales = $stmt->fetchall();
+    $count = $stmt->rowCount();
+
+    if ($count > 0) {
+      return $julSales;
+    } else {
+      return false;
+    }
+  }
+
+  // display total sales this aug
+  public function get_aug_sales()
+  {
+    $connection = $this->openConnection();
+    $stmt = $connection->prepare(
+      "SELECT SUM(DISTINCT totalAmount) as totalAmount FROM sales_table WHERE paymentStatus = 'Paid' AND YEAR(orderDate) = YEAR(CURRENT_DATE()) AND 
+      MONTH(orderDate) = 08 GROUP BY orderID"
+    );
+    $stmt->execute();
+    $augSales = $stmt->fetchall();
+    $count = $stmt->rowCount();
+
+    if ($count > 0) {
+      return $augSales;
+    } else {
+      return false;
+    }
+  }
+
+  // display total sales this sep
+  public function get_sep_sales()
+  {
+    $connection = $this->openConnection();
+    $stmt = $connection->prepare(
+      "SELECT SUM(DISTINCT totalAmount) as totalAmount FROM sales_table WHERE paymentStatus = 'Paid' AND YEAR(orderDate) = YEAR(CURRENT_DATE()) AND 
+      MONTH(orderDate) = 09 GROUP BY orderID"
+    );
+    $stmt->execute();
+    $sepSales = $stmt->fetchall();
+    $count = $stmt->rowCount();
+
+    if ($count > 0) {
+      return $sepSales;
+    } else {
+      return false;
+    }
+  }
+
+  // display total sales this oct
+  public function get_oct_sales()
+  {
+    $connection = $this->openConnection();
+    $stmt = $connection->prepare(
+      "SELECT SUM(DISTINCT totalAmount) as totalAmount FROM sales_table WHERE paymentStatus = 'Paid' AND YEAR(orderDate) = YEAR(CURRENT_DATE()) AND 
+      MONTH(orderDate) = 10 GROUP BY orderID"
+    );
+    $stmt->execute();
+    $octSales = $stmt->fetchall();
+    $count = $stmt->rowCount();
+
+    if ($count > 0) {
+      return $octSales;
+    } else {
+      return false;
+    }
+  }
+
+  // display total sales this nov
+  public function get_nov_sales()
+  {
+    $connection = $this->openConnection();
+    $stmt = $connection->prepare(
+      "SELECT SUM(DISTINCT totalAmount) as totalAmount FROM sales_table WHERE paymentStatus = 'Paid' AND YEAR(orderDate) = YEAR(CURRENT_DATE()) AND 
+      MONTH(orderDate) = 11 GROUP BY orderID"
+    );
+    $stmt->execute();
+    $novSales = $stmt->fetchall();
+    $count = $stmt->rowCount();
+
+    if ($count > 0) {
+      return $novSales;
+    } else {
+      return false;
+    }
+  }
+
+  // display total sales this dec
+  public function get_dec_sales()
+  {
+    $connection = $this->openConnection();
+    $stmt = $connection->prepare(
+      "SELECT SUM(DISTINCT totalAmount) as totalAmount FROM sales_table WHERE paymentStatus = 'Paid' AND YEAR(orderDate) = YEAR(CURRENT_DATE()) AND 
+      MONTH(orderDate) = 12 GROUP BY orderID"
+    );
+    $stmt->execute();
+    $decSales = $stmt->fetchall();
+    $count = $stmt->rowCount();
+
+    if ($count > 0) {
+      return $decSales;
+    } else {
+      return false;
+    }
+  }
+
+  // display sold products
+  public function sold_products($productID, $stockID)
+  {
+    $connection = $this->openConnection();
+    $stmt = $connection->prepare(
+      "SELECT SUM(salesQty) as salesQty FROM sales_table WHERE productID = ? AND stockID = ? GROUP BY productID AND stockID"
+    );
+    $stmt->execute([$productID, $stockID]);
+    $soldProducts = $stmt->fetchall();
+    $count = $stmt->rowCount();
+
+    if ($count > 0) {
+      return $soldProducts;
+    } else {
+      return false;
+    }
+  }
+
+  // display added inventory products
+  public function get_added_stock_products($productID, $stockID)
+  {
+    $connection = $this->openConnection();
+    $stmt = $connection->prepare(
+      "SELECT stock, SUM(addedQty) as addedQty FROM inventoryproduct_table inventory LEFT JOIN stocks_table stock ON inventory.stockID = stock.ID LEFT JOIN product_table product ON inventory.productID = product.ID WHERE inventory.productID = ? AND inventory.stockID = ? GROUP BY inventory.productID AND inventory.stockID"
+    );
+    $stmt->execute([$productID, $stockID]);
+    $addedInventoryProducts = $stmt->fetchall();
+    $count = $stmt->rowCount();
+
+    if ($count > 0) {
+      return $addedInventoryProducts;
+    } else {
+      return false;
+    }
+  }
+
   // add raw materials
   public function add_material()
   {
@@ -1071,7 +1525,7 @@ class WebStore
   {
     $connection = $this->openConnection();
     $stmt = $connection->prepare(
-      "SELECT materials.ID, materialName, unitPrice, stockQty, supplierID, supplierName FROM rawmaterials_table materials LEFT JOIN supplier_table supplier ON materials.supplierID = supplier.ID"
+      "SELECT materials.ID, materialName, unitPrice, stockQty, supplierID, supplierName, supplierEmail FROM rawmaterials_table materials LEFT JOIN supplier_table supplier ON materials.supplierID = supplier.ID ORDER BY ID DESC"
     );
     $stmt->execute();
     $materials = $stmt->fetchall();
@@ -1158,6 +1612,99 @@ class WebStore
     }
   }
 
+  // inventory product material
+  public function add_inventory_products()
+  {
+    if (isset($_POST["addInventoryProducts"])) {
+      $adminID = $_POST["adminID"];
+      $stockID = $_POST["stockID"];
+      $addedStockQty = $_POST["addedStockQty"];
+      if (isset($_POST["products"])) {
+        $products = $_POST["products"];
+      }
+
+      if (empty($addedStockQty) || empty(isset($_POST["products"]))) {
+        echo "<script> Swal.fire({
+            icon: 'error',
+            title: 'Empty Field',
+            text: 'Please input missing field',
+          });
+          </script>";
+      } else {
+        $connection = $this->openConnection();
+        $stmt = $connection->prepare(
+          "INSERT INTO inventoryproduct_table (`productID`, `stockID`, `addedQty`, `addedBy`) VALUES (?,?,?,?)"
+        );
+        $stmt->execute([$products, $stockID, $addedStockQty, $adminID]);
+        echo "<script>  
+            Swal.fire({
+              position: 'center',
+              icon: 'success',
+              title: 'Inventory Added',
+              showConfirmButton: false,
+              timer: 1000
+            },function(){ window.location.href = 'inventoryproducts.php';});
+          </script>";
+      }
+    }
+  }
+
+  // display inventory added products
+  public function get_inventory_products_added()
+  {
+    $connection = $this->openConnection();
+    $stmt = $connection->prepare(
+      "SELECT inventory.ID , inventory.productID, inventory.stockID, productName, productColor, size, addedQty, dateTime, account.firstName as addedByName, account.lastName as addedByLastName, account2.firstName as editByName, account2.lastName as editByLastName FROM (SELECT * FROM inventoryproduct_table) inventory LEFT JOIN product_table product ON inventory.productID = product.ID LEFT JOIN stocks_table stocks ON inventory.stockID = stocks.ID LEFT JOIN account_table account ON inventory.addedBy = account.ID LEFT JOIN account_table account2 ON inventory.editedBy = account2.ID ORDER BY ID DESC"
+    );
+    $stmt->execute();
+    $inventoryProducts = $stmt->fetchall();
+    $count = $stmt->rowCount();
+
+    if ($count > 0) {
+      return $inventoryProducts;
+    } else {
+      return false;
+    }
+  }
+
+  // update inventory products
+  public function update_inventory_product()
+  {
+    if (isset($_POST["updateInventoryProduct"])) {
+      $inventoryProductID = $_POST["inventoryProductID"];
+      $adminID = $_POST["adminID"];
+      $stockID = $_POST["stockID"];
+      $product = $_POST["products"];
+      $addedStockQty = $_POST["addedStockQty"];
+
+      if (empty($addedStockQty)) {
+        echo "<script> Swal.fire({
+          icon: 'error',
+          title: 'Empty Field',
+          text: 'Please input missing field',
+        });
+        </script>";
+      } else {
+        $connection = $this->openConnection();
+        $stmt = $connection->prepare(
+          "UPDATE inventoryproduct_table SET `productID` = ?, `stockID` = ?, `addedQty` = ?, dateTime = now(), `editedBy` = ? WHERE ID = '$inventoryProductID'"
+        );
+        $stmt->execute([$product, $stockID, $addedStockQty, $adminID]);
+        $row = $stmt->fetch();
+        echo "<script>
+      Swal.fire({
+        position: 'center',
+        icon: 'success',
+        title: 'Inventory Updated',
+        showConfirmButton: false,
+        timer: 1000
+      },function(){ window.location.href = 'inventoryproducts.php';});
+      </script>";
+        return $row;
+      }
+    }
+  }
+
   // inventory raw material
   public function add_inventory_materials()
   {
@@ -1199,7 +1746,7 @@ class WebStore
   {
     $connection = $this->openConnection();
     $stmt = $connection->prepare(
-      "SELECT inventory.ID, materialID, materialName, addedQty, dateTime, account.firstName as addedByName, account.lastName as addedByLastName, account2.firstName as editByName, account2.lastName as editByLastName FROM (SELECT * FROM inventorymaterial_table) inventory LEFT JOIN rawmaterials_table materials ON inventory.materialID = materials.ID LEFT JOIN account_table account ON inventory.adminID = account.ID LEFT JOIN account_table account2 ON inventory.editBy = account2.ID"
+      "SELECT inventory.ID, materialID, materialName, addedQty, dateTime, account.firstName as addedByName, account.lastName as addedByLastName, account2.firstName as editByName, account2.lastName as editByLastName FROM (SELECT * FROM inventorymaterial_table) inventory LEFT JOIN rawmaterials_table materials ON inventory.materialID = materials.ID LEFT JOIN account_table account ON inventory.adminID = account.ID LEFT JOIN account_table account2 ON inventory.editBy = account2.ID ORDER BY ID DESC"
     );
     $stmt->execute();
     $inventoryMaterials = $stmt->fetchall();
@@ -1254,11 +1801,13 @@ class WebStore
   {
     if (isset($_POST["supplier"])) {
       $supplierName = $_POST["supplierName"];
+      $supplierEmail = $_POST["supplierEmail"];
       $supplierAddress = $_POST["supplierAddress"];
       $supplierContactNo = $_POST["supplierContactNo"];
 
       if (
         empty($supplierName) ||
+        empty($supplierEmail) ||
         empty($supplierAddress) ||
         empty($supplierContactNo)
       ) {
@@ -1271,9 +1820,14 @@ class WebStore
       } else {
         $connection = $this->openConnection();
         $stmt = $connection->prepare(
-          "INSERT INTO supplier_table (`supplierName` , `supplierAddress` , `supplierContactNumber`) VALUES (?,?,?)"
+          "INSERT INTO supplier_table (`supplierName` , supplierEmail, `supplierAddress` , `supplierContactNumber`) VALUES (?,?,?,?)"
         );
-        $stmt->execute([$supplierName, $supplierAddress, $supplierContactNo]);
+        $stmt->execute([
+          $supplierName,
+          $supplierEmail,
+          $supplierAddress,
+          $supplierContactNo,
+        ]);
         echo "<script>  
           Swal.fire({
             position: 'center',
@@ -1291,7 +1845,9 @@ class WebStore
   public function get_all_supplier()
   {
     $connection = $this->openConnection();
-    $stmt = $connection->prepare("SELECT * FROM supplier_table");
+    $stmt = $connection->prepare(
+      "SELECT * FROM supplier_table ORDER BY ID DESC"
+    );
     $stmt->execute();
     $supplier = $stmt->fetchall();
     $count = $stmt->rowCount();
@@ -1309,11 +1865,13 @@ class WebStore
     if (isset($_POST["updateSupplier"])) {
       $supplierID = $_POST["supplierID"];
       $supplierName = $_POST["supplierName"];
+      $supplierEmail = $_POST["supplierEmail"];
       $supplierAddress = $_POST["supplierAddress"];
       $supplierContactNo = $_POST["supplierContactNo"];
 
       if (
         empty($supplierName) ||
+        empty($supplierEmail) ||
         empty($supplierAddress) ||
         empty($supplierContactNo)
       ) {
@@ -1326,9 +1884,14 @@ class WebStore
       } else {
         $connection = $this->openConnection();
         $stmt = $connection->prepare(
-          "UPDATE supplier_table SET `supplierName` = ?, `supplierAddress` = ?, `supplierContactNumber` = ? WHERE ID = '$supplierID'"
+          "UPDATE supplier_table SET `supplierName` = ?, `supplierEmail` = ?, `supplierAddress` = ?, `supplierContactNumber` = ? WHERE ID = '$supplierID'"
         );
-        $stmt->execute([$supplierName, $supplierAddress, $supplierContactNo]);
+        $stmt->execute([
+          $supplierName,
+          $supplierEmail,
+          $supplierAddress,
+          $supplierContactNo,
+        ]);
         $row = $stmt->fetch();
         echo "<script>  
         Swal.fire({
