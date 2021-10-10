@@ -1906,6 +1906,39 @@ class WebStore
       }
     }
   }
+
+  //email notification (subscribe)
+  public function subscribe()
+  {
+    if(isset($_POST['subscribe'])){
+      $email = $_POST['email'];
+      
+      $mailTo = $email;
+      $body = "Thank you for subscribing <b>INVI Clothing Co.</b> We will make sure to send to you every latest updates. Enjoy Shoppers!";
+      
+      $mail = new PHPMailer\PHPMailer\PHPMailer();
+      //$mail->SMTPDebug = 1;
+      $mail->isSMTP();
+      $mail->Host = "mail.smtp2go.com";
+      $mail->SMTPAuth = true;
+      $mail->Username = "INVI";
+      $mail->Password = "inviclothingco";
+      $mail->SMTPSecure = "tls";
+      $mail->Port = "2525";
+      $mail->From = "inviclothing.co@gmail.com";
+      $mail->FromName = "INVI Clothing Co.";
+      $mail->addAddress($mailTo, "INVI Clothing Co.");
+      $mail->isHTML(true);
+      $mail->Subject = "INVI Clothing Co. - Subscription";
+      $mail->Body = $body;
+      
+      if(!$mail->send()){
+        echo "Mailer Error: ". $mail->ErrorInfo;
+      }else{
+        echo "Email has been sent!";
+      }
+    }
+  }
 }
 $store = new WebStore();
 ?>

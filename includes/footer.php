@@ -1,3 +1,11 @@
+<?php
+  
+  require_once "../class/webstoreclass.php";
+  require("../PHPMailer/src/PHPMailer.php");
+  require("../PHPMailer/src/SMTP.php");
+  $store->subscribe();
+?>
+
 <!-- start of footer -->
 <footer id="main-footer">
   <div class="container footer-container">
@@ -32,9 +40,9 @@
       <div class="newsletter">
         <h4>SUBSCRIBE</h4>
         <div class="subscribe-input">
-          <form action="">
-            <input type="email" placeholder="Email Address" class="input input-for-footer" />
-            <button type="submit" class="button-input">
+          <form action="#" method="post">
+            <input type="email" name="email" placeholder="Email Address" class="input input-for-footer" />
+            <button type="submit" name="subscribe" class="button-input">
               <span class="iconify send-btn" data-icon="carbon:send-alt-filled" data-inline="false"></span>
             </button>
           </form>

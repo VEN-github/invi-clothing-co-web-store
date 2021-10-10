@@ -47,11 +47,11 @@
   padding-right: 4.5em;
   background: #e5e5e5;
   border: 2px solid #e5e5e5;
-  &:focus + button {
-    opacity: 1;
-    pointer-events: all;
-    border-color: colors.$secondary-color;
-  }
+  //&:focus + button {
+   // opacity: 1;
+    //pointer-events: all;
+    //border-color: colors.$secondary-color;
+  //}
 }
 // input discount
 .input-discount {
