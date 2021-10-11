@@ -8,6 +8,7 @@ $salesMonth = $store->get_sales_this_month();
 $totalIncome = $store->get_total_net_income();
 $orders = $store->count_orders();
 $topSales = $store->get_top_selling_products();
+$topCategories = $store->get_top_selling_category();
 $products = $store->get_products();
 $janSales = $store->get_jan_sales();
 $febSales = $store->get_feb_sales();
@@ -394,7 +395,6 @@ $decSales = $store->get_dec_sales();
                         class="table table-striped text-center"
                         width="100%"
                         cellspacing="0"
-                        data-order='[[ 0, "desc" ]]'
                       >
                         <thead class="bg-gray-600 text-gray-100">
                           <tr>
@@ -457,19 +457,35 @@ $decSales = $store->get_dec_sales();
                   </div>
                   <!-- Card Body -->
                   <div class="card-body">
-                    <div class="chart-pie pt-4 pb-2">
-                      <canvas id="myPieChart"></canvas>
-                    </div>
-                    <div class="mt-4 text-center small">
-                      <span class="mr-2">
-                        <i class="fas fa-circle text-primary"></i> Direct
-                      </span>
-                      <span class="mr-2">
-                        <i class="fas fa-circle text-success"></i> Social
-                      </span>
-                      <span class="mr-2">
-                        <i class="fas fa-circle text-info"></i> Referral
-                      </span>
+                    <div class="table-responsive">
+                      <table
+                        class="table table-striped text-center"
+                        width="100%"
+                        cellspacing="0"
+                      >
+                        <thead class="bg-gray-600 text-gray-100">
+                          <tr>
+                            <th>Category</th>
+                            <th>Total Sales Quantity</th>
+                          </tr>
+                        </thead>
+                        <tbody class="text-gray-900">
+                          <?php if ($topCategories) { ?>
+                            <?php foreach ($topCategories as $topCategory) { ?>
+                              <tr>
+                                <td><?= $topCategory["categoryName"] ?></td>
+                                <td><?= $topCategory["salesQty"] ?></td>
+                              </tr>
+                            <?php } ?>
+                          <?php } ?>
+                        </tbody>
+                        <tfoot class="bg-gray-600 text-gray-100">
+                          <tr>
+                            <th>Category</th>
+                            <th>Total Sales Quantity</th>
+                          </tr>
+                        </tfoot>
+                      </table>
                     </div>
                   </div>
                 </div>
@@ -488,6 +504,7 @@ $decSales = $store->get_dec_sales();
       <i class="fas fa-angle-up"></i>
     </a>
     <?php require_once "../includes/dashboard_scripts.php"; ?>
+    <script src="./assets/js/demo/chart-area-demo.js"></script>
     <script>
       const setDate = new Date();
       const date = setDate.toDateString();

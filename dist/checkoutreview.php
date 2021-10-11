@@ -158,7 +158,7 @@ $store->shipping_address();
       
       if (completeBtn) {
         completeBtn.addEventListener("click", () => {   
-          document.querySelector("#orderID").value = Math.random().toString(16).slice(2);
+          document.querySelector("#orderID").value = Math.random().toString(36).slice(-5);
           localStorage.removeItem('productsInCart');
           localStorage.removeItem('cartNumbers');
           localStorage.removeItem('totalCost');

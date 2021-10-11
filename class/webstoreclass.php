@@ -997,7 +997,7 @@ class WebStore
   {
     $connection = $this->openConnection();
     $stmt = $connection->prepare(
-      "SELECT orderID, firstName, lastName, email,coverPhoto, productName, productColor, size, salesQty, totalAmount, paymentMethod, paymentStatus, shipMethod, orderStatus, orderDate FROM sales_table sales  LEFT JOIN account_table account ON sales.accountID = account.ID LEFT JOIN product_table product ON sales.productID = product.ID LEFT JOIN stocks_table stocks ON sales.stockID = stocks.ID ORDER BY orderDate DESC"
+      "SELECT orderID, accountID, firstName, lastName, email,coverPhoto, productName, productColor, size, salesQty, totalAmount, paymentMethod, paymentStatus, shipMethod, orderStatus, orderDate FROM sales_table sales  LEFT JOIN account_table account ON sales.accountID = account.ID LEFT JOIN product_table product ON sales.productID = product.ID LEFT JOIN stocks_table stocks ON sales.stockID = stocks.ID ORDER BY orderDate DESC"
     );
     $stmt->execute();
     $orders = $stmt->fetchall();
@@ -1010,12 +1010,30 @@ class WebStore
     }
   }
 
+  // print receipt
+  public function invoice($orderID, $accountID)
+  {
+    $connection = $this->openConnection();
+    $stmt = $connection->prepare(
+      "SELECT orderID, account.firstName as firstName, account.lastName as lastName, email, coverPhoto, productName, productColor, size, salesQty, totalAmount, paymentMethod, netSales, shipMethod, shipFee, orderDate, shipAddress.firstName as addressFname, shipAddress.lastName as addressLname, address1, address2, city, postalCode, region, country, phoneNumber FROM sales_table sales  LEFT JOIN account_table account ON sales.accountID = account.ID LEFT JOIN product_table product ON sales.productID = product.ID LEFT JOIN stocks_table stocks ON sales.stockID = stocks.ID LEFT JOIN costing_table costing ON sales.productID = costing.productID LEFT JOIN address_table shipAddress ON sales.accountID = shipAddress.accountID WHERE orderID = ? AND sales.accountID = ? GROUP BY sales.productID"
+    );
+    $stmt->execute([$orderID, $accountID]);
+    $order = $stmt->fetchall();
+    $count = $stmt->rowCount();
+
+    if ($count > 0) {
+      return $order;
+    } else {
+      return $this->show_dashboard404();
+    }
+  }
+
   // count pending orders
   public function count_orders()
   {
     $connection = $this->openConnection();
     $stmt = $connection->prepare(
-      "SELECT COUNT(DISTINCT(orderID)) FROM sales_table WHERE orderStatus = 'Placed' OR orderStatus = 'Processing' OR orderStatus = 'Shipped'"
+      "SELECT COUNT(DISTINCT(orderID)) FROM sales_table WHERE orderStatus = 'Placed' OR orderStatus = 'Processing'"
     );
     $stmt->execute();
     $orders = $stmt->fetchColumn();
@@ -1145,7 +1163,7 @@ class WebStore
     $connection = $this->openConnection();
     $stmt = $connection->prepare(
       "SELECT categoryName, SUM(salesQty) as salesQty FROM sales_table sales LEFT JOIN product_table product ON sales.productID = product.ID LEFT JOIN category_table category ON product.categoryID = category.ID WHERE paymentStatus = 'Paid' AND YEAR(orderDate) = YEAR(CURRENT_DATE()) AND 
-      MONTH(orderDate) = MONTH(CURRENT_DATE()) GROUP BY categoryName ORDER BY SUM(salesQty)"
+      MONTH(orderDate) = MONTH(CURRENT_DATE()) GROUP BY categoryName ORDER BY SUM(salesQty) DESC LIMIT 5"
     );
     $stmt->execute();
     $topCategories = $stmt->fetchall();
