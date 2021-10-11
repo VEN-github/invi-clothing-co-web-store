@@ -3493,7 +3493,7 @@ textarea:focus {
           box-shadow: none;
 }
 
-.logo {
+.receipt-logo {
   width: 120px;
   -o-object-fit: cover;
      object-fit: cover;

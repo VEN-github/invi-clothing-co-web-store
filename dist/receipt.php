@@ -67,7 +67,7 @@ $html =
 
   <div id="receipt">
     <div class="heading">
-      <img class="logo" src="./assets/img/black_logo.png" alt="Logo">
+      <img class="receipt-logo" src="./assets/img/black_logo.png" alt="Logo">
       <h1>INVI Clothing Co.</h1>
       <div class="order-id">Order ID:' .
   $ID .
