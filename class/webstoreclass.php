@@ -2,7 +2,7 @@
 class WebStore
 {
   // Database
-  private $server = "us-cdbr-east-04.cleardb.com";
+  private $server = "mysql:host=us-cdbr-east-04.cleardb.com;dbname=heroku_7edfa485938d25a;port=3306";
   private $user = "b147da4957a6d1";
   private $pass = "f2eafda8";
   private $options = [
