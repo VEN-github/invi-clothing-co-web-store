@@ -202,7 +202,11 @@ include_once "../includes/dashboard_header.php";
                                   <?php if (
                                     $order["orderStatus"] === "Processing"
                                   ) { ?>      
-                                    <a class="dropdown-item" href="">Print receipt</a>
+                                    <a class="dropdown-item" target="_blank" href="receipt.php?orderID=<?= $order[
+                                      "orderID"
+                                    ] ?>&acctID=<?= $order[
+  "accountID"
+] ?>">Print receipt</a>
                                   <?php } ?>  
                                   <?php if (
                                     !($order["paymentStatus"] === "Paid")
