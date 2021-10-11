@@ -2056,7 +2056,7 @@ class WebStore
       if (!$mail->send()) {
         echo "Mailer Error: " . $mail->ErrorInfo;
       }
-    }  
+    }
   }
 
   //contact supplier via email
@@ -2076,31 +2076,35 @@ class WebStore
         });
         </script>";
       } else {
-    if(isset($_POST['contactSupplier'])){
-      $supplierEmail = $_POST['supplierEmail'];
-      $body = $_POST['message'];
+        $mail = new PHPMailer\PHPMailer\PHPMailer();
+        //$mail->SMTPDebug = 1;
+        $mail->isSMTP();
+        $mail->Host = "mail.smtp2go.com";
+        $mail->SMTPAuth = true;
+        $mail->Username = "INVI";
+        $mail->Password = "inviclothingco";
+        $mail->SMTPSecure = "tls";
+        $mail->Port = "2525";
+        $mail->From = "inviclothing.co@gmail.com";
+        $mail->FromName = "INVI Clothing Co.";
+        $mail->addAddress($mailTo, "INVI Clothing Co.");
+        $mail->isHTML(true);
+        $mail->Subject = "INVI Clothing Co.";
+        $mail->Body = $body;
 
-      $mailTo = $supplierEmail;
-      $mail = new PHPMailer\PHPMailer\PHPMailer();
-      //$mail->SMTPDebug = 1;
-      $mail->isSMTP();
-      $mail->Host = "mail.smtp2go.com";
-      $mail->SMTPAuth = true;
-      $mail->Username = "INVI";
-      $mail->Password = "inviclothingco";
-      $mail->SMTPSecure = "tls";
-      $mail->Port = "2525";
-      $mail->From = "inviclothing.co@gmail.com";
-      $mail->FromName = "INVI Clothing Co.";
-      $mail->addAddress($mailTo, "INVI Clothing Co.");
-      $mail->isHTML(true);
-      $mail->Subject = "INVI Clothing Co.";
-      $mail->Body = $body;
-
-      if(!$mail->send()){
-        echo "Mailer Error: ". $mail->ErrorInfo;
-      }else{
-        echo "Email has been sent!";
+        if (!$mail->send()) {
+          echo "Mailer Error: " . $mail->ErrorInfo;
+        } else {
+          echo "<script>  
+        Swal.fire({
+          position: 'center',
+          icon: 'success',
+          title: 'Email has been sent',
+          showConfirmButton: false,
+          timer: 1000
+        },function(){ window.location.href = 'materials.php';});
+        </script>";
+        }
       }
     }
   }
