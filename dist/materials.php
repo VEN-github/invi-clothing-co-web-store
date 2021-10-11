@@ -1,4 +1,6 @@
 <?php
+require("../PHPMailer/src/PHPMailer.php");
+require("../PHPMailer/src/SMTP.php");
 require_once "../class/webstoreclass.php";
 $user = $store->get_userdata();
 $suppliers = $store->get_all_supplier();
@@ -10,6 +12,7 @@ include_once "../includes/dashboard_header.php";
     $store->add_material();
     $store->update_material();
     $materials = $store->get_all_materials();
+    $store->contact_supplier();
     ?>
     <!-- Page Wrapper -->
     <div id="wrapper">

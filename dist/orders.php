@@ -1,4 +1,6 @@
 <?php
+require("../PHPMailer/src/PHPMailer.php");
+require("../PHPMailer/src/SMTP.php");
 require_once "../class/webstoreclass.php";
 $user = $store->get_userdata();
 $title = "Orders";
@@ -10,6 +12,7 @@ include_once "../includes/dashboard_header.php";
     $store->update_payment_status();
     $store->update_order_status();
     $orders = $store->get_orders();
+    $store->order_email_notif();
     ?>
     <!-- Page Wrapper -->
     <div id="wrapper">
@@ -65,8 +68,8 @@ include_once "../includes/dashboard_header.php";
                   </div>
                   <div class="modal-body">
                     <form method="post" id="orderStatusForm">
-                      <input type="hidden" name="orderID" id="orderID">
-                      <input type="hidden" name="customerEmail" id="email">
+                      <input type="text" name="orderID" id="orderID">
+                      <input type="text" name="customerEmail" id="email">
                       <div class="form-group">
                         <label>Status</label>
                         <select class="form-control" name="orderStatus">

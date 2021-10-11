@@ -1939,6 +1939,87 @@ class WebStore
       }
     }
   }
+  
+  //update customer via email
+  public function order_email_notif()
+  {
+    if(isset($_POST['updateOrderStatus'])){
+      $customerEmail = $_POST['customerEmail'];
+      $orderID = $_POST['orderID'];
+
+      $mailTo = $customerEmail;
+      $mail = new PHPMailer\PHPMailer\PHPMailer();
+      //$mail->SMTPDebug = 1;
+      $mail->isSMTP();
+      $mail->Host = "mail.smtp2go.com";
+      $mail->SMTPAuth = true;
+      $mail->Username = "INVI";
+      $mail->Password = "inviclothingco";
+      $mail->SMTPSecure = "tls";
+      $mail->Port = "2525";
+      $mail->From = "inviclothing.co@gmail.com";
+      $mail->FromName = "INVI Clothing Co.";
+      $mail->addAddress($mailTo, "INVI Clothing Co.");
+      $mail->isHTML(true);
+      $mail->Subject = "INVI Clothing Co.";
+      
+
+      if($_POST['orderStatus'] == "Processing"){
+        $mail->Body = "<h1> Order# ".$orderID." </h1>".
+                      "<b>Your order is being processed.</b>" ;
+      }
+      if($_POST['orderStatus'] == "Shipped"){
+        $mail->Body = "<h1> Order# ".$orderID." </h1>".
+                      "<b>Your order/s has been shipped out.</b>";
+      }
+      if($_POST['orderStatus'] == "Delivered"){
+        $mail->Body = "<h1> Order# ".$orderID." </h1>".
+                      "<b>Your order/s has been delivered. Thank you for supporting INVI Clothing Co.</b>";
+      }
+      if($_POST['orderStatus'] == "Cancelled"){
+        $mail->Body = "<h1> Order# ".$orderID." </h1>".
+                      "<b>Cancelled order.</b>";
+      }
+
+      if(!$mail->send()){
+        echo "Mailer Error: ". $mail->ErrorInfo;
+      }else{
+        echo "Email has been sent!";
+      }
+    }
+  }
+
+  //contact supplier via email
+  public function contact_supplier()
+  {
+    if(isset($_POST['contactSupplier'])){
+      $supplierEmail = $_POST['supplierEmail'];
+      $body = $_POST['message'];
+
+      $mailTo = $supplierEmail;
+      $mail = new PHPMailer\PHPMailer\PHPMailer();
+      //$mail->SMTPDebug = 1;
+      $mail->isSMTP();
+      $mail->Host = "mail.smtp2go.com";
+      $mail->SMTPAuth = true;
+      $mail->Username = "INVI";
+      $mail->Password = "inviclothingco";
+      $mail->SMTPSecure = "tls";
+      $mail->Port = "2525";
+      $mail->From = "inviclothing.co@gmail.com";
+      $mail->FromName = "INVI Clothing Co.";
+      $mail->addAddress($mailTo, "INVI Clothing Co.");
+      $mail->isHTML(true);
+      $mail->Subject = "INVI Clothing Co.";
+      $mail->Body = $body;
+
+      if(!$mail->send()){
+        echo "Mailer Error: ". $mail->ErrorInfo;
+      }else{
+        echo "Email has been sent!";
+      }
+    }
+  }
 }
 $store = new WebStore();
 ?>
