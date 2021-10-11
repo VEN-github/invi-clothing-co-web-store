@@ -1932,7 +1932,7 @@ class WebStore
       $email = $_POST['email'];
       
       $mailTo = $email;
-      $body = "Thank you for subscribing <b>INVI Clothing Co.</b> We will make sure to send to you every latest updates. Enjoy Shoppers!";
+      $body = "Thank you for subscribing <b>INVI Clothing Co.</b> We will make sure to send to you every latest updates. Enjoy INVI Shoppers!";
       
       $mail = new PHPMailer\PHPMailer\PHPMailer();
       //$mail->SMTPDebug = 1;
@@ -1979,24 +1979,24 @@ class WebStore
       $mail->FromName = "INVI Clothing Co.";
       $mail->addAddress($mailTo, "INVI Clothing Co.");
       $mail->isHTML(true);
-      $mail->Subject = "INVI Clothing Co.";
+      $mail->Subject = "INVI Clothing Co. - ORDER#".$orderID;
       
 
       if($_POST['orderStatus'] == "Processing"){
-        $mail->Body = "<h1> Order# ".$orderID." </h1>".
+        $mail->Body = "<h4> Order# ".$orderID." </h4>".
                       "<b>Your order is being processed.</b>" ;
       }
       if($_POST['orderStatus'] == "Shipped"){
-        $mail->Body = "<h1> Order# ".$orderID." </h1>".
-                      "<b>Your order/s has been shipped out.</b>";
+        $mail->Body = "<h4> Order# ".$orderID." </h4>".
+                      "Your order/s has been shipped out.";
       }
       if($_POST['orderStatus'] == "Delivered"){
-        $mail->Body = "<h1> Order# ".$orderID." </h1>".
-                      "<b>Your order/s has been delivered. Thank you for supporting INVI Clothing Co.</b>";
+        $mail->Body = "<h4> Order# ".$orderID." </h4>".
+                      "Your order/s has been delivered. Thank you for supporting INVI Clothing Co.";
       }
       if($_POST['orderStatus'] == "Cancelled"){
-        $mail->Body = "<h1> Order# ".$orderID." </h1>".
-                      "<b>Cancelled order.</b>";
+        $mail->Body = "<h4> Order# ".$orderID." </h4>".
+                      "Cancelled order.";
       }
 
       if(!$mail->send()){
