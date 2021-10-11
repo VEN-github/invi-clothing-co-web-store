@@ -1,4 +1,5 @@
 <?php
+
 require_once "../class/webstoreclass.php";
 $userProfile = $store->setProfile();
 $user = $store->get_userdata();
