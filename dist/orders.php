@@ -1,4 +1,6 @@
 <?php
+require "../PHPMailer/src/PHPMailer.php";
+require "../PHPMailer/src/SMTP.php";
 require_once "../class/webstoreclass.php";
 $user = $store->get_userdata();
 $title = "Orders";
@@ -10,6 +12,7 @@ include_once "../includes/dashboard_header.php";
     $store->update_payment_status();
     $store->update_order_status();
     $orders = $store->get_orders();
+    $store->orderStatus_email_notification();
     ?>
     <!-- Page Wrapper -->
     <div id="wrapper">
@@ -212,11 +215,18 @@ include_once "../includes/dashboard_header.php";
                                       "orderID"
                                     ] ?>">Update Payment Status</a>
                                   <?php } ?>
+                                  <?php if (
+                                    !(
+                                      $order["orderStatus"] === "Delivered" ||
+                                      $order["orderStatus"] === "Cancelled"
+                                    )
+                                  ) { ?> 
                                   <a class="dropdown-item orderStatus" href="" data-toggle="modal" data-target="#orderStatusModal" data-order_id="<?= $order[
                                     "orderID"
                                   ] ?>" data-email="<?= $order[
   "email"
 ] ?>">Update Order Status</a>
+<?php } ?>
                                 </div>
                             </div>
                             <?php } ?>

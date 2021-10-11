@@ -13,16 +13,16 @@ include_once "../includes/header.php";
         <section id="confirmation">
           <div class="container">
             <div class="confirmation-container">
-              <h1>ORDER CONFIRMED</h1>
+              <h1>ORDER COMPLETED</h1>
               <img
                 src="./assets/img/order-confirmed.svg"
                 alt="Order Confirmed"
               />
               <div class="confirmation-details">
                 <p class="confirmation-notif">
-                  Thank you, <?= $userProfile["firstName"] .
+                  Hey, <?= $userProfile["firstName"] .
                     " " .
-                    $userProfile["lastName"] ?>. Your Order is confirmed
+                    $userProfile["lastName"] ?>. Thank you for your purchase
                 </p>
                 <p>
                   Your order has been placed and will be processed as soon as
