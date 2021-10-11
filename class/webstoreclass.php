@@ -2,7 +2,7 @@
 class WebStore
 {
   // Database
-  private $server = "mysql://b147da4957a6d1:f2eafda8@us-cdbr-east-04.cleardb.com/heroku_7edfa485938d25a?reconnect=true";
+  private $server = "us-cdbr-east-04.cleardb.com";
   private $user = "b147da4957a6d1";
   private $pass = "f2eafda8";
   private $options = [
