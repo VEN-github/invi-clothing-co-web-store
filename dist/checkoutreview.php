@@ -1,4 +1,6 @@
 <?php
+require("../PHPMailer/src/PHPMailer.php");
+require("../PHPMailer/src/SMTP.php");
 require_once "../class/webstoreclass.php";
 $userProfile = $store->setProfile();
 $user = $store->get_userdata();
@@ -7,6 +9,7 @@ include_once "../includes/header.php";
 $checkout = $store->get_checkout();
 $store->sales();
 $store->shipping_address();
+$store->placed_order_email();
 ?>
   <body>
     <div class="page-container">
