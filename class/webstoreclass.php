@@ -2,9 +2,9 @@
 class WebStore
 {
   // Database
-  private $server = "mysql:host=us-cdbr-east-04.cleardb.com;dbname=heroku_7edfa485938d25a;port=3306";
-  private $user = "b147da4957a6d1";
-  private $pass = "f2eafda8";
+  private $server = "mysql:host=localhost;dbname=invi-clothing_database;port=3307";
+  private $user = "root";
+  private $pass = "";
   private $options = [
     PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
     PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
