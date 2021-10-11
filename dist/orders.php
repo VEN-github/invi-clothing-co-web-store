@@ -68,8 +68,8 @@ include_once "../includes/dashboard_header.php";
                   </div>
                   <div class="modal-body">
                     <form method="post" id="orderStatusForm">
-                      <input type="text" name="orderID" id="orderID">
-                      <input type="text" name="customerEmail" id="email">
+                      <input type="hidden" name="orderID" id="orderID">
+                      <input type="hidden" name="customerEmail" id="email">
                       <div class="form-group">
                         <label>Status</label>
                         <select class="form-control" name="orderStatus">
