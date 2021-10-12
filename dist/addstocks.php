@@ -31,6 +31,18 @@ include_once "../includes/dashboard_header.php";
                         <label>Stock</label>
                         <input type="number" class="form-control stocks" name="wholeStock" min="0" value="1" form="stockForm">
                       </div>
+                      <div class="form-group">
+                        <label>Stock Keeping Unit (SKU)</label>
+                        <input type="text" class="form-control text-uppercase" name="skuNoSize" id="skuNoSize" value="<?= str_ireplace(
+                          ["a", "e", "i", "o", "u", "-", " "],
+                          "",
+                          $product["productColor"]
+                        ) ?>-<?= str_ireplace(
+  ["a", "e", "i", "o", "u", " "],
+  "",
+  $product["categoryName"]
+) ?>-" form="stockForm">
+                      </div>
                       <input type="hidden" name="noSize" id="noSize" value="" form="stockForm">
                       <input type="hidden" name="productID" value="<?= $product[
                         "ID"
@@ -70,42 +82,107 @@ include_once "../includes/dashboard_header.php";
                           <tr>
                             <th>Size</th>
                             <th>Stock Quantity</th>
+                            <th>Stock Keeping Unit (SKU)</th>
                           </tr>
                         </thead>
                         <tbody class="text-gray-900">
                           <tr>
                             <td><input class="form-control" name="size[]" value="XS" readonly></td>
                             <td><input type="number" class="form-control stocks" name="stocks[]" min="0" value="1"></td>
+                            <td><input type="text" class="form-control text-uppercase" name="sku[]" id="xs" value="<?= str_ireplace(
+                              ["a", "e", "i", "o", "u", "-", " "],
+                              "",
+                              $product["productColor"]
+                            ) ?>-<?= str_ireplace(
+  ["a", "e", "i", "o", "u", " "],
+  "",
+  $product["categoryName"]
+) ?>-XS-" form="stockForm"></td>
                           </tr>
                           <tr>
                             <td><input class="form-control" name="size[]" value="S" readonly></td>
                             <td><input type="number" class="form-control stocks" name="stocks[]" min="0" value="1"></td>
+                            <td><input type="text" class="form-control text-uppercase" name="sku[]" id="s" value="<?= str_ireplace(
+                              ["a", "e", "i", "o", "u", "-", " "],
+                              "",
+                              $product["productColor"]
+                            ) ?>-<?= str_ireplace(
+  ["a", "e", "i", "o", "u", " "],
+  "",
+  $product["categoryName"]
+) ?>-S-" form="stockForm"></td>
                           </tr>
                           <tr>
                             <td><input class="form-control" name="size[]" value="M" readonly></td>
                             <td><input type="number" class="form-control stocks" name="stocks[]" min="0" value="1"></td>
+                            <td><input type="text" class="form-control text-uppercase" name="sku[]" id="m" value="<?= str_ireplace(
+                              ["a", "e", "i", "o", "u", "-", " "],
+                              "",
+                              $product["productColor"]
+                            ) ?>-<?= str_ireplace(
+  ["a", "e", "i", "o", "u", " "],
+  "",
+  $product["categoryName"]
+) ?>-M-" form="stockForm"></td>
                           </tr>
                           <tr>
                             <td><input class="form-control" name="size[]" value="L" readonly></td>
                             <td><input type="number" class="form-control stocks" name="stocks[]" min="0" value="1"></td>
+                            <td><input type="text" class="form-control text-uppercase" name="sku[]" id="l" value="<?= str_ireplace(
+                              ["a", "e", "i", "o", "u", "-", " "],
+                              "",
+                              $product["productColor"]
+                            ) ?>-<?= str_ireplace(
+  ["a", "e", "i", "o", "u", " "],
+  "",
+  $product["categoryName"]
+) ?>-L-" form="stockForm"></td>
                           </tr>
                           <tr>
                             <td><input class="form-control" name="size[]" value="XL" readonly></td>
                             <td><input type="number" class="form-control stocks" name="stocks[]" min="0" value="1"></td>
+                            <td><input type="text" class="form-control text-uppercase" name="sku[]" id="xl" value="<?= str_ireplace(
+                              ["a", "e", "i", "o", "u", "-", " "],
+                              "",
+                              $product["productColor"]
+                            ) ?>-<?= str_ireplace(
+  ["a", "e", "i", "o", "u", " "],
+  "",
+  $product["categoryName"]
+) ?>-XL-" form="stockForm"></td>
                           </tr>
                           <tr>
                             <td><input class="form-control" name="size[]" value="2XL" readonly></td>
                             <td><input type="number" class="form-control stocks" name="stocks[]" min="0" value="1"></td>
+                            <td><input type="text" class="form-control text-uppercase" name="sku[]" id="xxl" value="<?= str_ireplace(
+                              ["a", "e", "i", "o", "u", "-", " "],
+                              "",
+                              $product["productColor"]
+                            ) ?>-<?= str_ireplace(
+  ["a", "e", "i", "o", "u", " "],
+  "",
+  $product["categoryName"]
+) ?>-2XL-" form="stockForm"></td>
                           </tr>
                           <tr>
                             <td><input class="form-control" name="size[]" value="3XL" readonly></td>
                             <td><input type="number" class="form-control stocks" name="stocks[]" min="0" value="1"></td>
+                            <td><input type="text" class="form-control text-uppercase" name="sku[]" id="xxxl" value="<?= str_ireplace(
+                              ["a", "e", "i", "o", "u", "-", " "],
+                              "",
+                              $product["productColor"]
+                            ) ?>-<?= str_ireplace(
+  ["a", "e", "i", "o", "u", " "],
+  "",
+  $product["categoryName"]
+) ?>-3XL-" form="stockForm"></td>
                           </tr>
                         </tbody>
                         <tfoot class="bg-gray-600 text-gray-100">
                           <tr>
                             <th>Size</th>
                             <th>Stock Quantity</th>
+                            <th>Stock Keeping Unit (SKU)</th>
                           </tr>
                         </tfoot>
                       </table>

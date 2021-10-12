@@ -50,12 +50,14 @@ include_once "../includes/dashboard_header.php";
                       </div>
                       <div class="form-group">
                         <label>Supplier</label>
-                        <select class="form-control" name="supplierID">
+                        <select class="selectpicker show-tick form-control" name="supplierID" data-live-search="true">
                           <option selected disabled>Select Supplier</option>
                           <?php foreach ($suppliers as $supplier) { ?>
-                          <option value="<?= $supplier["ID"] ?>"><?= $supplier[
+                          <option value="<?= $supplier[
+                            "ID"
+                          ] ?>" data-tokens="<?= $supplier[
   "supplierName"
-] ?></option>
+] ?>"><?= $supplier["supplierName"] ?></option>
                           <?php } ?>
                         </select>
                       </div>

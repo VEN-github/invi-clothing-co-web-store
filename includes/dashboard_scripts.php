@@ -7,6 +7,7 @@
 
 <!-- Custom scripts for all pages-->
 <script src="./assets/js/sb-admin-2.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.14.0-beta2/dist/js/bootstrap-select.min.js"></script>
 
 <!-- Page level plugins -->
 <script src="../vendor/datatables/jquery.dataTables.min.js"></script>

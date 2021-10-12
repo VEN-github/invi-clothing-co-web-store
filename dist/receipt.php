@@ -31,7 +31,9 @@ foreach ($orders as $order) {
         '</td>
           </tr>
           <tr>
-            <td class="items">SKU: 454878745</td>
+            <td class="items">SKU: ' .
+        $order["sku"] .
+        '</td>
           </tr>'
       : '<tr>
             <td class="items">Color: ' .
@@ -44,7 +46,9 @@ foreach ($orders as $order) {
         '</td>
           </tr>
           <tr>
-            <td class="items">SKU: 454878745</td>
+            <td class="items">SKU: ' .
+        $order["sku"] .
+        '</td>
           </tr>') .
     '
       </table>

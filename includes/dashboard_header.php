@@ -22,7 +22,6 @@
             rel="stylesheet">
         <!-- Custom styles for this template -->
         <link href="../dist/assets/css/sb-admin-2.min.css" rel="stylesheet" />
-
         <!-- Custom styles for this page -->
         <link
         href="../vendor/datatables/dataTables.bootstrap4.min.css"
@@ -33,5 +32,7 @@
         <!-- JS PDF -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.2/jspdf.debug.js"></script>
         <script src="https://unpkg.com/jspdf-autotable@3.5.20/dist/jspdf.plugin.autotable.js"></script>
+        <!-- bootstrap select -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.14.0-beta2/dist/css/bootstrap-select.min.css">
         <title><?= $title . " | " ?>INVI Clothing Co.</title>
     </head>

@@ -42,12 +42,14 @@ $materials = $store->get_all_materials();
                       </div>
                       <div class="form-group">
                         <label>Raw Material</label>
-                        <select class="form-control" name="material">
+                        <select class="selectpicker show-tick form-control" name="material" data-live-search="true">
                           <option selected disabled>Select Raw Material</option>
                           <?php foreach ($materials as $material) { ?>
-                          <option value="<?= $material["ID"] ?>"><?= $material[
+                          <option value="<?= $material[
+                            "ID"
+                          ] ?>" data-tokens="<?= $material[
   "materialName"
-] ?></option>
+] ?>"><?= $material["materialName"] ?></option>
                           <?php } ?>
                         </select>
                       </div>

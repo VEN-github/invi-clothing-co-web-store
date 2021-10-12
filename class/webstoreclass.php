@@ -582,7 +582,9 @@ class WebStore
   public function get_singleID($ID)
   {
     $connection = $this->openConnection();
-    $stmt = $connection->prepare("SELECT * FROM product_table WHERE ID = ?");
+    $stmt = $connection->prepare(
+      "SELECT product.ID as ID, productColor, categoryName FROM product_table product LEFT JOIN category_table category ON product.categoryID = category.ID WHERE product.ID = ?"
+    );
     $stmt->execute([$ID]);
     $product = $stmt->fetch();
     $count = $stmt->rowCount();
@@ -600,24 +602,26 @@ class WebStore
     if (isset($_POST["addStock"])) {
       $productID = $_POST["productID"];
       $wholeStock = $_POST["wholeStock"];
+      $skuNoSize = $_POST["skuNoSize"];
       $noSize = $_POST["noSize"];
 
       if (empty($noSize)) {
         $connection = $this->openConnection();
         $stmt = $connection->prepare(
-          "INSERT INTO stocks_table ( `productID`, `stock`) VALUES (?,?)"
+          "INSERT INTO stocks_table ( `productID`, `stock`, `sku`) VALUES (?,?,?)"
         );
-        $stmt->execute([$productID, $wholeStock]);
+        $stmt->execute([$productID, $wholeStock, $skuNoSize]);
       } else {
         $count = count($_POST["size"]);
         for ($i = 0; $i < $count; $i++) {
           $size = $_POST["size"][$i];
           $stock = $_POST["stocks"][$i];
+          $sku = $_POST["sku"][$i];
           $connection = $this->openConnection();
           $stmt = $connection->prepare(
-            "INSERT INTO stocks_table ( `productID`, `size`, `stock`) VALUES (?,?,?)"
+            "INSERT INTO stocks_table ( `productID`, `size`, `stock`, `sku`) VALUES (?,?,?,?)"
           );
-          $stmt->execute([$productID, $size, $stock]);
+          $stmt->execute([$productID, $size, $stock, $sku]);
         }
       }
       header("Location: products.php");
@@ -1015,7 +1019,7 @@ class WebStore
   {
     $connection = $this->openConnection();
     $stmt = $connection->prepare(
-      "SELECT orderID, account.firstName as firstName, account.lastName as lastName, email, coverPhoto, productName, productColor, size, salesQty, totalAmount, paymentMethod, netSales, shipMethod, shipFee, orderDate, shipAddress.firstName as addressFname, shipAddress.lastName as addressLname, address1, address2, city, postalCode, region, country, phoneNumber FROM sales_table sales  LEFT JOIN account_table account ON sales.accountID = account.ID LEFT JOIN product_table product ON sales.productID = product.ID LEFT JOIN stocks_table stocks ON sales.stockID = stocks.ID LEFT JOIN costing_table costing ON sales.productID = costing.productID LEFT JOIN address_table shipAddress ON sales.accountID = shipAddress.accountID WHERE orderID = ? AND sales.accountID = ? GROUP BY sales.productID"
+      "SELECT orderID, account.firstName as firstName, account.lastName as lastName, email, coverPhoto, productName, productColor, size, sku, salesQty, totalAmount, paymentMethod, netSales, shipMethod, shipFee, orderDate, shipAddress.firstName as addressFname, shipAddress.lastName as addressLname, address1, address2, city, postalCode, region, country, phoneNumber FROM sales_table sales  LEFT JOIN account_table account ON sales.accountID = account.ID LEFT JOIN product_table product ON sales.productID = product.ID LEFT JOIN stocks_table stocks ON sales.stockID = stocks.ID LEFT JOIN costing_table costing ON sales.productID = costing.productID LEFT JOIN address_table shipAddress ON sales.accountID = shipAddress.accountID WHERE orderID = ? AND sales.accountID = ? GROUP BY sales.productID"
     );
     $stmt->execute([$orderID, $accountID]);
     $order = $stmt->fetchall();
@@ -1630,7 +1634,7 @@ class WebStore
     }
   }
 
-  // inventory product material
+  // inventory product
   public function add_inventory_products()
   {
     if (isset($_POST["addInventoryProducts"])) {

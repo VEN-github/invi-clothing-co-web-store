@@ -43,7 +43,7 @@ $products = $store->get_products();
                       </div>
                       <div class="form-group">
                         <label>Product</label>
-                        <select class="form-control" name="products" id="productsForm">
+                        <select class="selectpicker show-tick form-control" name="products" id="productsForm" data-live-search="true">
                           <option selected disabled>Select Product</option>
                           <?php foreach ($products as $product) { ?>
                             <?php $stocks = $store->view_all_stocks(
@@ -52,9 +52,9 @@ $products = $store->get_products();
                             <?php foreach ($stocks as $stock) { ?>
                           <option value="<?= $product[
                             "ID"
-                          ] ?>" data-id="<?= $stock["ID"] ?>" ><?= is_null(
-  $stock["size"]
-)
+                          ] ?>" data-id="<?= $stock[
+  "ID"
+] ?>" data-tokens="<?= $product["productName"] ?>"><?= is_null($stock["size"])
   ? $product["productName"] . " (" . $product["productColor"] . ")"
   : $product["productName"] .
     " (" .
