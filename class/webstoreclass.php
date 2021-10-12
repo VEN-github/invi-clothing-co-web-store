@@ -1469,7 +1469,7 @@ class WebStore
   {
     $connection = $this->openConnection();
     $stmt = $connection->prepare(
-      "SELECT SUM(salesQty) as salesQty FROM sales_table WHERE productID = ? AND stockID = ? GROUP BY productID AND stockID"
+      "SELECT SUM(salesQty) as salesQty FROM sales_table WHERE productID = ? AND stockID = ? AND (NOT orderStatus = 'Cancelled' OR NOT paymentStatus = 'Cancelled') GROUP BY productID AND stockID"
     );
     $stmt->execute([$productID, $stockID]);
     $soldProducts = $stmt->fetchall();
