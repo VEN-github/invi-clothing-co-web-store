@@ -7,8 +7,8 @@ dest = destination folder
 watch = watch files and folders for changes */
 const sass = require("gulp-sass");
 sass.compiler = require("sass");
-// const postcss = require("gulp-postcss");
-// const cssnano = require("cssnano");
+const postcss = require("gulp-postcss");
+const cssnano = require("cssnano");
 const autoprefixer = require("gulp-autoprefixer");
 const imagemin = require("gulp-imagemin");
 const uglify = require("gulp-uglify");
@@ -25,7 +25,7 @@ function style() {
       //autoprefixer
       .pipe(autoprefixer())
       //postcss with cssnano
-      // .pipe(postcss([cssnano]))
+      .pipe(postcss([cssnano]))
       //saving compiled css
       .pipe(dest("./dist/assets/css"))
       //stream changes to all browsers
