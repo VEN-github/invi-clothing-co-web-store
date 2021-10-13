@@ -70,7 +70,7 @@ $store->placed_order_email();
                     ] ?>">
                     <input type="hidden" name="paymentStatus" value="<?= $checkout[
                       "payment"
-                    ] === "PayPal"
+                    ] === "PayPal or Credit / Debit Card"
                       ? "Paid"
                       : "Pending" ?>">
                     <input type="hidden" name="orderStatus" value="Placed">

@@ -23,7 +23,7 @@ include_once "../includes/header.php";
                 <p class="confirmation-notif">
                   Hey, <?= $userProfile["firstName"] .
                     " " .
-                    $userProfile["lastName"] ?>. Thank you for your purchase
+                    $userProfile["lastName"] ?>. Thank you for your purchase.
                 </p>
                 <p>
                   Your order has been placed and will be processed as soon as

@@ -38,7 +38,7 @@ document.body.querySelector("#paypal-buttons-container").style.display = "none";
 document.querySelectorAll("input[name=payment]").forEach(function (el) {
   el.addEventListener("change", function (event) {
     // If PayPal is selected, show the PayPal button
-    if (event.target.value === "PayPal") {
+    if (event.target.value === "PayPal or Credit / Debit Card") {
       document.body.querySelector("#paypal-buttons-container").style.display =
         "block";
       document.body.querySelector("#paypal").style.display = "none";

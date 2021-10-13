@@ -69,14 +69,15 @@ $checkout = $store->get_checkout();
                       <span class="checkmark"></span>
                     </label>
                     <label class="radio-field" id="paypal">
-                      <input type="radio" name="payment" id="paypalRadio" value="PayPal" class="radio" <?= !empty(
+                      <input type="radio" name="payment" id="paypalRadio" value="PayPal or Credit / Debit Card" class="radio" <?= !empty(
                         $checkout["payment"]
-                      ) && $checkout["payment"] == "PayPal"
+                      ) &&
+                      $checkout["payment"] == "PayPal or Credit / Debit Card"
                         ? "checked=checked"
                         : "" ?>/>
                       <p class="ship-label">
                         <span class="iconify payment-icon" data-icon="icons8:paypal"></span>
-                        PayPal
+                        PayPal or Credit / Debit Card
                       </p>
                       <span class="checkmark"></span>
                     </label>
