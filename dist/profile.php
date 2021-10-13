@@ -78,7 +78,7 @@ include_once "../includes/header.php";
                     >
                   </li>
                   <li>
-                    <a href="../includes/logout.php"
+                    <a href="logout.php"
                       ><span
                         class="iconify"
                         data-icon="ls:logout"

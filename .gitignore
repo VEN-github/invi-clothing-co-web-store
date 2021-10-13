@@ -1,0 +1,13 @@
+.vscode/
+vendor/bootstrap/
+vendor/chart.js/
+vendor/chart.js/
+vendor/datatables/
+vendor/fontawesome-free/
+vendor/jquery/
+vendor/jquery-easing/
+vendor/mpdf/
+vendor/myclabs/
+vendor/paragonie/
+vendor/psr/
+vendor/setasign/

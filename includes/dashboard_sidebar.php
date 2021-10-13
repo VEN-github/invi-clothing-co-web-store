@@ -3,7 +3,7 @@
     <!-- Sidebar - Brand -->
     <a class="sidebar-brand d-flex align-items-center justify-content-center" href="dashboard.php">
         <div class="sidebar-brand-icon mr-1">
-            <img src="../dist/assets/img/logo.png" alt="INVI Clothing Co. Logo"  width="60px;" style="object-fit:cover;">
+            <img src="./assets/img/logo.png" alt="INVI Clothing Co. Logo"  width="60px;" style="object-fit:cover;">
         </div>
         <div class="sidebar-brand-text">INVI Clothing Co.</div>
     </a>
