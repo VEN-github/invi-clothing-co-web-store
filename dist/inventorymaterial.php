@@ -10,6 +10,8 @@ $materials = $store->get_all_materials();
     $store->add_inventory_materials();
     $store->update_inventory_material();
     $addedInventoryMaterials = $store->get_inventory_materials_added();
+    $countOrders = $store->count_orders();
+    $pendingOrders = $store->get_pending_orders();
     ?>
     <!-- Page Wrapper -->
     <div id="wrapper">
@@ -26,7 +28,7 @@ $materials = $store->get_all_materials();
               <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                   <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLongTitle">Add New Inventory</h5>
+                    <h5 class="modal-title" id="exampleModalLongTitle">Add Inventory</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                       <span aria-hidden="true">&times;</span>
                     </button>
@@ -149,7 +151,6 @@ $materials = $store->get_all_materials();
                           <th>Added Stock</th>
                           <th>Date & Time</th>
                           <th>Added By</th>
-                          <th>Edited By</th>
                         </tr>
                     </thead>
                     <tbody class="text-gray-900">
@@ -166,13 +167,6 @@ $materials = $store->get_all_materials();
                             <td><?= $inventoryMaterial["addedByName"] .
                               " " .
                               $inventoryMaterial["addedByLastName"] ?></td>
-                            <td><?= $inventoryMaterial["editByName"] &&
-                            $inventoryMaterial["editByLastName"]
-                              ? $inventoryMaterial["editByName"] .
-                                " " .
-                                $inventoryMaterial["editByLastName"]
-                              : "No Record" ?>
-                            </td>
                           </tr>
                         <?php } ?>
                       <?php } ?>
@@ -184,7 +178,6 @@ $materials = $store->get_all_materials();
                           <th>Added Stock</th>
                           <th>Date & Time</th>
                           <th>Added By</th>
-                          <th>Edited By</th>
                         </tr>
                     </tfoot>
                   </table>
@@ -222,7 +215,6 @@ $materials = $store->get_all_materials();
                           <th>Added Stock</th>
                           <th>Date & Time</th>
                           <th>Added By</th>
-                          <th>Edited By</th>
                           <th>Action</th>
                         </tr>
                     </thead>
@@ -240,13 +232,6 @@ $materials = $store->get_all_materials();
                             <td><?= $inventoryMaterial["addedByName"] .
                               " " .
                               $inventoryMaterial["addedByLastName"] ?></td>
-                            <td><?= $inventoryMaterial["editByName"] &&
-                            $inventoryMaterial["editByLastName"]
-                              ? $inventoryMaterial["editByName"] .
-                                " " .
-                                $inventoryMaterial["editByLastName"]
-                              : "No Record" ?>
-                            </td>
                             <td>
                               <button type="button" class="editInventoryMaterial btn btn-sm btn-secondary btn-circle" href="javascript:;" data-toggle="modal" data-target="#editInventoryMaterialModal" data-inventory_material_id="<?= $inventoryMaterial[
                                 "ID"
@@ -271,7 +256,6 @@ $materials = $store->get_all_materials();
                           <th>Added Stock</th>
                           <th>Date & Time</th>
                           <th>Added By</th>
-                          <th>Edited By</th>
                           <th>Action</th>
                         </tr>
                     </tfoot>

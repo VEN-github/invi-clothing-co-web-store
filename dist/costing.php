@@ -6,6 +6,8 @@ $product = $store->get_singleID($ID);
 $title = "Financing";
 include_once "../includes/dashboard_header.php";
 $materials = $store->get_all_materials();
+$countOrders = $store->count_orders();
+$pendingOrders = $store->get_pending_orders();
 ?>
   <body id="page-top">
     <?php $store->costing(); ?>
@@ -32,10 +34,14 @@ $materials = $store->get_all_materials();
                         <form method="post" class="rawForm" id="stocksForm">                    
                           <div class="form-group">
                             <label>Raw Material Use</label>
-                            <select class="form-control rawMaterialForm" name="raw">
+                            <select class="selectpicker show-tick form-control rawMaterialForm" name="raw" data-live-search="true">
                               <option selected="selected" disabled="disabled">Select Raw Material</option>
                               <?php foreach ($materials as $material) { ?>
-                                <option value="<?= $material["ID"] ?>"
+                                <option value="<?= $material[
+                                  "ID"
+                                ] ?>" data-tokens="<?= $material[
+  "materialName"
+] ?>"
                                 <?php
                                 $itemUsed = $store->used_materials(
                                   $material["ID"]

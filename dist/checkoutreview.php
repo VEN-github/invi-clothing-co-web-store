@@ -73,7 +73,7 @@ $store->placed_order_email();
                     ] === "PayPal or Credit / Debit Card"
                       ? "Paid"
                       : "Pending" ?>">
-                    <input type="hidden" name="orderStatus" value="Placed">
+                    <input type="hidden" name="orderStatus" value="Pending">
                     <h4>Customer Information</h4>
                     <p class="contact-details">Contact Information:</p>
                     <div class="first-layer">

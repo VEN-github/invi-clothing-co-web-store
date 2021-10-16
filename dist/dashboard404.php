@@ -3,6 +3,8 @@ require_once "../class/webstoreclass.php";
 $user = $store->get_userdata();
 $title = "404";
 include_once "../includes/dashboard_header.php";
+$countOrders = $store->count_orders();
+$pendingOrders = $store->get_pending_orders();
 ?>
   <body id="page-top">
     <!-- Page Wrapper -->

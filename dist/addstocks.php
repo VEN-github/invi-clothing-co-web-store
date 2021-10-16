@@ -5,6 +5,8 @@ $ID = $_GET["ID"];
 $product = $store->get_singleID($ID);
 $title = "Add Stocks";
 include_once "../includes/dashboard_header.php";
+$countOrders = $store->count_orders();
+$pendingOrders = $store->get_pending_orders();
 ?>
   <body id="page-top">
     <?php $store->stock_in(); ?>
@@ -38,9 +40,9 @@ include_once "../includes/dashboard_header.php";
                           "",
                           $product["productColor"]
                         ) ?>-<?= str_ireplace(
-  ["a", "e", "i", "o", "u", " "],
+  [" "],
   "",
-  $product["categoryName"]
+  $product["productName"]
 ) ?>-" form="stockForm">
                       </div>
                       <input type="hidden" name="noSize" id="noSize" value="" form="stockForm">
@@ -94,9 +96,9 @@ include_once "../includes/dashboard_header.php";
                               "",
                               $product["productColor"]
                             ) ?>-<?= str_ireplace(
-  ["a", "e", "i", "o", "u", " "],
+  [" "],
   "",
-  $product["categoryName"]
+  $product["productName"]
 ) ?>-XS-" form="stockForm"></td>
                           </tr>
                           <tr>
@@ -107,9 +109,9 @@ include_once "../includes/dashboard_header.php";
                               "",
                               $product["productColor"]
                             ) ?>-<?= str_ireplace(
-  ["a", "e", "i", "o", "u", " "],
+  [" "],
   "",
-  $product["categoryName"]
+  $product["productName"]
 ) ?>-S-" form="stockForm"></td>
                           </tr>
                           <tr>
@@ -120,9 +122,9 @@ include_once "../includes/dashboard_header.php";
                               "",
                               $product["productColor"]
                             ) ?>-<?= str_ireplace(
-  ["a", "e", "i", "o", "u", " "],
+  [" "],
   "",
-  $product["categoryName"]
+  $product["productName"]
 ) ?>-M-" form="stockForm"></td>
                           </tr>
                           <tr>
@@ -133,9 +135,9 @@ include_once "../includes/dashboard_header.php";
                               "",
                               $product["productColor"]
                             ) ?>-<?= str_ireplace(
-  ["a", "e", "i", "o", "u", " "],
+  [" "],
   "",
-  $product["categoryName"]
+  $product["productName"]
 ) ?>-L-" form="stockForm"></td>
                           </tr>
                           <tr>
@@ -146,9 +148,9 @@ include_once "../includes/dashboard_header.php";
                               "",
                               $product["productColor"]
                             ) ?>-<?= str_ireplace(
-  ["a", "e", "i", "o", "u", " "],
+  [" "],
   "",
-  $product["categoryName"]
+  $product["productName"]
 ) ?>-XL-" form="stockForm"></td>
                           </tr>
                           <tr>
@@ -159,9 +161,9 @@ include_once "../includes/dashboard_header.php";
                               "",
                               $product["productColor"]
                             ) ?>-<?= str_ireplace(
-  ["a", "e", "i", "o", "u", " "],
+  [" "],
   "",
-  $product["categoryName"]
+  $product["productName"]
 ) ?>-2XL-" form="stockForm"></td>
                           </tr>
                           <tr>
@@ -172,9 +174,9 @@ include_once "../includes/dashboard_header.php";
                               "",
                               $product["productColor"]
                             ) ?>-<?= str_ireplace(
-  ["a", "e", "i", "o", "u", " "],
+  [" "],
   "",
-  $product["categoryName"]
+  $product["productName"]
 ) ?>-3XL-" form="stockForm"></td>
                           </tr>
                         </tbody>

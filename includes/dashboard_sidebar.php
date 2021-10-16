@@ -38,6 +38,21 @@
         </a>
     </li>
 
+    <!-- Nav Item - Payments Collapse Menu -->
+    <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseOne"
+            aria-expanded="true" aria-controls="collapseOne">
+            <i class="far fa-credit-card"></i>
+            <span>Payments</span>
+        </a>
+        <div id="collapseOne" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <a class="collapse-item" href="cod.php">Cash on Delivery (COD)</a>
+                <a class="collapse-item" href="cashless.php">Online Payment</a>
+            </div>
+        </div>
+    </li>
+
     <!-- Nav Item - Products -->
     <li class="nav-item">
         <a class="nav-link" href="products.php">
@@ -63,7 +78,7 @@
         </a>
         <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
-                <a class="collapse-item" href="inventoryproducts.php">Products</a>
+                <a class="collapse-item" href="inventoryproducts.php">Finished Products</a>
                 <a class="collapse-item" href="inventorymaterial.php">Raw Materials</a>
             </div>
         </div>

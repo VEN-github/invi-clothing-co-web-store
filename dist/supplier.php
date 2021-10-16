@@ -9,6 +9,8 @@ include_once "../includes/dashboard_header.php";
     $store->add_supplier();
     $store->update_supplier();
     $suppliers = $store->get_all_supplier();
+    $countOrders = $store->count_orders();
+    $pendingOrders = $store->get_pending_orders();
     ?>
     <!-- Page Wrapper -->
     <div id="wrapper">

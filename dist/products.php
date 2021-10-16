@@ -4,6 +4,8 @@ $user = $store->get_userdata();
 $title = "Products";
 include_once "../includes/dashboard_header.php";
 $products = $store->get_products();
+$countOrders = $store->count_orders();
+$pendingOrders = $store->get_pending_orders();
 ?>
   <body id="page-top">
     <!-- Page Wrapper -->
@@ -78,7 +80,7 @@ $products = $store->get_products();
                                 $product["ID"],
                                 $stock["ID"]
                               ); ?>
-                              <tr>
+                              <tr class="products" style="display:none;">
                                 <td class="align-middle"><?= $product[
                                   "ID"
                                 ] ?></td>
@@ -364,6 +366,9 @@ $products = $store->get_products();
                     </tfoot>
                   </table>
                 </div>
+                <div class="mt-4 col text-center">
+                  <button class="btn btn-secondary load-more">Load more</button>
+                </div>
               </div>
             </div>
           </div>
@@ -381,5 +386,16 @@ $products = $store->get_products();
     </a>
     <?php require_once "../includes/dashboard_scripts.php"; ?>
     <script src="./assets/js/products.js"></script>
+    <script>
+      $('.products').slice(0, 10).show();
+
+      $('.load-more').click(function(){
+        $('.products:hidden').slice(0, 10).show();
+
+        if($('.products:hidden').length == 0){
+          $('.load-more').fadeOut();
+        }
+      });
+    </script>
   </body>
 </html>

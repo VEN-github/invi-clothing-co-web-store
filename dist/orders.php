@@ -3,16 +3,17 @@ require "../PHPMailer/src/PHPMailer.php";
 require "../PHPMailer/src/SMTP.php";
 require_once "../class/webstoreclass.php";
 $user = $store->get_userdata();
+
 $title = "Orders";
 include_once "../includes/dashboard_header.php";
 ?>
   <body id="page-top">
     <?php
-    $store->add_supplier();
-    $store->update_payment_status();
     $store->update_order_status();
     $orders = $store->get_orders();
+    $countOrders = $store->count_orders();
     $store->orderStatus_email_notification();
+    $pendingOrders = $store->get_pending_orders();
     ?>
     <!-- Page Wrapper -->
     <div id="wrapper">
@@ -24,38 +25,6 @@ include_once "../includes/dashboard_header.php";
           <?php include_once "../includes/dashboard_navbar.php"; ?>
           <!-- Begin Page Content -->
           <div class="container-fluid">
-            <!-- Payment Status Form -->
-            <div class="modal fade" id="paymentStatusModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-              <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLongTitle">Payment Status</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                      <span aria-hidden="true">&times;</span>
-                    </button>
-                  </div>
-                  <div class="modal-body">
-                    <form method="post" id="paymentStatusForm">
-                      <input type="hidden" name="orderID" id="paymentOrderID">
-                      <div class="form-group">
-                        <label>Status</label>
-                        <select class="form-control" name="paymentStatus">
-                          <option selected disabled>Select Payment Status</option>
-                          <option value="Pending">Pending</option>
-                          <option value="Paid">Paid</option>
-                          <option value="Cancelled">Cancelled</option>
-                        </select>
-                      </div>
-                    </form>
-                  </div>
-                  <div class="modal-footer">
-                    <button type="button" class="btn btn-light" data-dismiss="modal">Cancel</button>
-                    <input type="submit" name="updatePaymentStatus" class="btn btn-secondary" form="paymentStatusForm" value="Update">
-                  </div>
-                </div>
-              </div>
-            </div>
-            <!-- End of Payment Status Form -->
             <!-- Order Status Form -->
             <div class="modal fade" id="orderStatusModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
               <div class="modal-dialog modal-dialog-centered" role="document">
@@ -70,14 +39,15 @@ include_once "../includes/dashboard_header.php";
                     <form method="post" id="orderStatusForm">
                       <input type="hidden" name="orderID" id="orderID">
                       <input type="hidden" name="customerEmail" id="email">
+                      <input type="hidden" name="paymentMethod" id="payment">
                       <div class="form-group">
                         <label>Status</label>
                         <select class="form-control" name="orderStatus">
                           <option selected disabled>Select Order Status</option>
                           <option value="Processing">Processing</option>
                           <option value="Shipped">Shipped</option>
-                          <option value="Delivered">Delivered</option>
-                          <option value="Cancelled">Cancelled</option>
+                          <option value="Delivered">Delivered</option> 
+                          <option value="Cancelled" class="addedOpt">Cancelled</option>
                         </select>
                       </div>
                     </form>
@@ -129,7 +99,7 @@ include_once "../includes/dashboard_header.php";
                     <tbody class="text-gray-900">
                       <?php if ($orders) { ?>
                         <?php foreach ($orders as $order) { ?>
-                        <tr>
+                        <tr class="orders" style="display:none;">
                           <td class="align-middle"><?= $order["orderID"] ?></td>
                           <td class="align-middle"><?= $order["firstName"] .
                             " " .
@@ -177,10 +147,10 @@ include_once "../includes/dashboard_header.php";
                             $order["orderStatus"] === "Cancelled"
                           ) { ?>
                             text-danger<?php } elseif (
-                            $order["orderStatus"] === "Placed"
-                          ) { ?> text-primary<?php } elseif (
+                            $order["orderStatus"] === "Pending"
+                          ) { ?> text-warning<?php } elseif (
                             $order["orderStatus"] === "Processing"
-                          ) { ?>text-warning<?php } elseif (
+                          ) { ?>text-primary<?php } elseif (
                             $order["orderStatus"] === "Shipped"
                           ) { ?>text-info<?php } else { ?>text-success<?php } ?>"><?= $order[
   "orderStatus"
@@ -202,19 +172,12 @@ include_once "../includes/dashboard_header.php";
                                   <?php if (
                                     $order["orderStatus"] === "Processing"
                                   ) { ?>      
-                                    <a class="dropdown-item" target="_blank" href="receipt.php?orderID=<?= $order[
+                                    <a class="dropdown-item" target="_blank" href="invoice.php?orderID=<?= $order[
                                       "orderID"
                                     ] ?>&acctID=<?= $order[
   "accountID"
-] ?>">Print receipt</a>
+] ?>">Invoice</a>
                                   <?php } ?>  
-                                  <?php if (
-                                    !($order["paymentStatus"] === "Paid")
-                                  ) { ?>            
-                                    <a class="dropdown-item paymentStatus" href="" data-toggle="modal" data-target="#paymentStatusModal" data-order_id="<?= $order[
-                                      "orderID"
-                                    ] ?>">Update Payment Status</a>
-                                  <?php } ?>
                                   <?php if (
                                     !(
                                       $order["orderStatus"] === "Delivered" ||
@@ -225,6 +188,8 @@ include_once "../includes/dashboard_header.php";
                                     "orderID"
                                   ] ?>" data-email="<?= $order[
   "email"
+] ?>" data-payment="<?= $order["paymentMethod"] ?>" data-status="<?= $order[
+  "orderStatus"
 ] ?>">Update Order Status</a>
 <?php } ?>
                                 </div>
@@ -252,6 +217,9 @@ include_once "../includes/dashboard_header.php";
                     </tfoot>
                   </table>
                 </div>
+                <div class="mt-4 col text-center">
+                  <button class="btn btn-secondary load-more">Load more</button>
+                </div>
               </div>
             </div>
           </div>
@@ -270,18 +238,31 @@ include_once "../includes/dashboard_header.php";
     <?php require_once "../includes/dashboard_scripts.php"; ?>
     <script src="./assets/js/order.js"></script>
     <script>
-      $('.orderStatus').click(function() {
-      var orderID = $(this).data('order_id');
-      var email = $(this).data('email');
+      $('.orders').slice(0, 10).show();
 
-      $('#orderID').val(orderID);
-      $('#email').val(email);
-      } );
-      $('.paymentStatus').click(function() {
-      var orderID = $(this).data('order_id');
+      $('.load-more').click(function(){
+        $('.orders:hidden').slice(0, 10).show();
 
-      $('#paymentOrderID').val(orderID);
-      } );
+        if($('.orders:hidden').length == 0){
+          $('.load-more').fadeOut();
+        }
+      });
+    </script>
+    <script>
+      $(".orderStatus").click(function () {
+        var orderID = $(this).data("order_id");
+        var email = $(this).data("email");
+        var payment = $(this).data("payment");
+        var status = $(this).data("status");
+
+        $("#orderID").val(orderID);
+        $("#email").val(email);
+        $("#payment").val(payment);
+
+        if (status === "Processing" || status === "Shipped") {
+          $(".addedOpt").attr("disabled", "disabled");
+        }
+      });
     </script>
   </body>
 </html>

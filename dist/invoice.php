@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . "/vendor/autoload.php";
+require_once __DIR__ . "/../vendor/autoload.php";
 require_once "../class/webstoreclass.php";
 $orderID = $_GET["orderID"];
 $acctID = $_GET["acctID"];

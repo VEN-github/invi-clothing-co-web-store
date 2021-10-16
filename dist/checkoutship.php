@@ -86,7 +86,7 @@ $checkout = $store->get_checkout();
                     </label>
                     <?php date_default_timezone_set("Asia/Manila"); ?>
                     <?= $checkout["region"] == "Metro Manila" &&
-                    (date("H") >= 8 && date("H") < 15)
+                    (date("H") >= 8 && date("H") <= 15)
                       ? '
                     <label class="radio-field">
                       <input type="radio" name="delivery" id="ship-method" class="radio" value="Express Delivery"' .

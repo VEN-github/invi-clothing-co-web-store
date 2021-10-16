@@ -1,9 +1,9 @@
 <?php
 require_once "../class/webstoreclass.php";
 $user = $store->get_userdata();
-$title = "Sales";
+$title = "PayPal or Credit / Debit Card - Payments";
 include_once "../includes/dashboard_header.php";
-$sales = $store->get_sales();
+$online = $store->online_payments();
 $countOrders = $store->count_orders();
 $pendingOrders = $store->get_pending_orders();
 ?>
@@ -22,7 +22,7 @@ $pendingOrders = $store->get_pending_orders();
             <div
               class="d-sm-flex align-items-center justify-content-between mb-4 d-print-none"
             >
-              <h1 class="h3 mb-4 text-gray-800">Sales</h1>
+              <h1 class="h3 mb-4 text-gray-800">PayPal or Credit / Debit Card - Payments</h1>
               <div class="dropdown no-arrow mb-4">
                 <button class="btn btn-info btn-sm shadow-sm dropdown-toggle" type="button"
                     id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
@@ -39,7 +39,7 @@ $pendingOrders = $store->get_pending_orders();
             <!-- print page -->
             <div class="d-none d-print-block">
               <div class="d-sm-flex align-items-center justify-content-between m-4">
-                <h1 id="heading" class="m-0 font-weight-bold text-gray-800">Sales List</h1>
+                <h1 id="heading" class="m-0 font-weight-bold text-gray-800">Online - Payments List</h1>
                 <img id="img" class="m-4" src="./assets/img/black_logo.png" alt="" width="150px">
               </div>
               <div class="card-body">
@@ -53,46 +53,24 @@ $pendingOrders = $store->get_pending_orders();
                     <thead class="text-info">
                       <tr>
                         <th>#</th>
-                        <th>Product Name</th>
-                        <th>Price</th>
-                        <th>Quantity</th>
-                        <th>Total Sales</th>
-                        <th>Total Net Income</th>
+                        <th>Customer Name</th>
+                        <th>Total Amount</th>
                         <th>Date Purchased</th>
                       </tr>
                     </thead>
                     <tbody class="text-gray-900">
-                      <?php if ($sales) { ?>
-                        <?php foreach ($sales as $sale) { ?>
-                          <?php $product = $store->get_singleproduct(
-                            $sale["productID"]
-                          ); ?>
+                      <?php if ($online) { ?>
+                        <?php foreach ($online as $payment) { ?>
                           <tr>
-                            <td><?= $sale["orderID"] ?></td>
-                            <td> <?= is_null($sale["size"])
-                              ? $sale["productName"] .
-                                " (" .
-                                $sale["productColor"] .
-                                ")"
-                              : $sale["productName"] .
-                                " (" .
-                                $sale["productColor"] .
-                                ", " .
-                                $sale["size"] .
-                                ")" ?></td>
-                            <td><?= $product["netSales"] ?></td>
-                            <td><?= $sale["salesQty"] ?></td>
+                            <td><?= $payment["orderID"] ?></td>
+                            <td><?= $payment["firstName"] .
+                              " " .
+                              $payment["lastName"] ?></td>
                             <td><?= number_format(
-                              $product["netSales"] * $sale["salesQty"],
+                              $payment["totalAmount"],
                               2
-                            ) ?>
-                            </td>
-                            <td><?= number_format(
-                              $product["netIncome"] * $sale["salesQty"],
-                              2
-                            ) ?>
-                            </td>
-                            <td><?= $sale["orderDate"] ?></td>
+                            ) ?></td>
+                            <td><?= $payment["orderDate"] ?></td>
                           </tr>
                         <?php } ?>
                       <?php } ?>
@@ -100,11 +78,8 @@ $pendingOrders = $store->get_pending_orders();
                     <tfoot class="text-info">
                       <tr>
                         <th>#</th>
-                        <th>Product Name</th>
-                        <th>Price</th>
-                        <th>Quantity</th>
-                        <th>Total Sales</th>
-                        <th>Total Net Income</th>
+                        <th>Customer Name</th>
+                        <th>Total Amount</th>
                         <th>Date Purchased</th>
                       </tr>
                     </tfoot>
@@ -124,7 +99,7 @@ $pendingOrders = $store->get_pending_orders();
             <div class="card shadow mb-4 d-print-none">
               <div class="card-header py-3">
                 <h6 class="m-0 font-weight-bold text-gray-800">
-                  Sales List
+                  PayPal or Credit / Debit Card - Payments List
                 </h6>
               </div>
               <div class="card-body">
@@ -139,46 +114,24 @@ $pendingOrders = $store->get_pending_orders();
                     <thead class="bg-gray-600 text-gray-100">
                       <tr>
                         <th>#</th>
-                        <th>Product Name</th>
-                        <th>Price</th>
-                        <th>Quantity</th>
-                        <th>Total Sales</th>
-                        <th>Total Net Income</th>
+                        <th>Customer Name</th>
+                        <th>Total Amount</th>
                         <th>Date Purchased</th>
                       </tr>
                     </thead>
                     <tbody class="text-gray-900">
-                      <?php if ($sales) { ?>
-                        <?php foreach ($sales as $sale) { ?>
-                          <?php $product = $store->get_singleproduct(
-                            $sale["productID"]
-                          ); ?>
+                      <?php if ($online) { ?>
+                        <?php foreach ($online as $payment) { ?>
                           <tr>
-                            <td><?= $sale["orderID"] ?></td>
-                            <td> <?= is_null($sale["size"])
-                              ? $sale["productName"] .
-                                " (" .
-                                $sale["productColor"] .
-                                ")"
-                              : $sale["productName"] .
-                                " (" .
-                                $sale["productColor"] .
-                                ", " .
-                                $sale["size"] .
-                                ")" ?></td>
-                            <td><?= $product["netSales"] ?></td>
-                            <td><?= $sale["salesQty"] ?></td>
-                            <td><span>&#8369;</span> <?= number_format(
-                              $product["netSales"] * $sale["salesQty"],
+                            <td><?= $payment["orderID"] ?></td>
+                            <td><?= $payment["firstName"] .
+                              " " .
+                              $payment["lastName"] ?></td>
+                            <td><span>&#8369;</span>  <?= number_format(
+                              $payment["totalAmount"],
                               2
-                            ) ?>
-                            </td>
-                            <td><span>&#8369;</span> <?= number_format(
-                              $product["netIncome"] * $sale["salesQty"],
-                              2
-                            ) ?>
-                            </td>
-                            <td><?= $sale["orderDate"] ?></td>
+                            ) ?></td>
+                            <td><?= $payment["orderDate"] ?></td>
                           </tr>
                         <?php } ?>
                       <?php } ?>
@@ -186,11 +139,8 @@ $pendingOrders = $store->get_pending_orders();
                     <tfoot class="bg-gray-600 text-gray-100">
                       <tr>
                         <th>#</th>
-                        <th>Product Name</th>
-                        <th>Price</th>
-                        <th>Quantity</th>
-                        <th>Total Sales</th>
-                        <th>Total Net Income</th>
+                        <th>Customer Name</th>
+                        <th>Total Amount</th>
                         <th>Date Purchased</th>
                       </tr>
                     </tfoot>
@@ -242,7 +192,7 @@ $pendingOrders = $store->get_pending_orders();
         doc.fromHTML(date,40,670,{
           'width': 522,'elementHandlers': elementHandler
         });
-        doc.save("Sales.pdf");
+        doc.save("PayPal or Credit / Debit Card - Payments.pdf");
       }
     </script>
   </body>

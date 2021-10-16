@@ -284,71 +284,6 @@ class WebStore
     unset($_SESSION["checkout"]);
   }
 
-  //admin sign up
-  public function signup_admin()
-  {
-    if (isset($_POST["registerBtn"])) {
-      $firstName = $_POST["firstName"];
-      $lastName = $_POST["lastName"];
-      $email = $_POST["email"];
-      $contactNumber = $_POST["contactNumber"];
-      $password = md5($_POST["password"]);
-      $pass = $_POST["password"];
-      $confirmPassword = $_POST["confirmPassword"];
-      $access = $_POST["access"];
-
-      if (
-        empty($firstName) ||
-        empty($lastName) ||
-        empty($email) ||
-        empty($contactNumber) ||
-        empty($password) ||
-        empty($confirmPassword)
-      ) {
-        echo "<script> Swal.fire({
-          icon: 'error',
-          title: 'Empty Field',
-          text: 'Please input missing field',
-        });
-        </script>";
-      } elseif ($pass !== $confirmPassword) {
-        echo "<script> Swal.fire({
-          icon: 'error',
-          text: 'Password does not match.',
-        });
-        </script>";
-      } elseif ($this->checkEmail($email) == 0) {
-        $connection = $this->openConnection();
-        $stmt = $connection->prepare(
-          "INSERT INTO account_table (`firstName` , `lastName` , `email` , `password` , `contactNumber` , `access`) VALUES (?,?,?,?,?,?)"
-        );
-        $stmt->execute([
-          $firstName,
-          $lastName,
-          $email,
-          $password,
-          $contactNumber,
-          $access,
-        ]);
-        echo "<script>  
-        Swal.fire({
-          position: 'center',
-          icon: 'success',
-          title: 'Admin Added',
-          showConfirmButton: false,
-          timer: 1000
-        },function(){ window.location.href = 'admin.php';});
-      </script>";
-      } else {
-        echo "<script> Swal.fire({
-          icon: 'error',
-          text: 'Email Already Exists.',
-        });
-        </script>";
-      }
-    }
-  }
-
   // display admin
   public function get_admin()
   {
@@ -376,23 +311,32 @@ class WebStore
       $lastName = $_POST["lastName"];
       $email = $_POST["email"];
       $contactNumber = $_POST["contactNumber"];
+      $newPass = md5($_POST["newPass"]);
+      $confirmPass = md5($_POST["confirmPass"]);
+      $profileImg = $_FILES["profileImg"]["name"];
 
-      if (
-        empty($firstName) ||
-        empty($lastName) ||
-        empty($email) ||
-        empty($contactNumber)
-      ) {
+      if (empty($firstName) || empty($lastName) || empty($email)) {
         echo "<script> Swal.fire({
           icon: 'error',
           title: 'Empty Field',
           text: 'Please input missing field',
         });
         </script>";
-      } else {
+      } elseif ($newPass !== $confirmPass) {
+        echo "<script> Swal.fire({
+          icon: 'error',
+          title: 'Empty Field',
+          text: 'Password does not match.',
+        });
+        </script>";
+      } elseif (
+        empty($_POST["newPass"]) &&
+        empty($_POST["newPass"]) &&
+        empty($profileImg)
+      ) {
         $connection = $this->openConnection();
         $stmt = $connection->prepare(
-          "UPDATE account_table SET `firstName` = ? , `lastName` = ? , `email` = ? , `contactNumber`= ?  WHERE ID = '$adminID'"
+          "UPDATE account_table SET `firstName` = ? , `lastName` = ? , `email` = ?, `contactNumber` = ? WHERE ID = '$adminID'"
         );
         $stmt->execute([$firstName, $lastName, $email, $contactNumber]);
         $row = $stmt->fetch();
@@ -405,6 +349,90 @@ class WebStore
           timer: 1000
         },function(){ window.location.href = 'admin.php';});
       </script>";
+        return $row;
+      } elseif (
+        (empty($_POST["newPass"]) || empty($_POST["newPass"])) &&
+        !empty($profileImg)
+      ) {
+        $connection = $this->openConnection();
+        $stmt = $connection->prepare(
+          "UPDATE account_table SET `firstName` = ? , `lastName` = ? , `email` = ?, `contactNumber` = ?, `profileImg` = ? WHERE ID = '$adminID'"
+        );
+        $stmt->execute([
+          $firstName,
+          $lastName,
+          $email,
+          $contactNumber,
+          $profileImg,
+        ]);
+        move_uploaded_file(
+          $_FILES["profileImg"]["tmp_name"],
+          "assets/img/" . $profileImg
+        );
+        $row = $stmt->fetch();
+        echo "<script>  
+        Swal.fire({
+          position: 'center',
+          icon: 'success',
+          title: 'Admin Updated',
+          showConfirmButton: false,
+          timer: 1000
+        },function(){ window.location.href = 'admin.php';});
+      </script>";
+        return $row;
+      } elseif (
+        (!empty($_POST["newPass"]) || !empty($_POST["newPass"])) &&
+        empty($profileImg)
+      ) {
+        $connection = $this->openConnection();
+        $stmt = $connection->prepare(
+          "UPDATE account_table SET `firstName` = ? , `lastName` = ? , `email` = ?, `password` = ?,`contactNumber` = ? WHERE ID = '$adminID'"
+        );
+        $stmt->execute([
+          $firstName,
+          $lastName,
+          $email,
+          $newPass,
+          $contactNumber,
+        ]);
+        $row = $stmt->fetch();
+        echo "<script>  
+        Swal.fire({
+          position: 'center',
+          icon: 'success',
+          title: 'Admin Updated',
+          showConfirmButton: false,
+          timer: 1000
+        },function(){ window.location.href = 'admin.php';});
+      </script>";
+        return $row;
+      } else {
+        $connection = $this->openConnection();
+        $stmt = $connection->prepare(
+          "UPDATE account_table SET `firstName` = ? , `lastName` = ? , `email` = ? , `password` = ?,`contactNumber`= ?, `profileImg` = ? WHERE ID = '$adminID'"
+        );
+        $stmt->execute([
+          $firstName,
+          $lastName,
+          $email,
+          $newPass,
+          $contactNumber,
+          $profileImg,
+        ]);
+        move_uploaded_file(
+          $_FILES["profileImg"]["tmp_name"],
+          "assets/img/" . $profileImg
+        );
+        $row = $stmt->fetch();
+        echo "<script>
+            Swal.fire({
+              position: 'center',
+              icon: 'success',
+              title: 'Admin Updated',
+              showConfirmButton: false,
+              timer: 1000
+            },function(){ window.location.href = 'admin.php';});
+          </script>";
         return $row;
       }
     }
@@ -582,9 +610,7 @@ class WebStore
   public function get_singleID($ID)
   {
     $connection = $this->openConnection();
-    $stmt = $connection->prepare(
-      "SELECT product.ID as ID, productColor, categoryName FROM product_table product LEFT JOIN category_table category ON product.categoryID = category.ID WHERE product.ID = ?"
-    );
+    $stmt = $connection->prepare("SELECT * FROM product_table WHERE ID = ?");
     $stmt->execute([$ID]);
     $product = $stmt->fetch();
     $count = $stmt->rowCount();
@@ -1037,7 +1063,7 @@ class WebStore
   {
     $connection = $this->openConnection();
     $stmt = $connection->prepare(
-      "SELECT COUNT(DISTINCT(orderID)) FROM sales_table WHERE orderStatus = 'Placed' OR orderStatus = 'Processing'"
+      "SELECT COUNT(DISTINCT(orderID)) FROM sales_table WHERE orderStatus = 'Pending'"
     );
     $stmt->execute();
     $orders = $stmt->fetchColumn();
@@ -1050,40 +1076,21 @@ class WebStore
     }
   }
 
-  // update payment status
-  public function update_payment_status()
+  // get pending orders
+  public function get_pending_orders()
   {
-    if (isset($_POST["updatePaymentStatus"])) {
-      $orderID = $_POST["orderID"];
-      if (isset($_POST["paymentStatus"])) {
-        $paymentStatus = $_POST["paymentStatus"];
-      }
+    $connection = $this->openConnection();
+    $stmt = $connection->prepare(
+      "SELECT orderID, DATE_FORMAT(orderDate, '%M %d, %Y - %h:%i %p') as orderDate FROM sales_table WHERE orderStatus = 'Pending' GROUP BY orderID ORDER BY orderDate DESC LIMIT 3"
+    );
+    $stmt->execute();
+    $pendingOrders = $stmt->fetchall();
+    $count = $stmt->rowCount();
 
-      if (empty(isset($_POST["paymentStatus"]))) {
-        echo "<script> Swal.fire({
-        icon: 'error',
-        title: 'Empty Field',
-        text: 'Please select status',
-      });
-      </script>";
-      } else {
-        $connection = $this->openConnection();
-        $stmt = $connection->prepare(
-          "UPDATE sales_table SET `paymentStatus` = ? WHERE orderID = '$orderID'"
-        );
-        $stmt->execute([$paymentStatus]);
-        $row = $stmt->fetch();
-        echo "<script>
-              Swal.fire({
-              position: 'center',
-              icon: 'success',
-              title: 'Payment Status Updated',
-              showConfirmButton: false,
-              timer: 1000
-              },function(){ window.location.href = 'orders.php';});
-          </script>";
-        return $row;
-      }
+    if ($count > 0) {
+      return $pendingOrders;
+    } else {
+      return false;
     }
   }
 
@@ -1095,22 +1102,46 @@ class WebStore
       if (isset($_POST["orderStatus"])) {
         $orderStatus = $_POST["orderStatus"];
       }
-
       if (empty(isset($_POST["orderStatus"]))) {
         echo "<script> Swal.fire({
-        icon: 'error',
-        title: 'Empty Field',
-        text: 'Please select status',
-      });
-      </script>";
-      } else {
-        $connection = $this->openConnection();
-        $stmt = $connection->prepare(
-          "UPDATE sales_table SET `orderStatus` = ? WHERE orderID = '$orderID'"
-        );
-        $stmt->execute([$orderStatus]);
-        $row = $stmt->fetch();
-        echo "<script>
+          icon: 'error',
+          title: 'Empty Field',
+          text: 'Please select status',
+        });
+        </script>";
+      }
+      if (isset($_POST["orderStatus"])) {
+        if (
+          $_POST["orderStatus"] === "Delivered" &&
+          $_POST["paymentMethod"] === "Cash on Delivery (COD)"
+        ) {
+          $connection = $this->openConnection();
+          $stmt = $connection->prepare(
+            "UPDATE sales_table SET `paymentStatus` = ?, `orderStatus` = ? WHERE orderID = '$orderID'"
+          );
+          $stmt->execute(["Paid", $orderStatus]);
+          $row = $stmt->fetch();
+          echo "<script>
+                Swal.fire({
+                position: 'center',
+                icon: 'success',
+                title: 'Order Status Updated',
+                showConfirmButton: false,
+                timer: 1000
+                },function(){ window.location.href = 'orders.php';});
+            </script>";
+          return $row;
+        }
+      }
+      if (isset($_POST["orderStatus"])) {
+        if ($_POST["orderStatus"] === "Processing") {
+          $connection = $this->openConnection();
+          $stmt = $connection->prepare(
+            "UPDATE sales_table SET `orderStatus` = ? WHERE orderID = '$orderID'"
+          );
+          $stmt->execute([$orderStatus]);
+          $row = $stmt->fetch();
+          echo "<script>
               Swal.fire({
               position: 'center',
               icon: 'success',
@@ -1119,7 +1150,68 @@ class WebStore
               timer: 1000
               },function(){ window.location.href = 'orders.php';});
           </script>";
-        return $row;
+          return $row;
+        }
+      }
+      if (isset($_POST["orderStatus"])) {
+        if ($_POST["orderStatus"] === "Shipped") {
+          $connection = $this->openConnection();
+          $stmt = $connection->prepare(
+            "UPDATE sales_table SET `orderStatus` = ? WHERE orderID = '$orderID'"
+          );
+          $stmt->execute([$orderStatus]);
+          $row = $stmt->fetch();
+          echo "<script>
+              Swal.fire({
+              position: 'center',
+              icon: 'success',
+              title: 'Order Status Updated',
+              showConfirmButton: false,
+              timer: 1000
+              },function(){ window.location.href = 'orders.php';});
+          </script>";
+          return $row;
+        }
+      }
+      if (isset($_POST["orderStatus"])) {
+        if (
+          $_POST["orderStatus"] === "Cancelled" &&
+          $_POST["paymentMethod"] === "Cash on Delivery (COD)"
+        ) {
+          $connection = $this->openConnection();
+          $stmt = $connection->prepare(
+            "UPDATE sales_table SET `paymentStatus` = ?, `orderStatus` = ? WHERE orderID = '$orderID'"
+          );
+          $stmt->execute(["Cancelled", $orderStatus]);
+          $row = $stmt->fetch();
+          echo "<script>
+              Swal.fire({
+              position: 'center',
+              icon: 'success',
+              title: 'Order Status Updated',
+              showConfirmButton: false,
+              timer: 1000
+              },function(){ window.location.href = 'orders.php';});
+          </script>";
+          return $row;
+        } else {
+          $connection = $this->openConnection();
+          $stmt = $connection->prepare(
+            "UPDATE sales_table SET `orderStatus` = ? WHERE orderID = '$orderID'"
+          );
+          $stmt->execute([$orderStatus]);
+          $row = $stmt->fetch();
+          echo "<script>
+              Swal.fire({
+              position: 'center',
+              icon: 'success',
+              title: 'Order Status Updated',
+              showConfirmButton: false,
+              timer: 1000
+              },function(){ window.location.href = 'orders.php';});
+          </script>";
+          return $row;
+        }
       }
     }
   }
@@ -1137,6 +1229,42 @@ class WebStore
 
     if ($count > 0) {
       return $sales;
+    } else {
+      return false;
+    }
+  }
+
+  // display cod payments
+  public function cod_payments()
+  {
+    $connection = $this->openConnection();
+    $stmt = $connection->prepare(
+      "SELECT orderID, firstName, lastName, totalAmount, orderDate FROM sales_table sales LEFT JOIN account_table account ON sales.accountID = account.ID WHERE paymentMethod = 'Cash on Delivery (COD)'AND paymentStatus = 'Paid'  GROUP BY orderID ORDER BY orderDate DESC"
+    );
+    $stmt->execute();
+    $cod = $stmt->fetchall();
+    $count = $stmt->rowCount();
+
+    if ($count > 0) {
+      return $cod;
+    } else {
+      return false;
+    }
+  }
+
+  // display online payments
+  public function online_payments()
+  {
+    $connection = $this->openConnection();
+    $stmt = $connection->prepare(
+      "SELECT orderID, firstName, lastName, totalAmount, orderDate FROM sales_table sales LEFT JOIN account_table account ON sales.accountID = account.ID WHERE paymentMethod = 'PayPal or Credit / Debit Card' AND paymentStatus = 'Paid'  GROUP BY orderID ORDER BY orderDate DESC"
+    );
+    $stmt->execute();
+    $cod = $stmt->fetchall();
+    $count = $stmt->rowCount();
+
+    if ($count > 0) {
+      return $cod;
     } else {
       return false;
     }
@@ -1676,7 +1804,7 @@ class WebStore
   {
     $connection = $this->openConnection();
     $stmt = $connection->prepare(
-      "SELECT inventory.ID , inventory.productID, inventory.stockID, productName, productColor, size, addedQty, dateTime, account.firstName as addedByName, account.lastName as addedByLastName, account2.firstName as editByName, account2.lastName as editByLastName FROM (SELECT * FROM inventoryproduct_table) inventory LEFT JOIN product_table product ON inventory.productID = product.ID LEFT JOIN stocks_table stocks ON inventory.stockID = stocks.ID LEFT JOIN account_table account ON inventory.addedBy = account.ID LEFT JOIN account_table account2 ON inventory.editedBy = account2.ID ORDER BY ID DESC"
+      "SELECT inventory.ID , inventory.productID, inventory.stockID, productName, productColor, size, addedQty, dateTime, account.firstName as addedByName, account.lastName as addedByLastName FROM (SELECT * FROM inventoryproduct_table) inventory LEFT JOIN product_table product ON inventory.productID = product.ID LEFT JOIN stocks_table stocks ON inventory.stockID = stocks.ID LEFT JOIN account_table account ON inventory.addedBy = account.ID ORDER BY ID DESC"
     );
     $stmt->execute();
     $inventoryProducts = $stmt->fetchall();
@@ -1709,7 +1837,7 @@ class WebStore
       } else {
         $connection = $this->openConnection();
         $stmt = $connection->prepare(
-          "UPDATE inventoryproduct_table SET `productID` = ?, `stockID` = ?, `addedQty` = ?, dateTime = now(), `editedBy` = ? WHERE ID = '$inventoryProductID'"
+          "UPDATE inventoryproduct_table SET `productID` = ?, `stockID` = ?, `addedQty` = ?, dateTime = now(), `addedBy` = ? WHERE ID = '$inventoryProductID'"
         );
         $stmt->execute([$product, $stockID, $addedStockQty, $adminID]);
         $row = $stmt->fetch();
@@ -1768,7 +1896,7 @@ class WebStore
   {
     $connection = $this->openConnection();
     $stmt = $connection->prepare(
-      "SELECT inventory.ID, materialID, materialName, addedQty, dateTime, account.firstName as addedByName, account.lastName as addedByLastName, account2.firstName as editByName, account2.lastName as editByLastName FROM (SELECT * FROM inventorymaterial_table) inventory LEFT JOIN rawmaterials_table materials ON inventory.materialID = materials.ID LEFT JOIN account_table account ON inventory.adminID = account.ID LEFT JOIN account_table account2 ON inventory.editBy = account2.ID ORDER BY ID DESC"
+      "SELECT inventory.ID, materialID, materialName, addedQty, dateTime, account.firstName as addedByName, account.lastName as addedByLastName FROM (SELECT * FROM inventorymaterial_table) inventory LEFT JOIN rawmaterials_table materials ON inventory.materialID = materials.ID LEFT JOIN account_table account ON inventory.adminID = account.ID ORDER BY ID DESC"
     );
     $stmt->execute();
     $inventoryMaterials = $stmt->fetchall();
@@ -1800,7 +1928,7 @@ class WebStore
       } else {
         $connection = $this->openConnection();
         $stmt = $connection->prepare(
-          "UPDATE inventorymaterial_table SET `materialID` = ?, `addedQty` = ?, dateTime = now(), `editBY` = ? WHERE ID = '$inventoryMaterialID'"
+          "UPDATE inventorymaterial_table SET `materialID` = ?, `addedQty` = ?, dateTime = now(), `adminID` = ? WHERE ID = '$inventoryMaterialID'"
         );
         $stmt->execute([$material, $addedStockQty, $adminID]);
         $row = $stmt->fetch();
@@ -2017,48 +2145,58 @@ class WebStore
       $orderID = $_POST["orderID"];
 
       $mailTo = $customerEmail;
-      $mail = new PHPMailer\PHPMailer\PHPMailer();
-      //$mail->SMTPDebug = 1;
-      $mail->isSMTP();
-      $mail->Host = "mail.smtp2go.com";
-      $mail->SMTPAuth = true;
-      $mail->Username = "INVI";
-      $mail->Password = "inviclothingco";
-      $mail->SMTPSecure = "tls";
-      $mail->Port = "2525";
-      $mail->From = "inviclothing.co@gmail.com";
-      $mail->FromName = "INVI Clothing Co.";
-      $mail->addAddress($mailTo, "INVI Clothing Co.");
-      $mail->isHTML(true);
-      $mail->Subject = "INVI Clothing Co. - ORDER #" . $orderID;
+      if (empty(isset($_POST["orderStatus"]))) {
+        echo "<script> Swal.fire({
+        icon: 'error',
+        title: 'Empty Field',
+        text: 'Please select status',
+      });
+      </script>";
+      } else {
+        $mail = new PHPMailer\PHPMailer\PHPMailer();
+        //$mail->SMTPDebug = 1;
+        $mail->isSMTP();
+        $mail->Host = "mail.smtp2go.com";
+        $mail->SMTPAuth = true;
+        $mail->Username = "INVI";
+        $mail->Password = "inviclothingco";
+        $mail->SMTPSecure = "tls";
+        $mail->Port = "2525";
+        $mail->From = "inviclothing.co@gmail.com";
+        $mail->FromName = "INVI Clothing Co.";
+        $mail->addAddress($mailTo, "INVI Clothing Co.");
+        $mail->isHTML(true);
+        $mail->Subject = "INVI Clothing Co. - ORDER #" . $orderID;
 
-      if ($_POST["orderStatus"] === "Processing") {
-        $mail->Body =
-          "<h4> Order# " .
-          $orderID .
-          " </h4>" .
-          "<b>Your order is being processed.</b>";
-      }
-      if ($_POST["orderStatus"] === "Shipped") {
-        $mail->Body =
-          "<h4> Order# " .
-          $orderID .
-          " </h4>" .
-          "Your order/s has been shipped out.";
-      }
-      if ($_POST["orderStatus"] === "Delivered") {
-        $mail->Body =
-          "<h4> Order# " .
-          $orderID .
-          " </h4>" .
-          "Your order/s has been delivered. Thank you for supporting INVI Clothing Co.";
-      }
-      if ($_POST["orderStatus"] === "Cancelled") {
-        $mail->Body = "<h4> Order# " . $orderID . " </h4>" . "Cancelled order.";
-      }
+        if ($_POST["orderStatus"] === "Processing") {
+          $mail->Body =
+            "<h4> Order# " .
+            $orderID .
+            " </h4>" .
+            "<b>Your order is being processed.</b>";
+        }
+        if ($_POST["orderStatus"] === "Shipped") {
+          $mail->Body =
+            "<h4> Order# " .
+            $orderID .
+            " </h4>" .
+            "Your order/s has been shipped out.";
+        }
+        if ($_POST["orderStatus"] === "Delivered") {
+          $mail->Body =
+            "<h4> Order# " .
+            $orderID .
+            " </h4>" .
+            "Your order/s has been delivered. Thank you for supporting INVI Clothing Co.";
+        }
+        if ($_POST["orderStatus"] === "Cancelled") {
+          $mail->Body =
+            "<h4> Order# " . $orderID . " </h4>" . "Cancelled order.";
+        }
 
-      if (!$mail->send()) {
-        echo "Mailer Error: " . $mail->ErrorInfo;
+        if (!$mail->send()) {
+          echo "Mailer Error: " . $mail->ErrorInfo;
+        }
       }
     }
   }

@@ -10,6 +10,8 @@ $products = $store->get_products();
     $store->add_inventory_products();
     $store->update_inventory_product();
     $addedInventoryProducts = $store->get_inventory_products_added();
+    $countOrders = $store->count_orders();
+    $pendingOrders = $store->get_pending_orders();
     ?>
     <!-- Page Wrapper -->
     <div id="wrapper">
@@ -26,7 +28,7 @@ $products = $store->get_products();
               <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                   <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLongTitle">Add New Inventory</h5>
+                    <h5 class="modal-title" id="exampleModalLongTitle">Add Inventory</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                       <span aria-hidden="true">&times;</span>
                     </button>
@@ -135,7 +137,7 @@ $products = $store->get_products();
             <div
               class="d-sm-flex align-items-center justify-content-between mb-4 d-print-none"
             >
-              <h1 class="h3 mb-4 text-gray-800">Products
+              <h1 class="h3 mb-4 text-gray-800">Finished Products
                 <button type="button" href="#" class="btn btn-secondary btn-icon-split" data-toggle="modal" data-target="#productModal">
                     <span class="icon text">
                       <i class="fas fa-plus"></i>
@@ -178,7 +180,6 @@ $products = $store->get_products();
                           <th>Added Stock</th>
                           <th>Date & Time</th>
                           <th>Added By</th>
-                          <th>Edited By</th>
                         </tr>
                     </thead>
                     <tbody class="text-gray-900">
@@ -201,13 +202,6 @@ $products = $store->get_products();
                             <td><?= $inventoryProduct["addedByName"] .
                               " " .
                               $inventoryProduct["addedByLastName"] ?></td>
-                            <td><?= $inventoryProduct["editByName"] &&
-                            $inventoryProduct["editByLastName"]
-                              ? $inventoryProduct["editByName"] .
-                                " " .
-                                $inventoryProduct["editByLastName"]
-                              : "No Record" ?>
-                            </td>
                           </tr>
                         <?php } ?>
                       <?php } ?>
@@ -220,7 +214,6 @@ $products = $store->get_products();
                           <th>Added Stock</th>
                           <th>Date & Time</th>
                           <th>Added By</th>
-                          <th>Edited By</th>
                         </tr>
                     </tfoot>
                   </table>
@@ -239,7 +232,7 @@ $products = $store->get_products();
             <div class="card shadow mb-4 d-print-none">
               <div class="card-header py-3">
                 <h6 class="m-0 font-weight-bold text-gray-800">
-                  Product List
+                  Finished Products List
                 </h6>
               </div>
               <div class="card-body">
@@ -259,7 +252,6 @@ $products = $store->get_products();
                           <th>Added Stock</th>
                           <th>Date & Time</th>
                           <th>Added By</th>
-                          <th>Edited By</th>
                           <th>Action</th>
                         </tr>
                     </thead>
@@ -283,13 +275,6 @@ $products = $store->get_products();
                             <td><?= $inventoryProduct["addedByName"] .
                               " " .
                               $inventoryProduct["addedByLastName"] ?></td>
-                            <td><?= $inventoryProduct["editByName"] &&
-                            $inventoryProduct["editByLastName"]
-                              ? $inventoryProduct["editByName"] .
-                                " " .
-                                $inventoryProduct["editByLastName"]
-                              : "No Record" ?>
-                            </td>
                             <td>
                               <button type="button" class="editInventoryProduct btn btn-sm btn-secondary btn-circle" href="javascript:;" data-toggle="modal" data-target="#editInventoryProductModal" data-inventory_product_id="<?= $inventoryProduct[
                                 "ID"
@@ -317,7 +302,6 @@ $products = $store->get_products();
                           <th>Added Stock</th>
                           <th>Date & Time</th>
                           <th>Added By</th>
-                          <th>Edited By</th>
                           <th>Action</th>
                         </tr>
                     </tfoot>

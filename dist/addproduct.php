@@ -9,6 +9,8 @@ include_once "../includes/dashboard_header.php";
     $store->add_category();
     $categories = $store->get_categories();
     $store->add_products();
+    $countOrders = $store->count_orders();
+    $pendingOrders = $store->get_pending_orders();
     ?>
     <!-- Page Wrapper -->
     <div id="wrapper">

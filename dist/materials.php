@@ -13,6 +13,8 @@ include_once "../includes/dashboard_header.php";
     $store->update_material();
     $materials = $store->get_all_materials();
     $store->contact_supplier();
+    $countOrders = $store->count_orders();
+    $pendingOrders = $store->get_pending_orders();
     ?>
     <!-- Page Wrapper -->
     <div id="wrapper">

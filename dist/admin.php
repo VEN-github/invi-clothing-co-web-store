@@ -1,12 +1,13 @@
 <?php
 require_once "../class/webstoreclass.php";
 $user = $store->get_userdata();
-$title = "Admin";
+$title = "Admin - Profile";
 include_once "../includes/dashboard_header.php";
+$countOrders = $store->count_orders();
+$pendingOrders = $store->get_pending_orders();
 ?>
   <body id="page-top">
     <?php
-    $store->signup_admin();
     $store->update_admin();
     $admins = $store->get_admin();
     ?>
@@ -20,167 +21,92 @@ include_once "../includes/dashboard_header.php";
           <?php include_once "../includes/dashboard_navbar.php"; ?>
           <!-- Begin Page Content -->
           <div class="container-fluid">
-            <!-- Admin Modal Form -->
-            <div class="modal fade" id="adminModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-              <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLongTitle">Add New Admin</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                      <span aria-hidden="true">&times;</span>
-                    </button>
+            <!-- Page Heading -->
+            <h1 class="h3 mb-4 text-gray-800">Profile</h1>
+            <div class="row">
+              <div class="col-lg-3">
+                <div class="card shadow mb-4">
+                  <div class="card-body d-flex-column align-self-center">
+                    <?php if ($admins) { ?>
+                      <?php foreach ($admins as $admin) { ?>
+                        <?php if (is_null($admin["profileImg"])) { ?>
+                          <img id="avatar" alt="Profile image" class="mx-auto d-block mt-4 mb-4" style="border-radius:50%;">
+                        <?php } else { ?>
+                          <img src="./assets/img/<?= $admin[
+                            "profileImg"
+                          ] ?>" alt="Profile image" class="mx-auto d-block mt-4 mb-4" width="150px" height="150px" style="object-fit:cover; border-radius:50%;">
+                        <?php } ?>
+                        <input type="hidden" id="initials" value="<?= mb_substr(
+  $admin["firstName"],
+  0,
+  1
+),
+                          mb_substr($admin["lastName"], 0, 1) ?>">
+                        <h4 class="font-weight-bold text-gray-900 text-center"><?= $admin[
+                          "firstName"
+                        ] .
+                          " " .
+                          $admin["lastName"] ?></h4>
+                        <div class="text-center mb-4"><?= $admin[
+                          "email"
+                        ] ?></div>
+                      <?php } ?>
+                    <?php } ?>
+                    <label class="btn btn-outline-info" for="img" form="adminForm">Change Profile Image</label>
                   </div>
-                  <div class="modal-body">
-                    <form method="post" id="adminForm">
+                </div>  
+              </div>
+              <div class="col-lg-9">
+                <div class="card shadow mb-4">
+                  <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-gray-800">Personal Information</h6>
+                  </div>
+                  <div class="card-body">
+                    <form method="post" enctype="multipart/form-data">
+                      <input type="file" name="profileImg" id="img" style="display:none;"/>
+                      <input type="hidden" name="adminID" value="<?= $admin[
+                        "ID"
+                      ] ?>">
                       <div class="form-group">
                         <label>First Name</label>
-                        <input type="text" name="firstName" class="form-control" placeholder="First Name">
+                        <input type="text" name="firstName" class="form-control" value="<?= $admin[
+                          "firstName"
+                        ] ?>">
                       </div>
                       <div class="form-group">
                         <label>Last Name</label>
-                        <input type="text" name="lastName" class="form-control" placeholder="Last Name">
+                        <input type="text" name="lastName" class="form-control" value="<?= $admin[
+                          "lastName"
+                        ] ?>">
                       </div>
                       <div class="form-group">
                         <label>Email Address</label>
-                        <input type="email" name="email" class="form-control" placeholder="Email Address"> 
+                        <input type="text" name="email" class="form-control" value="<?= $admin[
+                          "email"
+                        ] ?>">
                       </div>
                       <div class="form-group">
                         <label>Contact Number</label>
-                        <input type="tel" name="contactNumber" class="form-control" placeholder="Contact Number">
+                        <input type="text" name="contactNumber" class="form-control" value="<?= $admin[
+                          "contactNumber"
+                        ] ?>">
                       </div>
                       <div class="form-group">
-                        <label>Password</label>
-                        <input type="password" name="password" class="form-control" placeholder="Password">
+                        <label>New Password</label>
+                        <input type="password" name="newPass" class="form-control">
                       </div>
                       <div class="form-group">
                         <label>Confirm Password</label>
-                        <input type="password" name="confirmPassword" class="form-control" placeholder="Confirm Password">
+                        <input type="password" name="confirmPass" class="form-control">
                       </div>
-                      <input type="hidden" name="access" value="admin">
-                    </form>
-                  </div>
-                  <div class="modal-footer">
-                    <button type="button" class="btn btn-light" data-dismiss="modal">Cancel</button>
-                    <button type="submit" name="registerBtn" class="btn btn-secondary" form="adminForm">Register</button>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <!-- End of Modal Form -->
-            <!-- Edit Admin Modal Form -->
-            <div class="modal fade" id="editAdminModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-              <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLongTitle">Edit Supplier</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                      <span aria-hidden="true">&times;</span>
-                    </button>
-                  </div>
-                  <div class="modal-body">
-                    <form method="post" id="updateAdminForm">
-                      <input type="hidden" name="adminID" id="adminID" class="form-control">
-                      <div class="form-group">
-                        <label>First Name</label>
-                        <input type="text" name="firstName" id="firstName" class="form-control">
+                      <div class="d-flex justify-content-end">
+                        <button type="submit" name="updateAdmin" class="btn btn-secondary ">Save Changes</button>
                       </div>
-                      <div class="form-group">
-                        <label>Last Name</label>
-                        <input type="text" name="lastName" id="lastName" class="form-control">
-                      </div>
-                      <div class="form-group">
-                        <label>Email Address</label>
-                        <input type="email" name="email" id="email" class="form-control">
-                      </div>
-                      <div class="form-group">
-                        <label>Contact Number</label>
-                        <input type="tel" name="contactNumber" id="contactNumber" class="form-control">
-                      </div>
-                    </form>
+                    </form>      
                   </div>
-                  <div class="modal-footer">
-                    <button type="button" class="btn btn-light" data-dismiss="modal">Cancel</button>
-                    <input type="submit" name="updateAdmin" class="btn btn-secondary" form="updateAdminForm" value="Update">
-                  </div>
-                </div>
-              </div>
-            </div>
-            <!-- End of Edit Admin Modal Form -->
-            <!-- Page Heading -->
-            <h1 class="h3 mb-4 text-gray-800">Admin
-              <button type="button" href="#" class="btn btn-secondary btn-icon-split" data-toggle="modal" data-target="#adminModal">
-                  <span class="icon text">
-                    <i class="fas fa-plus"></i>
-                  </span>
-                  <span class="text">Add New Admin</span>
-              </button>
-            </h1>
-            <!-- Admin Table -->
-            <div class="card shadow mb-4">
-              <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-gray-800">
-                  Admin List
-                </h6>
-              </div>
-              <div class="card-body">
-                <div class="table-responsive">
-                  <table
-                    class="table table-striped text-center"
-                    id="dataTable"
-                    width="100%"
-                    cellspacing="0"
-                    data-order='[[ 0, "desc" ]]'
-                  >
-                    <thead class="bg-gray-600 text-gray-100">
-                        <tr>
-                          <th>#</th>
-                          <th>First Name</th>
-                          <th>Last Name</th>
-                          <th>Email Address</th>
-                          <th>Contact Number</th>
-                          <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody class="text-gray-900">
-                      <?php if ($admins) { ?>
-                        <?php foreach ($admins as $admin) { ?>
-                        <tr>
-                          <td><?= $admin["ID"] ?></td>
-                          <td><?= $admin["firstName"] ?></td>
-                          <td><?= $admin["lastName"] ?></td>
-                          <td><?= $admin["email"] ?></td>
-                          <td><?= $admin["contactNumber"] ?></td>
-                          <td>
-                            <button type="button" class="editAdmin btn btn-sm btn-secondary btn-circle" href="javascript:;" data-toggle="modal" data-target="#editAdminModal" data-admin_id="<?= $admin[
-                              "ID"
-                            ] ?>" data-first_name="<?= $admin[
-  "firstName"
-] ?>" data-last_name="<?= $admin["lastName"] ?>" data-email="<?= $admin[
-  "email"
-] ?>" data-contact_number="<?= $admin["contactNumber"] ?>">
-                              <span class="icon text">
-                                <i class="fas fa-edit"></i>
-                              </span>
-                            </button>                        
-                          </td>
-                        </tr>
-                        <?php } ?>
-                      <?php } ?>
-                    </tbody>
-                    <tfoot class="bg-gray-600 text-gray-100">
-                        <tr>
-                          <th>#</th>
-                          <th>First Name</th>
-                          <th>Last Name</th>
-                          <th>Email Address</th>
-                          <th>Contact Number</th>
-                          <th>Action</th>
-                        </tr>
-                    </tfoot>
-                  </table>
-                </div>
-              </div>
-            </div>
+                </div>  
+              </div>   
+            </div>  
           </div>
           <!-- /.container-fluid -->
         </div>
@@ -195,21 +121,7 @@ include_once "../includes/dashboard_header.php";
       <i class="fas fa-angle-up"></i>
     </a>
     <?php require_once "../includes/dashboard_scripts.php"; ?>
-    <script>
-        $('.editAdmin').click(function() {
-        var adminID = $(this).data('admin_id');
-        var firstName = $(this).data('first_name');
-        var lastName = $(this).data('last_name');
-        var email = $(this).data('email');
-        var contactNumber = $(this).data('contact_number');
-
-        $('#adminID').val(adminID);
-        $('#firstName').val(firstName);
-        $('#lastName').val(lastName);
-        $('#email').val(email);
-        $('#contactNumber').val(contactNumber);
-        } );
-    </script>
+    <script src="./assets/js/avatar.js"></script>
   </body>
 </html>
 
