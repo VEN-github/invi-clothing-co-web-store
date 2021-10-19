@@ -3,6 +3,7 @@ require_once "../class/webstoreclass.php";
 $user = $store->get_userdata();
 $title = "Supplier";
 include_once "../includes/dashboard_header.php";
+$admins = $store->get_admin();
 ?>
   <body id="page-top">
     <?php
@@ -264,19 +265,19 @@ include_once "../includes/dashboard_header.php";
     </a>
     <?php require_once "../includes/dashboard_scripts.php"; ?>
     <script>
-        $('.editSupplier').click(function() {
-        var supplierID = $(this).data('supplier_id');
-        var supplierName = $(this).data('supplier_name');
-        var supplierEmail = $(this).data('supplier_email');
-        var supplierAddress = $(this).data('supplier_address');
-        var supplierContactNumber = $(this).data('supplier_contact_number');
+      $('.editSupplier').click(function() {
+      var supplierID = $(this).data('supplier_id');
+      var supplierName = $(this).data('supplier_name');
+      var supplierEmail = $(this).data('supplier_email');
+      var supplierAddress = $(this).data('supplier_address');
+      var supplierContactNumber = $(this).data('supplier_contact_number');
 
-        $('#supplierID').val(supplierID);
-        $('#supplierName').val(supplierName);
-        $('#supplierEmail').val(supplierEmail);
-        $('#supplierAddress').val(supplierAddress);
-        $('#supplierContactNumber').val(supplierContactNumber);
-        } );
+      $('#supplierID').val(supplierID);
+      $('#supplierName').val(supplierName);
+      $('#supplierEmail').val(supplierEmail);
+      $('#supplierAddress').val(supplierAddress);
+      $('#supplierContactNumber').val(supplierContactNumber);
+      } );
     </script>
     <script>
       const setDate = new Date();

@@ -6,6 +6,7 @@ $user = $store->get_userdata();
 
 $title = "Orders";
 include_once "../includes/dashboard_header.php";
+$admins = $store->get_admin();
 ?>
   <body id="page-top">
     <?php

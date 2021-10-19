@@ -5,6 +5,7 @@ $ID = $_GET["ID"];
 $product = $store->get_singleID($ID);
 $title = "Financing";
 include_once "../includes/dashboard_header.php";
+$admins = $store->get_admin();
 $materials = $store->get_all_materials();
 $countOrders = $store->count_orders();
 $pendingOrders = $store->get_pending_orders();
@@ -132,11 +133,11 @@ $pendingOrders = $store->get_pending_orders();
                           <div class="row labor-fee" style="display:none;">
                             <div class="form-group col-lg-6" >
                               <label>Labor Fee Per Unit</label>
-                              <input type="text" id="laborFee" class="form-control" placeholder="eg: Printing Services, etc:">
+                              <input type="text" name="laborFee" id="laborFee" class="form-control" placeholder="eg: Printing Services, etc:">
                             </div>
                             <div class="form-group col-lg-3 laborFeeQty" style="display:none;">
                               <label>Quantity</label>
-                              <input class="form-control" type="number" id="laborFeeQty" min="0" value="1">
+                              <input class="form-control" type="number" name="laborFeeQty" id="laborFeeQty" min="0" value="1">
                             </div>
                             <div class="form-group col-lg-3 laborFeeTotalCost" style="display:none;">
                               <label>Total Cost</label>
@@ -146,11 +147,11 @@ $pendingOrders = $store->get_pending_orders();
                           <div class="row layout-fee" style="display:none;">
                             <div class="form-group col-lg-6" >
                               <label>Layout Fee Per Unit</label>
-                              <input type="text" id="layoutFee" class="form-control" placeholder="eg: Design, etc:">
+                              <input type="text" name="layoutFee" id="layoutFee" class="form-control" placeholder="eg: Design, etc:">
                             </div>
                             <div class="form-group col-lg-3 layoutFeeQty" style="display:none;">
                               <label>Quantity</label>
-                              <input class="form-control" type="number" id="layoutFeeQty" min="0" value="1">
+                              <input class="form-control" type="number" name="layoutFeeQty" id="layoutFeeQty" min="0" value="1">
                             </div>
                             <div class="form-group col-lg-3 layoutFeeTotalCost" style="display:none;">
                               <label>Total Cost</label>
@@ -160,11 +161,11 @@ $pendingOrders = $store->get_pending_orders();
                           <div class="row expense-fee" style="display:none;">
                             <div class="form-group col-lg-6" >
                               <label>Expense Fee Per Unit</label>
-                              <input type="text" id="expenseFee" class="form-control" placeholder="eg: Logistics, etc:">
+                              <input type="text" name="expenseFee" id="expenseFee" class="form-control" placeholder="eg: Logistics, etc:">
                             </div>
                             <div class="form-group col-lg-3 expenseFeeQty" style="display:none;">
                               <label>Quantity</label>
-                              <input class="form-control" type="number" id="expenseFeeQty" min="0" value="1">
+                              <input class="form-control" type="number" name="expenseFeeQty" id="expenseFeeQty" min="0" value="1">
                             </div>
                             <div class="form-group col-lg-3 expenseFeeTotalCost" style="display:none;">
                               <label>Total Cost</label>
@@ -179,7 +180,7 @@ $pendingOrders = $store->get_pending_orders();
                             </div>
                             <div class="form-group col-lg-6" >
                               <label>Total Cost</label>
-                              <input type="text" id="totalCost" class="form-control" disabled>
+                              <input type="text" name="totalCostAmount" id="totalCost" class="form-control" readonly>
                             </div>
                           </div>
                         </form>
@@ -195,11 +196,11 @@ $pendingOrders = $store->get_pending_orders();
                         <form >
                           <div class="form-group">
                             <label>Sales Amount</label>
-                            <input type="text" id="sales" class="form-control" placeholder="Sales Amount">
+                            <input type="text" name="salesAmount" id="sales" class="form-control" placeholder="Sales Amount" form="stocksForm">
                           </div>
                           <div class="form-group">
                             <label>Sales Discount</label>
-                            <input type="text" id="salesDisc" class="form-control" placeholder="Sales Discount">
+                            <input type="text" name="salesDiscount" id="salesDisc" class="form-control" placeholder="Sales Discount" form="stocksForm">
                           </div>
                           <div class="form-group">
                             <label>Net Sales</label>
@@ -211,11 +212,11 @@ $pendingOrders = $store->get_pending_orders();
                           </div>
                           <div class="form-group">
                             <label>Gross Profit</label>
-                            <input type="text" id="grossProfit" class="form-control" disabled>
+                            <input type="text" name="gross" id="grossProfit" class="form-control" form="stocksForm" readonly>
                           </div>
                           <div class="form-group">
                             <label>Expenses</label>
-                            <input type="text" id="expenses" class="form-control" placeholder="eg: Rent, etc:">
+                            <input type="text" name="expenses" id="expenses" class="form-control" placeholder="eg: Rent, etc:" form="stocksForm">
                           </div>
                           <div class="form-group">
                             <label>Net Income / Loss</label>

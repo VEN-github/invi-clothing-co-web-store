@@ -3,6 +3,7 @@ require_once "../class/webstoreclass.php";
 $user = $store->get_userdata();
 $title = "Add New Product";
 include_once "../includes/dashboard_header.php";
+$admins = $store->get_admin();
 ?>
   <body id="page-top">
     <?php
@@ -65,12 +66,14 @@ include_once "../includes/dashboard_header.php";
                             </span>
                           </button>
                         </label>
-                        <select class="form-control" name="category">
+                        <select class="selectpicker show-tick form-control" name="category" data-live-search="true">
                           <option selected="selected" disabled="disabled">Select Category</option>
                           <?php foreach ($categories as $category) { ?>
-                          <option value="<?= $category["ID"] ?>"><?= $category[
+                          <option value="<?= $category[
+                            "ID"
+                          ] ?>" data-tokens="<?= $category[
   "categoryName"
-] ?></option>
+] ?>"><?= $category["categoryName"] ?></option>
                           <?php } ?>
                         </select>
                       </div>
@@ -117,6 +120,7 @@ include_once "../includes/dashboard_header.php";
                             <input type="file" name="sizeGuide" class="form-control-file">
                           </div>
                         </div>
+                        <input type="hidden" name="availability" value="Unavailable">
                       </div>
                     </form>
                   </div>
@@ -149,6 +153,5 @@ include_once "../includes/dashboard_header.php";
       <i class="fas fa-angle-up"></i>
     </a>
     <?php require_once "../includes/dashboard_scripts.php"; ?>
-    <script src="./assets/js/stock.js"></script>
   </body>
 </html>

@@ -174,7 +174,25 @@
                 <span class="mr-2 d-none d-lg-inline text-gray-600 small">
                     <?= $user["firstName"] . " " . $user["lastName"] ?>
                 </span>
-                </span class="icon text"><i class="fas fa-user-circle"></i></span>
+                </span class="icon text">
+                    <?php if ($admins) { ?>
+                        <?php foreach ($admins as $admin) { ?>
+                            <?php if (is_null($admin["profileImg"])) { ?>
+                            <img alt="Profile image" class="avatar mx-auto d-block mt-4 mb-4" width="30px" height="30px" style="border-radius:50%;">
+                            <?php } else { ?>
+                                <img src="./assets/img/<?= $admin[
+                                  "profileImg"
+                                ] ?>" alt="Profile image" class="mx-auto d-block mt-4 mb-4" width="30px" height="30px" style="object-fit:cover; border-radius:50%;">
+                            <?php } ?>
+                                <input type="hidden" id="initials" value="<?= mb_substr(
+  $admin["firstName"],
+  0,
+  1
+),
+                                  mb_substr($admin["lastName"], 0, 1) ?>">
+                        <?php } ?>
+                    <?php } ?>
+                </span>
             </a>
             <!-- Dropdown - User Information -->
             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"

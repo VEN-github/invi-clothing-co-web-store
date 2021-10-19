@@ -3,9 +3,13 @@ require_once "../class/webstoreclass.php";
 $user = $store->get_userdata();
 $title = "Products";
 include_once "../includes/dashboard_header.php";
+$admins = $store->get_admin();
 $products = $store->get_products();
 $countOrders = $store->count_orders();
 $pendingOrders = $store->get_pending_orders();
+$store->delist_product();
+$store->publish_product();
+$store->delete_product();
 ?>
   <body id="page-top">
     <!-- Page Wrapper -->
@@ -64,12 +68,20 @@ $pendingOrders = $store->get_pending_orders();
                         </tr>
                     </thead>
                     <tbody class="text-gray-900">
+                      <form method="post" id="delistForm">
+                        <input type="hidden" name="delistProductID" id="delistProductID">
+                      </form>
+                      <form method="post" id="publishForm">
+                        <input type="hidden" name="publishProductID" id="publishProductID">
+                      </form>
+                      <form method="post" id="deleteForm">
+                        <input type="hidden" name="deleteProductID" id="deleteProductID">
+                      </form>
                       <?php if ($products) { ?>
                         <?php foreach ($products as $product) { ?>
-                          <?php
-                          $stocks = $store->view_all_stocks($product["ID"]);
-                          $sumStocks = $store->sum_stocks($product["ID"]);
-                          ?>
+                          <?php $stocks = $store->view_all_stocks(
+                            $product["ID"]
+                          ); ?>
                           <?php if ($stocks) { ?>
                             <?php foreach ($stocks as $stock) { ?>
                               <?php $soldProducts = $store->sold_products(
@@ -304,14 +316,15 @@ $pendingOrders = $store->get_pending_orders();
                                 </td>
                                 <td class="align-middle">  
                                   <?php if (
-                                    $stock["stock"] &&
-                                    $product["netSales"] &&
-                                    $product["productCost"] &&
-                                    $product["netIncome"]
+                                    $product["availability"] === "Available"
                                   ) { ?>
-                                    <p class="text-success">Available</p> 
+                                    <p class="text-success"><?= $product[
+                                      "availability"
+                                    ] ?></p> 
                                   <?php } else { ?>
-                                    <p class="text-muted">Unavailable</p>
+                                    <p class="text-muted"><?= $product[
+                                      "availability"
+                                    ] ?></p>
                                   <?php } ?>
                                 </td>
                                 <td class="align-middle">
@@ -338,7 +351,32 @@ $pendingOrders = $store->get_pending_orders();
                                           "ID"
                                         ] ?>">Financing</a>
                                         <?php } ?>
-                                        <a class="dropdown-item" href="#">Edit</a>
+                                        <a class="dropdown-item" href="editproduct.php?ID=<?= $product[
+                                          "ID"
+                                        ] ?>">Edit</a>
+                                        <a class="deleteBtn dropdown-item" data-id="<?= $product[
+                                          "ID"
+                                        ] ?>" >Delete</a>
+                                        <?php if (
+                                          $product["availability"] ===
+                                          "Available"
+                                        ) { ?>
+                                          <a class="delistBtn dropdown-item" data-delist_id="<?= $product[
+                                            "ID"
+                                          ] ?>" >Delist</a>
+                                        <?php } else { ?>
+                                          <?php if (
+                                            ($stock["size"] ||
+                                              $stock["stock"]) &&
+                                            $product["netSales"] &&
+                                            $product["productCost"] &&
+                                            $product["netIncome"]
+                                          ) { ?>
+                                          <a class="publishBtn dropdown-item" data-publish_id="<?= $product[
+                                            "ID"
+                                          ] ?>" >Publish</a>
+                                          <?php } ?>
+                                        <?php } ?>
                                       </div>
                                   </div>
                                 </td>
@@ -395,6 +433,50 @@ $pendingOrders = $store->get_pending_orders();
         if($('.products:hidden').length == 0){
           $('.load-more').fadeOut();
         }
+      });
+    </script>
+    <script>
+      $('.publishBtn').on('click',function(e){
+        e.preventDefault();
+        var ID = $(this).data('publish_id');
+        $('#publishProductID').val(ID);
+        $('#publishForm').submit();
+      });
+    </script>
+    <script>
+      $('.delistBtn').on('click',function(e){
+        e.preventDefault();
+        var ID = $(this).data('delist_id');
+        $('#delistProductID').val(ID);
+        $('#delistForm').submit();
+      });
+    </script>
+    <script>
+      $('.deleteBtn').on('click',function(e){
+        e.preventDefault();
+        var ID = $(this).data('id');
+        $('#deleteProductID').val(ID);
+        Swal.fire({
+          title: 'Are you sure?',
+          text: "You won't be able to revert this!",
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+          if (result.isConfirmed) {
+            Swal.fire({
+              title: 'Deleted!',
+              text: 'Product has been deleted.',
+              icon: 'success',
+              showConfirmButton: false,
+            });
+            setTimeout(function() { 
+              $('#deleteForm').submit();
+            }, 1000); 
+          }
+        })
       });
     </script>
   </body>

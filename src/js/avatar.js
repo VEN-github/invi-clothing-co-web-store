@@ -24,8 +24,8 @@ function generateAvatar(
   return canvas.toDataURL("image/png");
 }
 
-document.querySelector("#avatar").src = generateAvatar(
-  initials.value,
-  "white",
-  "#78909C"
-);
+const avatar = document.querySelectorAll(".avatar");
+
+avatar.forEach((e) => {
+  e.src = generateAvatar(initials.value, "white", "#78909C");
+});

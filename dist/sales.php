@@ -3,6 +3,7 @@ require_once "../class/webstoreclass.php";
 $user = $store->get_userdata();
 $title = "Sales";
 include_once "../includes/dashboard_header.php";
+$admins = $store->get_admin();
 $sales = $store->get_sales();
 $countOrders = $store->count_orders();
 $pendingOrders = $store->get_pending_orders();

@@ -3,6 +3,7 @@ require_once "../class/webstoreclass.php";
 $user = $store->get_userdata();
 $title = "Dashboard";
 include_once "../includes/dashboard_header.php";
+$admins = $store->get_admin();
 $totalSales = $store->get_total_sales_today();
 $salesMonth = $store->get_sales_this_month();
 $totalIncome = $store->get_total_net_income();

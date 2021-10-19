@@ -3,6 +3,7 @@ require_once "../class/webstoreclass.php";
 $user = $store->get_userdata();
 $title = "Cash on Delivery (COD) - Payments";
 include_once "../includes/dashboard_header.php";
+$admins = $store->get_admin();
 $cod = $store->cod_payments();
 $countOrders = $store->count_orders();
 $pendingOrders = $store->get_pending_orders();

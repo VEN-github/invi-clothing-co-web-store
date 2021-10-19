@@ -503,6 +503,7 @@ class WebStore
       $image2 = $_FILES["image2"]["name"];
       $image3 = $_FILES["image3"]["name"];
       $sizeGuide = $_FILES["sizeGuide"]["name"];
+      $availability = $_POST["availability"];
       if (
         empty(isset($_POST["category"])) ||
         empty($productName) ||
@@ -519,7 +520,7 @@ class WebStore
       } else {
         $connection = $this->openConnection();
         $stmt = $connection->prepare(
-          "INSERT INTO product_table (`categoryID`, `productName`, `productDescription`, `productColor`, `coverPhoto`, `image1`, `image2`, `image3`, `sizeGuide`) VALUES (?,?,?,?,?,?,?,?,?)"
+          "INSERT INTO product_table (`categoryID`, `productName`, `productDescription`, `productColor`, `coverPhoto`, `image1`, `image2`, `image3`, `sizeGuide`, `availability`) VALUES (?,?,?,?,?,?,?,?,?,?)"
         );
         $stmt->execute([
           $category,
@@ -531,6 +532,7 @@ class WebStore
           $image2,
           $image3,
           $sizeGuide,
+          $availability,
         ]);
         move_uploaded_file(
           $_FILES["coverPhoto"]["tmp_name"],
@@ -566,8 +568,19 @@ class WebStore
       if (isset($_POST["materialID"])) {
         $count = count($_POST["materialID"]);
       }
+      $laborFee = $_POST["laborFee"];
+      $laborFeeQty = $_POST["laborFeeQty"];
+      $layoutFee = $_POST["layoutFee"];
+      $layoutFeeQty = $_POST["layoutFeeQty"];
+      $expenseFee = $_POST["expenseFee"];
+      $expenseFeeQty = $_POST["expenseFeeQty"];
+      $totalCost = $_POST["totalCostAmount"];
+      $salesAmount = $_POST["salesAmount"];
+      $salesDiscount = $_POST["salesDiscount"];
       $netSales = $_POST["netSales"];
       $productCost = $_POST["productCost"];
+      $gross = $_POST["gross"];
+      $expenses = $_POST["expenses"];
       $netIncome = $_POST["netIncome"];
       $productID = $_POST["productID"];
 
@@ -590,14 +603,25 @@ class WebStore
           $materialQty = $_POST["qty"][$i];
           $connection = $this->openConnection();
           $stmt = $connection->prepare(
-            "INSERT INTO costing_table ( `productID`, `materialID`, `materialQty`, `netSales`, `productCost`, `netIncome`) VALUES (?,?,?,?,?,?)"
+            "INSERT INTO costing_table ( `productID`, `materialID`, `materialQty`, `laborFee`, `laborQty`, layoutFee, layoutQty, expenseFee, expenseQty, `productCost`, `totalCost`, `salesAmount`, `salesDiscount`, `netSales`, `grossProfit`, `expenses`, `netIncome`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"
           );
           $stmt->execute([
             $productID,
             $materialID,
             $materialQty,
-            $netSales,
+            $laborFee,
+            $laborFeeQty,
+            $layoutFee,
+            $layoutFeeQty,
+            $expenseFee,
+            $expenseFeeQty,
             $productCost,
+            $totalCost,
+            $salesAmount,
+            $salesDiscount,
+            $netSales,
+            $gross,
+            $expenses,
             $netIncome,
           ]);
         }
@@ -675,7 +699,7 @@ class WebStore
   {
     $connection = $this->openConnection();
     $stmt = $connection->prepare(
-      "SELECT product.ID, productName, categoryName, productColor, coverPhoto, netSales, productCost, netIncome FROM (SELECT * FROM product_table) product LEFT JOIN category_table category ON product.categoryID = category.ID LEFT JOIN costing_table costing ON product.ID = costing.productID GROUP BY product.ID ORDER BY product.ID DESC"
+      "SELECT product.ID, productName, categoryName, productColor, coverPhoto, netSales, productCost, netIncome, availability FROM (SELECT * FROM product_table) product LEFT JOIN category_table category ON product.categoryID = category.ID LEFT JOIN costing_table costing ON product.ID = costing.productID GROUP BY product.ID ORDER BY product.ID DESC"
     );
     $stmt->execute();
     $products = $stmt->fetchall();
@@ -685,6 +709,258 @@ class WebStore
       return $products;
     } else {
       return false;
+    }
+  }
+
+  //display edit product
+  public function get_editproduct($ID)
+  {
+    $connection = $this->openConnection();
+    $stmt = $connection->prepare(
+      "SELECT product.ID as ID, productName, productDescription, categoryID, categoryName, productColor, coverPhoto, image1, image2, image3, sizeGuide, netSales, netIncome, productCost FROM product_table product LEFT JOIN category_table category ON product.categoryID = category.ID LEFT JOIN costing_table costing ON product.ID = costing.productID WHERE product.ID = ? GROUP BY product.ID"
+    );
+    $stmt->execute([$ID]);
+    $product = $stmt->fetch();
+    $count = $stmt->rowCount();
+
+    if ($count > 0) {
+      return $product;
+    } else {
+      return $this->show_dashboard404();
+    }
+  }
+
+  //publish product
+  public function publish_product()
+  {
+    if (isset($_POST["publishProductID"])) {
+      $ID = $_POST["publishProductID"];
+      $connection = $this->openConnection();
+      $stmt = $connection->prepare(
+        "UPDATE product_table SET `availability` = 'Available' WHERE ID = '$ID'"
+      );
+      $stmt->execute();
+      $row = $stmt->fetch();
+      header("Location: products.php");
+      return $row;
+    }
+  }
+
+  //delist product
+  public function delist_product()
+  {
+    if (isset($_POST["delistProductID"])) {
+      $ID = $_POST["delistProductID"];
+      $connection = $this->openConnection();
+      $stmt = $connection->prepare(
+        "UPDATE product_table SET `availability` = 'Unavailable' WHERE ID = '$ID'"
+      );
+      $stmt->execute();
+      $row = $stmt->fetch();
+      header("Location: products.php");
+      return $row;
+    }
+  }
+
+  // update products
+  public function update_product($ID)
+  {
+    if (isset($_POST["updateProduct"])) {
+      if (isset($_POST["category"])) {
+        $category = $_POST["category"];
+      }
+      $productName = $_POST["productName"];
+      $productDescription = $_POST["productDescription"];
+      $productColor = $_POST["productColor"];
+      $coverPhoto = $_FILES["coverPhoto"]["name"];
+      $image1 = $_FILES["image1"]["name"];
+      $image2 = $_FILES["image2"]["name"];
+      $image3 = $_FILES["image3"]["name"];
+      $sizeGuide = $_FILES["sizeGuide"]["name"];
+      if (
+        empty(isset($_POST["category"])) ||
+        empty($productName) ||
+        empty($productDescription) ||
+        empty($productColor)
+      ) {
+        echo "<script> Swal.fire({
+          icon: 'error',
+          title: 'Empty Field',
+          text: 'Please input missing field',
+        });
+        </script>";
+      } elseif (
+        empty($coverPhoto) ||
+        empty($image1) ||
+        empty($image2) ||
+        empty($image3) ||
+        empty($sizeGuide)
+      ) {
+        $connection = $this->openConnection();
+        $stmt = $connection->prepare(
+          "UPDATE product_table SET `categoryID` = ?, `productName` = ?, `productDescription` = ?, `productColor` = ? WHERE ID = ?"
+        );
+        $stmt->execute([
+          $category,
+          $productName,
+          $productDescription,
+          $productColor,
+          $ID,
+        ]);
+        $row = $stmt->fetch();
+        header("Location: products.php");
+        return $row;
+      } else {
+        $connection = $this->openConnection();
+        $stmt = $connection->prepare(
+          "UPDATE product_table SET `categoryID` = ?, `productName` = ?, `productDescription` = ?, `productColor` = ?, `coverPhoto` = ?, `image1` = ?, `image2` = ?, `image3` = ?, `sizeGuide` = ? WHERE ID = ?"
+        );
+        $stmt->execute([
+          $category,
+          $productName,
+          $productDescription,
+          $productColor,
+          $coverPhoto,
+          $image1,
+          $image2,
+          $image3,
+          $sizeGuide,
+          $ID,
+        ]);
+        move_uploaded_file(
+          $_FILES["coverPhoto"]["tmp_name"],
+          "assets/img/" . $coverPhoto
+        );
+        move_uploaded_file(
+          $_FILES["image1"]["tmp_name"],
+          "assets/img/" . $image1
+        );
+        move_uploaded_file(
+          $_FILES["image2"]["tmp_name"],
+          "assets/img/" . $image2
+        );
+        move_uploaded_file(
+          $_FILES["image3"]["tmp_name"],
+          "assets/img/" . $image3
+        );
+        move_uploaded_file(
+          $_FILES["sizeGuide"]["tmp_name"],
+          "assets/img/" . $sizeGuide
+        );
+        $row = $stmt->fetch();
+        header("Location: products.php");
+        return $row;
+      }
+    }
+  }
+
+  // update costing
+  public function update_costing($ID)
+  {
+    if (isset($_POST["updateProduct"])) {
+      if (isset($_POST["materialID"])) {
+        $count = count($_POST["materialID"]);
+      }
+      $laborFee = $_POST["laborFee"];
+      $laborFeeQty = $_POST["laborFeeQty"];
+      $layoutFee = $_POST["layoutFee"];
+      $layoutFeeQty = $_POST["layoutFeeQty"];
+      $expenseFee = $_POST["expenseFee"];
+      $expenseFeeQty = $_POST["expenseFeeQty"];
+      $totalCost = $_POST["totalCostAmount"];
+      $salesAmount = $_POST["salesAmount"];
+      $salesDiscount = $_POST["salesDiscount"];
+      $netSales = $_POST["netSales"];
+      $productCost = $_POST["productCost"];
+      $gross = $_POST["gross"];
+      $expenses = $_POST["expenses"];
+      $netIncome = $_POST["netIncome"];
+
+      if (
+        empty($salesAmount) ||
+        empty($netSales) ||
+        empty($productCost) ||
+        empty($netIncome)
+      ) {
+        echo "<script> Swal.fire({
+          icon: 'error',
+          title: 'Empty Field',
+          text: 'Please input missing field',
+        });
+        </script>";
+      } else {
+        $count = count($_POST["materialID"]);
+        for ($i = 0; $i < $count; $i++) {
+          $materialID = $_POST["materialID"][$i];
+          $materialQty = $_POST["qty"][$i];
+          $connection = $this->openConnection();
+          $stmt = $connection->prepare(
+            "UPDATE costing_table SET `materialID` = ?, `materialQty` = ?, `laborFee` = ?, `laborQty` = ?, layoutFee = ?, layoutQty = ?, expenseFee = ?, expenseQty = ?, `productCost` = ?, `totalCost` = ?, `salesAmount` = ?, `salesDiscount` = ?, `netSales` = ?, `grossProfit` = ?, `expenses` = ?, `netIncome` = ? WHERE productID = ? AND materialID = ?"
+          );
+          $stmt->execute([
+            $materialID,
+            $materialQty,
+            $laborFee,
+            $laborFeeQty,
+            $layoutFee,
+            $layoutFeeQty,
+            $expenseFee,
+            $expenseFeeQty,
+            $productCost,
+            $totalCost,
+            $salesAmount,
+            $salesDiscount,
+            $netSales,
+            $gross,
+            $expenses,
+            $netIncome,
+            $ID,
+            $materialID,
+          ]);
+        }
+        $row = $stmt->fetch();
+        header("Location: products.php");
+        return $row;
+      }
+    }
+  }
+
+  // update stock
+  public function update_stock($ID)
+  {
+    if (isset($_POST["updateProduct"])) {
+      if (isset($_POST["wholeStock"]) && isset($_POST["skuNoSize"])) {
+        $wholeStock = $_POST["wholeStock"];
+        $skuNoSize = $_POST["skuNoSize"];
+        $connection = $this->openConnection();
+        $stmt = $connection->prepare(
+          "UPDATE stocks_table SET `stock` = ?, `sku` = ? WHERE productID = ?"
+        );
+        $stmt->execute([$wholeStock, $skuNoSize, $ID]);
+        $row = $stmt->fetch();
+        header("Location: products.php");
+        return $row;
+      }
+      if (
+        isset($_POST["size"]) &&
+        isset($_POST["stocks"]) &&
+        isset($_POST["sku"])
+      ) {
+        $count = count($_POST["size"]);
+        for ($i = 0; $i < $count; $i++) {
+          $size = $_POST["size"][$i];
+          $stock = $_POST["stocks"][$i];
+          $sku = $_POST["sku"][$i];
+          $connection = $this->openConnection();
+          $stmt = $connection->prepare(
+            "UPDATE stocks_table SET `size` = ?, `stock` = ?, `sku` = ? WHERE productID = ? AND size = ?"
+          );
+          $stmt->execute([$size, $stock, $sku, $ID, $size]);
+        }
+        $row = $stmt->fetch();
+        header("Location: products.php");
+        return $row;
+      }
     }
   }
 
@@ -724,6 +1000,24 @@ class WebStore
     }
   }
 
+  //display costing to edit product page
+  public function view_all_cost($ID)
+  {
+    $connection = $this->openConnection();
+    $stmt = $connection->prepare(
+      "SELECT materialID, materialName, unitPrice, materialQty, laborFee, laborQty, layoutFee, layoutQty, expenseFee, expenseQty, productCost, totalCost, salesAmount, salesDiscount, netSales, grossProfit, expenses, netIncome FROM costing_table costing LEFT JOIN rawmaterials_table material ON costing.materialID = material.ID WHERE costing.productID = ?"
+    );
+    $stmt->execute([$ID]);
+    $cost = $stmt->fetchall();
+    $count = $stmt->rowCount();
+
+    if ($count > 0) {
+      return $cost;
+    } else {
+      return false;
+    }
+  }
+
   //display product sizes and stocks every single product
   public function view_all_stocks($productID)
   {
@@ -742,21 +1036,16 @@ class WebStore
     }
   }
 
-  //sum stocks
-  public function sum_stocks($productID)
+  // delete product
+  public function delete_product()
   {
-    $connection = $this->openConnection();
-    $stmt = $connection->prepare(
-      "SELECT SUM(stock) as totalStocks FROM stocks_table WHERE productID = ?"
-    );
-    $stmt->execute([$productID]);
-    $stocks = $stmt->fetchall();
-    $count = $stmt->rowCount();
-
-    if ($count > 0) {
-      return $stocks;
-    } else {
-      return false;
+    if (isset($_POST["deleteProductID"])) {
+      $ID = $_POST["deleteProductID"];
+      $connection = $this->openConnection();
+      $stmt = $connection->prepare(
+        "DELETE FROM product_table WHERE ID = '$ID'"
+      );
+      $stmt->execute();
     }
   }
 

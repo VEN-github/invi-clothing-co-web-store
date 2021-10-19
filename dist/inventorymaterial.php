@@ -3,6 +3,7 @@ require_once "../class/webstoreclass.php";
 $user = $store->get_userdata();
 $title = "Inventory - Raw Materials";
 include_once "../includes/dashboard_header.php";
+$admins = $store->get_admin();
 $materials = $store->get_all_materials();
 ?>
   <body id="page-top">

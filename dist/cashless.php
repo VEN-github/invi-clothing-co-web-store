@@ -3,6 +3,7 @@ require_once "../class/webstoreclass.php";
 $user = $store->get_userdata();
 $title = "PayPal or Credit / Debit Card - Payments";
 include_once "../includes/dashboard_header.php";
+$admins = $store->get_admin();
 $online = $store->online_payments();
 $countOrders = $store->count_orders();
 $pendingOrders = $store->get_pending_orders();

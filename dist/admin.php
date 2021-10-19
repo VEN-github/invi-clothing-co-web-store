@@ -30,7 +30,7 @@ $pendingOrders = $store->get_pending_orders();
                     <?php if ($admins) { ?>
                       <?php foreach ($admins as $admin) { ?>
                         <?php if (is_null($admin["profileImg"])) { ?>
-                          <img id="avatar" alt="Profile image" class="mx-auto d-block mt-4 mb-4" style="border-radius:50%;">
+                          <img alt="Profile image" class="avatar mx-auto d-block mt-4 mb-4" style="border-radius:50%;">
                         <?php } else { ?>
                           <img src="./assets/img/<?= $admin[
                             "profileImg"

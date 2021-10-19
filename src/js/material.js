@@ -1,115 +1,117 @@
 const selectForm = document.querySelector(".rawMaterialForm");
 const form = document.querySelector(".rawForm");
 
-selectForm.addEventListener("change", () => {
-  // set display flex on other div
-  const laborFee = document.querySelector(".labor-fee");
-  laborFee.style.display = "flex";
-  const layoutFee = document.querySelector(".layout-fee");
-  layoutFee.style.display = "flex";
-  const expenses = document.querySelector(".expense-fee");
-  expenses.style.display = "flex";
-  const total = document.querySelector(".total");
-  total.style.display = "flex";
-  const hr = document.querySelectorAll(".hr");
-  hr.forEach((e) => {
-    e.style.display = "block";
+if (selectForm) {
+  selectForm.addEventListener("change", () => {
+    // set display flex on other div
+    const laborFee = document.querySelector(".labor-fee");
+    laborFee.style.display = "flex";
+    const layoutFee = document.querySelector(".layout-fee");
+    layoutFee.style.display = "flex";
+    const expenses = document.querySelector(".expense-fee");
+    expenses.style.display = "flex";
+    const total = document.querySelector(".total");
+    total.style.display = "flex";
+    const hr = document.querySelectorAll(".hr");
+    hr.forEach((e) => {
+      e.style.display = "block";
+    });
+
+    // getting selected values
+    const materialID = selectForm.options[selectForm.selectedIndex].value;
+    const materialName = selectForm.options[selectForm.selectedIndex].text;
+    let unitPrice = selectForm.options[selectForm.selectedIndex].dataset.price;
+    const qty = selectForm.options[selectForm.selectedIndex].dataset.qty;
+
+    // creating div element
+    const container = document.createElement("div");
+    container.className = "row rawMaterialContainer";
+
+    // creating form groups
+    const materialNameDiv = document.createElement("div");
+    materialNameDiv.className = "form-group col-lg-3";
+    const unitPriceDiv = document.createElement("div");
+    unitPriceDiv.className = "form-group col-lg-2";
+    const qtyDiv = document.createElement("div");
+    qtyDiv.className = "form-group col-lg-2";
+    const totalCostDiv = document.createElement("div");
+    totalCostDiv.className = "form-group col-lg-2";
+    const buttonDiv = document.createElement("div");
+    buttonDiv.className = "d-flex align-items-center col-lg-2";
+
+    // create label
+    const labelName = document.createElement("label");
+    labelName.innerText = "Raw Material";
+    const labelPrice = document.createElement("label");
+    labelPrice.innerText = "Unit Price";
+    const labelQty = document.createElement("label");
+    labelQty.innerText = "Quantity";
+    const labelTotalCost = document.createElement("label");
+    labelTotalCost.innerText = "Total Cost";
+
+    // create Input
+    const materialIdInput = document.createElement("input");
+    materialIdInput.setAttribute("type", "hidden");
+    materialIdInput.setAttribute("name", "materialID[]");
+    materialIdInput.setAttribute("value", materialID);
+    const materialNameInput = document.createElement("input");
+    materialNameInput.className = "form-control";
+    materialNameInput.setAttribute("disabled", true);
+    materialNameInput.setAttribute("value", materialName);
+    const unitPriceInput = document.createElement("input");
+    unitPriceInput.className = "form-control";
+    unitPriceInput.setAttribute("disabled", true);
+    unitPriceInput.setAttribute("name", "unitPrice[]");
+    unitPriceInput.setAttribute("value", unitPrice);
+    const qtyInput = document.createElement("input");
+    qtyInput.className = "form-control";
+    qtyInput.setAttribute("type", "number");
+    qtyInput.setAttribute("name", "qty[]");
+    qtyInput.setAttribute("max", qty);
+    qtyInput.setAttribute("min", "1");
+    qtyInput.setAttribute("value", "1");
+    qtyInput.setAttribute("onchange", "computeTotalCost(this)");
+    qtyInput.setAttribute("oninput", "computeTotalCost(this)");
+    const totalCostInput = document.createElement("input");
+    totalCostInput.className = "form-control";
+    totalCostInput.setAttribute("disabled", true);
+    totalCostInput.setAttribute("name", "totalCost[]");
+    totalCostInput.setAttribute("value", unitPrice);
+
+    //create Button
+    const button = document.createElement("button");
+    button.className = "deleteBtn btn btn-danger btn-sm btn-block";
+    button.setAttribute("type", "button");
+    button.setAttribute("onclick", "removeMaterial(this)");
+
+    // create button icon
+    const buttonIcon = document.createElement("i");
+    buttonIcon.className = "fas fa-trash";
+
+    // append elements
+    materialNameDiv.appendChild(labelName);
+    materialNameDiv.appendChild(materialIdInput);
+    materialNameDiv.appendChild(materialNameInput);
+    unitPriceDiv.appendChild(labelPrice);
+    unitPriceDiv.appendChild(unitPriceInput);
+    qtyDiv.appendChild(labelQty);
+    qtyDiv.appendChild(qtyInput);
+    totalCostDiv.appendChild(labelTotalCost);
+    totalCostDiv.appendChild(totalCostInput);
+    buttonDiv.appendChild(button);
+    button.appendChild(buttonIcon);
+
+    // append element into container
+    container.appendChild(materialNameDiv);
+    container.appendChild(unitPriceDiv);
+    container.appendChild(qtyDiv);
+    container.appendChild(totalCostDiv);
+    container.appendChild(buttonDiv);
+
+    form.insertBefore(container, form.children[1]);
+    totals();
   });
-
-  // getting selected values
-  const materialID = selectForm.options[selectForm.selectedIndex].value;
-  const materialName = selectForm.options[selectForm.selectedIndex].text;
-  let unitPrice = selectForm.options[selectForm.selectedIndex].dataset.price;
-  const qty = selectForm.options[selectForm.selectedIndex].dataset.qty;
-
-  // creating div element
-  const container = document.createElement("div");
-  container.className = "row rawMaterialContainer";
-
-  // creating form groups
-  const materialNameDiv = document.createElement("div");
-  materialNameDiv.className = "form-group col-lg-3";
-  const unitPriceDiv = document.createElement("div");
-  unitPriceDiv.className = "form-group col-lg-2";
-  const qtyDiv = document.createElement("div");
-  qtyDiv.className = "form-group col-lg-2";
-  const totalCostDiv = document.createElement("div");
-  totalCostDiv.className = "form-group col-lg-2";
-  const buttonDiv = document.createElement("div");
-  buttonDiv.className = "d-flex align-items-center col-lg-2";
-
-  // create label
-  const labelName = document.createElement("label");
-  labelName.innerText = "Raw Material";
-  const labelPrice = document.createElement("label");
-  labelPrice.innerText = "Unit Price";
-  const labelQty = document.createElement("label");
-  labelQty.innerText = "Quantity";
-  const labelTotalCost = document.createElement("label");
-  labelTotalCost.innerText = "Total Cost";
-
-  // create Input
-  const materialIdInput = document.createElement("input");
-  materialIdInput.setAttribute("type", "hidden");
-  materialIdInput.setAttribute("name", "materialID[]");
-  materialIdInput.setAttribute("value", materialID);
-  const materialNameInput = document.createElement("input");
-  materialNameInput.className = "form-control";
-  materialNameInput.setAttribute("disabled", true);
-  materialNameInput.setAttribute("value", materialName);
-  const unitPriceInput = document.createElement("input");
-  unitPriceInput.className = "form-control";
-  unitPriceInput.setAttribute("disabled", true);
-  unitPriceInput.setAttribute("name", "unitPrice[]");
-  unitPriceInput.setAttribute("value", unitPrice);
-  const qtyInput = document.createElement("input");
-  qtyInput.className = "form-control";
-  qtyInput.setAttribute("type", "number");
-  qtyInput.setAttribute("name", "qty[]");
-  qtyInput.setAttribute("max", qty);
-  qtyInput.setAttribute("min", "1");
-  qtyInput.setAttribute("value", "1");
-  qtyInput.setAttribute("onchange", "computeTotalCost(this)");
-  qtyInput.setAttribute("oninput", "computeTotalCost(this)");
-  const totalCostInput = document.createElement("input");
-  totalCostInput.className = "form-control";
-  totalCostInput.setAttribute("disabled", true);
-  totalCostInput.setAttribute("name", "totalCost[]");
-  totalCostInput.setAttribute("value", unitPrice);
-
-  //create Button
-  const button = document.createElement("button");
-  button.className = "deleteBtn btn btn-danger btn-sm btn-block";
-  button.setAttribute("type", "button");
-  button.setAttribute("onclick", "removeMaterial(this)");
-
-  // create button icon
-  const buttonIcon = document.createElement("i");
-  buttonIcon.className = "fas fa-trash";
-
-  // append elements
-  materialNameDiv.appendChild(labelName);
-  materialNameDiv.appendChild(materialIdInput);
-  materialNameDiv.appendChild(materialNameInput);
-  unitPriceDiv.appendChild(labelPrice);
-  unitPriceDiv.appendChild(unitPriceInput);
-  qtyDiv.appendChild(labelQty);
-  qtyDiv.appendChild(qtyInput);
-  totalCostDiv.appendChild(labelTotalCost);
-  totalCostDiv.appendChild(totalCostInput);
-  buttonDiv.appendChild(button);
-  button.appendChild(buttonIcon);
-
-  // append element into container
-  container.appendChild(materialNameDiv);
-  container.appendChild(unitPriceDiv);
-  container.appendChild(qtyDiv);
-  container.appendChild(totalCostDiv);
-  container.appendChild(buttonDiv);
-
-  form.insertBefore(container, form.children[1]);
-  totals();
-});
+}
 
 // compute total cost of raw material
 function computeTotalCost(e) {

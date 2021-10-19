@@ -3,6 +3,7 @@ require_once "../class/webstoreclass.php";
 $user = $store->get_userdata();
 $title = "Inventory - Products";
 include_once "../includes/dashboard_header.php";
+$admins = $store->get_admin();
 $products = $store->get_products();
 ?>
   <body id="page-top">
