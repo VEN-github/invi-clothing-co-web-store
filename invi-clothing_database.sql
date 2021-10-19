@@ -29,9 +29,10 @@ CREATE TABLE `account_table` (
   `email` varchar(255) NOT NULL,
   `password` varchar(255) NOT NULL,
   `contactNumber` varchar(255) DEFAULT NULL,
+  `profileImg` varchar(255) DEFAULT NULL,
   `access` varchar(255) NOT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -40,7 +41,7 @@ CREATE TABLE `account_table` (
 
 LOCK TABLES `account_table` WRITE;
 /*!40000 ALTER TABLE `account_table` DISABLE KEYS */;
-INSERT INTO `account_table` VALUES (1,'Admin','Admin','admin@gmail.com','25d55ad283aa400af464c76d713c07ad','09959764761','admin'),(3,'Raven','Barrogo','raven@gmail.com','25d55ad283aa400af464c76d713c07ad','09123456789','user'),(5,'Raven','Barrogo','admin2@gmail.com','25d55ad283aa400af464c76d713c07ad','09959764761','admin'),(10,'User','User','user@gmail.com','25d55ad283aa400af464c76d713c07ad',NULL,'user');
+INSERT INTO `account_table` VALUES (3,'Raven','Barrogo','raven.barrogo24@gmail.com','25d55ad283aa400af464c76d713c07ad','09123456789',NULL,'user'),(10,'User','User','user@gmail.com','25d55ad283aa400af464c76d713c07ad',NULL,NULL,'user'),(16,'INVI','Clothing Co.','admin@gmail.com','25d55ad283aa400af464c76d713c07ad','09959764761','favicon.ico','admin');
 /*!40000 ALTER TABLE `account_table` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -67,7 +68,7 @@ CREATE TABLE `address_table` (
   PRIMARY KEY (`ID`),
   KEY `fk_accountID_idx` (`accountID`),
   CONSTRAINT `fk_accountID` FOREIGN KEY (`accountID`) REFERENCES `account_table` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=47 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=54 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -76,7 +77,7 @@ CREATE TABLE `address_table` (
 
 LOCK TABLES `address_table` WRITE;
 /*!40000 ALTER TABLE `address_table` DISABLE KEYS */;
-INSERT INTO `address_table` VALUES (8,'Raven','Barrogo','47 A. Mabini St. Manggahan, Pasig City','','Pasig City','1611','Metro Manila','Philippines','09959764761','primary address',3),(11,'Raven','Barrogo','47 A. Mabini St. Manggahan, Pasig City','','Pasig City','1611','Bohol','Philippines','09959764761','primary address',3),(12,'Raven','Barrogo','581 Magsaysay St. Manggahan, Pasig City','','Pasig City','1611','Metro Manila','Philippines','09959764761','',3),(13,'Raven','Barrogo','47 A. Mabini St. Manggahan, Pasig City','','Pasig City','1600','Metro Manila','Philippines','09959764761','primary address',3),(15,'Raven','Barrogo','47 A. Mabini St. Manggahan, Pasig City','','Pasig City','1611','Bohol','Philippines','09959764761','',3),(16,'Raven','Barrogo','47 A. Mabini St. Manggahan, Pasig City','','Pasig City','1611','Batanes','Philippines','09959764761','',3),(17,'Raven','Barrogo','581 Magsaysay St. Manggahan, Pasig City','','Pasig City','1611','Metro Manila','Philippines','09959764761','',3),(20,'Raven','Barrogo','47 A. Mabini St. Manggahan, Pasig City','','Pasig City','1611','Metro Manila','Philippines','09959764761','primary address',3),(21,'Raven','Barrogo','47 A. Mabini St. Manggahan, Pasig City','','Pasig City','1611','Bohol','Philippines','09959764761','',3),(22,'Raven','Barrogo','47 A. Mabini St. Manggahan, Pasig City','','Pasig City','1611','Benguet','Philippines','09959764761','',3),(23,'Raven','Barrogo','47 A. Mabini St. Manggahan, Pasig City','','Pasig City','1611','Batangas','Philippines','09959764761','',3),(24,'Raven','Barrogo','47 A. Mabini St. Manggahan, Pasig City','','Pasig City','1611','Benguet','Philippines','09959764761','',3),(25,'Raven','Barrogo','581 Magsaysay St. Manggahan, Pasig City','','Pasig City','1611','Bohol','Philippines','09959764761','primary address',3),(26,'Raven','Barrogo','47 A. Mabini St. Manggahan, Pasig City','','Pasig City','1611','Benguet','Philippines','09959764761','primary address',3),(27,'User','User','581 Magsaysay St. Manggahan, Pasig City','','Pasig City','1611','Bohol','Philippines','09959764761','',10),(28,'User','User','581 Magsaysay St. Manggahan, Pasig City','','Pasig City','1611','Benguet','Philippines','09959764761','',10),(29,'Raven','Barrogo','47 A. Mabini St. Manggahan, Pasig City','','Pasig City','1611','Biliran','Philippines','09959764761','primary address',3),(30,'Raven','Barrogo','47 A. Mabini St. Manggahan, Pasig City','','Pasig City','1611','Bohol','Philippines','09959764761','primary address',3),(31,'Raven','Barrogo','47 A. Mabini St. Manggahan, Pasig City','','Pasig City','1611','Bukidnon','Philippines','09959764761','primary address',3),(32,'Raven','Barrogo','47 A. Mabini St. Manggahan, Pasig City','','Pasig City','1611','Metro Manila','Philippines','09959764761','primary address',3),(33,'Raven','Barrogo','47 A. Mabini St. Manggahan, Pasig City','','Pasig City','1611','Batanes','Philippines','09959764761','',3),(34,'Raven','Barrogo','47 A. Mabini St. Manggahan, Pasig City','','Pasig City','1611','Benguet','Philippines','09959764761','',3),(35,'Raven','Barrogo','47 A. Mabini St. Manggahan, Pasig City','','Pasig City','1600','Bohol','Philippines','09959764761','',3),(36,'Raven','Barrogo','47 A. Mabini St. Manggahan, Pasig City','','Pasig City','1611','Benguet','Philippines','09959764761','',3),(37,'User','User','581 Magsaysay St. Manggahan, Pasig City','','Pasig City','1611','Bataan','Philippines','09959764761','',10),(38,'Raven','Barrogo','47 A. Mabini St. Manggahan, Pasig City','','Pasig City','1611','Metro Manila','Philippines','09959764761','',3),(39,'Raven','Barrogo','47 A. Mabini St. Manggahan, Pasig City','','Pasig City','1611','Biliran','Philippines','09959764761','',3),(40,'Raven','Barrogo','47 A. Mabini St. Manggahan, Pasig City','','Pasig City','1611','Bohol','Philippines','09959764761','',3),(41,'Raven','Barrogo','47 A. Mabini St. Manggahan, Pasig City','','Pasig City','1611','Bohol','Philippines','09959764761','',3),(42,'User','User','47 A. Mabini St. Manggahan, Pasig City','','Pasig City','1611','Biliran','Philippines','09959764761','',10),(43,'Raven','Barrogo','47 A. Mabini St. Manggahan, Pasig City','','Pasig City','1611','Metro Manila','Philippines','09959764761','primary address',3),(44,'Raven','Barrogo','47 A. Mabini St. Manggahan, Pasig City','','Pasig City','1611','Ilocos Sur','Philippines','09959764761','',3),(45,'Raven','Barrogo','47 A. Mabini St. Manggahan, Pasig City','','Pasig City','1611','Bukidnon','Philippines','09959764761','',3),(46,'Raven','Barrogo','47 A. Mabini St. Manggahan','','Pasig City','1611','Metro Manila','Philippines','09959764761','primary address',3);
+INSERT INTO `address_table` VALUES (8,'Raven','Barrogo','47 A. Mabini St. Manggahan, Pasig City','','Pasig City','1611','Metro Manila','Philippines','0995976476','primary address',3),(11,'Raven','Barrogo','47 A. Mabini St. Manggahan, Pasig City','','Pasig City','1611','Bohol','Philippines','09959764761','primary address',3),(12,'Raven','Barrogo','581 Magsaysay St. Manggahan, Pasig City','','Pasig City','1611','Metro Manila','Philippines','09959764761','',3),(13,'Raven','Barrogo','47 A. Mabini St. Manggahan, Pasig City','','Pasig City','1600','Metro Manila','Philippines','09959764761','primary address',3),(15,'Raven','Barrogo','47 A. Mabini St. Manggahan, Pasig City','','Pasig City','1611','Bohol','Philippines','09959764761','',3),(16,'Raven','Barrogo','47 A. Mabini St. Manggahan, Pasig City','','Pasig City','1611','Batanes','Philippines','09959764761','',3),(17,'Raven','Barrogo','581 Magsaysay St. Manggahan, Pasig City','','Pasig City','1611','Metro Manila','Philippines','09959764761','',3),(20,'Raven','Barrogo','47 A. Mabini St. Manggahan, Pasig City','','Pasig City','1611','Metro Manila','Philippines','09959764761','primary address',3),(21,'Raven','Barrogo','47 A. Mabini St. Manggahan, Pasig City','','Pasig City','1611','Bohol','Philippines','09959764761','',3),(22,'Raven','Barrogo','47 A. Mabini St. Manggahan, Pasig City','','Pasig City','1611','Benguet','Philippines','09959764761','',3),(23,'Raven','Barrogo','47 A. Mabini St. Manggahan, Pasig City','','Pasig City','1611','Batangas','Philippines','09959764761','',3),(24,'Raven','Barrogo','47 A. Mabini St. Manggahan, Pasig City','','Pasig City','1611','Benguet','Philippines','09959764761','',3),(25,'Raven','Barrogo','581 Magsaysay St. Manggahan, Pasig City','','Pasig City','1611','Bohol','Philippines','09959764761','primary address',3),(26,'Raven','Barrogo','47 A. Mabini St. Manggahan, Pasig City','','Pasig City','1611','Benguet','Philippines','09959764761','primary address',3),(27,'User','User','581 Magsaysay St. Manggahan, Pasig City','','Pasig City','1611','Bohol','Philippines','09959764761','',10),(28,'User','User','581 Magsaysay St. Manggahan, Pasig City','','Pasig City','1611','Benguet','Philippines','09959764761','',10),(29,'Raven','Barrogo','47 A. Mabini St. Manggahan, Pasig City','','Pasig City','1611','Biliran','Philippines','09959764761','primary address',3),(30,'Raven','Barrogo','47 A. Mabini St. Manggahan, Pasig City','','Pasig City','1611','Bohol','Philippines','09959764761','primary address',3),(31,'Raven','Barrogo','47 A. Mabini St. Manggahan, Pasig City','','Pasig City','1611','Bukidnon','Philippines','09959764761','primary address',3),(32,'Raven','Barrogo','47 A. Mabini St. Manggahan, Pasig City','','Pasig City','1611','Metro Manila','Philippines','09959764761','primary address',3),(33,'Raven','Barrogo','47 A. Mabini St. Manggahan, Pasig City','','Pasig City','1611','Batanes','Philippines','09959764761','',3),(34,'Raven','Barrogo','47 A. Mabini St. Manggahan, Pasig City','','Pasig City','1611','Benguet','Philippines','09959764761','',3),(35,'Raven','Barrogo','47 A. Mabini St. Manggahan, Pasig City','','Pasig City','1600','Bohol','Philippines','09959764761','',3),(36,'Raven','Barrogo','47 A. Mabini St. Manggahan, Pasig City','','Pasig City','1611','Benguet','Philippines','09959764761','',3),(37,'User','User','581 Magsaysay St. Manggahan, Pasig City','','Pasig City','1611','Bataan','Philippines','09959764761','',10),(38,'Raven','Barrogo','47 A. Mabini St. Manggahan, Pasig City','','Pasig City','1611','Metro Manila','Philippines','09959764761','',3),(39,'Raven','Barrogo','47 A. Mabini St. Manggahan, Pasig City','','Pasig City','1611','Biliran','Philippines','09959764761','',3),(40,'Raven','Barrogo','47 A. Mabini St. Manggahan, Pasig City','','Pasig City','1611','Bohol','Philippines','09959764761','',3),(41,'Raven','Barrogo','47 A. Mabini St. Manggahan, Pasig City','','Pasig City','1611','Bohol','Philippines','09959764761','',3),(42,'User','User','47 A. Mabini St. Manggahan, Pasig City','','Pasig City','1611','Biliran','Philippines','09959764761','',10),(43,'Raven','Barrogo','47 A. Mabini St. Manggahan, Pasig City','','Pasig City','1611','Metro Manila','Philippines','09959764761','primary address',3),(44,'Raven','Barrogo','47 A. Mabini St. Manggahan, Pasig City','','Pasig City','1611','Ilocos Sur','Philippines','09959764761','',3),(45,'Raven','Barrogo','47 A. Mabini St. Manggahan, Pasig City','','Pasig City','1611','Bukidnon','Philippines','09959764761','',3),(46,'Raven','Barrogo','47 A. Mabini St. Manggahan','','Pasig City','1611','Metro Manila','Philippines','09959764761','primary address',3),(47,'Raven','Barrogo','47 A. Mabini St. Manggahan, Pasig City','','Pasig City','1611','Bukidnon','Philippines','09959764761','',3),(48,'Raven','Barrogo','47 A. Mabini St. Manggahan, Pasig City','','Pasig City','1611','Bohol','Philippines','09959764761','',3),(49,'Raven','Barrogo','47 Apolinario Mabini St. Manggahan, Pasig City','','Pasig','1611','Metro Manila','Philippines','09959764761','',3),(50,'Raven','Barrogo','47 A. Mabini St. Manggahan','','Pasig City','1611','Bukidnon','Philippines','09959764761','',3),(51,'Raven','Barrogo','47 A. Mabini St. Manggahan','','Pasig City','1611','Bohol','Philippines','09959764761','',3),(52,'Raven','Barrogo','47 A. Mabini St. Manggahan','','Pasig City','1611','Benguet','Philippines','09959764761','',3),(53,'Raven','Barrogo','47 Apolinario Mabini St. Manggahan, Pasig City','','Pasig','1611','Metro Manila','Philippines','09959764761','',3);
 /*!40000 ALTER TABLE `address_table` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -116,15 +117,26 @@ CREATE TABLE `costing_table` (
   `productID` int(11) NOT NULL,
   `materialID` int(11) NOT NULL,
   `materialQty` int(11) NOT NULL,
-  `netSales` int(11) NOT NULL,
+  `laborFee` int(11) NOT NULL,
+  `laborQty` int(11) NOT NULL,
+  `layoutFee` int(11) NOT NULL,
+  `layoutQty` int(11) NOT NULL,
+  `expenseFee` int(11) NOT NULL,
+  `expenseQty` int(11) NOT NULL,
   `productCost` int(11) NOT NULL,
+  `totalCost` int(11) NOT NULL,
+  `salesAmount` int(11) NOT NULL,
+  `salesDiscount` int(11) NOT NULL,
+  `netSales` int(11) NOT NULL,
+  `grossProfit` int(11) NOT NULL,
+  `expenses` int(11) NOT NULL,
   `netIncome` int(11) NOT NULL,
   PRIMARY KEY (`ID`),
   KEY `fk_productID_idx` (`productID`),
   KEY `fk_materialID_idx` (`materialID`),
   CONSTRAINT `fk_materialID` FOREIGN KEY (`materialID`) REFERENCES `rawmaterials_table` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `fk_productID` FOREIGN KEY (`productID`) REFERENCES `product_table` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=381 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=409 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -133,7 +145,7 @@ CREATE TABLE `costing_table` (
 
 LOCK TABLES `costing_table` WRITE;
 /*!40000 ALTER TABLE `costing_table` DISABLE KEYS */;
-INSERT INTO `costing_table` VALUES (351,115,104,50,450,317,133),(352,115,108,50,450,317,133),(353,115,107,50,450,317,133),(354,115,106,50,450,317,133),(355,115,105,50,450,317,133),(356,116,106,30,250,103,147),(357,116,109,30,250,103,147),(358,117,104,25,500,357,143),(359,117,108,10,500,357,143),(360,117,107,50,500,357,143),(361,117,106,50,500,357,143),(362,117,103,50,500,357,143),(363,118,106,30,250,158,92),(364,118,110,30,250,158,92),(365,119,107,50,450,370,80),(366,119,105,50,450,370,80),(367,120,107,50,500,363,137),(368,120,106,40,500,363,137),(369,120,103,50,500,363,137),(370,121,105,50,450,295,155),(371,122,104,50,700,293,407),(372,122,106,50,700,293,407),(373,122,112,50,700,293,407),(374,123,113,20,250,155,95),(375,124,106,30,450,298,152),(376,124,105,30,450,298,152),(377,125,106,50,450,298,152),(378,125,114,50,450,298,152),(379,126,106,70,450,348,102),(380,126,115,75,450,348,102);
+INSERT INTO `costing_table` VALUES (370,121,105,50,0,0,0,0,0,0,295,0,0,0,450,0,0,155),(371,122,104,50,0,0,0,0,0,0,293,0,0,0,700,0,0,407),(372,122,106,50,0,0,0,0,0,0,293,0,0,0,700,0,0,407),(373,122,112,50,0,0,0,0,0,0,293,0,0,0,700,0,0,407),(375,124,106,30,0,0,0,0,0,0,298,0,0,0,450,0,0,152),(376,124,105,30,0,0,0,0,0,0,298,0,0,0,450,0,0,152),(379,126,106,70,0,0,0,0,0,0,348,0,0,0,450,0,0,102),(380,126,115,75,0,0,0,0,0,0,348,0,0,0,450,0,0,102),(391,133,104,50,130,50,60,50,0,0,380,19000,450,0,450,70,0,70),(392,133,107,50,130,50,60,50,0,0,380,19000,450,0,450,70,0,70),(393,133,105,50,130,50,60,50,0,0,380,19000,450,0,450,70,0,70),(402,138,106,30,75,30,0,0,0,0,158,4740,250,0,250,92,0,92),(403,138,110,30,75,30,0,0,0,0,158,4740,250,0,250,92,0,92),(404,139,104,25,90,50,30,50,0,0,317,15600,450,0,450,133,0,133),(405,139,108,50,90,50,30,50,0,0,317,15600,450,0,450,133,0,133),(406,139,107,50,90,50,30,50,0,0,317,15600,450,0,450,133,0,133),(407,139,106,50,90,50,30,50,0,0,317,15600,450,0,450,133,0,133),(408,139,114,50,90,50,30,50,0,0,317,15600,450,0,450,133,0,133);
 /*!40000 ALTER TABLE `costing_table` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -150,15 +162,12 @@ CREATE TABLE `inventorymaterial_table` (
   `addedQty` int(11) NOT NULL,
   `dateTime` datetime NOT NULL DEFAULT current_timestamp(),
   `adminID` int(11) NOT NULL,
-  `editBy` int(11) DEFAULT NULL,
   PRIMARY KEY (`ID`),
   KEY `fk_rawID_idx` (`materialID`),
   KEY `fk_admin_idx` (`adminID`),
-  KEY `fk_editByAdmin_idx` (`editBy`),
   CONSTRAINT `fk_admin` FOREIGN KEY (`adminID`) REFERENCES `account_table` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `fk_editByAdmin` FOREIGN KEY (`editBy`) REFERENCES `account_table` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `fk_rawID` FOREIGN KEY (`materialID`) REFERENCES `rawmaterials_table` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=117 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=130 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -167,7 +176,7 @@ CREATE TABLE `inventorymaterial_table` (
 
 LOCK TABLES `inventorymaterial_table` WRITE;
 /*!40000 ALTER TABLE `inventorymaterial_table` DISABLE KEYS */;
-INSERT INTO `inventorymaterial_table` VALUES (110,104,25,'2021-09-30 00:23:17',1,1),(111,103,50,'2021-09-30 00:19:05',1,1),(112,105,80,'2021-09-30 16:27:23',1,NULL),(113,106,200,'2021-10-02 15:23:12',1,NULL),(114,104,50,'2021-10-02 15:23:29',1,NULL),(115,115,100,'2021-10-07 19:10:32',1,NULL),(116,106,10,'2021-10-08 01:41:28',1,1);
+INSERT INTO `inventorymaterial_table` VALUES (123,115,100,'2021-10-16 03:02:55',16),(124,106,210,'2021-10-16 03:03:01',16),(125,105,80,'2021-10-16 03:03:18',16),(126,104,75,'2021-10-16 03:03:24',16),(127,103,50,'2021-10-16 03:03:29',16),(128,112,40,'2021-10-16 15:57:06',16),(129,106,200,'2021-10-19 01:09:23',16);
 /*!40000 ALTER TABLE `inventorymaterial_table` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -185,17 +194,14 @@ CREATE TABLE `inventoryproduct_table` (
   `addedQty` int(11) NOT NULL,
   `dateTime` datetime DEFAULT current_timestamp(),
   `addedBy` int(11) NOT NULL,
-  `editedBy` int(11) DEFAULT NULL,
   PRIMARY KEY (`ID`),
   KEY `fk_prodID_idx` (`productID`),
   KEY `fk_stockID_idx` (`stockID`),
   KEY `fk_admin_idx` (`addedBy`),
-  KEY `fk_editByAdmin_idx` (`editedBy`),
   CONSTRAINT `fk_addedAdmn` FOREIGN KEY (`addedBy`) REFERENCES `account_table` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `fk_editedAdmn` FOREIGN KEY (`editedBy`) REFERENCES `account_table` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `fk_prdID` FOREIGN KEY (`productID`) REFERENCES `product_table` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `fk_stckID` FOREIGN KEY (`stockID`) REFERENCES `stocks_table` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -204,7 +210,6 @@ CREATE TABLE `inventoryproduct_table` (
 
 LOCK TABLES `inventoryproduct_table` WRITE;
 /*!40000 ALTER TABLE `inventoryproduct_table` DISABLE KEYS */;
-INSERT INTO `inventoryproduct_table` VALUES (7,115,226,10,'2021-10-01 16:35:17',1,NULL),(8,115,231,15,'2021-10-01 16:35:42',1,NULL),(9,116,232,50,'2021-10-02 01:20:39',1,1),(10,115,231,4,'2021-10-01 16:52:58',1,NULL),(11,119,247,1,'2021-10-01 16:56:10',1,NULL),(12,119,247,9,'2021-10-01 16:56:39',1,NULL),(13,126,284,19,'2021-10-07 19:20:54',1,NULL),(14,118,240,30,'2021-10-07 19:21:29',1,NULL);
 /*!40000 ALTER TABLE `inventoryproduct_table` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -226,10 +231,11 @@ CREATE TABLE `product_table` (
   `image2` varchar(255) DEFAULT NULL,
   `image3` varchar(255) DEFAULT NULL,
   `sizeGuide` varchar(255) DEFAULT NULL,
+  `availability` varchar(255) NOT NULL,
   PRIMARY KEY (`ID`),
   KEY `fk_categoryID_idx` (`categoryID`),
   CONSTRAINT `fk_categoryID` FOREIGN KEY (`categoryID`) REFERENCES `category_table` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=128 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=140 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -238,7 +244,7 @@ CREATE TABLE `product_table` (
 
 LOCK TABLES `product_table` WRITE;
 /*!40000 ALTER TABLE `product_table` DISABLE KEYS */;
-INSERT INTO `product_table` VALUES (115,1,'Peek A Boo','sdfds','Khaki','Anniv - Front - Khaki.png','Anniv - Back - Khaki.png','','','SIZE CHART.png'),(116,3,'INVI Face Mask','adsad','Black','Face Mask.png','','','',''),(117,1,'INVI x Itachi Uchiha','dfsf','Black','Itachi - Front - Black.png','Itachi - Back - Black.png','','','SIZE CHART.png'),(118,3,'INVI Bucket Hat','hgjhf','Black','Bucket Hat - Black.png','','','',''),(119,1,'INVI Warrior','sdfds','White','INVI Warrior - Front - White.png','INVI Warrior - Back - White.png','hero-img2.png','hero-img.png','SIZE CHART.png'),(120,1,'INVI x Donquixote Doflamingo','gdfg','Black','Doffy - Front - Black.png','Doffy - Back - Black.png','','','SIZE CHART.png'),(121,1,'Logo Tee','hfghfg','Fuchsia Pink','Logo Tee - Front - Pink.png','Logo Tee - Back - Pink.png','','','SIZE CHART.png'),(122,2,'INVI Hoodie','fdgdf','Black','Hoodie.png','','','',''),(123,3,'INVI Beanie','dfgfdg','Orange','Beanie - Orange.png','','','',''),(124,1,'Peek A Boo','sadasd','White','Anniv - Front - White.png','Anniv - Back - White.png','','','SIZE CHART.png'),(125,1,'Logo Tee','fghfgh','Mint Green','Logo Tee - Front - Green.png','Logo Tee - Back - Green.png','','','SIZE CHART.png'),(126,1,'INVI Warrior','jhkhjk','Golden Yellow','INVI Warrior - Front - Golden Yellow.png','INVI Warrior - Back - Golden Yellow.png','','','SIZE CHART.png'),(127,3,'INVI Beanie','dsfdsfds','Yellow','Beanie - Yellow.png','','','','');
+INSERT INTO `product_table` VALUES (121,1,'Logo Tee','hfghfg','Fuchsia Pink','Logo Tee - Front - Pink.png','Logo Tee - Back - Pink.png','','','SIZE CHART.png','Available'),(122,2,'INVI Hoodie','fdgdf','Black','Hoodie.png','','','','','Available'),(124,1,'Peek A Boo','sadasd','White','Anniv - Front - White.png','Anniv - Back - White.png','','','SIZE CHART.png','Available'),(126,1,'INVI Warrior','jhkhjk','Golden Yellow','INVI Warrior - Front - Golden Yellow.png','INVI Warrior - Back - Golden Yellow.png','','','SIZE CHART.png','Available'),(133,1,'INVI Warrior','dfgghfd','White','INVI Warrior - Front - White.png','INVI Warrior - Back - White.png','','','SIZE CHART.png','Available'),(138,3,'INVI Bucket Hat','dgfg','Khaki','Bucket Hat - Khaki.png','','','','','Available'),(139,1,'Logo Tee','fhfgh','Mint Green','Logo Tee - Front - Green.png','Logo Tee - Back - Green.png','','','SIZE CHART.png','Available');
 /*!40000 ALTER TABLE `product_table` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -282,7 +288,7 @@ CREATE TABLE `rawmaterials_table` (
   PRIMARY KEY (`ID`),
   KEY `fk_supplierID_idx` (`supplierID`),
   CONSTRAINT `fk_supplierID` FOREIGN KEY (`supplierID`) REFERENCES `supplier_table` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=116 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=117 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -291,7 +297,7 @@ CREATE TABLE `rawmaterials_table` (
 
 LOCK TABLES `rawmaterials_table` WRITE;
 /*!40000 ALTER TABLE `rawmaterials_table` DISABLE KEYS */;
-INSERT INTO `rawmaterials_table` VALUES (103,'Black Shirt',175,50,9),(104,'Decals',10,50,11),(105,'White Shirt',175,100,9),(106,'Sleeve Label',3,200,10),(107,'Necktape',5,200,9),(108,'Hangtag',4,60,11),(109,'Face Mask',50,30,13),(110,'Black Bucket Hat',80,30,13),(111,'Fuchsia Pink Shirt',175,50,9),(112,'Hoodie',200,50,9),(113,'Orange Beanie',80,20,13),(114,'Mint Green Shirt',175,100,9),(115,'Yellow Shirt',175,50,9);
+INSERT INTO `rawmaterials_table` VALUES (103,'Black Shirt',175,50,9),(104,'Decals',10,50,11),(105,'White Shirt',175,100,9),(106,'Sleeve Label',3,200,10),(107,'Necktape',5,200,9),(108,'Hangtag',4,60,11),(109,'Face Mask',50,30,13),(110,'Black Bucket Hat',80,30,13),(111,'Fuchsia Pink Shirt',175,50,9),(112,'Hoodie',200,50,9),(113,'Orange Beanie',80,20,13),(114,'Mint Green Shirt',175,100,9),(115,'Yellow Shirt',175,50,9),(116,'Yellow Beanie',80,50,13);
 /*!40000 ALTER TABLE `rawmaterials_table` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -323,7 +329,7 @@ CREATE TABLE `sales_table` (
   CONSTRAINT `fk_acctID` FOREIGN KEY (`accountID`) REFERENCES `account_table` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `fk_prodID` FOREIGN KEY (`productID`) REFERENCES `product_table` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `fk_stockID` FOREIGN KEY (`stockID`) REFERENCES `stocks_table` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=69 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=78 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -332,7 +338,7 @@ CREATE TABLE `sales_table` (
 
 LOCK TABLES `sales_table` WRITE;
 /*!40000 ALTER TABLE `sales_table` DISABLE KEYS */;
-INSERT INTO `sales_table` VALUES (41,'0',115,225,2,'Standard Delivery',180,'Cash on Delivery (COD)',2530,10,'Paid','Delivered','2021-08-06 16:10:12'),(42,'0',118,240,4,'Standard Delivery',180,'Cash on Delivery (COD)',2530,10,'Paid','Delivered','2021-08-06 16:10:12'),(43,'0',121,258,15,'Standard Delivery',180,'Cash on Delivery (COD)',2530,10,'Paid','Delivered','2021-08-06 16:10:12'),(44,'3',117,236,1,'Standard Delivery',180,'Cash on Delivery (COD)',680,10,'Paid','Delivered','2021-05-05 23:34:45'),(45,'91891',117,237,1,'Standard Delivery',180,'Cash on Delivery (COD)',1180,3,'Paid','Delivered','2021-03-05 21:35:14'),(46,'91891',120,252,1,'Standard Delivery',180,'Cash on Delivery (COD)',1180,3,'Paid','Delivered','2021-03-05 21:35:14'),(47,'5',120,252,2,'Standard Delivery',180,'Cash on Delivery (COD)',2080,3,'Paid','Delivered','2021-06-06 15:22:39'),(48,'5',119,245,2,'Standard Delivery',180,'Cash on Delivery (COD)',2080,3,'Paid','Delivered','2021-06-06 15:22:39'),(49,'55',121,255,1,'Standard Delivery',180,'PayPal',1080,3,'Paid','Delivered','2021-10-05 23:29:55'),(50,'55',115,231,1,'Standard Delivery',180,'PayPal',1080,3,'Paid','Delivered','2021-10-05 23:29:55'),(51,'4',120,252,4,'Standard Delivery',100,'Cash on Delivery (COD)',2100,3,'Paid','Delivered','2021-10-05 21:42:35'),(53,'86',118,240,26,'Standard Delivery',180,'Cash on Delivery (COD)',6680,3,'Paid','Delivered','2021-07-06 16:06:59'),(54,'527',122,265,10,'Standard Delivery',180,'Cash on Delivery (COD)',7180,3,'Paid','Delivered','2021-09-05 21:47:50'),(55,'96',116,232,80,'Standard Delivery',180,'Cash on Delivery (COD)',20180,3,'Paid','Delivered','2021-04-05 22:00:09'),(57,'7111',119,242,1,'Standard Delivery',100,'Cash on Delivery (COD)',550,3,'Paid','Delivered','2021-10-06 16:09:46'),(59,'40',124,271,1,'Standard Delivery',180,'Cash on Delivery (COD)',630,3,'Paid','Delivered','2021-10-06 16:42:32'),(60,'141c849d99979',119,243,1,'Standard Delivery',180,'Cash on Delivery (COD)',630,3,'Paid','Delivered','2021-10-06 16:44:11'),(61,'d2ad87e80f904',121,259,1,'Standard Delivery',180,'Cash on Delivery (COD)',630,10,'Paid','Delivered','2021-01-06 16:43:21'),(62,'ffa27d57ae58a',115,226,5,'Standard Delivery',100,'PayPal',3100,3,'Paid','Delivered','2021-10-07 19:04:27'),(63,'ffa27d57ae58a',120,251,1,'Standard Delivery',100,'PayPal',3100,3,'Paid','Delivered','2021-10-07 19:04:27'),(64,'ffa27d57ae58a',123,269,1,'Standard Delivery',100,'PayPal',3100,3,'Paid','Delivered','2021-10-07 19:04:27'),(65,'b5419b2b47b8a8',122,264,1,'Standard Delivery',180,'PayPal',880,3,'Paid','Shipped','2021-10-08 16:17:05'),(66,'4a35bbd38e1908',118,240,1,'Standard Delivery',180,'Cash on Delivery (COD)',430,3,'Cancelled','Cancelled','2021-10-08 16:08:06'),(67,'32034eac415b6',115,226,2,'Standard Delivery',100,'PayPal',1450,3,'Paid','Delivered','2021-10-08 22:55:44'),(68,'32034eac415b6',126,289,1,'Standard Delivery',100,'PayPal',1450,3,'Paid','Delivered','2021-10-08 22:55:44');
+INSERT INTO `sales_table` VALUES (43,'0',121,258,15,'Standard Delivery',180,'Cash on Delivery (COD)',2530,10,'Paid','Delivered','2021-08-06 16:10:12'),(49,'55',121,255,1,'Standard Delivery',180,'PayPal or Credit / Debit Card',1080,3,'Paid','Delivered','2021-10-05 23:29:55'),(54,'527',122,265,10,'Standard Delivery',180,'Cash on Delivery (COD)',7180,3,'Paid','Delivered','2021-09-05 21:47:50'),(59,'40',124,271,1,'Standard Delivery',180,'Cash on Delivery (COD)',630,3,'Paid','Delivered','2021-10-06 16:42:32'),(61,'d2ad87e80f904',121,259,1,'Standard Delivery',180,'Cash on Delivery (COD)',630,10,'Paid','Delivered','2021-01-06 16:43:21'),(65,'b5419b2b47b8a8',122,264,6,'Standard Delivery',180,'PayPal or Credit / Debit Card',880,3,'Paid','Delivered','2021-10-08 16:17:05'),(68,'32034eac415b6',126,289,1,'Standard Delivery',100,'PayPal or Credit / Debit Card',1450,3,'Paid','Delivered','2021-10-08 22:55:44'),(69,'x836l',124,270,1,'Standard Delivery',180,'Cash on Delivery (COD)',630,3,'Cancelled','Cancelled','2021-10-11 21:48:34'),(70,'5y1to',121,260,1,'Standard Delivery',180,'Cash on Delivery (COD)',630,3,'Paid','Delivered','2021-10-11 22:50:22'),(71,'wwpuc',126,288,4,'Standard Delivery',100,'Cash on Delivery (COD)',5900,3,'Paid','Delivered','2021-10-12 02:40:08'),(72,'wwpuc',122,266,5,'Standard Delivery',100,'Cash on Delivery (COD)',5900,3,'Paid','Delivered','2021-10-12 02:40:08'),(77,'crwq8',122,266,1,'Standard Delivery',100,'PayPal or Credit / Debit Card',800,3,'Paid','Delivered','2021-10-13 23:37:20');
 /*!40000 ALTER TABLE `sales_table` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -348,10 +354,11 @@ CREATE TABLE `stocks_table` (
   `productID` int(11) NOT NULL,
   `size` varchar(255) DEFAULT NULL,
   `stock` int(11) NOT NULL,
+  `sku` varchar(255) NOT NULL,
   PRIMARY KEY (`ID`),
   KEY `fk_productID_idx` (`productID`),
   CONSTRAINT `fk_itemID` FOREIGN KEY (`productID`) REFERENCES `product_table` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=291 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=335 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -360,7 +367,7 @@ CREATE TABLE `stocks_table` (
 
 LOCK TABLES `stocks_table` WRITE;
 /*!40000 ALTER TABLE `stocks_table` DISABLE KEYS */;
-INSERT INTO `stocks_table` VALUES (225,115,'XS',2),(226,115,'S',6),(227,115,'M',15),(228,115,'L',15),(229,115,'XL',5),(230,115,'2XL',4),(231,115,'3XL',1),(232,116,NULL,30),(233,117,'XS',2),(234,117,'S',5),(235,117,'M',10),(236,117,'L',12),(237,117,'XL',7),(238,117,'2XL',2),(239,117,'3XL',1),(240,118,NULL,30),(241,119,'XS',0),(242,119,'S',2),(243,119,'M',5),(244,119,'L',10),(245,119,'XL',11),(246,119,'2XL',1),(247,119,'3XL',0),(248,120,'XS',2),(249,120,'S',5),(250,120,'M',15),(251,120,'L',15),(252,120,'XL',7),(253,120,'2XL',5),(254,120,'3XL',2),(255,121,'XS',1),(256,121,'S',2),(257,121,'M',11),(258,121,'L',15),(259,121,'XL',7),(260,121,'2XL',5),(261,121,'3XL',1),(262,122,'XS',2),(263,122,'S',5),(264,122,'M',15),(265,122,'L',15),(266,122,'XL',7),(267,122,'2XL',2),(268,122,'3XL',1),(269,123,NULL,20),(270,124,'XS',10),(271,124,'S',15),(272,124,'M',20),(273,124,'L',20),(274,124,'XL',15),(275,124,'2XL',10),(276,124,'3XL',10),(277,125,'XS',5),(278,125,'S',5),(279,125,'M',15),(280,125,'L',12),(281,125,'XL',5),(282,125,'2XL',5),(283,125,'3XL',3),(284,126,'XS',1),(285,126,'S',5),(286,126,'M',15),(287,126,'L',12),(288,126,'XL',10),(289,126,'2XL',5),(290,126,'3XL',5);
+INSERT INTO `stocks_table` VALUES (255,121,'XS',1,''),(256,121,'S',2,''),(257,121,'M',11,''),(258,121,'L',15,''),(259,121,'XL',7,''),(260,121,'2XL',5,''),(261,121,'3XL',1,''),(262,122,'XS',2,''),(263,122,'S',5,''),(264,122,'M',15,''),(265,122,'L',15,''),(266,122,'XL',7,''),(267,122,'2XL',2,''),(268,122,'3XL',1,''),(270,124,'XS',10,''),(271,124,'S',15,''),(272,124,'M',20,''),(273,124,'L',20,''),(274,124,'XL',15,''),(275,124,'2XL',10,''),(276,124,'3XL',10,''),(284,126,'XS',1,''),(285,126,'S',5,''),(286,126,'M',15,''),(287,126,'L',12,''),(288,126,'XL',10,''),(289,126,'2XL',5,''),(290,126,'3XL',5,''),(316,133,'XS',0,'Wht-INVIWarrior-XS-vdjxd'),(317,133,'S',5,'Wht-INVIWarrior-S-sqe5r'),(318,133,'M',15,'Wht-INVIWarrior-M-1n9d9'),(319,133,'L',12,'Wht-INVIWarrior-L-btwvp'),(320,133,'XL',5,'Wht-INVIWarrior-XL-z3auv'),(321,133,'2XL',7,'Wht-INVIWarrior-2XL-2v00h'),(322,133,'3XL',2,'Wht-INVIWarrior-3XL-qzhvk'),(327,138,NULL,30,'Khk-INVIBucketHat-1z4cl'),(328,139,'XS',5,'MntGrn-LogoTee-XS-7vpss'),(329,139,'S',7,'MntGrn-LogoTee-S-on7i6'),(330,139,'M',12,'MntGrn-LogoTee-M-luqrg'),(331,139,'L',15,'MntGrn-LogoTee-L-lqtw1'),(332,139,'XL',5,'MntGrn-LogoTee-XL-qypks'),(333,139,'2XL',7,'MntGrn-LogoTee-2XL-df36p'),(334,139,'3XL',2,'MntGrn-LogoTee-3XL-0aj87');
 /*!40000 ALTER TABLE `stocks_table` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -387,7 +394,7 @@ CREATE TABLE `supplier_table` (
 
 LOCK TABLES `supplier_table` WRITE;
 /*!40000 ALTER TABLE `supplier_table` DISABLE KEYS */;
-INSERT INTO `supplier_table` VALUES (9,'Rose Monge Mercader','rose@gmail.com','Pasig, Philippines','09597878465'),(10,'JRY Printing','JRY@gmail.com','Manila, Philippines','09087119079'),(11,'GRPK Prints & Merch','grpk@gmail.com','Santa Rosa, Philippines','09397631064'),(13,'QualiPrints','quali@gmail.com','Pasig, Philippines','275769573');
+INSERT INTO `supplier_table` VALUES (9,'Rose Monge Mercader','rose@gmail.com','Pasig, Philippines','09597878465'),(10,'JRY Printing','JRY@gmail.com','Manila, Philippines','09087119079'),(11,'GRPK Prints & Merch','grpk@gmail.com','Santa Rosa, Philippines','09397631064'),(13,'QualiPrints','raven.barrogo24@gmail.com','Pasig, Philippines','275769573');
 /*!40000 ALTER TABLE `supplier_table` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -400,4 +407,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-10-08 23:47:39
+-- Dump completed on 2021-10-19 16:11:11
