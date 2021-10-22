@@ -969,7 +969,7 @@ class WebStore
   {
     $connection = $this->openConnection();
     $stmt = $connection->prepare(
-      "SELECT product.ID, productName, productColor, coverPhoto, netSales FROM (SELECT * FROM product_table) product LEFT JOIN costing_table costing ON product.ID = costing.productID GROUP BY product.ID ORDER BY RAND() LIMIT 3"
+      "SELECT product.ID, productName, productColor, coverPhoto, availability, netSales FROM (SELECT * FROM product_table) product LEFT JOIN costing_table costing ON product.ID = costing.productID GROUP BY product.ID ORDER BY RAND() LIMIT 3"
     );
     $stmt->execute();
     $randomProducts = $stmt->fetchall();

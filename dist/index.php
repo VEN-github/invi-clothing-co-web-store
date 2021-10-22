@@ -5,7 +5,6 @@ $randomProducts = $store->get_random_products();
 $title = "Home";
 include_once "../includes/header.php";
 ?>
-
 <body>
   <div class="page-container">
     <?php include_once "../includes/navbar.php"; ?>
@@ -36,13 +35,8 @@ include_once "../includes/header.php";
           <div class="container features">
             <h1>Our products</h1>
             <div class="carousel-container">
-            <?php foreach ($randomProducts as $randomProduct) { ?>
-              <?php $stocks = $store->view_all_stocks($randomProduct["ID"]); ?>
-                <?php if (
-                  $randomProduct["ID"] &&
-                  $randomProduct["netSales"] &&
-                  $stocks
-                ) { ?>
+              <?php foreach ($randomProducts as $randomProduct) { ?>
+                <?php if ($randomProduct["availability"] === "Available") { ?>
                   <div class="carousel-box">
                     <div class="labels">
                       <span class="product-label"></span>
