@@ -1264,7 +1264,7 @@ class WebStore
       unset($_SESSION["checkout"]);
       if (isset($_SESSION["userdata"])) {
         $ID = $_SESSION["userdata"]["ID"];
-        header("Location: orderconfirmed.php?ID=$ID");
+        header("Location: ordercompleted.php?ID=$ID");
       }
     }
   }
@@ -1326,7 +1326,7 @@ class WebStore
       unset($_SESSION["checkout"]);
       if (isset($_SESSION["userdata"])) {
         $ID = $_SESSION["userdata"]["ID"];
-        header("Location: orderconfirmed.php?ID=$ID");
+        header("Location: ordercompleted.php?ID=$ID");
       }
       //}
     }
