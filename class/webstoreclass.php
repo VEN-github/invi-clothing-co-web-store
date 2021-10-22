@@ -1269,18 +1269,6 @@ class WebStore
     }
   }
 
-  // check address if already exists
-  public function checkAddress($addressID)
-  {
-    $connection = $this->openConnection();
-    $stmt = $connection->prepare(
-      "SELECT * FROM address_table WHERE addressID = ?"
-    );
-    $stmt->execute([$addressID]);
-    $count = $stmt->rowCount();
-    return $count;
-  }
-
   // shipping address
   public function shipping_address()
   {
@@ -1299,7 +1287,6 @@ class WebStore
       $phoneNumber = $_POST["phoneNumber"];
       $primaryAddress = $_POST["primaryAddress"];
 
-      //if ($this->checkAddress($addressID) == 0) {
       $connection = $this->openConnection();
       $stmt = $connection->prepare(
         "INSERT INTO address_table (`orderID`,`addressID`, `firstName`, `lastName`, `address1`, `address2`, `city`, `postalCode`, `region`, `country`, `phoneNumber`, `addressType`, `accountID`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)"
@@ -1328,7 +1315,6 @@ class WebStore
         $ID = $_SESSION["userdata"]["ID"];
         header("Location: ordercompleted.php?ID=$ID");
       }
-      //}
     }
   }
 
