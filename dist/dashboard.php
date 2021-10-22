@@ -393,6 +393,7 @@ $decSales = $store->get_dec_sales();
                     <h6 class="m-0 font-weight-bold text-gray-800">Top Selling Products as of <?= $month ?></h6>
                   </div>
                   <div class="card-body">
+                  <?php if ($topSales) { ?>
                     <div class="table-responsive">
                       <table
                         class="table table-striped text-center"
@@ -407,25 +408,23 @@ $decSales = $store->get_dec_sales();
                           </tr>
                         </thead>
                         <tbody class="text-gray-900">
-                          <?php if ($topSales) { ?>
-                            <?php foreach ($topSales as $top) { ?>
-                              <tr>
-                                <td><?= $top["productID"] ?></td>
-                                <td><?= is_null($top["size"])
-                                  ? $top["productName"] .
-                                    " (" .
-                                    $top["productColor"] .
-                                    ")"
-                                  : $top["productName"] .
-                                    " (" .
-                                    $top["productColor"] .
-                                    ", " .
-                                    $top["size"] .
-                                    ")" ?></td>
-                                <td><?= $top["salesQty"] ?></td>
-                              </tr>
-                            <?php } ?>
-                          <?php } ?>
+                          <?php foreach ($topSales as $top) { ?>
+                            <tr>
+                              <td><?= $top["productID"] ?></td>
+                              <td><?= is_null($top["size"])
+                                ? $top["productName"] .
+                                  " (" .
+                                  $top["productColor"] .
+                                  ")"
+                                : $top["productName"] .
+                                  " (" .
+                                  $top["productColor"] .
+                                  ", " .
+                                  $top["size"] .
+                                  ")" ?></td>
+                              <td><?= $top["salesQty"] ?></td>
+                            </tr>
+                          <?php } ?>                         
                         </tbody>
                         <tfoot class="bg-gray-600 text-gray-100">
                           <tr>
@@ -436,6 +435,9 @@ $decSales = $store->get_dec_sales();
                         </tfoot>
                       </table>
                     </div>
+                    <?php } else { ?>
+                      <h4 class="text-center text-gray-900">No Data Available</h4>
+                    <?php } ?>
                   </div>
                 </div>
               </div>
@@ -460,6 +462,7 @@ $decSales = $store->get_dec_sales();
                   </div>
                   <!-- Card Body -->
                   <div class="card-body">
+                  <?php if ($topCategories) { ?>
                     <div class="table-responsive">
                       <table
                         class="table table-striped text-center"
@@ -473,13 +476,11 @@ $decSales = $store->get_dec_sales();
                           </tr>
                         </thead>
                         <tbody class="text-gray-900">
-                          <?php if ($topCategories) { ?>
-                            <?php foreach ($topCategories as $topCategory) { ?>
-                              <tr>
-                                <td><?= $topCategory["categoryName"] ?></td>
-                                <td><?= $topCategory["salesQty"] ?></td>
-                              </tr>
-                            <?php } ?>
+                          <?php foreach ($topCategories as $topCategory) { ?>
+                            <tr>
+                              <td><?= $topCategory["categoryName"] ?></td>
+                              <td><?= $topCategory["salesQty"] ?></td>
+                            </tr>
                           <?php } ?>
                         </tbody>
                         <tfoot class="bg-gray-600 text-gray-100">
@@ -490,6 +491,9 @@ $decSales = $store->get_dec_sales();
                         </tfoot>
                       </table>
                     </div>
+                    <?php } else { ?>
+                      <h4 class="text-center text-gray-900">No Data Available</h4>
+                    <?php } ?>  
                   </div>
                 </div>
               </div>

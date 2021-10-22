@@ -75,6 +75,7 @@ $admins = $store->get_admin();
                 </h6>
               </div>
               <div class="card-body">
+              <?php if ($orders) { ?>
                 <div class="table-responsive">
                   <table
                     class="table table-bordered text-center table-sm"
@@ -97,108 +98,102 @@ $admins = $store->get_admin();
                           <th>Action</th>
                         </tr>
                     </thead>
-                    <tbody class="text-gray-900">
-                      <?php if ($orders) { ?>
-                        <?php foreach ($orders as $order) { ?>
-                        <tr class="orders" style="display:none;">
-                          <td class="align-middle"><?= $order["orderID"] ?></td>
-                          <td class="align-middle"><?= $order["firstName"] .
-                            " " .
-                            $order["lastName"] ?></td>
-                          <td class="text-left align-middle">
-                            <img src="./assets/img/<?= $order[
-                              "coverPhoto"
-                            ] ?>" alt="Product Image" style="width:75px;">
-                          <?= is_null($order["size"])
-                            ? $order["productName"] .
-                              " (" .
-                              $order["productColor"] .
-                              ")"
-                            : $order["productName"] .
-                              " (" .
-                              $order["productColor"] .
-                              ", " .
-                              $order["size"] .
-                              ")" ?>
-                          </td>
-                          <td class="align-middle"><?= $order[
-                            "salesQty"
-                          ] ?></td>
-                          <td class="align-middle"><span>&#8369;</span> <?= number_format(
-                            $order["totalAmount"],
-                            2
-                          ) ?></td>
-                          <td class="align-middle"><?= $order[
-                            "paymentMethod"
-                          ] ?></td>
-                          <td class="align-middle <?php if (
-                            $order["paymentStatus"] === "Cancelled"
-                          ) { ?>text-danger<?php } elseif (
-                            $order["paymentStatus"] === "Pending"
-                          ) { ?>text-warning<?php } else { ?>text-success<?php } ?>"><?= $order[
+                    <tbody class="text-gray-900">              
+                      <?php foreach ($orders as $order) { ?>
+                      <tr class="orders" style="display:none;">
+                        <td class="align-middle"><?= $order["orderID"] ?></td>
+                        <td class="align-middle"><?= $order["firstName"] .
+                          " " .
+                          $order["lastName"] ?></td>
+                        <td class="text-left align-middle">
+                          <img src="./assets/img/<?= $order[
+                            "coverPhoto"
+                          ] ?>" alt="Product Image" style="width:75px;">
+                        <?= is_null($order["size"])
+                          ? $order["productName"] .
+                            " (" .
+                            $order["productColor"] .
+                            ")"
+                          : $order["productName"] .
+                            " (" .
+                            $order["productColor"] .
+                            ", " .
+                            $order["size"] .
+                            ")" ?>
+                        </td>
+                        <td class="align-middle"><?= $order["salesQty"] ?></td>
+                        <td class="align-middle"><span>&#8369;</span> <?= number_format(
+                          $order["totalAmount"],
+                          2
+                        ) ?></td>
+                        <td class="align-middle"><?= $order[
+                          "paymentMethod"
+                        ] ?></td>
+                        <td class="align-middle <?php if (
+                          $order["paymentStatus"] === "Cancelled"
+                        ) { ?>text-danger<?php } elseif (
+                          $order["paymentStatus"] === "Pending"
+                        ) { ?>text-warning<?php } else { ?>text-success<?php } ?>"><?= $order[
   "paymentStatus"
 ] ?></td>
-                          <td class="align-middle"><?= $order[
-                            "shipMethod"
-                          ] ?></td>
-                          <td class="align-middle"><?= $order[
-                            "orderDate"
-                          ] ?></td>
-                          <td class="align-middle <?php if (
-                            $order["orderStatus"] === "Cancelled"
-                          ) { ?>
-                            text-danger<?php } elseif (
-                            $order["orderStatus"] === "Pending"
-                          ) { ?> text-warning<?php } elseif (
-                            $order["orderStatus"] === "Processing"
-                          ) { ?>text-primary<?php } elseif (
-                            $order["orderStatus"] === "Shipped"
-                          ) { ?>text-info<?php } else { ?>text-success<?php } ?>"><?= $order[
+                        <td class="align-middle"><?= $order[
+                          "shipMethod"
+                        ] ?></td>
+                        <td class="align-middle"><?= $order["orderDate"] ?></td>
+                        <td class="align-middle <?php if (
+                          $order["orderStatus"] === "Cancelled"
+                        ) { ?>
+                          text-danger<?php } elseif (
+                          $order["orderStatus"] === "Pending"
+                        ) { ?> text-warning<?php } elseif (
+                          $order["orderStatus"] === "Processing"
+                        ) { ?>text-primary<?php } elseif (
+                          $order["orderStatus"] === "Shipped"
+                        ) { ?>text-info<?php } else { ?>text-success<?php } ?>"><?= $order[
   "orderStatus"
 ] ?></td>
-                          <td class="align-middle">
-                            <?php if (
-                              !(
-                                ($order["orderStatus"] === "Delivered" ||
-                                  $order["orderStatus"] === "Cancelled") &&
-                                ($order["paymentStatus"] === "Paid" ||
-                                  $order["paymentStatus"] === "Cancelled")
-                              )
-                            ) { ?> 
-                            <div class="dropdown no-arrow">
-                              <a class="dropdown-toggle btn btn-secondary btn-circle btn-sm href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                  <i class="fas fa-ellipsis-v fa-sm fa-fw"></i>
-                              </a>
-                                <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
-                                  <?php if (
-                                    $order["orderStatus"] === "Processing"
-                                  ) { ?>      
-                                    <a class="dropdown-item" target="_blank" href="invoice.php?orderID=<?= $order[
-                                      "orderID"
-                                    ] ?>&acctID=<?= $order[
-  "accountID"
-] ?>">Invoice</a>
-                                  <?php } ?>  
-                                  <?php if (
-                                    !(
-                                      $order["orderStatus"] === "Delivered" ||
-                                      $order["orderStatus"] === "Cancelled"
-                                    )
-                                  ) { ?> 
-                                  <a class="dropdown-item orderStatus" href="" data-toggle="modal" data-target="#orderStatusModal" data-order_id="<?= $order[
+                        <td class="align-middle">
+                          <?php if (
+                            !(
+                              ($order["orderStatus"] === "Delivered" ||
+                                $order["orderStatus"] === "Cancelled") &&
+                              ($order["paymentStatus"] === "Paid" ||
+                                $order["paymentStatus"] === "Cancelled")
+                            )
+                          ) { ?> 
+                          <div class="dropdown no-arrow">
+                            <a class="dropdown-toggle btn btn-secondary btn-circle btn-sm href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fas fa-ellipsis-v fa-sm fa-fw"></i>
+                            </a>
+                              <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
+                                <?php if (
+                                  $order["orderStatus"] === "Processing"
+                                ) { ?>      
+                                  <a class="dropdown-item" target="_blank" href="invoice.php?orderID=<?= $order[
                                     "orderID"
-                                  ] ?>" data-email="<?= $order[
+                                  ] ?>&addressID=<?= $order[
+  "addressID"
+] ?>">Invoice</a>
+                                <?php } ?>  
+                                <?php if (
+                                  !(
+                                    $order["orderStatus"] === "Delivered" ||
+                                    $order["orderStatus"] === "Cancelled"
+                                  )
+                                ) { ?> 
+                                <a class="dropdown-item orderStatus" href="" data-toggle="modal" data-target="#orderStatusModal" data-order_id="<?= $order[
+                                  "orderID"
+                                ] ?>" data-email="<?= $order[
   "email"
 ] ?>" data-payment="<?= $order["paymentMethod"] ?>" data-status="<?= $order[
   "orderStatus"
 ] ?>">Update Order Status</a>
 <?php } ?>
-                                </div>
-                            </div>
-                            <?php } ?>
-                          </td>
-                        </tr>
-                        <?php } ?>
+                              </div>
+                          </div>
+                          <?php } ?>
+                        </td>
+                      </tr>
                       <?php } ?>
                     </tbody>
                     <tfoot class="bg-gray-600 text-gray-100">
@@ -221,6 +216,9 @@ $admins = $store->get_admin();
                 <div class="mt-4 col text-center">
                   <button class="btn btn-secondary load-more">Load more</button>
                 </div>
+                <?php } else { ?>
+                  <h4 class="text-center text-gray-900">No Data Available</h4>
+                <?php } ?>
               </div>
             </div>
           </div>

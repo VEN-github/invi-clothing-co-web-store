@@ -15,6 +15,7 @@ $checkout = $store->get_checkout();
             <div class="container">
               <img src="./assets/img/logo.png" alt="Logo" />
             </div>
+            <?php include_once "../includes/stepper.php"; ?>
           </div>
           <div class="container">
             <div class="checkout-wrapper">
@@ -86,7 +87,7 @@ $checkout = $store->get_checkout();
                     </label>
                     <?php date_default_timezone_set("Asia/Manila"); ?>
                     <?= $checkout["region"] == "Metro Manila" &&
-                    (date("H") >= 8 && date("H") <= 15)
+                    (date("H") >= 8 && date("H") < 15)
                       ? '
                     <label class="radio-field">
                       <input type="radio" name="delivery" id="ship-method" class="radio" value="Express Delivery"' .

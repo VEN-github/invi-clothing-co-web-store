@@ -15,6 +15,7 @@ $checkout = $store->get_checkout();
             <div class="container">
               <img src="./assets/img/logo.png" alt="Logo" />
             </div>
+            <?php include_once "../includes/stepper.php"; ?>
           </div>
           <div class="container">
             <div class="checkout-wrapper">

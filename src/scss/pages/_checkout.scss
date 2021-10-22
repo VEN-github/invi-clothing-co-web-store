@@ -5,15 +5,82 @@
 
 #checkout-process {
   .checkout-banner {
+    position: relative;
+    z-index: 1;
     width: 100%;
     height: 220px;
     padding: 2.5em 0;
     background: colors.$primary-color;
 
     & img {
-      margin-left: 19em;
       width: 120px;
+      margin-left: 19em;
       object-fit: cover;
+    }
+
+    .progress-bar {
+      position: relative;
+      @include flex.flex(space-between, center, row);
+      width: 100%;
+      max-width: 550px;
+      margin-left: 5.5em;
+      padding: 1.8em 0;
+      counter-reset: step;
+
+      .progress-step {
+        @include flex.flex(center, center, row);
+        width: 30px;
+        height: 30px;
+        padding: 1em;
+        background: colors.$primary-color;
+        border: 3px solid colors.$disabled-color;
+        border-radius: 50%;
+
+        &::before {
+          counter-increment: step;
+          content: counter(step);
+          font-size: 0.813rem;
+          font-weight: map-get(fonts.$font-weight, regular);
+          color: colors.$disabled-color;
+        }
+
+        &::after {
+          content: attr(data-title);
+          position: absolute;
+          top: calc(100% - 1.5rem);
+          font-size: 0.813rem;
+          font-weight: map-get(fonts.$font-weight, regular);
+          color: colors.$disabled-color;
+        }
+
+        &.active {
+          background: colors.$secondary-color;
+          border-color: colors.$secondary-color;
+        }
+
+        &.active::before {
+          color: colors.$text-color;
+        }
+
+        &.active::after {
+          color: colors.$secondary-color;
+        }
+
+        .line:not(.last)::after {
+          content: "";
+          position: absolute;
+          z-index: -1;
+          top: 50%;
+          width: 150px;
+          height: 3px;
+          background: colors.$disabled-color;
+          transform: translateY(-50%);
+        }
+
+        .line.active::after {
+          background: colors.$secondary-color;
+        }
+      }
     }
   }
   .checkout-wrapper {

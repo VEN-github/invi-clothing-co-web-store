@@ -19,6 +19,7 @@ $store->placed_order_email();
             <div class="container">
               <img src="./assets/img/logo.png" alt="Logo" />
             </div>
+            <?php include_once "../includes/stepper.php"; ?>
           </div>
           <div class="container">
             <div class="checkout-wrapper">
@@ -26,7 +27,10 @@ $store->placed_order_email();
                 <div class="contact-info">
                   <form method="post" id="orderForm">
                     <input type="hidden" name="orderID" id="orderID">
-                    <input type="hidden" name="acctID" id="" value="<?= $user[
+                    <input type="hidden" name="addressID" value="<?= $checkout[
+                      "addressID"
+                    ] ?>">
+                    <input type="hidden" name="acctID" value="<?= $user[
                       "ID"
                     ] ?>">
                     <input type="hidden" name="firstName" value="<?= $checkout[
@@ -119,7 +123,7 @@ $store->placed_order_email();
                       <div class="phone-details">
                       Phone Number:
                       <p><?= $checkout["phoneNumber"] ?></p>
-                    </div>
+                      </div>
                     </div>
                   </div>
                   <div class="button-container">

@@ -2,8 +2,8 @@
 require_once __DIR__ . "/../vendor/autoload.php";
 require_once "../class/webstoreclass.php";
 $orderID = $_GET["orderID"];
-$acctID = $_GET["acctID"];
-$orders = $store->invoice($orderID, $acctID);
+$addressID = $_GET["addressID"];
+$orders = $store->invoice($orderID, $addressID);
 
 $items = "";
 foreach ($orders as $order) {
@@ -60,8 +60,8 @@ foreach ($orders as $order) {
     $order["salesQty"] .
     '</td>
     <td class="order"><span>&#8369;</span> ' .
-    $order["netSales"] * $order["salesQty"] .
-    '.00</td>
+    number_format($order["netSales"] * $order["salesQty"], 2) .
+    '</td>
   </tr>';
 }
 
@@ -115,8 +115,8 @@ $html =
   $order["address1"] .
   '</td>
           <td class="sf"><span>&#8369;</span> ' .
-  $order["shipFee"] .
-  '.00</td>
+  number_format($order["shipFee"], 2) .
+  '</td>
           <td></td>
         </tr>
         ' .
@@ -205,21 +205,20 @@ $html =
           <tr>
             <td>Subtotal</td>
             <td><span>&#8369;</span> ' .
-  $order["totalAmount"] -
-  $order["shipFee"] .
-  '.00</td>
+  number_format($order["totalAmount"] - $order["shipFee"], 2) .
+  '</td>
           </tr>
           <tr>
             <td>Shipping Fee</td>
             <td><span>&#8369;</span> ' .
-  $order["shipFee"] .
-  '.00</td>
+  number_format($order["shipFee"], 2) .
+  '</td>
           </tr>
           <tr>
             <th>Total</th>
             <th><span>&#8369;</span> ' .
-  $order["totalAmount"] .
-  '.00</th>
+  number_format($order["totalAmount"], 2) .
+  '</th>
           </tr>
         </tbody>
       </table>

@@ -1094,6 +1094,7 @@ class WebStore
       $_SESSION["checkout"]["sf"] = null;
       unset($_SESSION["checkout"]["method"]);
       unset($_SESSION["checkout"]["sf"]);
+      $addressID = $_POST["addressID"];
       $firstName = $_POST["firstName"];
       $lastName = $_POST["lastName"];
       $address1 = $_POST["address1"];
@@ -1127,6 +1128,7 @@ class WebStore
         });
         </script>";
       } else {
+        $_SESSION["checkout"]["addressID"] = $addressID;
         $_SESSION["checkout"]["firstName"] = $firstName;
         $_SESSION["checkout"]["lastName"] = $lastName;
         $_SESSION["checkout"]["address1"] = $address1;
@@ -1137,7 +1139,6 @@ class WebStore
         $_SESSION["checkout"]["country"] = $country;
         $_SESSION["checkout"]["phoneNumber"] = $phoneNumber;
         $_SESSION["checkout"]["primaryAddress"] = $primaryAddress;
-
         if (isset($_SESSION["userdata"])) {
           $ID = $_SESSION["userdata"]["ID"];
           header("Location: checkoutship.php?ID=$ID");
@@ -1231,6 +1232,7 @@ class WebStore
       $acctID = $_POST["acctID"];
       $paymentStatus = $_POST["paymentStatus"];
       $orderStatus = $_POST["orderStatus"];
+      $addressID = $_POST["addressID"];
 
       for ($i = 0; $i < $count; $i++) {
         $productID = $_POST["productID"][$i];
@@ -1238,7 +1240,7 @@ class WebStore
         $salesQty = $_POST["salesQty"][$i];
         $connection = $this->openConnection();
         $stmt = $connection->prepare(
-          "INSERT INTO sales_table ( `orderID`,`productID`, `stockID`, `salesQty`, `shipMethod`, `shipFee`, `paymentMethod`, `totalAmount`, `accountId`, `paymentStatus`, `orderStatus`) VALUES (?,?,?,?,?,?,?,?,?,?,?)"
+          "INSERT INTO sales_table ( `orderID`,`productID`, `stockID`, `salesQty`, `shipMethod`, `shipFee`, `paymentMethod`, `totalAmount`, `accountId`, `paymentStatus`, `orderStatus`, `addressID`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)"
         );
         $stmt->execute([
           $orderID,
@@ -1252,6 +1254,7 @@ class WebStore
           $acctID,
           $paymentStatus,
           $orderStatus,
+          $addressID,
         ]);
       }
       if (!isset($_SESSION)) {
@@ -1266,11 +1269,25 @@ class WebStore
     }
   }
 
+  // check address if already exists
+  public function checkAddress($addressID)
+  {
+    $connection = $this->openConnection();
+    $stmt = $connection->prepare(
+      "SELECT * FROM address_table WHERE addressID = ?"
+    );
+    $stmt->execute([$addressID]);
+    $count = $stmt->rowCount();
+    return $count;
+  }
+
   // shipping address
   public function shipping_address()
   {
     if (isset($_POST["complete"])) {
+      $orderID = $_POST["orderID"];
       $acctID = $_POST["acctID"];
+      $addressID = $_POST["addressID"];
       $firstName = $_POST["firstName"];
       $lastName = $_POST["lastName"];
       $address1 = $_POST["address1"];
@@ -1282,11 +1299,14 @@ class WebStore
       $phoneNumber = $_POST["phoneNumber"];
       $primaryAddress = $_POST["primaryAddress"];
 
+      //if ($this->checkAddress($addressID) == 0) {
       $connection = $this->openConnection();
       $stmt = $connection->prepare(
-        "INSERT INTO address_table (`firstName`, `lastName`, `address1`, `address2`, `city`, `postalCode`, `region`, `country`, `phoneNumber`, `addressType`, `accountID`) VALUES (?,?,?,?,?,?,?,?,?,?,?)"
+        "INSERT INTO address_table (`orderID`,`addressID`, `firstName`, `lastName`, `address1`, `address2`, `city`, `postalCode`, `region`, `country`, `phoneNumber`, `addressType`, `accountID`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)"
       );
       $stmt->execute([
+        $orderID,
+        $addressID,
         $firstName,
         $lastName,
         $address1,
@@ -1308,6 +1328,25 @@ class WebStore
         $ID = $_SESSION["userdata"]["ID"];
         header("Location: orderconfirmed.php?ID=$ID");
       }
+      //}
+    }
+  }
+
+  // get shipping address
+  public function get_address($ID)
+  {
+    $connection = $this->openConnection();
+    $stmt = $connection->prepare(
+      "SELECT DISTINCT addressID, firstName, lastName, address1, address2, city, postalCode, region, country, phoneNumber, addressType FROM address_table WHERE accountID = ? ORDER BY ID DESC"
+    );
+    $stmt->execute([$ID]);
+    $address = $stmt->fetchall();
+    $count = $stmt->rowCount();
+
+    if ($count > 0) {
+      return $address;
+    } else {
+      return false;
     }
   }
 
@@ -1316,7 +1355,7 @@ class WebStore
   {
     $connection = $this->openConnection();
     $stmt = $connection->prepare(
-      "SELECT orderID, accountID, firstName, lastName, email,coverPhoto, productName, productColor, size, salesQty, totalAmount, paymentMethod, paymentStatus, shipMethod, orderStatus, orderDate FROM sales_table sales  LEFT JOIN account_table account ON sales.accountID = account.ID LEFT JOIN product_table product ON sales.productID = product.ID LEFT JOIN stocks_table stocks ON sales.stockID = stocks.ID ORDER BY orderDate DESC"
+      "SELECT orderID, accountID, firstName, lastName, email,coverPhoto, productName, productColor, size, salesQty, totalAmount, paymentMethod, paymentStatus, shipMethod, orderStatus, orderDate, addressID FROM sales_table sales  LEFT JOIN account_table account ON sales.accountID = account.ID LEFT JOIN product_table product ON sales.productID = product.ID LEFT JOIN stocks_table stocks ON sales.stockID = stocks.ID ORDER BY orderDate DESC"
     );
     $stmt->execute();
     $orders = $stmt->fetchall();
@@ -1329,14 +1368,50 @@ class WebStore
     }
   }
 
-  // print receipt
-  public function invoice($orderID, $accountID)
+  // get order id for track orders
+  public function get_orderID($ID)
   {
     $connection = $this->openConnection();
     $stmt = $connection->prepare(
-      "SELECT orderID, account.firstName as firstName, account.lastName as lastName, email, coverPhoto, productName, productColor, size, sku, salesQty, totalAmount, paymentMethod, netSales, shipMethod, shipFee, orderDate, shipAddress.firstName as addressFname, shipAddress.lastName as addressLname, address1, address2, city, postalCode, region, country, phoneNumber FROM sales_table sales  LEFT JOIN account_table account ON sales.accountID = account.ID LEFT JOIN product_table product ON sales.productID = product.ID LEFT JOIN stocks_table stocks ON sales.stockID = stocks.ID LEFT JOIN costing_table costing ON sales.productID = costing.productID LEFT JOIN address_table shipAddress ON sales.accountID = shipAddress.accountID WHERE orderID = ? AND sales.accountID = ? GROUP BY sales.productID"
+      "SELECT orderID FROM sales_table WHERE accountID = ? ORDER BY ID DESC"
     );
-    $stmt->execute([$orderID, $accountID]);
+    $stmt->execute([$ID]);
+    $orderID = $stmt->fetch();
+    $count = $stmt->rowCount();
+
+    if ($count > 0) {
+      return $orderID;
+    } else {
+      return false;
+    }
+  }
+
+  // track orders
+  public function track_order($acctID, $orderID)
+  {
+    $connection = $this->openConnection();
+    $stmt = $connection->prepare(
+      "SELECT sales.orderID, salesQty, shipMethod, shipFee, paymentMethod, totalAmount, coverPhoto, productName, productColor, netSales, size, orderStatus, account.firstName as accountFname, account.lastName as accountLname, email, shipAddress.firstName as addressFname, shipAddress.lastName as addressLname, address1, address2, city, postalCode, region, country, phoneNumber FROM sales_table sales LEFT JOIN account_table account ON sales.accountID = account.ID LEFT JOIN product_table product ON sales.productID = product.ID LEFT JOIN stocks_table stock ON sales.stockID = stock.ID LEFT JOIN costing_table costing ON sales.productID = costing.productID LEFT JOIN address_table shipAddress ON sales.orderID = shipAddress.orderID WHERE sales.accountID = ?  AND sales.orderID = ? GROUP BY product.ID"
+    );
+    $stmt->execute([$acctID, $orderID]);
+    $track = $stmt->fetchall();
+    $count = $stmt->rowCount();
+
+    if ($count > 0) {
+      return $track;
+    } else {
+      return $this->show_404();
+    }
+  }
+
+  // print receipt
+  public function invoice($orderID, $addressID)
+  {
+    $connection = $this->openConnection();
+    $stmt = $connection->prepare(
+      "SELECT sales.orderID, account.firstName as firstName, account.lastName as lastName, email, coverPhoto, productName, productColor, size, sku, salesQty, totalAmount, paymentMethod, netSales, shipMethod, shipFee, orderDate, shipAddress.firstName as addressFname, shipAddress.lastName as addressLname, address1, address2, city, postalCode, region, country, phoneNumber FROM sales_table sales  LEFT JOIN account_table account ON sales.accountID = account.ID LEFT JOIN product_table product ON sales.productID = product.ID LEFT JOIN stocks_table stocks ON sales.stockID = stocks.ID LEFT JOIN costing_table costing ON sales.productID = costing.productID LEFT JOIN address_table shipAddress ON sales.orderID = shipAddress.orderID WHERE sales.orderID = ? AND sales.addressID = ? GROUP BY sales.productID"
+    );
+    $stmt->execute([$orderID, $addressID]);
     $order = $stmt->fetchall();
     $count = $stmt->rowCount();
 
@@ -1501,6 +1576,34 @@ class WebStore
           </script>";
           return $row;
         }
+      }
+    }
+  }
+
+  // cancel order
+  public function cancel_order()
+  {
+    if (isset($_POST["paymentMethod"])) {
+      if ($_POST["paymentMethod"] === "Cash on Delivery (COD)") {
+        $orderID = $_POST["orderID"];
+        $connection = $this->openConnection();
+        $stmt = $connection->prepare(
+          "UPDATE sales_table SET `paymentStatus` = ?, `orderStatus` = ? WHERE orderID = '$orderID'"
+        );
+        $stmt->execute(["Cancelled", "Cancelled"]);
+        $row = $stmt->fetch();
+        header("Location: " . $_SERVER["HTTP_REFERER"]);
+        return $row;
+      } else {
+        $orderID = $_POST["orderID"];
+        $connection = $this->openConnection();
+        $stmt = $connection->prepare(
+          "UPDATE sales_table SET `orderStatus` = ? WHERE orderID = '$orderID'"
+        );
+        $stmt->execute(["Cancelled"]);
+        $row = $stmt->fetch();
+        header("Location: " . $_SERVER["HTTP_REFERER"]);
+        return $row;
       }
     }
   }

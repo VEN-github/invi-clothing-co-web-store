@@ -3,8 +3,10 @@
 require_once "../class/webstoreclass.php";
 $userProfile = $store->setProfile();
 $user = $store->get_userdata();
-$title = "Order Confirmed - Checkout";
+$title = "Order Completed - Checkout";
 include_once "../includes/header.php";
+$ID = $_GET["ID"];
+$orderID = $store->get_orderID($ID);
 ?>
   <body>
     <div class="page-container">
@@ -43,7 +45,9 @@ include_once "../includes/header.php";
                   ></span
                   >Go Back Shopping</a
                 >
-                <a class="btn primary-btn right-btn" href="#">
+                <a class="btn primary-btn right-btn" href="trackorder.php?acctID=<?= $user[
+                  "ID"
+                ] ?>&orderID=<?= $orderID["orderID"] ?>">
                   <span
                     class="iconify track-icon"
                     data-icon="fluent:location-20-regular"
