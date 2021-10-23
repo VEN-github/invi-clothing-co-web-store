@@ -1372,6 +1372,24 @@ class WebStore
     }
   }
 
+  // get order by customers
+  public function get_order_customer($ID)
+  {
+    $connection = $this->openConnection();
+    $stmt = $connection->prepare(
+      "SELECT *, DATE_FORMAT(orderDate, '%M %d, %Y') as orderDate FROM sales_table WHERE accountID = ? GROUP BY orderID ORDER BY ID DESC"
+    );
+    $stmt->execute([$ID]);
+    $orders = $stmt->fetchall();
+    $count = $stmt->rowCount();
+
+    if ($count > 0) {
+      return $orders;
+    } else {
+      return false;
+    }
+  }
+
   // track orders
   public function track_order($acctID, $orderID)
   {

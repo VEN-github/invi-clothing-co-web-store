@@ -28,6 +28,9 @@
     <script src="https://code.iconify.design/1/1.0.7/iconify.min.js"></script>
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://www.paypal.com/sdk/js?client-id=AWHhFP2JUNkmnxAM1Z9uBzP2tI2V5KKmo-0pfNnKRbU98GSB6KMtpgJyZtBcLqMKzeotxdeW8wvHawOj"></script>
+    <!-- Data table -->
+    <link href="https://cdn.jsdelivr.net/npm/vanilla-datatables@latest/dist/vanilla-dataTables.min.css" rel="stylesheet" type="text/css">
+    <script src="https://cdn.jsdelivr.net/npm/vanilla-datatables@latest/dist/vanilla-dataTables.min.js" type="text/javascript"></script>
     <title><?= $title . " | " ?>INVI Clothing Co.</title>
   </head>
 </html>
