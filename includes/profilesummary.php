@@ -31,9 +31,12 @@
       >
     </li>
     <li>
-      <a href="#">
+      <a href="addresses.php?ID=<?= $user["ID"] ?>" class="<?= $title ===
+"Addresses"
+  ? "visited"
+  : "" ?>">
         <span
-          class="iconify"
+          class="iconify <?= $title === "Addresses" ? "visited" : "" ?>"
           data-icon="ant-design:home-filled"
           data-inline="false"
         ></span

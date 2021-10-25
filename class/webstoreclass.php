@@ -272,6 +272,226 @@ class WebStore
     }
   }
 
+  // add address
+  public function add_addresses()
+  {
+    if (isset($_POST["addNewAddresses"])) {
+      $acctID = $_POST["acctID"];
+      $addressID = $_POST["addressID"];
+      $firstName = $_POST["addFirstName"];
+      $lastName = $_POST["addLastName"];
+      $address1 = $_POST["addAddress1"];
+      $address2 = $_POST["addAddress2"];
+      $city = $_POST["addCity"];
+      $postalCode = $_POST["addPostalCode"];
+      if (isset($_POST["addRegion"])) {
+        $region = $_POST["addRegion"];
+      }
+      if (isset($_POST["addCountry"])) {
+        $country = $_POST["addCountry"];
+      }
+      $phoneNumber = $_POST["addPhoneNumber"];
+      if (isset($_POST["addPrimaryAddress"])) {
+        $primaryAddress = $_POST["addPrimaryAddress"];
+      }
+
+      if (
+        empty($firstName) ||
+        empty($lastName) ||
+        empty($address1) ||
+        empty($city) ||
+        empty($postalCode) ||
+        empty(isset($_POST["addRegion"])) ||
+        empty(isset($_POST["addCountry"])) ||
+        empty($phoneNumber)
+      ) {
+        echo "<script> Swal.fire({
+          icon: 'error',
+          title: 'Empty Field',
+          text: 'Please input missing field',
+        });
+        </script>";
+      } elseif (empty(isset($_POST["addPrimaryAddress"]))) {
+        $connection = $this->openConnection();
+        $stmt = $connection->prepare(
+          "INSERT INTO address_table (`addressID`, `firstName`, `lastName`, `address1`, `address2`, `city`, `postalCode`, `region`, `country`, `phoneNumber`, `addressType`, `accountID`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)"
+        );
+        $stmt->execute([
+          $addressID,
+          $firstName,
+          $lastName,
+          $address1,
+          $address2,
+          $city,
+          $postalCode,
+          $region,
+          $country,
+          $phoneNumber,
+          "",
+          $acctID,
+        ]);
+        if (!isset($_SESSION)) {
+          session_start();
+        }
+        if (isset($_SESSION["userdata"])) {
+          $ID = $_SESSION["userdata"]["ID"];
+          header("Location: addresses.php?ID=$ID");
+        }
+      } else {
+        $connection = $this->openConnection();
+        $stmt = $connection->prepare(
+          "INSERT INTO address_table (`addressID`, `firstName`, `lastName`, `address1`, `address2`, `city`, `postalCode`, `region`, `country`, `phoneNumber`, `addressType`, `accountID`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)"
+        );
+        $stmt->execute([
+          $addressID,
+          $firstName,
+          $lastName,
+          $address1,
+          $address2,
+          $city,
+          $postalCode,
+          $region,
+          $country,
+          $phoneNumber,
+          $primaryAddress,
+          $acctID,
+        ]);
+        if (!isset($_SESSION)) {
+          session_start();
+        }
+        if (isset($_SESSION["userdata"])) {
+          $ID = $_SESSION["userdata"]["ID"];
+          header("Location: addresses.php?ID=$ID");
+        }
+      }
+    }
+  }
+
+  // add address
+  public function update_addresses()
+  {
+    if (isset($_POST["updateAddresses"])) {
+      $acctID = $_POST["editAcctID"];
+      $addressID = $_POST["editAddressID"];
+      $fName = $_POST["editFName"];
+      $lName = $_POST["editLName"];
+      $firstName = $_POST["editFirstName"];
+      $lastName = $_POST["editLastName"];
+      $address1 = $_POST["editAddress1"];
+      $address2 = $_POST["editAddress2"];
+      $city = $_POST["editCity"];
+      $postalCode = $_POST["editPostalCode"];
+      if (isset($_POST["editRegion"])) {
+        $region = $_POST["editRegion"];
+      }
+      if (isset($_POST["editCountry"])) {
+        $country = $_POST["editCountry"];
+      }
+      $phoneNumber = $_POST["editPhoneNumber"];
+      if (isset($_POST["editPrimaryAddress"])) {
+        $primaryAddress = $_POST["editPrimaryAddress"];
+      }
+
+      if (
+        empty($firstName) ||
+        empty($lastName) ||
+        empty($address1) ||
+        empty($city) ||
+        empty($postalCode) ||
+        empty(isset($_POST["editRegion"])) ||
+        empty(isset($_POST["editCountry"])) ||
+        empty($phoneNumber)
+      ) {
+        echo "<script> Swal.fire({
+          icon: 'error',
+          title: 'Empty Field',
+          text: 'Please input missing field',
+        });
+        </script>";
+      } elseif (empty(isset($_POST["editPrimaryAddress"]))) {
+        $connection = $this->openConnection();
+        $stmt = $connection->prepare(
+          "UPDATE address_table SET `firstName` = ?, `lastName` = ?, `address1` = ?, `address2` = ?, `city` = ?, `postalCode` = ?, `region` = ?, `country` = ?, `phoneNumber` = ?, `addressType` = ? WHERE addressID = ? AND firstName = ? AND lastName = ? AND accountID = ?"
+        );
+        $stmt->execute([
+          $fName,
+          $lName,
+          $address1,
+          $address2,
+          $city,
+          $postalCode,
+          $region,
+          $country,
+          $phoneNumber,
+          "",
+          $addressID,
+          $firstName,
+          $lastName,
+          $acctID,
+        ]);
+        $row = $stmt->fetch();
+        if (!isset($_SESSION)) {
+          session_start();
+        }
+        if (isset($_SESSION["userdata"])) {
+          $ID = $_SESSION["userdata"]["ID"];
+          header("Location: addresses.php?ID=$ID");
+        }
+        return $row;
+      } else {
+        $connection = $this->openConnection();
+        $stmt = $connection->prepare(
+          "UPDATE address_table SET `firstName` = ?, `lastName` = ?, `address1` = ?, `address2` = ?, `city` = ?, `postalCode` = ?, `region` = ?, `country` = ?, `phoneNumber` = ?, `addressType` = ? WHERE addressID = ? AND firstName = ? AND lastName = ? AND accountID = ?"
+        );
+        $stmt->execute([
+          $fName,
+          $lName,
+          $address1,
+          $address2,
+          $city,
+          $postalCode,
+          $region,
+          $country,
+          $phoneNumber,
+          $primaryAddress,
+          $addressID,
+          $firstName,
+          $lastName,
+          $acctID,
+        ]);
+        $row = $stmt->fetch();
+        if (!isset($_SESSION)) {
+          session_start();
+        }
+        if (isset($_SESSION["userdata"])) {
+          $ID = $_SESSION["userdata"]["ID"];
+          header("Location: addresses.php?ID=$ID");
+        }
+        return $row;
+      }
+    }
+  }
+
+  // delete address
+  public function delete_address()
+  {
+    if (
+      isset($_POST["addressID"]) &&
+      isset($_POST["firstName"]) &&
+      isset($_POST["lastName"])
+    ) {
+      $addressID = $_POST["addressID"];
+      $firstName = $_POST["firstName"];
+      $lastName = $_POST["lastName"];
+      $connection = $this->openConnection();
+      $stmt = $connection->prepare(
+        "DELETE FROM address_table WHERE addressID = ? AND firstName = ? AND lastName = ?"
+      );
+      $stmt->execute([$addressID, $firstName, $lastName]);
+      header("Location: " . $_SERVER["HTTP_REFERER"]);
+    }
+  }
+
   // logout
   public function logout()
   {
@@ -1285,7 +1505,9 @@ class WebStore
       $region = $_POST["region"];
       $country = $_POST["country"];
       $phoneNumber = $_POST["phoneNumber"];
-      $primaryAddress = $_POST["primaryAddress"];
+      if (isset($_POST["primaryAddress"])) {
+        $primaryAddress = $_POST["primaryAddress"];
+      }
 
       $connection = $this->openConnection();
       $stmt = $connection->prepare(

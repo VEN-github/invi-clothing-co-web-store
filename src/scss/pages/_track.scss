@@ -147,7 +147,7 @@
               .price-container {
                 @include flex.flex(flex-start, center, row);
                 & .peso-sign {
-                  width: 20px;
+                  width: 18px;
                   height: 20px;
                   color: colors.$primary-color;
                 }
@@ -179,7 +179,7 @@
               @include flex.flex(flex-end, center, row);
               margin-bottom: 0.5em;
               & .peso-sign {
-                width: 20px;
+                width: 18px;
                 height: 20px;
                 color: colors.$primary-color;
               }
