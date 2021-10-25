@@ -29,6 +29,11 @@
     border-color: colors.$validation-color;
   }
 }
+
+.input-full {
+  width: 100%;
+}
+
 // input disabled
 .disabled {
   background: colors.$banner-color;

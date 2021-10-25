@@ -1,5 +1,7 @@
 <?php
 require_once "../class/webstoreclass.php";
+require "../PHPMailer/src/PHPMailer.php";
+require "../PHPMailer/src/SMTP.php";
 $user = $store->get_userdata();
 $title = "Orders";
 include_once "../includes/header.php";
@@ -9,7 +11,10 @@ $orders = $store->get_order_customer($ID);
 ?>
   <body>
     <div class="page-container">
-      <?php include_once "../includes/navbar.php"; ?>
+      <?php
+      include_once "../includes/navbar.php";
+      $store->subscribe();
+      ?>
       <!-- start of order section -->
       <main>
         <section id="profile">

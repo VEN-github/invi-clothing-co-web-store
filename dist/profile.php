@@ -1,5 +1,7 @@
 <?php
 require_once "../class/webstoreclass.php";
+require "../PHPMailer/src/PHPMailer.php";
+require "../PHPMailer/src/SMTP.php";
 $store->update_userdata();
 $store->delete_userdata();
 $userProfile = $store->setProfile();
@@ -9,7 +11,10 @@ include_once "../includes/header.php";
 ?>
   <body>
     <div class="page-container">
-      <?php include_once "../includes/navbar.php"; ?>
+      <?php
+      include_once "../includes/navbar.php";
+      $store->subscribe();
+      ?>
       <!-- start of profile section -->
       <main>
         <section id="profile">

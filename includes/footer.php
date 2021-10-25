@@ -1,9 +1,3 @@
-<?php
-require_once "../class/webstoreclass.php";
-require "../PHPMailer/src/PHPMailer.php";
-require "../PHPMailer/src/SMTP.php";
-$store->subscribe();
-?>
 <!-- start of footer -->
 <footer id="main-footer">
   <div class="container footer-container">

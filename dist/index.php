@@ -1,5 +1,7 @@
 <?php
 require_once "../class/webstoreclass.php";
+require "../PHPMailer/src/PHPMailer.php";
+require "../PHPMailer/src/SMTP.php";
 $user = $store->get_userdata();
 $randomProducts = $store->get_random_products();
 $title = "Home";
@@ -7,7 +9,10 @@ include_once "../includes/header.php";
 ?>
 <body>
   <div class="page-container">
-    <?php include_once "../includes/navbar.php"; ?>
+    <?php
+    include_once "../includes/navbar.php";
+    $store->subscribe();
+    ?>
     <main>
       <!-- start of hero section -->
       <section class="showcase">

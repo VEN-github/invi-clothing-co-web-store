@@ -1,5 +1,7 @@
 <?php
 require_once "../class/webstoreclass.php";
+require "../PHPMailer/src/PHPMailer.php";
+require "../PHPMailer/src/SMTP.php";
 $user = $store->get_userdata();
 $title = "Track Order";
 include_once "../includes/header.php";
@@ -10,7 +12,10 @@ $store->cancel_order();
 ?>
   <body>
     <div class="page-container">
-      <?php include_once "../includes/navbar.php"; ?>
+      <?php
+      include_once "../includes/navbar.php";
+      $store->subscribe();
+      ?>
       <!-- start of tracking order section -->
       <main>
         <section id="track-order">
@@ -114,6 +119,14 @@ $store->cancel_order();
                         <input type="hidden" name="orderID" value="<?= $track[
                           "orderID"
                         ] ?>">
+                        <input type="hidden" name="userEmail" value="<?= $user[
+                          "email"
+                        ] ?>" />
+                        <input type="hidden" name="userName" value="<?= $user[
+                          "firstName"
+                        ] .
+                          " " .
+                          $user["lastName"] ?>" />
                         <input type="hidden" name="paymentMethod" value="<?= $track[
                           "paymentMethod"
                         ] ?>">

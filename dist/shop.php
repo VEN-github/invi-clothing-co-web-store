@@ -1,15 +1,19 @@
 <?php
 require_once "../class/webstoreclass.php";
+require "../PHPMailer/src/PHPMailer.php";
+require "../PHPMailer/src/SMTP.php";
 $user = $store->get_userdata();
 $categories = $store->get_categories();
 $displayProducts = $store->get_products();
-
 $title = "Shop";
 include_once "../includes/header.php";
 ?>
 <body>
   <div class="page-container">
-    <?php include_once "../includes/navbar.php"; ?>
+    <?php
+    include_once "../includes/navbar.php";
+    $store->subscribe();
+    ?>
     <!-- start of shop section -->
     <main>
       <section id="shop">

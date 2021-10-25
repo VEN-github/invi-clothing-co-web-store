@@ -1,12 +1,17 @@
 <?php
 require_once "../class/webstoreclass.php";
+require "../PHPMailer/src/PHPMailer.php";
+require "../PHPMailer/src/SMTP.php";
 $user = $store->get_userdata();
 $title = "Page not found";
 include_once "../includes/header.php";
 ?>
 <body>
   <div class="page-container">
-    <?php include_once "../includes/navbar.php"; ?>
+    <?php
+    include_once "../includes/navbar.php";
+    $store->subscribe();
+    ?>
     <!-- start of 404 section -->
     <main>
       <section id="page-not-found">

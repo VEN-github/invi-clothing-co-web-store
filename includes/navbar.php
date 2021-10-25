@@ -84,13 +84,9 @@
               >
             </li>
             <li>
-              <a href="#"
-                ><span
-                  class="iconify"
-                  data-icon="emojione-monotone:heart-suit"
-                  data-inline="false"
-                ></span
-                >Wishlist</a
+              <a href="returnorder.php?ID=<?= $user["ID"] ?>"
+                ><span class="iconify" data-icon="ic:baseline-assignment-return"></span>
+                Return</a
               >
             </li>
             <li>

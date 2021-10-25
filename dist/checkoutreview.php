@@ -33,6 +33,14 @@ $store->placed_order_email();
                     <input type="hidden" name="acctID" value="<?= $user[
                       "ID"
                     ] ?>">
+                    <input type="hidden" name="userEmail" value="<?= $user[
+                      "email"
+                    ] ?>">
+                    <input type="hidden" name="userName" value="<?= $userProfile[
+                      "firstName"
+                    ] .
+                      " " .
+                      $userProfile["lastName"] ?>">
                     <input type="hidden" name="firstName" value="<?= $checkout[
                       "firstName"
                     ] ?>">

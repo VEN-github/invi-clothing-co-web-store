@@ -1,5 +1,7 @@
 <?php
 require_once "../class/webstoreclass.php";
+require "../PHPMailer/src/PHPMailer.php";
+require "../PHPMailer/src/SMTP.php";
 $user = $store->get_userdata();
 $ID = $_GET["ID"];
 $product = $store->get_singleproduct($ID);
@@ -9,7 +11,10 @@ include_once "../includes/header.php";
 ?>
 <body>
   <div class="page-container">
-    <?php include_once "../includes/navbar.php"; ?>
+    <?php
+    include_once "../includes/navbar.php";
+    $store->subscribe();
+    ?>
     <!-- start of product section -->
     <main>
     <section id="product-details">
@@ -81,13 +86,13 @@ include_once "../includes/header.php";
                   <span>.00</span>
                 </p>
               </div>
-              <button class="wishlist" title="Add to Wishlist">
+              <!-- <button class="wishlist" title="Add to Wishlist">
                 <span
                   class="iconify heart"
                   data-icon="ant-design:heart-outlined"
                   data-inline="false"
                 ></span>
-              </button>
+              </button> -->
             </div>
             <div class="product-description">
               <p>Product Details:</p>

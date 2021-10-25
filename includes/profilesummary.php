@@ -54,13 +54,13 @@
       >
     </li>
     <li>
-      <a href="#"
-        ><span
-          class="iconify"
-          data-icon="emojione-monotone:heart-suit"
-          data-inline="false"
-        ></span
-        >Wishlist</a
+      <a href="returnorder.php?ID=<?= $userProfile[
+        "ID"
+      ] ?>" class="<?= $title === "Return Order" ? "visited" : "" ?>"
+        ><span class="iconify <?= $title === "Return Order"
+          ? "visited"
+          : "" ?>" data-icon="ic:baseline-assignment-return"></span>
+        Return</a
       >
     </li>
     <li>

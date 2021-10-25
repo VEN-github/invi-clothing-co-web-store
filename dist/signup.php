@@ -1,6 +1,7 @@
 <?php
-//Sign Up function
 require_once "../class/webstoreclass.php";
+require "../PHPMailer/src/PHPMailer.php";
+require "../PHPMailer/src/SMTP.php";
 $store->signupValidation();
 $store->signup();
 $title = "Create Account";
@@ -8,7 +9,10 @@ require_once "../includes/header.php";
 ?>
   <body>
     <div class="page-container">
-      <?php include_once "../includes/navbar.php"; ?>
+      <?php
+      include_once "../includes/navbar.php";
+      $store->subscribe();
+      ?>
       <main>
         <section class="signup-wrapper">
           <div class="container">

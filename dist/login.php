@@ -1,15 +1,18 @@
 <?php
-//login function
 require_once "../class/webstoreclass.php";
+require "../PHPMailer/src/PHPMailer.php";
+require "../PHPMailer/src/SMTP.php";
 $store->loginValidation();
 $store->login();
-
 $title = "Login";
 require_once "../includes/header.php";
 ?>
   <body>
     <div class="page-container">
-      <?php include_once "../includes/navbar.php"; ?>
+      <?php
+      include_once "../includes/navbar.php";
+      $store->subscribe();
+      ?>
       <main>
         <section class="login-wrapper">
           <div class="container">

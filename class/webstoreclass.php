@@ -1596,6 +1596,33 @@ class WebStore
         );
         $stmt->execute(["Cancelled", "Cancelled"]);
         $row = $stmt->fetch();
+
+        $customerName = $_POST["userName"];
+        $mailToCustomer = $_POST["userEmail"];
+        $mailTo = "inviclothing.co@gmail.com";
+        $body = "Order #: " . $orderID . " has been cancelled";
+
+        $mail = new PHPMailer\PHPMailer\PHPMailer();
+        //$mail->SMTPDebug = 1;
+        $mail->isSMTP();
+        $mail->Host = "mail.smtp2go.com";
+        $mail->SMTPAuth = true;
+        $mail->Username = "INVI";
+        $mail->Password = "inviclothingco";
+        $mail->SMTPSecure = "tls";
+        $mail->Port = "2525";
+        $mail->From = $mailToCustomer;
+        $mail->FromName = $customerName;
+        $mail->addAddress($mailTo, "INVI Clothing Co.");
+        $mail->addAddress($mailToCustomer, $customerName);
+        $mail->isHTML(true);
+        $mail->Subject = "INVI Clothing Co. - Order";
+        $mail->Body = $body;
+
+        if (!$mail->send()) {
+          echo "Mailer Error: " . $mail->ErrorInfo;
+        }
+
         header("Location: " . $_SERVER["HTTP_REFERER"]);
         return $row;
       } else {
@@ -1606,6 +1633,33 @@ class WebStore
         );
         $stmt->execute(["Cancelled"]);
         $row = $stmt->fetch();
+
+        $customerName = $_POST["userName"];
+        $mailToCustomer = $_POST["userEmail"];
+        $mailTo = "inviclothing.co@gmail.com";
+        $body = "Order #: " . $orderID . " has been cancelled";
+
+        $mail = new PHPMailer\PHPMailer\PHPMailer();
+        //$mail->SMTPDebug = 1;
+        $mail->isSMTP();
+        $mail->Host = "mail.smtp2go.com";
+        $mail->SMTPAuth = true;
+        $mail->Username = "INVI";
+        $mail->Password = "inviclothingco";
+        $mail->SMTPSecure = "tls";
+        $mail->Port = "2525";
+        $mail->From = $mailToCustomer;
+        $mail->FromName = $customerName;
+        $mail->addAddress($mailTo, "INVI Clothing Co.");
+        $mail->addAddress($mailToCustomer, $customerName);
+        $mail->isHTML(true);
+        $mail->Subject = "INVI Clothing Co. - Order";
+        $mail->Body = $body;
+
+        if (!$mail->send()) {
+          echo "Mailer Error: " . $mail->ErrorInfo;
+        }
+
         header("Location: " . $_SERVER["HTTP_REFERER"]);
         return $row;
       }
@@ -2503,11 +2557,75 @@ class WebStore
     }
   }
 
+  //return order
+  public function return_order()
+  {
+    if (isset($_POST["returnSubmit"])) {
+      $email = $_POST["email"];
+      $name = $_POST["userName"];
+      $orderID = $_POST["orderID"];
+      if (isset($_POST["reason"])) {
+        $reason = $_POST["reason"];
+      }
+      $comment = $_POST["comment"];
+
+      if (empty($orderID) || empty(isset($_POST["reason"]))) {
+        echo "<script> Swal.fire({
+          icon: 'error',
+          title: 'Empty Field',
+          text: 'Please input missing field',
+        });
+        </script>";
+      } else {
+        $mailTo = "inviclothing.co@gmail.com";
+        $body =
+          $name .
+          " is requesting to return an item/s <br> <br> <b>Order #:</b> " .
+          $orderID .
+          "<br> <b>Reason:</b> " .
+          $reason .
+          "<br> <b>Comments:</b> " .
+          $comment;
+        $mail = new PHPMailer\PHPMailer\PHPMailer();
+        //$mail->SMTPDebug = 1;
+        $mail->isSMTP();
+        $mail->Host = "mail.smtp2go.com";
+        $mail->SMTPAuth = true;
+        $mail->Username = "INVI";
+        $mail->Password = "inviclothingco";
+        $mail->SMTPSecure = "tls";
+        $mail->Port = "2525";
+        $mail->From = $email;
+        $mail->FromName = $name;
+        $mail->addAddress($mailTo, "INVI Clothing Co.");
+        $mail->isHTML(true);
+        $mail->Subject = "INVI Clothing Co. - Request Return";
+        $mail->Body = $body;
+
+        if (!$mail->send()) {
+          echo "Mailer Error: " . $mail->ErrorInfo;
+        } else {
+          echo "<script>
+          Swal.fire({
+            position: 'center',
+            icon: 'success',
+            title: 'Request has been sent',
+            showConfirmButton: false,
+            timer: 1000
+          },function(){ window.location.href = 'returnorder.php';});
+          </script>";
+        }
+      }
+    }
+  }
+
   //order notification to admin
   public function placed_order_email()
   {
     if (isset($_POST["complete"])) {
       $orderID = $_POST["orderID"];
+      $customerName = $_POST["userName"];
+      $mailToCustomer = $_POST["userEmail"];
       $mailTo = "inviclothing.co@gmail.com";
       $body = "Order #: " . $orderID . " has been placed";
 
@@ -2523,6 +2641,7 @@ class WebStore
       $mail->From = "inviclothing.co@gmail.com";
       $mail->FromName = "INVI Clothing Co.";
       $mail->addAddress($mailTo, "INVI Clothing Co.");
+      $mail->addAddress($mailToCustomer, $customerName);
       $mail->isHTML(true);
       $mail->Subject = "INVI Clothing Co. - Order";
       $mail->Body = $body;

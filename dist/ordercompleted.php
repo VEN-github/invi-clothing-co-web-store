@@ -1,6 +1,8 @@
 <?php
 
 require_once "../class/webstoreclass.php";
+require "../PHPMailer/src/PHPMailer.php";
+require "../PHPMailer/src/SMTP.php";
 $userProfile = $store->setProfile();
 $user = $store->get_userdata();
 $title = "Order Completed - Checkout";
@@ -10,7 +12,10 @@ $orderID = $store->get_orderID($ID);
 ?>
   <body>
     <div class="page-container">
-      <?php include_once "../includes/navbar.php"; ?>
+      <?php
+      include_once "../includes/navbar.php";
+      $store->subscribe();
+      ?>
       <!-- start of order confirmed section -->
       <main>
         <section id="confirmation">
