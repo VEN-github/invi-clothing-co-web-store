@@ -243,25 +243,49 @@ class WebStore
       $lastName = $_POST["lastName"];
       $email = $_POST["email"];
       $contactNumber = $_POST["contactNumber"];
+      $newPass = md5($_POST["newPass"]);
+      $confirmPass = md5($_POST["confirmPass"]);
 
-      $connection = $this->openConnection();
-      $stmt = $connection->prepare(
-        "UPDATE account_table SET `firstName` = ?, `lastName` = ?, `contactNumber` = ? WHERE email = '$email'"
-      );
-      $stmt->execute([$firstName, $lastName, $contactNumber]);
-      $row = $stmt->fetch();
-
-      return $row;
-
-      header("Location: profile.php");
+      if (empty($firstName) || empty($lastName) || empty($email)) {
+        echo "<script> Swal.fire({
+          icon: 'error',
+          title: 'Empty Field',
+          text: 'Please input missing field',
+        });
+        </script>";
+      } elseif ($newPass !== $confirmPass) {
+        echo "<script> Swal.fire({
+          icon: 'error',
+          title: 'Password does not match.',
+        });
+        </script>";
+      } elseif (empty($_POST["newPass"])) {
+        $connection = $this->openConnection();
+        $stmt = $connection->prepare(
+          "UPDATE account_table SET `firstName` = ?, `lastName` = ?, `contactNumber` = ? WHERE email = '$email'"
+        );
+        $stmt->execute([$firstName, $lastName, $contactNumber]);
+        $row = $stmt->fetch();
+        header("Location: " . $_SERVER["HTTP_REFERER"]);
+        return $row;
+      } else {
+        $connection = $this->openConnection();
+        $stmt = $connection->prepare(
+          "UPDATE account_table SET `firstName` = ?, `lastName` = ?, `password` = ?, `contactNumber` = ? WHERE email = '$email'"
+        );
+        $stmt->execute([$firstName, $lastName, $newPass, $contactNumber]);
+        $row = $stmt->fetch();
+        header("Location: " . $_SERVER["HTTP_REFERER"]);
+        return $row;
+      }
     }
   }
 
   // delete account
   public function delete_userdata()
   {
-    if (isset($_POST["delete"])) {
-      $email = $_POST["email"];
+    if (isset($_POST["emailCustomer"])) {
+      $email = $_POST["emailCustomer"];
       $connection = $this->openConnection();
       $stmt = $connection->prepare(
         "DELETE FROM account_table WHERE email = '$email'"
@@ -269,6 +293,7 @@ class WebStore
       $stmt->execute();
       $this->logout();
       header("Location: index.php");
+      exit();
     }
   }
 
@@ -545,13 +570,12 @@ class WebStore
       } elseif ($newPass !== $confirmPass) {
         echo "<script> Swal.fire({
           icon: 'error',
-          title: 'Empty Field',
-          text: 'Password does not match.',
+          title: 'Password does not match.',
         });
         </script>";
       } elseif (
         empty($_POST["newPass"]) &&
-        empty($_POST["newPass"]) &&
+        empty($_POST["confirmPass"]) &&
         empty($profileImg)
       ) {
         $connection = $this->openConnection();
@@ -571,7 +595,7 @@ class WebStore
       </script>";
         return $row;
       } elseif (
-        (empty($_POST["newPass"]) || empty($_POST["newPass"])) &&
+        (empty($_POST["newPass"]) || empty($_POST["confirmPass"])) &&
         !empty($profileImg)
       ) {
         $connection = $this->openConnection();

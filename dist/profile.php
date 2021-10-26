@@ -2,12 +2,12 @@
 require_once "../class/webstoreclass.php";
 require "../PHPMailer/src/PHPMailer.php";
 require "../PHPMailer/src/SMTP.php";
-$store->update_userdata();
 $store->delete_userdata();
 $userProfile = $store->setProfile();
 $user = $store->get_userdata();
 $title = "Profile";
 include_once "../includes/header.php";
+$store->update_userdata();
 ?>
   <body>
     <div class="page-container">
@@ -24,34 +24,39 @@ include_once "../includes/header.php";
               <?php include_once "../includes/profilesummary.php"; ?>
               <div class="customer-details">
                 <h4>Personal Details</h4>
-                <form action="" method="post">
+                <form method="post" id="profileForm">
+                  <input type="hidden" name="emailCustomer" value="<?= $userProfile[
+                    "email"
+                  ] ?>" />
+                </form>
+                <form method="post">
                   <div class="input-field">
-                    <input type="text" name="firstName" id="" class="input left-input" value="<?= $userProfile[
+                    <input type="text" name="firstName" class="input left-input" value="<?= $userProfile[
                       "firstName"
                     ] ?>" />
-                    <input type="text" name="lastName" id="" class="input" value="<?= $userProfile[
+                    <input type="text" name="lastName" class="input" value="<?= $userProfile[
                       "lastName"
                     ] ?>" />
                   </div>
                   <div class="input-field">
-                    <input type="text" name="email" id="" class="input left-input disabled"
+                    <input type="text" name="email" class="input left-input disabled"
                     value="<?= $userProfile["email"] ?>" />
-                    <input type="text" name="contactNumber" id="" class="input" placeholder="Contact Number"         
+                    <input type="text" name="contactNumber" class="input" placeholder="Contact Number"         
                     value="<?= $userProfile["contactNumber"] ?>" />
                   </div>
-                  <!-- <div class="input-field">
+                  <div class="input-field">
                     <input
-                      type="text"
-                      name=""
-                      id=""
+                      type="password"
+                      name="newPass"
                       class="input password left-input"
+                      placeholder="New Password"
                     />
-                    <input type="text" name="" id="" class="input password" />
-                  </div> -->
+                    <input type="password" name="confirmPass" class="input password" placeholder="Confirm Password"/>
+                  </div>
                   <div class="button-container">
                     <button
-                      type="submit"
-                      name="delete"
+                      type="button"
+                      id="deleteBtn"
                       class="btn outline-primary-btn del-btn"
                     >
                       <span
@@ -82,5 +87,32 @@ include_once "../includes/header.php";
     <script src="./assets/js/header.js"></script>
     <script src="./assets/js/user.js"></script>
     <script src="./assets/js/cart.js"></script>
+    <script>
+      const deleteBtn = document.querySelector("#deleteBtn");
+      if (deleteBtn) {
+        deleteBtn.addEventListener("click", () => {
+          Swal.fire({
+            title: 'Are you sure you want to delete your account?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            cancelButtonText: 'No',
+            confirmButtonText: 'Yes'
+          }).then((result) => {
+            if (result.isConfirmed) {
+              Swal.fire({
+                title: 'Account Deleted',
+                icon: 'success',
+                showConfirmButton: false
+              });
+              setTimeout(function() { 
+              document.querySelector('#profileForm').submit();
+            }, 1000);
+            }
+          })
+        });
+      }
+    </script>
   </body>
 </html>

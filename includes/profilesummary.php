@@ -18,7 +18,7 @@
   </div>
   <ul class="menu">
     <li>
-      <a href="profile.php?ID=<?= $userProfile["ID"] ?>" class="<?= $title ===
+      <a href="profile.php?ID=<?= $user["ID"] ?>" class="<?= $title ===
 "Profile"
   ? "visited"
   : "" ?>"
@@ -44,8 +44,7 @@
       >
     </li>
     <li>
-      <a href="order.php?ID=<?= $userProfile["ID"] ?>" class="<?= $title ===
-"Orders"
+      <a href="order.php?ID=<?= $user["ID"] ?>" class="<?= $title === "Orders"
   ? "visited"
   : "" ?>"
         ><span
@@ -57,9 +56,10 @@
       >
     </li>
     <li>
-      <a href="returnorder.php?ID=<?= $userProfile[
-        "ID"
-      ] ?>" class="<?= $title === "Return Order" ? "visited" : "" ?>"
+      <a href="returnorder.php?ID=<?= $user["ID"] ?>" class="<?= $title ===
+"Return Order"
+  ? "visited"
+  : "" ?>"
         ><span class="iconify <?= $title === "Return Order"
           ? "visited"
           : "" ?>" data-icon="ic:baseline-assignment-return"></span>
