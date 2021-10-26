@@ -42,3 +42,21 @@ main {
 .grid {
   @include grid.grid(auto 1fr, none, none, 0);
 }
+
+::-webkit-scrollbar {
+  width: 0.6rem;
+  background: colors.$primary-color;
+}
+
+::-webkit-scrollbar-thumb {
+  background: colors.$light-color;
+  border-radius: 0.3rem;
+  transition: background 0.5s ease-in;
+
+  &:hover {
+    background: colors.$accent-color;
+  }
+  &:active {
+    background: colors.$secondary-color;
+  }
+}

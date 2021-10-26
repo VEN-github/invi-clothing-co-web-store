@@ -11,7 +11,8 @@
     #ed6a4c 0%,
     #2c3037 100%
   );
-
+  background-size: 100% 200%;
+  animation: movingGradient 5s linear infinite alternate;
   .hero {
     justify-self: center;
     & img {
@@ -33,7 +34,6 @@
       letter-spacing: 0.045em;
       line-height: 132px;
       margin-bottom: 0.2em;
-
       & span {
         display: block;
       }
@@ -50,5 +50,13 @@
     & .cta {
       margin-top: 3em;
     }
+  }
+}
+@keyframes movingGradient {
+  from {
+    background-position: 0 0;
+  }
+  to {
+    background-position: 100% 100%;
   }
 }

@@ -92,8 +92,8 @@ include_once "../includes/header.php";
       <!-- start of ads section -->
       <section>
         <video width="100%" height="100%" autoplay loop muted>
-          <source src="./assets/vid/INVI x Itachi Uchiha.webm" type="video/webm" />
-          <source src="./assets/vid/INVI x Itachi Uchiha.mp4" type="video/mp4" />
+          <source src="./assets/vid/Peek-A-Boo.webm" type="video/webm" />
+          <source src="./assets/vid/Peek-A-Boo.mp4" type="video/mp4" />
           Sorry, your browser doesn't support embedded videos.
         </video>
       </section>
