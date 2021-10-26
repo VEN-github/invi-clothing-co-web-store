@@ -1,5 +1,4 @@
 <?php
-
 require_once "../class/webstoreclass.php";
 require "../PHPMailer/src/PHPMailer.php";
 require "../PHPMailer/src/SMTP.php";

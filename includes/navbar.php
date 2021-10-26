@@ -15,7 +15,7 @@
         <li><a href="#" class="nav-link <?= $title === "About"
           ? "active"
           : "" ?>">About</a></li>
-        <li><a href="#" class="nav-link <?= $title === "Contact"
+        <li><a href="contact.php" class="nav-link <?= $title === "Contact Us"
           ? "active"
           : "" ?>">Contact</a></li>
         <?php if (!isset($_SESSION["userdata"])) { ?>  

@@ -2803,6 +2803,57 @@ class WebStore
     }
   }
 
+  // contact us
+  public function contact_us()
+  {
+    if (isset($_POST["contactSubmit"])) {
+      $name = $_POST["customerName"];
+      $email = $_POST["email"];
+      $message = $_POST["message"];
+
+      if (empty($name) || empty($email) || empty($message)) {
+        echo "<script> Swal.fire({
+          icon: 'error',
+          title: 'Empty Field',
+          text: 'Please input missing field.',
+        });
+        </script>";
+      } else {
+        $mailTo = "inviclothing.co@gmail.com";
+        $body = $_POST["message"];
+        $mail = new PHPMailer\PHPMailer\PHPMailer();
+        //$mail->SMTPDebug = 1;
+        $mail->isSMTP();
+        $mail->Host = "mail.smtp2go.com";
+        $mail->SMTPAuth = true;
+        $mail->Username = "INVI";
+        $mail->Password = "inviclothingco";
+        $mail->SMTPSecure = "tls";
+        $mail->Port = "2525";
+        $mail->From = $email;
+        $mail->FromName = $name;
+        $mail->addAddress($mailTo, "INVI Clothing Co.");
+        $mail->isHTML(true);
+        $mail->Subject = "INVI Clothing Co. - Contact Us";
+        $mail->Body = $body;
+
+        if (!$mail->send()) {
+          echo "Mailer Error: " . $mail->ErrorInfo;
+        } else {
+          echo "<script>  
+          Swal.fire({
+            position: 'center',
+            icon: 'success',
+            title: 'Message has been sent',
+            showConfirmButton: false,
+            timer: 1000
+          },function(){ window.location.href = 'index.php';});
+          </script>";
+        }
+      }
+    }
+  }
+
   //return order
   public function return_order()
   {
