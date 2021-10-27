@@ -41,7 +41,6 @@ require_once "../includes/header.php";
                   <input
                     type="email"
                     name="email"
-                    id=""
                     placeholder="Email Address"
                     class="input"
                   />
@@ -50,7 +49,6 @@ require_once "../includes/header.php";
                   <input
                     type="password"
                     name="password"
-                    id=""
                     placeholder="Password"
                     class="input password"
                   />
@@ -72,7 +70,7 @@ require_once "../includes/header.php";
                   ><?= $_GET["error"] ?>
                 </div>
                 <?php } ?>
-                <a href="#" class="forgot-pass">Forgot Password?</a>
+                <a href="forgotpassword.php" class="forgot-pass">Forgot Password?</a>
                 <input type="submit" name="login" value="Login" class="login" />
               </form>
               <!-- end of login form -->

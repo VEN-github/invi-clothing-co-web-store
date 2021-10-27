@@ -1,0 +1,114 @@
+@use "../abstracts/colors";
+@use "../abstracts/fonts";
+@use "../layout/flex";
+@use "../layout/grid";
+
+#forgot-password {
+  padding: 10em 0 8em 0;
+
+  .forgotPass-grid {
+    @include grid.grid(1fr 1fr, none, none, 30px);
+    place-items: center;
+
+    .illustration {
+      & img {
+        width: 500px;
+        object-fit: cover;
+      }
+    }
+
+    .forgotPass-form {
+      & h4 {
+        font-size: 2.5rem;
+        font-weight: map-get(fonts.$font-weight, semi-bold);
+        color: colors.$primary-color;
+        letter-spacing: 0.1em;
+        text-align: center;
+      }
+
+      & p {
+        margin-bottom: 1.5em;
+        font-size: 1rem;
+        font-weight: map-get(fonts.$font-weight, regular);
+        color: colors.$primary-color;
+        text-align: center;
+      }
+
+      .input-field {
+        position: relative;
+        margin-bottom: 1.5em;
+
+        .show-password {
+          position: absolute;
+          top: 1px;
+          right: 0;
+          padding: 0 1em;
+          height: 100%;
+        }
+        .show-pass {
+          width: 22px;
+          height: 22px;
+          color: colors.$light-color;
+          transition: color 0.5s ease-in-out;
+          &:hover {
+            color: colors.$accent-color;
+          }
+        }
+      }
+
+      .input-verification {
+        @include flex.flex(space-around, center, row);
+        margin-bottom: 1.5em;
+
+        .input-verify {
+          width: 50px;
+        }
+      }
+
+      .resend-code {
+        margin-bottom: 1.5em;
+        font-size: 1rem;
+        font-weight: map-get(fonts.$font-weight, regular);
+        color: colors.$primary-color;
+        text-align: center;
+
+        .resend-btn {
+          font-size: 1rem;
+          font-weight: map-get(fonts.$font-weight, regular);
+          color: colors.$accent-color;
+          text-align: center;
+          transition: color 0.5s ease;
+
+          &:hover {
+            color: colors.$secondary-color;
+          }
+        }
+      }
+
+      .forgotPass-btn-container {
+        @include flex.flex(space-between, center, row);
+
+        & a {
+          font-size: 1rem;
+          font-weight: map-get(fonts.$font-weight, regular);
+          color: colors.$primary-color;
+          text-decoration: none;
+        }
+      }
+
+      .forgotPass-btn {
+        @include flex.flex(flex-end, center, row);
+      }
+
+      .send-btn {
+        font-size: 1rem;
+        box-shadow: none;
+      }
+
+      .resetpass-btn {
+        width: 100%;
+        box-shadow: none;
+      }
+    }
+  }
+}

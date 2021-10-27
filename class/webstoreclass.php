@@ -2854,6 +2854,139 @@ class WebStore
     }
   }
 
+  // forgot password
+  public function forgot_password()
+  {
+    if (isset($_POST["sendEmail"])) {
+      $email = $_POST["customerEmail"];
+      if (empty($email)) {
+        echo "<script> Swal.fire({
+          icon: 'error',
+          title: 'Empty Field',
+          text: 'Please enter email address',
+        });
+        </script>";
+      } else {
+        $mailTo = $email;
+        $code1 = $_POST["code1"];
+        $code2 = $_POST["code2"];
+        $code3 = $_POST["code3"];
+        $code4 = $_POST["code4"];
+        $body =
+          "Your verificaton code is " . $code1 . $code2 . $code3 . $code4 . ".";
+        $mail = new PHPMailer\PHPMailer\PHPMailer();
+        //$mail->SMTPDebug = 1;
+        $mail->isSMTP();
+        $mail->Host = "mail.smtp2go.com";
+        $mail->SMTPAuth = true;
+        $mail->Username = "INVI";
+        $mail->Password = "inviclothingco";
+        $mail->SMTPSecure = "tls";
+        $mail->Port = "2525";
+        $mail->From = "inviclothing.co@gmail.com";
+        $mail->FromName = "INVI Clothing Co.";
+        $mail->addAddress($mailTo, "INVI Clothing Co.");
+        $mail->isHTML(true);
+        $mail->Subject = "INVI Clothing Co. - Reset Password";
+        $mail->Body = $body;
+
+        if (!$mail->send()) {
+          echo "Mailer Error: " . $mail->ErrorInfo;
+        } else {
+          if (!isset($_SESSION)) {
+            session_start();
+          }
+          $_SESSION["code"] = [
+            "email" => $email,
+            "code1" => $code1,
+            "code2" => $code2,
+            "code3" => $code3,
+            "code4" => $code4,
+          ];
+          header("Location: verify.php");
+        }
+      }
+    }
+
+    if (isset($_POST["verifyCode"])) {
+      if (!isset($_SESSION)) {
+        session_start();
+      }
+      $verifyCode1 = $_POST["verifyCode1"];
+      $verifyCode2 = $_POST["verifyCode2"];
+      $verifyCode3 = $_POST["verifyCode3"];
+      $verifyCode4 = $_POST["verifyCode4"];
+
+      if (
+        empty($verifyCode1) ||
+        empty($verifyCode2) ||
+        empty($verifyCode3) ||
+        empty($verifyCode4)
+      ) {
+        echo "<script> Swal.fire({
+          icon: 'error',
+          title: 'Empty Field',
+          text: 'Please input missing field.',
+        });
+        </script>";
+      } elseif (
+        $verifyCode1 === $_SESSION["code"]["code1"] &&
+        $verifyCode2 === $_SESSION["code"]["code2"] &&
+        $verifyCode3 === $_SESSION["code"]["code3"] &&
+        $verifyCode4 === $_SESSION["code"]["code4"]
+      ) {
+        header("Location: newpassword.php");
+      } else {
+        echo "<script> Swal.fire({
+          icon: 'error',
+          title: 'Error Code',
+          text: 'Verification code does not match.',
+        });
+        </script>";
+      }
+    }
+
+    if (isset($_POST["resetPass"])) {
+      if (!isset($_SESSION)) {
+        session_start();
+      }
+      $newPass = md5($_POST["newPass"]);
+      $confirmPass = md5($_POST["confirmPass"]);
+
+      if (empty($_POST["newPass"]) || empty($_POST["confirmPass"])) {
+        echo "<script> Swal.fire({
+          icon: 'error',
+          title: 'Empty Field',
+          text: 'Please input missing field.',
+        });
+        </script>";
+      } elseif ($_POST["newPass"] !== $_POST["confirmPass"]) {
+        echo "<script> Swal.fire({
+          icon: 'error',
+          title: 'Password does not match.',
+        });
+        </script>";
+      } elseif (strlen($_POST["newPass"]) < 8) {
+        echo "<script> Swal.fire({
+          icon: 'error',
+          title: 'Password must be at least 8 characters.',
+        });
+        </script>";
+      } else {
+        $email = $_SESSION["code"]["email"];
+        $connection = $this->openConnection();
+        $stmt = $connection->prepare(
+          "UPDATE account_table SET `password` = ? WHERE email = '$email'"
+        );
+        $stmt->execute([$newPass]);
+        $row = $stmt->fetch();
+        $_SESSION["code"] = null;
+        unset($_SESSION["code"]);
+        header("Location: login.php");
+      }
+    }
+  }
+
   //return order
   public function return_order()
   {
