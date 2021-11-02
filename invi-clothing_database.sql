@@ -32,7 +32,7 @@ CREATE TABLE `account_table` (
   `profileImg` varchar(255) DEFAULT NULL,
   `access` varchar(255) NOT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=40 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -41,7 +41,7 @@ CREATE TABLE `account_table` (
 
 LOCK TABLES `account_table` WRITE;
 /*!40000 ALTER TABLE `account_table` DISABLE KEYS */;
-INSERT INTO `account_table` VALUES (3,'Raven','Barrogo','raven.barrogo24@gmail.com','25d55ad283aa400af464c76d713c07ad','09123456789',NULL,'user'),(16,'INVI','Clothing Co.','admin@gmail.com','25d55ad283aa400af464c76d713c07ad','09959764761','favicon.ico','admin'),(17,'User','User','user@gmail.com','25d55ad283aa400af464c76d713c07ad',NULL,NULL,'user');
+INSERT INTO `account_table` VALUES (16,'INVI','Clothing Co.','admin@gmail.com','25d55ad283aa400af464c76d713c07ad','09959764761',NULL,'admin'),(33,'Raven','Barrogo','raven.barrogo24@gmail.com','25d55ad283aa400af464c76d713c07ad','09959764761',NULL,'user'),(39,'User1','User1','user1@gmail.com','25d55ad283aa400af464c76d713c07ad',NULL,NULL,'user');
 /*!40000 ALTER TABLE `account_table` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -70,7 +70,7 @@ CREATE TABLE `address_table` (
   PRIMARY KEY (`ID`),
   KEY `fk_accountID_idx` (`accountID`),
   CONSTRAINT `fk_accountID` FOREIGN KEY (`accountID`) REFERENCES `account_table` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=72 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=125 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -79,7 +79,7 @@ CREATE TABLE `address_table` (
 
 LOCK TABLES `address_table` WRITE;
 /*!40000 ALTER TABLE `address_table` DISABLE KEYS */;
-INSERT INTO `address_table` VALUES (69,'9q749',855373636,'Raven','Barrogo','47 A. Mabini St. Manggahan','','Pasig City','1611','Metro Manila','Philippines','09959764761','primary address',3),(70,'dffat',855373636,'Raven','Barrogo','47 A. Mabini St. Manggahan','','Pasig City','1611','Metro Manila','Philippines','09959764761','primary address',3),(71,'ewpqm',855373636,'Raven','Barrogo','47 A. Mabini St. Manggahan','','Pasig City','1611','Metro Manila','Philippines','09959764761','primary address',3);
+INSERT INTO `address_table` VALUES (120,'satgs',941058822,'Raven','Barrogo','47 A. Mabini St. Manggahan','','Pasig City','1611','Metro Manila','Philippines','09959764761','primary address',33),(122,'bs73o',941058822,'Raven','Barrogo','47 A. Mabini St. Manggahan','','Pasig City','1611','Metro Manila','Philippines','09959764761','primary address',33),(123,'d0aao',941058822,'Raven','Barrogo','47 A. Mabini St. Manggahan','','Pasig City','1611','Metro Manila','Philippines','09959764761','primary address',33),(124,'',174332889,'Sample Name','Sample Name','Sample Address','Sample Address','Sample city','Sample Code','Metro Manila','Philippines','09999999999','primary address',33);
 /*!40000 ALTER TABLE `address_table` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -147,7 +147,7 @@ CREATE TABLE `costing_table` (
 
 LOCK TABLES `costing_table` WRITE;
 /*!40000 ALTER TABLE `costing_table` DISABLE KEYS */;
-INSERT INTO `costing_table` VALUES (370,121,105,50,0,0,0,0,0,0,295,0,0,0,450,0,0,155),(371,122,104,50,0,0,0,0,0,0,293,0,0,0,700,0,0,407),(372,122,106,50,0,0,0,0,0,0,293,0,0,0,700,0,0,407),(373,122,112,50,0,0,0,0,0,0,293,0,0,0,700,0,0,407),(375,124,106,30,0,0,0,0,0,0,298,0,0,0,450,0,0,152),(376,124,105,30,0,0,0,0,0,0,298,0,0,0,450,0,0,152),(379,126,106,70,0,0,0,0,0,0,348,0,0,0,450,0,0,102),(380,126,115,75,0,0,0,0,0,0,348,0,0,0,450,0,0,102),(391,133,104,50,130,50,60,50,0,0,380,19000,450,0,450,70,0,70),(392,133,107,50,130,50,60,50,0,0,380,19000,450,0,450,70,0,70),(393,133,105,50,130,50,60,50,0,0,380,19000,450,0,450,70,0,70),(402,138,106,30,75,30,0,0,0,0,158,4740,250,0,250,92,0,92),(403,138,110,30,75,30,0,0,0,0,158,4740,250,0,250,92,0,92),(404,139,104,25,90,50,30,50,0,0,317,15600,450,0,450,133,0,133),(405,139,108,50,90,50,30,50,0,0,317,15600,450,0,450,133,0,133),(406,139,107,50,90,50,30,50,0,0,317,15600,450,0,450,133,0,133),(407,139,106,50,90,50,30,50,0,0,317,15600,450,0,450,133,0,133),(408,139,114,50,90,50,30,50,0,0,317,15600,450,0,450,133,0,133);
+INSERT INTO `costing_table` VALUES (371,122,104,50,0,0,0,0,0,0,293,0,0,0,700,0,0,407),(372,122,106,50,0,0,0,0,0,0,293,0,0,0,700,0,0,407),(373,122,112,50,0,0,0,0,0,0,293,0,0,0,700,0,0,407),(375,124,106,30,0,0,0,0,0,0,298,0,0,0,450,0,0,152),(376,124,105,30,0,0,0,0,0,0,298,0,0,0,450,0,0,152);
 /*!40000 ALTER TABLE `costing_table` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -237,7 +237,7 @@ CREATE TABLE `product_table` (
   PRIMARY KEY (`ID`),
   KEY `fk_categoryID_idx` (`categoryID`),
   CONSTRAINT `fk_categoryID` FOREIGN KEY (`categoryID`) REFERENCES `category_table` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=140 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=141 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -246,7 +246,7 @@ CREATE TABLE `product_table` (
 
 LOCK TABLES `product_table` WRITE;
 /*!40000 ALTER TABLE `product_table` DISABLE KEYS */;
-INSERT INTO `product_table` VALUES (121,1,'Logo Tee','hfghfg','Fuchsia Pink','Logo Tee - Front - Pink.png','Logo Tee - Back - Pink.png','','','SIZE CHART.png','Available'),(122,2,'INVI Hoodie','fdgdf','Black','Hoodie.png','','','','','Available'),(124,1,'Peek A Boo','sadasd','White','Anniv - Front - White.png','Anniv - Back - White.png','','','SIZE CHART.png','Available'),(126,1,'INVI Warrior','jhkhjk','Golden Yellow','INVI Warrior - Front - Golden Yellow.png','INVI Warrior - Back - Golden Yellow.png','','','SIZE CHART.png','Available'),(133,1,'INVI Warrior','dfgghfd','White','INVI Warrior - Front - White.png','INVI Warrior - Back - White.png','','','SIZE CHART.png','Available'),(138,3,'INVI Bucket Hat','dgfg','Khaki','Bucket Hat - Khaki.png','','','','','Available'),(139,1,'Logo Tee','fhfgh','Mint Green','Logo Tee - Front - Green.png','Logo Tee - Back - Green.png','','','SIZE CHART.png','Unavailable');
+INSERT INTO `product_table` VALUES (122,2,'INVI Hoodie','fdgdf','Black','Hoodie.png','','','','','Available'),(124,1,'Peek A Boo','sadasd','White','Anniv - Front - Khaki.png','Anniv - Back - Khaki.png','Anniv - Front - White.png','Anniv - Back - White.png','SIZE CHART.png','Available');
 /*!40000 ALTER TABLE `product_table` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -332,7 +332,7 @@ CREATE TABLE `sales_table` (
   CONSTRAINT `fk_acctID` FOREIGN KEY (`accountID`) REFERENCES `account_table` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `fk_prodID` FOREIGN KEY (`productID`) REFERENCES `product_table` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `fk_stockID` FOREIGN KEY (`stockID`) REFERENCES `stocks_table` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=107 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=156 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -341,7 +341,7 @@ CREATE TABLE `sales_table` (
 
 LOCK TABLES `sales_table` WRITE;
 /*!40000 ALTER TABLE `sales_table` DISABLE KEYS */;
-INSERT INTO `sales_table` VALUES (102,'9q749',121,256,2,'Standard Delivery',100,'Cash on Delivery (COD)',5500,3,'Cancelled','Cancelled','2021-10-22 18:05:22',855373636),(103,'9q749',126,287,10,'Standard Delivery',100,'Cash on Delivery (COD)',5500,3,'Cancelled','Cancelled','2021-10-22 18:05:22',855373636),(104,'dffat',122,266,1,'Standard Delivery',100,'Cash on Delivery (COD)',800,3,'Cancelled','Cancelled','2021-10-23 00:32:53',855373636),(105,'ewpqm',121,256,1,'Standard Delivery',100,'Cash on Delivery (COD)',1000,3,'Pending','Pending','2021-10-23 01:01:10',855373636),(106,'ewpqm',126,285,1,'Standard Delivery',100,'Cash on Delivery (COD)',1000,3,'Pending','Pending','2021-10-23 01:01:10',855373636);
+INSERT INTO `sales_table` VALUES (143,'0hu4l',122,265,6,'Standard Delivery',100,'Cash on Delivery (COD)',5000,33,'Cancelled','Cancelled','2021-11-02 18:22:16',430184257),(144,'0hu4l',122,268,1,'Standard Delivery',100,'Cash on Delivery (COD)',5000,33,'Cancelled','Cancelled','2021-11-02 18:22:16',430184257),(145,'37zm6',122,264,1,'Standard Delivery',100,'Cash on Delivery (COD)',1500,33,'Pending','Pending','2021-11-02 18:24:08',2007924742),(146,'37zm6',122,267,1,'Standard Delivery',100,'Cash on Delivery (COD)',1500,33,'Pending','Pending','2021-11-02 18:24:08',2007924742);
 /*!40000 ALTER TABLE `sales_table` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -370,7 +370,7 @@ CREATE TABLE `stocks_table` (
 
 LOCK TABLES `stocks_table` WRITE;
 /*!40000 ALTER TABLE `stocks_table` DISABLE KEYS */;
-INSERT INTO `stocks_table` VALUES (255,121,'XS',1,''),(256,121,'S',2,''),(257,121,'M',11,''),(258,121,'L',15,''),(259,121,'XL',7,''),(260,121,'2XL',5,''),(261,121,'3XL',1,''),(262,122,'XS',2,''),(263,122,'S',5,''),(264,122,'M',15,''),(265,122,'L',15,''),(266,122,'XL',7,''),(267,122,'2XL',2,''),(268,122,'3XL',1,''),(270,124,'XS',10,''),(271,124,'S',15,''),(272,124,'M',20,''),(273,124,'L',20,''),(274,124,'XL',15,''),(275,124,'2XL',10,''),(276,124,'3XL',10,''),(284,126,'XS',1,''),(285,126,'S',5,''),(286,126,'M',15,''),(287,126,'L',12,''),(288,126,'XL',10,''),(289,126,'2XL',5,''),(290,126,'3XL',5,''),(316,133,'XS',0,'Wht-INVIWarrior-XS-vdjxd'),(317,133,'S',5,'Wht-INVIWarrior-S-sqe5r'),(318,133,'M',15,'Wht-INVIWarrior-M-1n9d9'),(319,133,'L',12,'Wht-INVIWarrior-L-btwvp'),(320,133,'XL',5,'Wht-INVIWarrior-XL-z3auv'),(321,133,'2XL',7,'Wht-INVIWarrior-2XL-2v00h'),(322,133,'3XL',2,'Wht-INVIWarrior-3XL-qzhvk'),(327,138,NULL,30,'Khk-INVIBucketHat-1z4cl'),(328,139,'XS',5,'MntGrn-LogoTee-XS-7vpss'),(329,139,'S',7,'MntGrn-LogoTee-S-on7i6'),(330,139,'M',12,'MntGrn-LogoTee-M-luqrg'),(331,139,'L',15,'MntGrn-LogoTee-L-lqtw1'),(332,139,'XL',5,'MntGrn-LogoTee-XL-qypks'),(333,139,'2XL',7,'MntGrn-LogoTee-2XL-df36p'),(334,139,'3XL',2,'MntGrn-LogoTee-3XL-0aj87');
+INSERT INTO `stocks_table` VALUES (262,122,'XS',2,''),(263,122,'S',5,''),(264,122,'M',15,''),(265,122,'L',15,''),(266,122,'XL',7,''),(267,122,'2XL',2,''),(268,122,'3XL',1,''),(270,124,'XS',10,''),(271,124,'S',15,''),(272,124,'M',20,''),(273,124,'L',20,''),(274,124,'XL',15,''),(275,124,'2XL',10,''),(276,124,'3XL',10,'');
 /*!40000 ALTER TABLE `stocks_table` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -410,4 +410,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-10-23  1:09:55
+-- Dump completed on 2021-11-03  1:58:08
