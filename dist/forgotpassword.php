@@ -9,7 +9,6 @@ include_once "../includes/header.php";
     <div class="page-container">
       <?php
       include_once "../includes/navbar.php";
-      $store->subscribe();
       $store->forgot_password();
       ?>
       <!-- start of forgot password section -->
@@ -76,8 +75,9 @@ include_once "../includes/header.php";
                       type="email"
                       name="customerEmail"
                       class="input input-full"
-                      placeholder="Email Address"
+                      placeholder=" "
                     />
+                    <label class="form-label">Email Address</label>
                   </div>
                   <div class="forgotPass-btn-container">
                     <a href="login.php">< Back</a>
@@ -97,5 +97,6 @@ include_once "../includes/header.php";
     <script src="./assets/js/header.js"></script>
     <script src="./assets/js/user.js"></script>
     <script src="./assets/js/cart.js"></script>
+    <script src="./assets/js/buttons.js"></script>
   </body>
 </html>

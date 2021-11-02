@@ -177,7 +177,10 @@
                 </span class="icon text">
                     <?php if ($admins) { ?>
                         <?php foreach ($admins as $admin) { ?>
-                            <?php if (is_null($admin["profileImg"])) { ?>
+                            <?php if (
+                              is_null($admin["profileImg"]) ||
+                              empty($admin["profileImg"])
+                            ) { ?>
                             <img alt="Profile image" class="avatar mx-auto d-block mt-4 mb-4" width="30px" height="30px" style="border-radius:50%;">
                             <?php } else { ?>
                                 <img src="./assets/img/<?= $admin[

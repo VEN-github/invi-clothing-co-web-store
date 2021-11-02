@@ -1,0 +1,1 @@
+const contentBox=document.querySelectorAll(".content-box");contentBox&&contentBox.forEach(t=>{t.addEventListener("click",()=>{t.classList.toggle("active")})});

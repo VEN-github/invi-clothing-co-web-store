@@ -9,10 +9,7 @@ require_once "../includes/header.php";
 ?>
   <body>
     <div class="page-container">
-      <?php
-      include_once "../includes/navbar.php";
-      $store->subscribe();
-      ?>
+      <?php include_once "../includes/navbar.php"; ?>
       <!-- start of cart section -->
       <main>
         <section id="cart">

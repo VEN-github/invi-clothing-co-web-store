@@ -76,6 +76,10 @@ $store->delete_product();
                       </form>
                       <form method="post" id="deleteForm">
                         <input type="hidden" name="deleteProductID" id="deleteProductID">
+                        <input type="hidden" name="deleteCover" id="deleteCover">
+                        <input type="hidden" name="deleteImage1" id="deleteImage1">
+                        <input type="hidden" name="deleteImage2" id="deleteImage2">
+                        <input type="hidden" name="deleteImage3" id="deleteImage3">
                       </form>
                       <?php if ($products) { ?>
                         <?php foreach ($products as $product) { ?>
@@ -97,7 +101,7 @@ $store->delete_product();
                                   "ID"
                                 ] ?></td>
                                 <td class="align-middle">
-                                  <img src="./assets/img/<?= $product[
+                                  <img loading="lazy" src="./assets/img/<?= $product[
                                     "coverPhoto"
                                   ] ?>" alt="Product Image" style="width:120px;">
                                   <p><?= $product[
@@ -356,7 +360,11 @@ $store->delete_product();
                                         ] ?>">Edit</a>
                                         <a class="deleteBtn dropdown-item" data-id="<?= $product[
                                           "ID"
-                                        ] ?>" >Delete</a>
+                                        ] ?>" data-cover="<?= $product[
+  "coverPhoto"
+] ?>" data-image1="<?= $product["image1"] ?>" data-image2="<?= $product[
+  "image2"
+] ?>" data-image3="<?= $product["image3"] ?>">Delete</a>
                                         <?php if (
                                           $product["availability"] ===
                                           "Available"
@@ -427,6 +435,9 @@ $store->delete_product();
     <script>
       $('.products').slice(0, 10).show();
 
+      if($('.products:hidden').length == 0){
+        $('.load-more').fadeOut();
+      }
       $('.load-more').click(function(){
         $('.products:hidden').slice(0, 10).show();
 
@@ -455,7 +466,15 @@ $store->delete_product();
       $('.deleteBtn').on('click',function(e){
         e.preventDefault();
         var ID = $(this).data('id');
+        var cover = $(this).data('cover');
+        var image1 = $(this).data('image1');
+        var image2 = $(this).data('image2');
+        var image3 = $(this).data('image3');
         $('#deleteProductID').val(ID);
+        $('#deleteCover').val(cover);
+        $('#deleteImage1').val(image1);
+        $('#deleteImage2').val(image2);
+        $('#deleteImage3').val(image3);
         Swal.fire({
           title: 'Are you sure?',
           text: "You won't be able to revert this!",

@@ -11,10 +11,7 @@ $orderID = $store->get_orderID($ID);
 ?>
   <body>
     <div class="page-container">
-      <?php
-      include_once "../includes/navbar.php";
-      $store->subscribe();
-      ?>
+      <?php include_once "../includes/navbar.php"; ?>
       <!-- start of order confirmed section -->
       <main>
         <section id="confirmation">

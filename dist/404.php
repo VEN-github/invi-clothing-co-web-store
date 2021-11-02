@@ -8,10 +8,7 @@ include_once "../includes/header.php";
 ?>
 <body>
   <div class="page-container">
-    <?php
-    include_once "../includes/navbar.php";
-    $store->subscribe();
-    ?>
+    <?php include_once "../includes/navbar.php"; ?>
     <!-- start of 404 section -->
     <main>
       <section id="page-not-found">

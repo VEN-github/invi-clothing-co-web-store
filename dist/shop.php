@@ -10,33 +10,32 @@ include_once "../includes/header.php";
 ?>
 <body>
   <div class="page-container">
-    <?php
-    include_once "../includes/navbar.php";
-    $store->subscribe();
-    ?>
+    <?php include_once "../includes/navbar.php"; ?>
     <!-- start of shop section -->
     <main>
       <section id="shop">
         <div class="banner">
           Shop
-          <p class="category-label">All products | 12 Products</p>
+          <p class="category-label"><span id="category-text">All Products</span> | <span id="product-count"></span> Products</p>
         </div>
         <div class="container">
           <div class="shop-grid">
             <div class="filter">
               <span>Sort by:</span>
-              <select name="" id="" class="input sorting">
-                <option value="">Featured</option>
-                <option value="">Name (Ascending)</option>
-                <option value="">Name (Descending)</option>
+              <select id="sorting" class="input sorting">
+                <option value="Featured">Featured</option>
+                <option value="Ascending">Name (Ascending)</option>
+                <option value="Descending">Name (Descending)</option>
               </select>
             </div>
             <div class="categories">
               <p>Categories</p>
               <ul class="category-list">
-                <li>All Products</li>
+                <li class="filter-btn" data-filter="All Products">All Products</li>
                 <?php foreach ($categories as $category) { ?>  
-                <li><?= $category["categoryName"] ?></li>
+                <li class="filter-btn" data-filter="<?= $category[
+                  "categoryName"
+                ] ?>"><?= $category["categoryName"] ?></li>
                 <?php } ?>
               </ul>
               <p>Stock Status</p>
@@ -55,11 +54,13 @@ include_once "../includes/header.php";
                 </li>
               </ul>
             </div>
-            <div class="product-container">
+            <div class="product-container">          
             <?php if ($displayProducts) { ?>
               <?php foreach ($displayProducts as $product) { ?>
                 <?php if ($product["availability"] === "Available") { ?>
-                  <div class="products">
+                  <div class="products <?= $product[
+                    "categoryName"
+                  ] ?>" style="display:none;">
                     <div class="labels">
                       <span class="product-label"></span>
                       <!-- <button class="wishlist">
@@ -72,11 +73,9 @@ include_once "../includes/header.php";
                     </div>
                     <a href="productdetails.php?ID=<?= $product[
                       "ID"
-                    ] ?>"><?= '<img src="./assets/img/' .
-  $product["coverPhoto"] .
-  '" alt="' .
-  $product["coverPhoto"] .
-  '">' ?></a>
+                    ] ?>"><img loading="lazy" src="./assets/img/<?= $product[
+  "coverPhoto"
+] ?>" alt="<?= $product["coverPhoto"] ?>"></a>
                     <div class="details">
                       <a href="productdetails.php?ID=<?= $product[
                         "ID"
@@ -93,66 +92,6 @@ include_once "../includes/header.php";
                         <?= number_format($product["netSales"], 2) ?>
                       </p>
                     </div>
-                    <!-- <div class="hidden">
-                      <form action="">
-                        <div class="color-group">
-                          <label class="color-field">
-                            <input
-                              type="radio"
-                              name="color"
-                              id=""
-                              checked
-                              class="radio"
-                            />
-                            <span
-                              class="checkmark"
-                              style="background: #df5d7d"
-                            ></span>
-                          </label>
-                          <label class="color-field">
-                            <input
-                              type="radio"
-                              name="color"
-                              id=""
-                              class="radio"
-                            />
-                            <span
-                              class="checkmark"
-                              style="background: #fff"
-                            ></span>
-                          </label>
-                        </div>
-                        <div class="variations">
-                          <div>
-                            <select name="" id="" class="input size">             
-                              <option value=""></option>
-                            </select>
-                          </div>
-                          <div class="item-quantity">
-                            <button class="minus-btn">-</button>
-                            <input
-                              class="qty-input"
-                              type="text"
-                              name=""
-                              id=""
-                              value="1"
-                              min="1"
-                            />
-                            <button class="plus-btn">+</button>
-                          </div>
-                        </div>
-                        <div class="add-cart">
-                          <button class="btn primary-btn cart-btn">
-                            <span
-                              class="iconify cart-icon"
-                              data-icon="gg:shopping-bag"
-                              data-inline="false"
-                            ></span>
-                            Add to Cart
-                          </button>
-                        </div>
-                      </form>
-                    </div> -->
                   </div> 
                   <?php } ?>
                 <?php } ?>
@@ -160,6 +99,7 @@ include_once "../includes/header.php";
               <div class="container"><h1>No Data Available</h1></div>
               <?php } ?>
             </div>
+            <div class="load-more"><button id="load-more" class="btn primary-btn">Load More</button></div>
           </div>
         </div>
       </section>
@@ -170,5 +110,21 @@ include_once "../includes/header.php";
   <script src="./assets/js/header.js"></script>
   <script src="./assets/js/user.js"></script>
   <script src="./assets/js/cart.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script>
+    $('.products').slice(0, 9).show();
+
+    if($('.products:hidden').length == 0){
+      $('#load-more').fadeOut();
+    }
+    $('#load-more').click(function(){
+      $('.products:hidden').slice(0, 3).show();
+
+      if($('.products:hidden').length == 0){
+        $('#load-more').fadeOut();
+      }
+    });
+  </script>
+  <script src="./assets/js/filter.js"></script>
 </body>
 </html>

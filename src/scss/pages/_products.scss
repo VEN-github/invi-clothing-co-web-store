@@ -2,6 +2,7 @@
 @use '../abstracts/fonts';
 @use '../layout/flex';
 @use '../layout/grid';
+@use '../layout/magnify';
 
 #product-details {
   padding: 10em 0;
@@ -18,6 +19,7 @@
       width: 500px;
       height: 500px;
       object-fit: contain;
+      cursor: zoom-in;
     }
   }
   .product-gallery {

@@ -58,6 +58,14 @@ if (editAdd) {
       document.querySelector("#addressID").value = addressID;
       document.querySelector("#firstName").value = fname;
       document.querySelector("#lastName").value = lname;
+      document.querySelector("#editAddress1").value = address1;
+      document.querySelector("#editAddress2").value = address2;
+      document.querySelector("#editCity").value = city;
+      document.querySelector("#editPostalCode").value = zip;
+      document.querySelector("#editRegion").value = region;
+      document.querySelector("#editCountry").value = country;
+      document.querySelector("#editPhoneNumber").value = phone;
+      document.querySelector("#editAddressType").value = primary;
       document.querySelector("#fName").value = fname;
       document.querySelector("#lName").value = lname;
       document.querySelector("#address1").value = address1;

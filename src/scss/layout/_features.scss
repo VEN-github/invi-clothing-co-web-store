@@ -4,59 +4,33 @@
 @use '../components/buttons';
 
 .features {
-  @include flex.flex(space-around, center, column);
-  padding: 3em 0 8em 0;
-  overflow: hidden;
+  @include flex.flex(flex-start, center, column);
+  padding: 2em 0 4em 0;
   & h1 {
     font-size: 4rem;
     font-weight: map-get(fonts.$font-weight, semi-bold);
     color: colors.$primary-color;
     letter-spacing: 0.1em;
+    text-align: center;
   }
 
   .carousel-container {
-    @include flex.flex(center, stretch, row);
-    padding: 1.5em 0;
+    position: relative;
+    margin: 4em 0;
     .carousel-box {
       margin: 0 2em;
-      padding: 1.5em 0.8em;
+      user-select: none;
       transition: all 0.25s ease;
-      & .labels {
-        @include flex.flex(space-between, center, row);
-        // & .product-label {
-        //   padding: 0.1em 0.3em;
-        //   background: colors.$sale-color;
-        //   color: colors.$text-color;
-        //   border-radius: 5px;
-        // }
-
-        & .wishlist {
-          @include flex.flex(center, center, row);
-          width: 30px;
-          height: 30px;
-          background: colors.$body-color;
-          border-radius: 50%;
-          transition: background 0.5s ease;
-          &:hover {
-            background: colors.$light-color;
-          }
-          & .heart {
-            width: 18px;
-            height: 18px;
-            color: colors.$secondary-color;
-          }
-        }
-      }
 
       & img {
         width: 300px;
         object-fit: cover;
-        margin-bottom: 1em;
+        margin-bottom: 0.5em;
       }
+
       .details {
         @include flex.flex(center, center, column);
         & a {
-          // margin-bottom: 0.3em;
           font-size: 1.25rem;
           font-weight: map-get(fonts.$font-weight, semi-bold);
           color: colors.$primary-color;
@@ -68,83 +42,18 @@
           }
         }
         & .color {
-          margin-bottom: 0.3em;
           font-size: 1.125rem;
           font-weight: map-get(fonts.$font-weight, regular);
           color: colors.$primary-color;
         }
         .price {
-          display: flex;
+          @include flex.flex(flex-start, center, row);
           font-size: 1.125rem;
           font-weight: map-get(fonts.$font-weight, medium);
           color: colors.$primary-color;
           .peso-sign {
-            width: 25px;
-            height: 25px;
             margin-right: 0.2em;
             color: colors.$primary-color;
-          }
-        }
-      }
-
-      & .color-group {
-        @include flex.flex(center, center, row);
-        margin-top: 0.5em;
-        & .color-field {
-          position: relative;
-          margin: 0 1em;
-          cursor: pointer;
-          & .radio {
-            opacity: 0;
-            cursor: pointer;
-
-            &:checked ~ .checkmark {
-              border: 1px solid colors.$secondary-color;
-              box-shadow: inset 0 0 0 3px #e5e5e5;
-            }
-          }
-          & .checkmark {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            width: 32px;
-            height: 32px;
-            border-color: transparent;
-            border-radius: 50%;
-            box-shadow: inset 0 0 0 3px #e5e5e5;
-            transition: all 0.5s ease;
-          }
-
-          &:hover .radio ~ .checkmark {
-            border: 1px solid colors.$accent-color;
-            box-shadow: inset 0 0 0 3px #e5e5e5;
-          }
-        }
-      }
-      & .variations {
-        // @include flex.flex(space-evenly, center, row);
-        padding: 0 1.5em;
-        margin-top: 1em;
-        & .size {
-          width: 150px;
-        }
-        & .item-quantity {
-          display: flex;
-        }
-      }
-      & .add-cart {
-        @include flex.flex(center, stretch, row);
-        margin-top: 0.8em;
-        padding: 0 1.5em;
-
-        & .cart-btn {
-          width: 100%;
-
-          & .cart-icon {
-            position: relative;
-            top: 2px;
           }
         }
       }

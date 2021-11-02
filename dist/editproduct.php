@@ -37,6 +37,18 @@ $costs = $store->view_all_cost($ID);
                   </div>
                   <div class="card-body">
                     <form method="post" enctype="multipart/form-data" id="productForm">
+                      <input type="hidden" name="hiddenCover" value="<?= $product[
+                        "coverPhoto"
+                      ] ?>">
+                      <input type="hidden" name="hiddenImage1" value="<?= $product[
+                        "image1"
+                      ] ?>">
+                      <input type="hidden" name="hiddenImage2" value="<?= $product[
+                        "image2"
+                      ] ?>">
+                      <input type="hidden" name="hiddenImage3" value="<?= $product[
+                        "image3"
+                      ] ?>">
                       <div class="form-group">
                         <label>Category</label>
                         <select class="form-control" name="category" id="category">

@@ -11,10 +11,7 @@ $store->update_userdata();
 ?>
   <body>
     <div class="page-container">
-      <?php
-      include_once "../includes/navbar.php";
-      $store->subscribe();
-      ?>
+      <?php include_once "../includes/navbar.php"; ?>
       <!-- start of profile section -->
       <main>
         <section id="profile">
@@ -28,30 +25,83 @@ $store->update_userdata();
                   <input type="hidden" name="emailCustomer" value="<?= $userProfile[
                     "email"
                   ] ?>" />
+                  <input type="hidden" name="deleteOldAvatarImg" value="<?= $userProfile[
+                    "profileImg"
+                  ] ?>"/>
                 </form>
-                <form method="post">
-                  <div class="input-field">
-                    <input type="text" name="firstName" class="input left-input" value="<?= $userProfile[
-                      "firstName"
-                    ] ?>" />
-                    <input type="text" name="lastName" class="input" value="<?= $userProfile[
-                      "lastName"
-                    ] ?>" />
+                <form method="post" enctype="multipart/form-data">
+                  <input type="file" name="avatarImg" id="avatarImg" style="display:none;"/>
+                  <input type="hidden" name="oldAvatarImg" value="<?= $userProfile[
+                    "profileImg"
+                  ] ?>" />
+                  <div class="input-group">
+                    <div class="input-field">
+                      <input type="text" name="firstName" class="input" placeholder=" " value="<?= $userProfile[
+                        "firstName"
+                      ] ?>" />
+                      <label class="form-label">First Name</label>
+                    </div>
+                    <div class="input-field">
+                      <input type="text" name="lastName" class="input" placeholder=" " value="<?= $userProfile[
+                        "lastName"
+                      ] ?>" />
+                      <label class="form-label">Last Name</label>
+                    </div>
                   </div>
-                  <div class="input-field">
-                    <input type="text" name="email" class="input left-input disabled"
-                    value="<?= $userProfile["email"] ?>" />
-                    <input type="text" name="contactNumber" class="input" placeholder="Contact Number"         
-                    value="<?= $userProfile["contactNumber"] ?>" />
+                  <div class="input-group">
+                    <div class="input-field">
+                      <input type="text" name="email" class="input disabled"
+                      value="<?= $userProfile["email"] ?>" />
+                    </div>
+                    <div class="input-field">
+                      <input type="text" name="contactNumber" class="input" placeholder=" "         
+                        value="<?= $userProfile["contactNumber"] ?>" />
+                      <label class="form-label">Contact Number</label>
+                    </div>
                   </div>
-                  <div class="input-field">
-                    <input
-                      type="password"
-                      name="newPass"
-                      class="input password left-input"
-                      placeholder="New Password"
-                    />
-                    <input type="password" name="confirmPass" class="input password" placeholder="Confirm Password"/>
+                  <div class="input-group">
+                    <div class="input-field">
+                      <input
+                        type="password"
+                        name="newPass"
+                        id="signup-pass-input"
+                        class="input password"
+                        placeholder=" "
+                      />
+                      <label class="form-label">New Password</label>
+                      <button type="button" class="show-password signup-show-pass signup-show-invisible">
+                        <span
+                          class="iconify show-pass"
+                          data-icon="ant-design:eye-invisible-outlined"
+                          data-inline="false"
+                        ></span>
+                      </button>
+                      <button type="button" class="show-password signup-show-pass signup-show-visible" style="display:none;"> 
+                        <span
+                          class="iconify show-pass"
+                          data-icon="ant-design:eye-outlined"
+                          data-inline="false"
+                        ></span>
+                      </button>
+                    </div>
+                    <div class="input-field">
+                      <input type="password" name="confirmPass" id="confirm-password-input" class="input password" placeholder=" "/>
+                      <label class="form-label">Confirm Password</label>
+                      <button type="button" class="show-password signup-show-confirmpass confirm-invisible">
+                        <span
+                          class="iconify show-pass"
+                          data-icon="ant-design:eye-invisible-outlined"
+                          data-inline="false"
+                        ></span>
+                      </button>
+                      <button type="button" class="show-password signup-show-confirmpass confirm-visible" style="display:none;"> 
+                        <span
+                          class="iconify show-pass"
+                          data-icon="ant-design:eye-outlined"
+                          data-inline="false"
+                        ></span>
+                      </button>
+                    </div>  
                   </div>
                   <div class="button-container">
                     <button
@@ -87,6 +137,8 @@ $store->update_userdata();
     <script src="./assets/js/header.js"></script>
     <script src="./assets/js/user.js"></script>
     <script src="./assets/js/cart.js"></script>
+    <script src="./assets/js/buttons.js"></script>
+    <script src="./assets/js/avatar.js"></script>
     <script>
       const deleteBtn = document.querySelector("#deleteBtn");
       if (deleteBtn) {

@@ -1,0 +1,30 @@
+@use '../abstracts/colors';
+
+.magnify-wrapper {
+  position: relative;
+  max-height: 50vh;
+
+  & img {
+    max-height: inherit;
+  }
+
+  #large-img {
+    background: url("") no-repeat;
+    position: absolute;
+    z-index: 99;
+    display: block;
+    width: 200px;
+    height: 200px;
+    border: 5px solid colors.$primary-color;
+    border-radius: 100%;
+    box-shadow: 0 5px 10px -2px rgba(0, 0, 0, 0.3);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s;
+  }
+
+  &:hover #large-img,
+  &:active #large-img {
+    opacity: 1;
+  }
+}

@@ -9,7 +9,6 @@ include_once "../includes/header.php";
     <div class="page-container">
       <?php
       include_once "../includes/navbar.php";
-      $store->subscribe();
       $store->forgot_password();
       ?>
       <!-- start of verify password section -->
@@ -35,21 +34,25 @@ include_once "../includes/header.php";
                       type="text"
                       name="verifyCode1"
                       class="input input-verify"
+                      maxlength="1"
                     />
                     <input
                       type="text"
                       name="verifyCode2"
                       class="input input-verify"
+                      maxlength="1"
                     />
                     <input
                       type="text"
                       name="verifyCode3"
                       class="input input-verify"
+                      maxlength="1"
                     />
                     <input
                       type="text"
                       name="verifyCode4"
                       class="input input-verify"
+                      maxlength="1"
                     />
                   </div>
                   <div class="resend-code">
@@ -74,5 +77,6 @@ include_once "../includes/header.php";
     <script src="./assets/js/header.js"></script>
     <script src="./assets/js/user.js"></script>
     <script src="./assets/js/cart.js"></script>
+    <script src="./assets/js/buttons.js"></script>
   </body>
 </html>

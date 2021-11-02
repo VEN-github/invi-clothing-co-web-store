@@ -15,13 +15,17 @@
   animation: movingGradient 5s linear infinite alternate;
   .hero {
     justify-self: center;
-    & img {
-      max-width: 580px;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      filter: drop-shadow(14px 0px 16px rgba(0, 0, 0, 0.25));
-    }
+    width: 580px;
+    height: 825px;
+    object-fit: cover;
+    filter: drop-shadow(14px 0px 16px rgba(0, 0, 0, 0.25));
+    // & img {
+    //   width: 100%;
+    //   max-width: 580px;
+    //   height: 100%;
+    //   object-fit: cover;
+    //   filter: drop-shadow(14px 0px 16px rgba(0, 0, 0, 0.25));
+    // }
   }
   .showcase-text {
     align-self: center;

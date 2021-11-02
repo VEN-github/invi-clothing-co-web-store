@@ -26,11 +26,24 @@ $checkout = $store->get_checkout();
                 <div class="contact-info">
                   <h4>Contact Information</h4>
                   <div class="user">
-                    <span
-                      class="iconify avatar"
-                      data-icon="carbon:user-avatar-filled-alt"
-                      data-inline="false"
-                    ></span>
+                    <?php if ($userProfile) { ?>
+                      <?php if (
+                        is_null($userProfile["profileImg"]) ||
+                        empty($userProfile["profileImg"])
+                      ) { ?>
+                        <img alt="Profile image" class="avatar">
+                      <?php } else { ?>
+                        <img src="./assets/img/<?= $userProfile[
+                          "profileImg"
+                        ] ?>" alt="Profile image" class="avatar-img">
+                      <?php } ?>
+                        <input type="hidden" id="initials" value="<?= strtoupper(
+  mb_substr($userProfile["firstName"], 0, 1)
+),
+                          strtoupper(
+                            mb_substr($userProfile["lastName"], 0, 1)
+                          ) ?>">
+                    <?php } ?>
                     <div class="user-details">
                       <p class="user-name"><?= $userProfile["firstName"] .
                         " " .
@@ -92,23 +105,29 @@ $checkout = $store->get_checkout();
                         ></span>
                       </div>
                     <?php } ?>
-                    <div class="input-field">
-                      <input
-                        type="text"
-                        name="firstName"
-                        id="firstName"
-                        placeholder="First Name"
-                        value="<?= $checkout ? $checkout["firstName"] : "" ?>"
-                        class="input input-left"
-                      />
-                      <input
-                        type="text"
-                        name="lastName"
-                        id="lastName"
-                        value="<?= $checkout ? $checkout["lastName"] : "" ?>"
-                        placeholder="Last Name"
-                        class="input input-right"
-                      />
+                    <div class="input-group">
+                      <div class="input-field">
+                        <input
+                          type="text"
+                          name="firstName"
+                          id="firstName"
+                          placeholder=" "
+                          value="<?= $checkout ? $checkout["firstName"] : "" ?>"
+                          class="input"
+                        />
+                        <label class="form-label">First Name</label>
+                      </div>
+                      <div class="input-field">
+                        <input
+                          type="text"
+                          name="lastName"
+                          id="lastName"
+                          value="<?= $checkout ? $checkout["lastName"] : "" ?>"
+                          placeholder=" "
+                          class="input"
+                        />
+                        <label class="form-label">Last Name</label>
+                      </div>
                     </div>
                     <div class="input-field">
                       <input
@@ -116,9 +135,10 @@ $checkout = $store->get_checkout();
                         name="address1"
                         id="address1"
                         value="<?= $checkout ? $checkout["address1"] : "" ?>"
-                        placeholder="House Number, Street Address"
+                        placeholder=" "
                         class="input input-full"
                       />
+                      <label class="form-label full-label">House Number, Street Address</label>
                     </div>
                     <div class="input-field">
                       <input
@@ -126,27 +146,36 @@ $checkout = $store->get_checkout();
                         name="address2"
                         id="address2"
                         value="<?= $checkout ? $checkout["address2"] : "" ?>"
-                        placeholder="Apartment, suite, etc. (optional)"
+                        placeholder=" "
                         class="input input-full"
                       />
+                      <label class="form-label full-label">Apartment, suite, etc. (optional)</label>
                     </div>
-                    <div class="input-field">
-                      <input
-                        type="text"
-                        name="city"
-                        id="city"
-                        value="<?= $checkout ? $checkout["city"] : "" ?>"
-                        placeholder="City"
-                        class="input input-left"
-                      />
-                      <input
-                        type="text"
-                        name="postalCode"
-                        id="postalCode"
-                        value="<?= $checkout ? $checkout["postalCode"] : "" ?>"
-                        placeholder="Postal Code"
-                        class="input input-right"
-                      />
+                    <div class="input-group">
+                      <div class="input-field">
+                        <input
+                          type="text"
+                          name="city"
+                          id="city"
+                          value="<?= $checkout ? $checkout["city"] : "" ?>"
+                          placeholder=" "
+                          class="input input-left"
+                        />
+                        <label class="form-label">City</label>
+                      </div>
+                      <div class="input-field">
+                        <input
+                          type="text"
+                          name="postalCode"
+                          id="postalCode"
+                          value="<?= $checkout
+                            ? $checkout["postalCode"]
+                            : "" ?>"
+                          placeholder=" "
+                          class="input input-right"
+                        />
+                        <label class="form-label">Postal Code</label>
+                      </div>
                     </div>
                     <div class="input-field custom-select">
                       <select
@@ -192,9 +221,10 @@ $checkout = $store->get_checkout();
                         name="phoneNumber"
                         id="phoneNumber"
                         value="<?= $checkout ? $checkout["phoneNumber"] : "" ?>"
-                        placeholder="Phone Number"
+                        placeholder=" "
                         class="input input-full"
                       />
+                      <label class="form-label phone-label">Phone Number</label>
                     </div>
                     <div class="inputfield custom-checkbox">
                       <input type="checkbox" name="primaryAddress" id="primaryAddress" class="checkbox" value="primary address" <?= !empty(
@@ -240,5 +270,6 @@ $checkout = $store->get_checkout();
     <script src="./assets/js/checkout.js"></script>
     <script src="./assets/js/ship.js"></script>
     <script src="./assets/js/addresses.js"></script>
+    <script src="./assets/js/avatar.js"></script>
   </body>
 </html>

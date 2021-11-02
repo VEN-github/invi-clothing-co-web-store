@@ -24,18 +24,22 @@
     padding: 1em 0;
     border-bottom: 1px solid colors.$disabled-color;
     .avatar {
-      width: 100px;
-      height: 100px;
-      color: colors.$primary-color;
+      border-radius: 50%;
+    }
+    .avatar-img {
+      width: 150px;
+      height: 150px;
+      object-fit: cover;
+      border-radius: 50%;
     }
     .camera-btn {
       position: absolute;
-      top: 48%;
-      right: 38%;
+      top: 55%;
+      right: 30%;
 
       & .camera {
-        width: 26px;
-        height: 26px;
+        width: 30px;
+        height: 30px;
         padding: 0.3em;
         background: colors.$accent-color;
         color: colors.$text-color;
@@ -103,6 +107,28 @@
       margin-bottom: 1em;
     }
 
+    .input-field {
+      position: relative;
+      margin-bottom: 1em;
+
+      .show-password {
+        position: absolute;
+        top: 1px;
+        right: 0;
+        padding: 0 1em;
+        height: 100%;
+      }
+      .show-pass {
+        width: 22px;
+        height: 22px;
+        color: colors.$light-color;
+        transition: color 0.5s ease-in-out;
+        &:hover {
+          color: colors.$accent-color;
+        }
+      }
+    }
+
     .address-header {
       @include flex.flex(space-between, stretch, row);
 
@@ -153,8 +179,8 @@
         .address-actions {
           position: absolute;
           @include flex.flex(space-around, center, column);
-          top: 10%;
-          right: 5%;
+          top: 8%;
+          right: 3%;
 
           .action-icon {
             width: 24px;
@@ -258,12 +284,8 @@
       font-weight: map-get(fonts.$font-weight, medium);
       color: colors.$primary-color;
     }
-    & .input-field {
+    .note-text {
       margin-bottom: 1em;
-    }
-
-    & .left-input {
-      margin-right: 1.6em;
     }
 
     & .button-container {

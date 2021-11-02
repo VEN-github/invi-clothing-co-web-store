@@ -90,11 +90,24 @@ $store->placed_order_email();
                     <p class="contact-details">Contact Information:</p>
                     <div class="first-layer">
                       <div class="user">
-                        <span
-                          class="iconify avatar"
-                          data-icon="carbon:user-avatar-filled-alt"
-                          data-inline="false"
-                        ></span>
+                        <?php if ($userProfile) { ?>
+                          <?php if (
+                            is_null($userProfile["profileImg"]) ||
+                            empty($userProfile["profileImg"])
+                          ) { ?>
+                            <img alt="Profile image" class="avatar">
+                          <?php } else { ?>
+                            <img src="./assets/img/<?= $userProfile[
+                              "profileImg"
+                            ] ?>" alt="Profile image" class="avatar-img">
+                          <?php } ?>
+                            <input type="hidden" id="initials" value="<?= strtoupper(
+  mb_substr($userProfile["firstName"], 0, 1)
+),
+                              strtoupper(
+                                mb_substr($userProfile["lastName"], 0, 1)
+                              ) ?>">
+                        <?php } ?>
                         <div class="user-details">
                           <p class="user-name"><?= $userProfile["firstName"] .
                             " " .
@@ -168,6 +181,7 @@ $store->placed_order_email();
     </div>
     <script src="./assets/js/checkout.js"></script>
     <script src="./assets/js/ship.js"></script>
+    <script src="./assets/js/avatar.js"></script>
     <script>
       const completeBtn = document.querySelector("#complete");
       

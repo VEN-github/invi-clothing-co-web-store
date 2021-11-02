@@ -1,17 +1,30 @@
 <div class="profile-summary">
   <div class="user">
-    <span
-      class="iconify avatar"
-      data-icon="carbon:user-avatar-filled-alt"
-      data-inline="false"
-    ></span>
-    <button class="camera-btn">
-      <span
-        class="iconify camera"
-        data-icon="bx:bxs-camera"
-        data-inline="false"
-      ></span>
-    </button>
+    <?php if ($userProfile) { ?>
+      <?php if (
+        is_null($userProfile["profileImg"]) ||
+        empty($userProfile["profileImg"])
+      ) { ?>
+        <img alt="Profile image" class="avatar">
+      <?php } else { ?>
+        <img src="./assets/img/<?= $userProfile[
+          "profileImg"
+        ] ?>" alt="Profile image" class="avatar-img">
+      <?php } ?>
+        <input type="hidden" id="initials" value="<?= strtoupper(
+  mb_substr($userProfile["firstName"], 0, 1)
+),
+          strtoupper(mb_substr($userProfile["lastName"], 0, 1)) ?>">
+    <?php } ?>
+    <?php if ($title === "Profile") { ?>
+      <label class="camera-btn" for="avatarImg">
+        <span
+          class="iconify camera"
+          data-icon="bx:bxs-camera"
+          data-inline="false"
+        ></span>
+      </label>
+    <?php } ?>
     <p class="user-name"><?= $userProfile["firstName"] .
       " " .
       $userProfile["lastName"] ?></p>

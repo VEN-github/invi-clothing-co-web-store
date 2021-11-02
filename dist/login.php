@@ -9,16 +9,13 @@ require_once "../includes/header.php";
 ?>
   <body>
     <div class="page-container">
-      <?php
-      include_once "../includes/navbar.php";
-      $store->subscribe();
-      ?>
+      <?php include_once "../includes/navbar.php"; ?>
       <main>
         <section class="login-wrapper">
           <div class="container">
             <!-- start of login form -->
             <div class="form-container">
-              <form action="" class="form-group login-form" method="post">
+              <form class="form-group login-form" method="post">
                 <h2 class="title">Login</h2>
                 <div class="social">
                   <a href="#"
@@ -41,21 +38,31 @@ require_once "../includes/header.php";
                   <input
                     type="email"
                     name="email"
-                    placeholder="Email Address"
                     class="input"
+                    placeholder=" "
                   />
+                  <label class="form-label">Email Address</label>
                 </div>
                 <div class="input-field">
                   <input
                     type="password"
                     name="password"
-                    placeholder="Password"
+                    id="login-pass-input"
                     class="input password"
+                    placeholder=" "
                   />
-                  <button class="show-password">
+                  <label class="form-label">Password</label>
+                  <button type="button" class="show-password login-eye-btn invisible">
                     <span
                       class="iconify show-pass"
                       data-icon="ant-design:eye-invisible-outlined"
+                      data-inline="false"
+                    ></span>
+                  </button>
+                  <button type="button" class="show-password login-eye-btn visible" style="display:none;"> 
+                    <span
+                      class="iconify show-pass"
+                      data-icon="ant-design:eye-outlined"
                       data-inline="false"
                     ></span>
                   </button>
@@ -104,5 +111,6 @@ require_once "../includes/header.php";
     </div>
     <script src="./assets/js/header.js"></script>
     <script src="./assets/js/cart.js"></script>
+    <script src="./assets/js/buttons.js"></script>
   </body>
 </html>

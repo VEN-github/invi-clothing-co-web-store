@@ -87,7 +87,7 @@
     @include grid.grid(1fr auto, none, none, 50px);
   }
   .checkout-container {
-    width: 750px;
+    width: 805px;
     max-width: 100%;
     .contact-info {
       margin-top: 2em;
@@ -109,7 +109,14 @@
           width: 100px;
           height: 100px;
           margin-right: 1em;
-          color: colors.$primary-color;
+          border-radius: 50%;
+        }
+        .avatar-img {
+          width: 100px;
+          height: 100px;
+          margin-right: 1em;
+          object-fit: cover;
+          border-radius: 50%;
         }
         .user-details {
           .user-name {
@@ -203,17 +210,8 @@
         color: colors.$primary-color;
       }
       .input-field {
+        position: relative;
         margin-bottom: 1em;
-        .input-left {
-          width: 345px;
-          margin-right: 1.3em;
-        }
-        .input-right {
-          width: 345px;
-        }
-        .input-full {
-          width: 100%;
-        }
       }
     }
     .radio-field {

@@ -1,4 +1,6 @@
 @use './base/resets';
+@use './layout/header';
+@use './layout/footer';
 @use './pages/home';
 @use './pages/account';
 @use './pages/cart';
@@ -12,3 +14,5 @@
 @use './pages/track';
 @use './pages/contact';
 @use './pages/forgotpass';
+@use './pages/faq';
+// @use './pages/preloader';

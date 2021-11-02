@@ -1,3 +1,4 @@
+<?php $store->subscribe(); ?>
 <!-- start of footer -->
 <footer id="main-footer">
   <div class="container footer-container">

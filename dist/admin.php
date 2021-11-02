@@ -29,7 +29,10 @@ $pendingOrders = $store->get_pending_orders();
                   <div class="card-body d-flex-column align-self-center">
                     <?php if ($admins) { ?>
                       <?php foreach ($admins as $admin) { ?>
-                        <?php if (is_null($admin["profileImg"])) { ?>
+                        <?php if (
+                          is_null($admin["profileImg"]) ||
+                          empty($admin["profileImg"])
+                        ) { ?>
                           <img alt="Profile image" class="avatar mx-auto d-block mt-4 mb-4" style="border-radius:50%;">
                         <?php } else { ?>
                           <img src="./assets/img/<?= $admin[
@@ -64,6 +67,9 @@ $pendingOrders = $store->get_pending_orders();
                   <div class="card-body">
                     <form method="post" enctype="multipart/form-data">
                       <input type="file" name="profileImg" id="img" style="display:none;"/>
+                      <input type="hidden" name="oldProfileImg" value="<?= $admin[
+                        "profileImg"
+                      ] ?>">
                       <input type="hidden" name="adminID" value="<?= $admin[
                         "ID"
                       ] ?>">
@@ -121,7 +127,6 @@ $pendingOrders = $store->get_pending_orders();
       <i class="fas fa-angle-up"></i>
     </a>
     <?php require_once "../includes/dashboard_scripts.php"; ?>
-    <script src="./assets/js/avatar.js"></script>
   </body>
 </html>
 

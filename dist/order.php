@@ -11,10 +11,7 @@ $orders = $store->get_order_customer($ID);
 ?>
   <body>
     <div class="page-container">
-      <?php
-      include_once "../includes/navbar.php";
-      $store->subscribe();
-      ?>
+      <?php include_once "../includes/navbar.php"; ?>
       <!-- start of order section -->
       <main>
         <section id="profile">
@@ -84,6 +81,8 @@ $orders = $store->get_order_customer($ID);
     <script src="./assets/js/header.js"></script>
     <script src="./assets/js/user.js"></script>
     <script src="./assets/js/cart.js"></script>
+    <script src="./assets/js/avatar.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vanilla-datatables@latest/dist/vanilla-dataTables.min.js" type="text/javascript"></script>
     <script>
       const orderTable = document.querySelector('#orderTable');
 

@@ -9,10 +9,7 @@ require_once "../includes/header.php";
 ?>
   <body>
     <div class="page-container">
-      <?php
-      include_once "../includes/navbar.php";
-      $store->subscribe();
-      ?>
+      <?php include_once "../includes/navbar.php"; ?>
       <main>
         <section class="signup-wrapper">
           <div class="container">
@@ -40,7 +37,7 @@ require_once "../includes/header.php";
               </div>
               <!-- end of panels -->
               <!-- start of sign up form -->
-              <form action="" class="form-group signup-form" method="post">
+              <form class="form-group signup-form" method="post">
                 <h2 class="title">Create Account</h2>
                 <div class="social">
                   <a href="#"
@@ -63,10 +60,10 @@ require_once "../includes/header.php";
                   <input
                     type="text"
                     name="firstName"
-                    id=""
-                    placeholder="First Name"
+                    placeholder=" "
                     class="input"
                   />
+                  <label class="form-label">First Name</label>
                 </div>
                 <?php if (isset($_GET["firstNameError"])) { ?>
                 <div class="validation">
@@ -82,10 +79,10 @@ require_once "../includes/header.php";
                   <input
                     type="text"
                     name="lastName"
-                    id=""
-                    placeholder="Last Name"
+                    placeholder=" "
                     class="input"
                   />
+                  <label class="form-label">Last Name</label>
                 </div>
                 <?php if (isset($_GET["lastNameError"])) { ?>
                 <div class="validation">
@@ -101,10 +98,10 @@ require_once "../includes/header.php";
                   <input
                     type="email"
                     name="email"
-                    id=""
-                    placeholder="Email Address"
+                    placeholder=" "
                     class="input"
                   />
+                  <label class="form-label">Email Address</label>
                 </div>
                 <?php if (isset($_GET["emailError"])) { ?>
                 <div class="validation">
@@ -120,14 +117,22 @@ require_once "../includes/header.php";
                   <input
                     type="password"
                     name="password"
-                    id=""
-                    placeholder="Password"
+                    id="signup-pass-input"
+                    placeholder=" "
                     class="input password"
                   />
-                  <button class="show-password">
+                  <label class="form-label">Password</label>
+                  <button type="button" class="show-password signup-show-pass signup-show-invisible">
                     <span
                       class="iconify show-pass"
                       data-icon="ant-design:eye-invisible-outlined"
+                      data-inline="false"
+                    ></span>
+                  </button>
+                  <button type="button" class="show-password signup-show-pass signup-show-visible" style="display:none;"> 
+                    <span
+                      class="iconify show-pass"
+                      data-icon="ant-design:eye-outlined"
                       data-inline="false"
                     ></span>
                   </button>
@@ -146,14 +151,22 @@ require_once "../includes/header.php";
                   <input
                     type="password"
                     name="confirmPassword"
-                    id=""
-                    placeholder="Confirm Password"
+                    id="confirm-password-input"
+                    placeholder=" "
                     class="input password"
                   />
-                  <button class="show-password">
+                  <label class="form-label">Confirm Password</label>
+                  <button type="button" class="show-password signup-show-confirmpass confirm-invisible">
                     <span
                       class="iconify show-pass"
                       data-icon="ant-design:eye-invisible-outlined"
+                      data-inline="false"
+                    ></span>
+                  </button>
+                  <button type="button" class="show-password signup-show-confirmpass confirm-visible" style="display:none;"> 
+                    <span
+                      class="iconify show-pass"
+                      data-icon="ant-design:eye-outlined"
                       data-inline="false"
                     ></span>
                   </button>
@@ -172,7 +185,6 @@ require_once "../includes/header.php";
                   <input
                     type="hidden"
                     name="access"
-                    id=""
                     value="user"
                   />
                 </div>
@@ -193,5 +205,6 @@ require_once "../includes/header.php";
     </div>
     <script src="./assets/js/header.js"></script>
     <script src="./assets/js/cart.js"></script>
+    <script src="./assets/js/buttons.js"></script>
   </body>
 </html>

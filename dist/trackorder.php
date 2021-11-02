@@ -12,10 +12,7 @@ $store->cancel_order();
 ?>
   <body>
     <div class="page-container">
-      <?php
-      include_once "../includes/navbar.php";
-      $store->subscribe();
-      ?>
+      <?php include_once "../includes/navbar.php"; ?>
       <!-- start of tracking order section -->
       <main>
         <section id="track-order">

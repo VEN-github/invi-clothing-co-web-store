@@ -10,7 +10,6 @@ include_once "../includes/header.php";
     <div class="page-container">
       <?php
       include_once "../includes/navbar.php";
-      $store->subscribe();
       $store->contact_us();
       ?>
       <!-- start of contact section -->
@@ -57,16 +56,18 @@ include_once "../includes/header.php";
                       type="text"
                       name="customerName"
                       class="input input-full"
-                      placeholder="Name"
+                      placeholder=" "
                     />
+                    <label class="form-label full-label">Name</label>
                   </div>
                   <div class="input-field">
                     <input
                       type="email"
                       name="email"
                       class="input input-full"
-                      placeholder="Email Address"
+                      placeholder=" "
                     />
+                    <label class="form-label full-label">Email Address</label>
                   </div>
                   <div class="input-field">
                     <textarea
@@ -93,5 +94,6 @@ include_once "../includes/header.php";
     <script src="./assets/js/header.js"></script>
     <script src="./assets/js/user.js"></script>
     <script src="./assets/js/cart.js"></script>
+    <script src="./assets/js/buttons.js"></script>
   </body>
 </html>

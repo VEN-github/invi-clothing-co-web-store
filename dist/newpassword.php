@@ -9,7 +9,6 @@ include_once "../includes/header.php";
     <div class="page-container">
       <?php
       include_once "../includes/navbar.php";
-      $store->subscribe();
       $store->forgot_password();
       ?>
       <!-- start of new password section -->
@@ -31,13 +30,22 @@ include_once "../includes/header.php";
                     <input
                       type="password"
                       name="newPass"
-                      placeholder="Password"
+                      id="signup-pass-input"
+                      placeholder=" "
                       class="input input-full"
                     />
-                    <button class="show-password">
+                    <label class="form-label full-label">Password</label>
+                    <button type="button" class="show-password signup-show-pass signup-show-invisible">
                       <span
                         class="iconify show-pass"
                         data-icon="ant-design:eye-invisible-outlined"
+                        data-inline="false"
+                      ></span>
+                    </button>
+                    <button type="button" class="show-password signup-show-pass signup-show-visible" style="display:none;"> 
+                      <span
+                        class="iconify show-pass"
+                        data-icon="ant-design:eye-outlined"
                         data-inline="false"
                       ></span>
                     </button>
@@ -46,13 +54,22 @@ include_once "../includes/header.php";
                     <input
                       type="password"
                       name="confirmPass"
-                      placeholder="Confirm Password"
+                      id="confirm-password-input"
+                      placeholder=" "
                       class="input input-full"
                     />
-                    <button class="show-password">
+                    <label class="form-label full-label">Confirm Password</label>
+                    <button type="button" class="show-password signup-show-confirmpass confirm-invisible">
                       <span
                         class="iconify show-pass"
                         data-icon="ant-design:eye-invisible-outlined"
+                        data-inline="false"
+                      ></span>
+                    </button>
+                    <button type="button" class="show-password signup-show-confirmpass confirm-visible" style="display:none;"> 
+                      <span
+                        class="iconify show-pass"
+                        data-icon="ant-design:eye-outlined"
                         data-inline="false"
                       ></span>
                     </button>
@@ -74,5 +91,6 @@ include_once "../includes/header.php";
     <script src="./assets/js/header.js"></script>
     <script src="./assets/js/user.js"></script>
     <script src="./assets/js/cart.js"></script>
+    <script src="./assets/js/buttons.js"></script>
   </body>
 </html>

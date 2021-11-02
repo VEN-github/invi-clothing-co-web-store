@@ -11,19 +11,17 @@ include_once "../includes/header.php";
 ?>
 <body>
   <div class="page-container">
-    <?php
-    include_once "../includes/navbar.php";
-    $store->subscribe();
-    ?>
+    <?php include_once "../includes/navbar.php"; ?>
     <!-- start of product section -->
     <main>
     <section id="product-details">
       <div class="container">
         <div class="product-grid">
-          <div class="product-highlight">
+          <div id="zoom" class="magnify-wrapper product-highlight">
             <img src="./assets/img/<?= $product[
               "coverPhoto"
             ] ?>" alt="<?= $product["coverPhoto"] ?>">
+            <div id="large-img"></div>
           </div>
           <div class="product-gallery">
             <img src="./assets/img/<?= $product[

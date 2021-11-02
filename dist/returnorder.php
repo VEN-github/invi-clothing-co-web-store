@@ -12,7 +12,6 @@ include_once "../includes/header.php";
       <?php
       include_once "../includes/navbar.php";
       $store->return_order();
-      $store->subscribe();
       ?>
       <!-- start of return section -->
       <main>
@@ -23,7 +22,7 @@ include_once "../includes/header.php";
               <?php include_once "../includes/profilesummary.php"; ?>
               <div class="customer-details">
                 <h4>Request Return</h4>
-                <p>Note:</p>
+                <p class="note-text">Note:</p>
                 <form method="post">
                   <div class="input-field">
                     <input type="hidden" name="email" value="<?= $user[
@@ -34,7 +33,8 @@ include_once "../includes/header.php";
                     ] .
                       " " .
                       $userProfile["lastName"] ?>" />
-                    <input type="text" name="orderID" class="input input-full" placeholder="Order #:" />
+                    <input type="text" name="orderID" class="input input-full" placeholder=" " />
+                    <label class="form-label phone-label">Order #:</label>
                   </div>
                   <div class="input-field custom-select">
                     <select
@@ -72,5 +72,7 @@ include_once "../includes/header.php";
     <script src="./assets/js/header.js"></script>
     <script src="./assets/js/user.js"></script>
     <script src="./assets/js/cart.js"></script>
+    <script src="./assets/js/avatar.js"></script>
+    <script src="./assets/js/buttons.js"></script>
   </body>
 </html>

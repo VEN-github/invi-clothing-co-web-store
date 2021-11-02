@@ -23,11 +23,24 @@ $checkout = $store->get_checkout();
                 <div class="contact-info">
                   <h4>Contact Information</h4>
                   <div class="user">
-                    <span
-                      class="iconify avatar"
-                      data-icon="carbon:user-avatar-filled-alt"
-                      data-inline="false"
-                    ></span>
+                    <?php if ($userProfile) { ?>
+                      <?php if (
+                        is_null($userProfile["profileImg"]) ||
+                        empty($userProfile["profileImg"])
+                      ) { ?>
+                        <img alt="Profile image" class="avatar">
+                      <?php } else { ?>
+                        <img src="./assets/img/<?= $userProfile[
+                          "profileImg"
+                        ] ?>" alt="Profile image" class="avatar-img">
+                      <?php } ?>
+                        <input type="hidden" id="initials" value="<?= strtoupper(
+  mb_substr($userProfile["firstName"], 0, 1)
+),
+                          strtoupper(
+                            mb_substr($userProfile["lastName"], 0, 1)
+                          ) ?>">
+                    <?php } ?>
                     <div class="user-details">
                       <p class="user-name"><?= $userProfile["firstName"] .
                         " " .
@@ -114,5 +127,6 @@ $checkout = $store->get_checkout();
     <script src="./assets/js/checkout.js"></script>
     <script src="./assets/js/ship.js"></script>
     <script src="./assets/js/paypal.js"></script>
+    <script src="./assets/js/avatar.js"></script>
   </body>
 </html>

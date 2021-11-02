@@ -16,11 +16,36 @@
   border-radius: 5px;
   caret-color: colors.$accent-color;
   transition: all 0.5s ease;
-  &::placeholder {
-    color: colors.$light-color;
-  }
   &:hover:not(.disabled) {
     border-color: colors.$accent-color;
+  }
+  &:focus:not(.disabled) ~ .form-label {
+    top: 10%;
+    left: 5%;
+    font-size: 0.8125rem;
+    background: colors.$body-color;
+    color: colors.$secondary-color;
+    transform: translate(-5%, -65%);
+  }
+  &:focus:not(.disabled) ~ .full-label {
+    left: 3.5%;
+  }
+  &:focus:not(.disabled) ~ .phone-label {
+    left: 2.5%;
+  }
+  &:not(:placeholder-shown).input:not(:focus) ~ .form-label {
+    top: 10%;
+    left: 5%;
+    font-size: 0.8125rem;
+    background: colors.$body-color;
+    color: colors.$light-color;
+    transform: translate(-5%, -65%);
+  }
+  &:not(:placeholder-shown).input:not(:focus) ~ .full-label {
+    left: 3.5%;
+  }
+  &:not(:placeholder-shown).input:not(:focus) ~ .phone-label {
+    left: 2.5%;
   }
   &:focus:not(.disabled) {
     border-color: colors.$secondary-color;
@@ -30,8 +55,31 @@
   }
 }
 
+.input-group {
+  @include flex.flex(space-between, stretch, row);
+}
+
+.form-label {
+  position: absolute;
+  top: 50%;
+  left: 5%;
+  padding: 0 0.4rem;
+  font-weight: map-get(fonts.$font-weight, regular);
+  color: colors.$light-color;
+  transform: translate(-5%, -50%);
+  transition: all 0.5s ease;
+  pointer-events: none;
+}
+
 .input-full {
   width: 100%;
+}
+
+.full-label {
+  left: 3.5%;
+}
+.phone-label {
+  left: 2.5%;
 }
 
 // input disabled

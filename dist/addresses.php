@@ -15,10 +15,7 @@ $store->delete_address();
 ?>
   <body>
     <div class="page-container">
-      <?php
-      include_once "../includes/navbar.php";
-      $store->subscribe();
-      ?>
+      <?php include_once "../includes/navbar.php"; ?>
       <!-- start of addresses section -->
       <main>
         <section id="profile">
@@ -94,6 +91,30 @@ $store->delete_address();
                           <input type="hidden" name="lastName" value="<?= $address[
                             "lastName"
                           ] ?>">
+                          <input type="hidden" name="address1" value="<?= $address[
+                            "address1"
+                          ] ?>">
+                          <input type="hidden" name="address2" value="<?= $address[
+                            "address2"
+                          ] ?>">
+                          <input type="hidden" name="city" value="<?= $address[
+                            "city"
+                          ] ?>">
+                          <input type="hidden" name="postalCode" value="<?= $address[
+                            "postalCode"
+                          ] ?>">
+                          <input type="hidden" name="region" value="<?= $address[
+                            "region"
+                          ] ?>">
+                          <input type="hidden" name="country" value="<?= $address[
+                            "country"
+                          ] ?>">
+                          <input type="hidden" name="phoneNumber" value="<?= $address[
+                            "phoneNumber"
+                          ] ?>">
+                          <input type="hidden" name="addressType" value="<?= $address[
+                            "addressType"
+                          ] ?>">
                         </form>
                       </div>
                     <?php } ?>
@@ -104,55 +125,69 @@ $store->delete_address();
                       <input type="hidden" name="acctID" value="<?= $user[
                         "ID"
                       ] ?>" form="addAddressForm">
-                      <div class="input-field">
-                        <input
-                          type="text"
-                          name="addFirstName"
-                          placeholder="First Name"
-                          class="input left-input"
-                          form="addAddressForm"
-                        />
-                        <input
-                          type="text"
-                          name="addLastName"
-                          placeholder="Last Name"
-                          class="input"
-                          form="addAddressForm"
-                        />
+                      <div class="input-group">
+                        <div class="input-field">
+                          <input
+                            type="text"
+                            name="addFirstName"
+                            placeholder=" "
+                            class="input"
+                            form="addAddressForm"
+                          />
+                          <label class="form-label">First Name</label>
+                        </div>
+                        <div class="input-field">
+                          <input
+                            type="text"
+                            name="addLastName"
+                            placeholder=" "
+                            class="input"
+                            form="addAddressForm"
+                          />
+                          <label class="form-label">Last Name</label>
+                        </div>
                       </div>
                       <div class="input-field">
                         <input
                           type="text"
                           name="addAddress1"
-                          placeholder="House Number, Street Address"
+                          placeholder=" "
                           class="input input-full"
                           form="addAddressForm"
                         />
+                        <label class="form-label full-label">House Number, Street Address</label>
                       </div>
                       <div class="input-field">
                         <input
                           type="text"
                           name="addAddress2"
-                          placeholder="Apartment, suite, etc. (optional)"
+                          placeholder=" "
                           class="input input-full"
                           form="addAddressForm"
                         />
+                        <label class="form-label full-label">Apartment, suite, etc. (optional)</label>
                       </div>
-                      <div class="input-field">
-                        <input
-                          type="text"
-                          name="addCity"
-                          placeholder="City"
-                          class="input left-input"
-                          form="addAddressForm"
-                        />
-                        <input
-                          type="text"
-                          name="addPostalCode"
-                          placeholder="Postal Code"
-                          class="input"
-                          form="addAddressForm"
-                        />
+                      <div class="input-group">
+                        <div class="input-field">
+                          <input
+                            type="text"
+                            name="addCity"
+                            placeholder=" "
+                            class="input left-input"
+                            form="addAddressForm"
+                          />
+                          <label class="form-label">City</label>
+                        </div>
+                        <div class="input-field">
+                          <input
+                            type="text"
+                            name="addPostalCode"
+                            placeholder=" "
+                            class="input"
+                            form="addAddressForm"
+                          />
+                          <label class="form-label">Postal Code</label>
+                        </div>
                       </div>
                       <div class="input-field custom-select">
                         <select
@@ -192,10 +227,11 @@ $store->delete_address();
                         <input
                           type="text"
                           name="addPhoneNumber"
-                          placeholder="Phone Number"
+                          placeholder=" "
                           class="input input-full"
                           form="addAddressForm"
                         />
+                        <label class="form-label phone-label">Phone Number</label>
                       </div>
                       <div class="inputfield custom-checkbox">
                         <input type="checkbox" name="addPrimaryAddress" class="checkbox" value="primary address" form="addAddressForm"/>
@@ -216,7 +252,7 @@ $store->delete_address();
                     </form>
                   </div>
                   <div class="form">
-                    <form method="post" id="editAddressForm" style="display:none">
+                    <form method="post" id="editAddressForm" style="display:none;">
                       <input type="hidden" name="editAcctID" value="<?= $user[
                         "ID"
                       ] ?>" form="editAddressForm">
@@ -233,62 +269,123 @@ $store->delete_address();
                         id="lastName"
                         form="editAddressForm"
                       />
-
-                      <div class="input-field">
-                        <input
-                          type="text"
-                          name="editFName"
-                          id="fName"
-                          placeholder="First Name"
-                          class="input left-input"
-                          form="editAddressForm"
-                        />
-                        <input
-                          type="text"
-                          name="editLName"
-                          id="lName"
-                          placeholder="Last Name"
-                          class="input"
-                          form="editAddressForm"
-                        />
+                      <input
+                        type="hidden"
+                        name="hiddenAddress1"
+                        id="editAddress1"
+                        form="editAddressForm"
+                      />
+                      <input
+                        type="hidden"
+                        name="hiddenAddress2"
+                        id="editAddress2"
+                        form="editAddressForm"
+                      />
+                      <input
+                        type="hidden"
+                        name="hiddenCity"
+                        id="editCity"
+                        form="editAddressForm"
+                      />
+                      <input
+                        type="hidden"
+                        name="hiddenPostalCode"
+                        id="editPostalCode"
+                        form="editAddressForm"
+                      />
+                      <input
+                        type="hidden"
+                        name="hiddenRegion"
+                        id="editRegion"
+                        form="editAddressForm"
+                      />
+                      <input
+                        type="hidden"
+                        name="hiddenCountry"
+                        id="editCountry"
+                        form="editAddressForm"
+                      />
+                      <input
+                        type="hidden"
+                        name="hiddenPhoneNumber"
+                        id="editPhoneNumber"
+                        form="editAddressForm"
+                      />
+                      <input
+                        type="hidden"
+                        name="hiddenAddressType"
+                        id="editAddressType"
+                        form="editAddressForm"
+                      />
+                      <div class="input-group">
+                        <div class="input-field">
+                          <input
+                            type="text"
+                            name="editFName"
+                            id="fName"
+                            placeholder=" "
+                            class="input"
+                            form="editAddressForm"
+                          />
+                          <label class="form-label">First Name</label>
+                        </div>
+                        <div class="input-field">
+                          <input
+                            type="text"
+                            name="editLName"
+                            id="lName"
+                            placeholder=" "
+                            class="input"
+                            form="editAddressForm"
+                          />
+                          <label class="form-label">Last Name</label>
+                        </div>
                       </div>
                       <div class="input-field">
                         <input
                           type="text"
                           name="editAddress1"
                           id="address1"
-                          placeholder="House Number, Street Address"
+                          placeholder=" "
                           class="input input-full"
                           form="editAddressForm"
                         />
+                        <label class="form-label full-label">House Number, Street Address</label>
                       </div>
                       <div class="input-field">
                         <input
                           type="text"
                           name="editAddress2"
                           id="address2"
-                          placeholder="Apartment, suite, etc. (optional)"
+                          placeholder=" "
                           class="input input-full"
                           form="editAddressForm"
                         />
+                        <label class="form-label full-label">Apartment, suite, etc. (optional)</label>
                       </div>
-                      <div class="input-field">
-                        <input
-                          type="text"
-                          name="editCity"
-                          id="city"
-                          placeholder="City"
-                          class="input left-input"
-                          form="editAddressForm"
-                        />
-                        <input
-                          type="text"
-                          name="editPostalCode"
-                          id="postalCode"
-                          placeholder="Postal Code"
-                          class="input"
-                          form="editAddressForm"
-                        />
+                      <div class="input-group">
+                        <div class="input-field">
+                          <input
+                            type="text"
+                            name="editCity"
+                            id="city"
+                            placeholder=" "
+                            class="input"
+                            form="editAddressForm"
+                          />
+                          <label class="form-label">City</label>
+                        </div>
+                        <div class="input-field">
+                          <input
+                            type="text"
+                            name="editPostalCode"
+                            id="postalCode"
+                            placeholder=" "
+                            class="input"
+                            form="editAddressForm"
+                          />
+                          <label class="form-label">Postal Code</label>
+                        </div>
                       </div>
                       <div class="input-field custom-select">
                         <select
@@ -331,10 +428,11 @@ $store->delete_address();
                           type="text"
                           name="editPhoneNumber"
                           id="phoneNumber"
-                          placeholder="Phone Number"
+                          placeholder=" "
                           class="input input-full"
                           form="editAddressForm"
                         />
+                        <label class="form-label phone-label">Phone Number</label>
                       </div>
                       <div class="inputfield custom-checkbox">
                         <input type="checkbox" name="editPrimaryAddress" id="primaryAddress" class="checkbox" value="primary address" form="editAddressForm"/>
@@ -372,6 +470,7 @@ $store->delete_address();
     <script src="./assets/js/user.js"></script>
     <script src="./assets/js/cart.js"></script>
     <script src="./assets/js/addresses.js"></script>
+    <script src="./assets/js/avatar.js"></script>
     <script>
       const editBtn = document.querySelectorAll(".edit-address");
       const delBtn = document.querySelectorAll(".delete-address");

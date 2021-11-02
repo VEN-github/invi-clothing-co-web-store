@@ -106,7 +106,7 @@ $admins = $store->get_admin();
                           " " .
                           $order["lastName"] ?></td>
                         <td class="text-left align-middle">
-                          <img src="./assets/img/<?= $order[
+                          <img loading="lazy" src="./assets/img/<?= $order[
                             "coverPhoto"
                           ] ?>" alt="Product Image" style="width:75px;">
                         <?= is_null($order["size"])
@@ -167,7 +167,8 @@ $admins = $store->get_admin();
                             </a>
                               <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
                                 <?php if (
-                                  $order["orderStatus"] === "Processing"
+                                  $order["orderStatus"] === "Processing" ||
+                                  $order["orderStatus"] === "Pending"
                                 ) { ?>      
                                   <a class="dropdown-item" target="_blank" href="invoice.php?orderID=<?= $order[
                                     "orderID"
@@ -238,7 +239,9 @@ $admins = $store->get_admin();
     <script src="./assets/js/order.js"></script>
     <script>
       $('.orders').slice(0, 10).show();
-
+      if($('.orders:hidden').length == 0){
+        $('.load-more').fadeOut();
+      }
       $('.load-more').click(function(){
         $('.orders:hidden').slice(0, 10).show();
 

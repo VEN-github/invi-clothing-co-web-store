@@ -245,6 +245,7 @@ class WebStore
       $contactNumber = $_POST["contactNumber"];
       $newPass = md5($_POST["newPass"]);
       $confirmPass = md5($_POST["confirmPass"]);
+      $avatarImg = $_FILES["avatarImg"]["name"];
 
       if (empty($firstName) || empty($lastName) || empty($email)) {
         echo "<script> Swal.fire({
@@ -259,7 +260,11 @@ class WebStore
           title: 'Password does not match.',
         });
         </script>";
-      } elseif (empty($_POST["newPass"])) {
+      } elseif (
+        empty($_POST["newPass"]) &&
+        empty($_POST["confirmPass"]) &&
+        empty($avatarImg)
+      ) {
         $connection = $this->openConnection();
         $stmt = $connection->prepare(
           "UPDATE account_table SET `firstName` = ?, `lastName` = ?, `contactNumber` = ? WHERE email = '$email'"
@@ -268,12 +273,62 @@ class WebStore
         $row = $stmt->fetch();
         header("Location: " . $_SERVER["HTTP_REFERER"]);
         return $row;
-      } else {
+      } elseif (
+        (empty($_POST["newPass"]) || empty($_POST["confirmPass"])) &&
+        !empty($avatarImg)
+      ) {
+        $connection = $this->openConnection();
+        $stmt = $connection->prepare(
+          "UPDATE account_table SET `firstName` = ?, `lastName` = ?, `contactNumber` = ?, `profileImg` = ? WHERE email = '$email'"
+        );
+        $stmt->execute([$firstName, $lastName, $contactNumber, $avatarImg]);
+        if (!empty($_POST["oldAvatarImg"])) {
+          unlink("assets/img/" . $_POST["oldAvatarImg"]);
+        }
+        move_uploaded_file(
+          $_FILES["avatarImg"]["tmp_name"],
+          "assets/img/" . $avatarImg
+        );
+        $row = $stmt->fetch();
+        header("Location: " . $_SERVER["HTTP_REFERER"]);
+        return $row;
+      } elseif (strlen($_POST["newPass"]) < 8) {
+        echo "<script> Swal.fire({
+          icon: 'error',
+          title: 'Password must be at least 8 characters.',
+        });
+        </script>";
+      } elseif (
+        (!empty($_POST["newPass"]) || !empty($_POST["newPass"])) &&
+        empty($avatarImg)
+      ) {
         $connection = $this->openConnection();
         $stmt = $connection->prepare(
           "UPDATE account_table SET `firstName` = ?, `lastName` = ?, `password` = ?, `contactNumber` = ? WHERE email = '$email'"
         );
         $stmt->execute([$firstName, $lastName, $newPass, $contactNumber]);
+        $row = $stmt->fetch();
+        header("Location: " . $_SERVER["HTTP_REFERER"]);
+        return $row;
+      } else {
+        $connection = $this->openConnection();
+        $stmt = $connection->prepare(
+          "UPDATE account_table SET `firstName` = ?, `lastName` = ?, `password` = ?, `contactNumber` = ?, `profileImg` = ? WHERE email = '$email'"
+        );
+        $stmt->execute([
+          $firstName,
+          $lastName,
+          $newPass,
+          $contactNumber,
+          $avatarImg,
+        ]);
+        if (!empty($_POST["oldAvatarImg"])) {
+          unlink("assets/img/" . $_POST["oldAvatarImg"]);
+        }
+        move_uploaded_file(
+          $_FILES["avatarImg"]["tmp_name"],
+          "assets/img/" . $avatarImg
+        );
         $row = $stmt->fetch();
         header("Location: " . $_SERVER["HTTP_REFERER"]);
         return $row;
@@ -291,6 +346,9 @@ class WebStore
         "DELETE FROM account_table WHERE email = '$email'"
       );
       $stmt->execute();
+      if (!empty($_POST["deleteOldAvatarImg"])) {
+        unlink("assets/img/" . $_POST["deleteOldAvatarImg"]);
+      }
       $this->logout();
       header("Location: index.php");
       exit();
@@ -365,7 +423,7 @@ class WebStore
       } else {
         $connection = $this->openConnection();
         $stmt = $connection->prepare(
-          "INSERT INTO address_table (`addressID`, `firstName`, `lastName`, `address1`, `address2`, `city`, `postalCode`, `region`, `country`, `phoneNumber`, `addressType`, `accountID`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)"
+          "INSERT INTO address_table (`addressID`, `firstName`, `lastName`, `address1`, `address2`, `city`, `postalCode`, `region`, `country`, `phoneNumber`, `addressType`, `accountID`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)"
         );
         $stmt->execute([
           $addressID,
@@ -398,10 +456,18 @@ class WebStore
     if (isset($_POST["updateAddresses"])) {
       $acctID = $_POST["editAcctID"];
       $addressID = $_POST["editAddressID"];
-      $fName = $_POST["editFName"];
-      $lName = $_POST["editLName"];
       $firstName = $_POST["editFirstName"];
       $lastName = $_POST["editLastName"];
+      $hiddenAddress1 = $_POST["hiddenAddress1"];
+      $hiddenAddress2 = $_POST["hiddenAddress2"];
+      $hiddenCity = $_POST["hiddenCity"];
+      $hiddenPostalCode = $_POST["hiddenPostalCode"];
+      $hiddenRegion = $_POST["hiddenRegion"];
+      $hiddenCountry = $_POST["hiddenCountry"];
+      $hiddenPhone = $_POST["hiddenPhoneNumber"];
+      $hiddenPrimary = $_POST["hiddenAddressType"];
+      $fName = $_POST["editFName"];
+      $lName = $_POST["editLName"];
       $address1 = $_POST["editAddress1"];
       $address2 = $_POST["editAddress2"];
       $city = $_POST["editCity"];
@@ -436,7 +502,7 @@ class WebStore
       } elseif (empty(isset($_POST["editPrimaryAddress"]))) {
         $connection = $this->openConnection();
         $stmt = $connection->prepare(
-          "UPDATE address_table SET `firstName` = ?, `lastName` = ?, `address1` = ?, `address2` = ?, `city` = ?, `postalCode` = ?, `region` = ?, `country` = ?, `phoneNumber` = ?, `addressType` = ? WHERE addressID = ? AND firstName = ? AND lastName = ? AND accountID = ?"
+          "UPDATE address_table SET `firstName` = ?, `lastName` = ?, `address1` = ?, `address2` = ?, `city` = ?, `postalCode` = ?, `region` = ?, `country` = ?, `phoneNumber` = ?, `addressType` = ? WHERE addressID = ? AND firstName = ? AND lastName = ? AND address1 = ? AND address2 = ? AND city = ? AND postalCode = ? AND region = ? AND country = ? AND phoneNumber = ? AND addressType = ? AND accountID = ?"
         );
         $stmt->execute([
           $fName,
@@ -452,6 +518,14 @@ class WebStore
           $addressID,
           $firstName,
           $lastName,
+          $hiddenAddress1,
+          $hiddenAddress2,
+          $hiddenCity,
+          $hiddenPostalCode,
+          $hiddenRegion,
+          $hiddenCountry,
+          $hiddenPhone,
+          $hiddenPrimary,
           $acctID,
         ]);
         $row = $stmt->fetch();
@@ -466,7 +540,7 @@ class WebStore
       } else {
         $connection = $this->openConnection();
         $stmt = $connection->prepare(
-          "UPDATE address_table SET `firstName` = ?, `lastName` = ?, `address1` = ?, `address2` = ?, `city` = ?, `postalCode` = ?, `region` = ?, `country` = ?, `phoneNumber` = ?, `addressType` = ? WHERE addressID = ? AND firstName = ? AND lastName = ? AND accountID = ?"
+          "UPDATE address_table SET `firstName` = ?, `lastName` = ?, `address1` = ?, `address2` = ?, `city` = ?, `postalCode` = ?, `region` = ?, `country` = ?, `phoneNumber` = ?, `addressType` = ? WHERE addressID = ? AND firstName = ? AND lastName = ? AND address1 = ? AND address2 = ? AND city = ? AND postalCode = ? AND region = ? AND country = ? AND phoneNumber = ? AND addressType = ? AND accountID = ?"
         );
         $stmt->execute([
           $fName,
@@ -482,6 +556,14 @@ class WebStore
           $addressID,
           $firstName,
           $lastName,
+          $hiddenAddress1,
+          $hiddenAddress2,
+          $hiddenCity,
+          $hiddenPostalCode,
+          $hiddenRegion,
+          $hiddenCountry,
+          $hiddenPhone,
+          $hiddenPrimary,
           $acctID,
         ]);
         $row = $stmt->fetch();
@@ -503,16 +585,43 @@ class WebStore
     if (
       isset($_POST["addressID"]) &&
       isset($_POST["firstName"]) &&
-      isset($_POST["lastName"])
+      isset($_POST["lastName"]) &&
+      isset($_POST["address1"]) &&
+      isset($_POST["city"]) &&
+      isset($_POST["postalCode"]) &&
+      isset($_POST["region"]) &&
+      isset($_POST["country"]) &&
+      isset($_POST["phoneNumber"]) &&
+      isset($_POST["addressType"])
     ) {
       $addressID = $_POST["addressID"];
       $firstName = $_POST["firstName"];
       $lastName = $_POST["lastName"];
+      $address1 = $_POST["address1"];
+      $address2 = $_POST["address2"];
+      $city = $_POST["city"];
+      $postalCode = $_POST["postalCode"];
+      $region = $_POST["region"];
+      $country = $_POST["country"];
+      $phoneNumber = $_POST["phoneNumber"];
+      $addressType = $_POST["addressType"];
       $connection = $this->openConnection();
       $stmt = $connection->prepare(
-        "DELETE FROM address_table WHERE addressID = ? AND firstName = ? AND lastName = ?"
+        "DELETE FROM address_table WHERE addressID = ? AND firstName = ? AND lastName = ? AND address1 = ? AND address2 = ? AND city = ? AND postalCode = ? AND region = ? AND country = ? AND phoneNumber = ? AND addressType = ?"
       );
-      $stmt->execute([$addressID, $firstName, $lastName]);
+      $stmt->execute([
+        $addressID,
+        $firstName,
+        $lastName,
+        $address1,
+        $address2,
+        $city,
+        $postalCode,
+        $region,
+        $country,
+        $phoneNumber,
+        $addressType,
+      ]);
       header("Location: " . $_SERVER["HTTP_REFERER"]);
     }
   }
@@ -609,6 +718,9 @@ class WebStore
           $contactNumber,
           $profileImg,
         ]);
+        if (!empty($_POST["oldProfileImg"])) {
+          unlink("assets/img/" . $_POST["oldProfileImg"]);
+        }
         move_uploaded_file(
           $_FILES["profileImg"]["tmp_name"],
           "assets/img/" . $profileImg
@@ -624,6 +736,12 @@ class WebStore
         },function(){ window.location.href = 'admin.php';});
       </script>";
         return $row;
+      } elseif (strlen($_POST["newPass"]) < 8) {
+        echo "<script> Swal.fire({
+          icon: 'error',
+          title: 'Password must be at least 8 characters.',
+        });
+        </script>";
       } elseif (
         (!empty($_POST["newPass"]) || !empty($_POST["newPass"])) &&
         empty($profileImg)
@@ -663,6 +781,9 @@ class WebStore
           $contactNumber,
           $profileImg,
         ]);
+        if (!empty($_POST["oldProfileImg"])) {
+          unlink("assets/img/" . $_POST["oldProfileImg"]);
+        }
         move_uploaded_file(
           $_FILES["profileImg"]["tmp_name"],
           "assets/img/" . $profileImg
@@ -943,7 +1064,7 @@ class WebStore
   {
     $connection = $this->openConnection();
     $stmt = $connection->prepare(
-      "SELECT product.ID, productName, categoryName, productColor, coverPhoto, netSales, productCost, netIncome, availability FROM (SELECT * FROM product_table) product LEFT JOIN category_table category ON product.categoryID = category.ID LEFT JOIN costing_table costing ON product.ID = costing.productID GROUP BY product.ID ORDER BY product.ID DESC"
+      "SELECT product.ID, productName, categoryName, productColor, coverPhoto, image1, image2, image3, netSales, productCost, netIncome, availability FROM (SELECT * FROM product_table) product LEFT JOIN category_table category ON product.categoryID = category.ID LEFT JOIN costing_table costing ON product.ID = costing.productID GROUP BY product.ID ORDER BY product.ID DESC"
     );
     $stmt->execute();
     $products = $stmt->fetchall();
@@ -1071,6 +1192,16 @@ class WebStore
           $sizeGuide,
           $ID,
         ]);
+        unlink("assets/img/" . $_POST["hiddenCover"]);
+        if (!empty($_POST["hiddenImage1"])) {
+          unlink("assets/img/" . $_POST["hiddenImage1"]);
+        }
+        if (!empty($_POST["hiddenImage2"])) {
+          unlink("assets/img/" . $_POST["hiddenImage2"]);
+        }
+        if (!empty($_POST["hiddenImage3"])) {
+          unlink("assets/img/" . $_POST["hiddenImage3"]);
+        }
         move_uploaded_file(
           $_FILES["coverPhoto"]["tmp_name"],
           "assets/img/" . $coverPhoto
@@ -1213,7 +1344,7 @@ class WebStore
   {
     $connection = $this->openConnection();
     $stmt = $connection->prepare(
-      "SELECT product.ID, productName, productColor, coverPhoto, availability, netSales FROM (SELECT * FROM product_table) product LEFT JOIN costing_table costing ON product.ID = costing.productID GROUP BY product.ID ORDER BY RAND() LIMIT 3"
+      "SELECT product.ID, productName, productColor, coverPhoto, availability, netSales FROM (SELECT * FROM product_table) product LEFT JOIN costing_table costing ON product.ID = costing.productID GROUP BY product.ID ORDER BY RAND()"
     );
     $stmt->execute();
     $randomProducts = $stmt->fetchall();
@@ -1285,11 +1416,25 @@ class WebStore
   {
     if (isset($_POST["deleteProductID"])) {
       $ID = $_POST["deleteProductID"];
+      $coverPhoto = $_POST["deleteCover"];
+      $image1 = $_POST["deleteImage1"];
+      $image2 = $_POST["deleteImage2"];
+      $image3 = $_POST["deleteImage3"];
       $connection = $this->openConnection();
       $stmt = $connection->prepare(
         "DELETE FROM product_table WHERE ID = '$ID'"
       );
       $stmt->execute();
+      unlink("assets/img/" . $coverPhoto);
+      if (!empty($_POST["deleteImage1"])) {
+        unlink("assets/img/" . $image1);
+      }
+      if (!empty($_POST["deleteImage2"])) {
+        unlink("assets/img/" . $image2);
+      }
+      if (!empty($_POST["deleteImage3"])) {
+        unlink("assets/img/" . $image3);
+      }
     }
   }
 
@@ -1641,7 +1786,7 @@ class WebStore
   {
     $connection = $this->openConnection();
     $stmt = $connection->prepare(
-      "SELECT sales.orderID, salesQty, shipMethod, shipFee, paymentMethod, totalAmount, coverPhoto, productName, productColor, netSales, size, orderStatus, account.firstName as accountFname, account.lastName as accountLname, email, shipAddress.firstName as addressFname, shipAddress.lastName as addressLname, address1, address2, city, postalCode, region, country, phoneNumber FROM sales_table sales LEFT JOIN account_table account ON sales.accountID = account.ID LEFT JOIN product_table product ON sales.productID = product.ID LEFT JOIN stocks_table stock ON sales.stockID = stock.ID LEFT JOIN costing_table costing ON sales.productID = costing.productID LEFT JOIN address_table shipAddress ON sales.orderID = shipAddress.orderID WHERE sales.accountID = ?  AND sales.orderID = ? GROUP BY product.ID"
+      "SELECT sales.orderID, salesQty, shipMethod, shipFee, paymentMethod, totalAmount, coverPhoto, productName, productColor, netSales, size, orderStatus, account.firstName as accountFname, account.lastName as accountLname, email, shipAddress.firstName as addressFname, shipAddress.lastName as addressLname, address1, address2, city, postalCode, region, country, phoneNumber FROM sales_table sales LEFT JOIN account_table account ON sales.accountID = account.ID LEFT JOIN product_table product ON sales.productID = product.ID LEFT JOIN stocks_table stock ON sales.stockID = stock.ID LEFT JOIN costing_table costing ON sales.productID = costing.productID LEFT JOIN address_table shipAddress ON sales.orderID = shipAddress.orderID WHERE sales.accountID = ?  AND sales.orderID = ? GROUP BY stock.ID"
     );
     $stmt->execute([$acctID, $orderID]);
     $track = $stmt->fetchall();
@@ -2864,6 +3009,13 @@ class WebStore
           icon: 'error',
           title: 'Empty Field',
           text: 'Please enter email address',
+        });
+        </script>";
+      } elseif ($this->checkEmail($email) == 0) {
+        echo "<script> Swal.fire({
+          icon: 'error',
+          title: 'Empty Field',
+          text: 'Email address is not registered',
         });
         </script>";
       } else {

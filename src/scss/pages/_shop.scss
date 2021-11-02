@@ -13,7 +13,7 @@
   }
   .shop-grid {
     @include grid.grid(auto 1fr, none, none, 30px 100px);
-    padding: 2em 0;
+    padding: 2em 0 6em 0;
   }
   .filter {
     grid-column: 2/3;
@@ -44,6 +44,7 @@
         font-size: 1rem;
         font-weight: map-get(fonts.$font-weight, regular);
         color: colors.$primary-color;
+        user-select: none;
         cursor: pointer;
 
         &:hover {
@@ -68,7 +69,6 @@
   .product-container {
     grid-column: 2/3;
     grid-row: 2/3;
-
     @include flex.flex(space-between, stretch, row);
     flex-wrap: wrap;
     .products {
@@ -214,5 +214,11 @@
         }
       }
     }
+  }
+
+  .load-more {
+    grid-column: 2/3;
+    grid-row: 3/4;
+    justify-self: center;
   }
 }
