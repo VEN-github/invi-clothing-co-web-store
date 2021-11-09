@@ -9,6 +9,7 @@ $countOrders = $store->count_orders();
 $pendingOrders = $store->get_pending_orders();
 ?>
   <body id="page-top">
+    <?php include_once "../includes/preloader.php"; ?>
     <!-- Page Wrapper -->
     <div id="wrapper">
       <?php include_once "../includes/dashboard_sidebar.php"; ?>

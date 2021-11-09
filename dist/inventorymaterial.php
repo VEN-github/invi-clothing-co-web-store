@@ -7,6 +7,7 @@ $admins = $store->get_admin();
 $materials = $store->get_all_materials();
 ?>
   <body id="page-top">
+    <?php include_once "../includes/preloader.php"; ?>
     <?php
     $store->add_inventory_materials();
     $store->update_inventory_material();

@@ -1,0 +1,78 @@
+@use "../abstracts/colors";
+@use "../abstracts/fonts";
+@use "../layout/flex";
+
+#our-story {
+  padding: 8em 0;
+
+  .story-container {
+    @include flex.flex(flex-start, stretch, row);
+    .line {
+      width: 120px;
+      height: 3px;
+      margin: 3em 3em 0 0;
+      background: colors.$primary-color;
+    }
+    .story {
+      & h1 {
+        font-size: 3.5rem;
+        font-weight: map-get(fonts.$font-weight, semi-bold);
+        color: colors.$secondary-color;
+        letter-spacing: 0.095em;
+      }
+
+      & p {
+        font-size: 1.25rem;
+        font-weight: map-get(fonts.$font-weight, medium);
+        color: colors.$primary-color;
+        line-height: 46px;
+
+        & span {
+          display: block;
+        }
+      }
+    }
+  }
+}
+
+#mission-vision {
+  padding: 2em;
+
+  .mission {
+    @include flex.flex(space-around, center, row);
+    flex-wrap: wrap;
+    margin-bottom: 6em;
+    .statement {
+      & h1 {
+        font-size: 3.5rem;
+        font-weight: map-get(fonts.$font-weight, semi-bold);
+        color: colors.$secondary-color;
+        letter-spacing: 0.095em;
+      }
+      & p {
+        font-size: 1.75rem;
+        font-weight: map-get(fonts.$font-weight, medium);
+        color: colors.$primary-color;
+        line-height: 54px;
+        letter-spacing: 0.095em;
+
+        & span:not(.highlight) {
+          display: block;
+        }
+
+        .highlight {
+          color: colors.$secondary-color;
+        }
+      }
+    }
+
+    & img {
+      width: 600px;
+      object-fit: cover;
+    }
+  }
+
+  .vision {
+    @extend .mission;
+  }
+}

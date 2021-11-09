@@ -14,6 +14,20 @@
     text-align: center;
   }
 
+  .no-data {
+    & img {
+      width: 300px;
+      margin-bottom: 1em;
+      object-fit: cover;
+    }
+
+    & p {
+      font-size: 1.5rem;
+      font-weight: map-get(fonts.$font-weight, medium);
+      color: colors.$primary-color;
+    }
+  }
+
   .carousel-container {
     position: relative;
     margin: 4em 0;

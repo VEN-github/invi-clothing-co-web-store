@@ -15,11 +15,11 @@ $store->update_userdata();
       <!-- start of profile section -->
       <main>
         <section id="profile">
-          <div class="banner">Profile</div>
+          <div data-sal="zoom-out" data-sal-duration="1200" data-sal-delay="200" data-sal-easing="ease-out-bounce" class="banner">Profile</div>
           <div class="container">
             <div class="profile-wrapper">
               <?php include_once "../includes/profilesummary.php"; ?>
-              <div class="customer-details">
+              <div data-sal="zoom-in" data-sal-duration="1200" data-sal-delay="200" data-sal-easing="ease-out-bounce" class="customer-details">
                 <h4>Personal Details</h4>
                 <form method="post" id="profileForm">
                   <input type="hidden" name="emailCustomer" value="<?= $userProfile[
@@ -134,6 +134,7 @@ $store->update_userdata();
       <!-- end of profile section -->
       <?php require_once "../includes/footer.php"; ?>
     </div>
+    <?php require_once "../includes/scripts.php"; ?>
     <script src="./assets/js/header.js"></script>
     <script src="./assets/js/user.js"></script>
     <script src="./assets/js/cart.js"></script>

@@ -1,0 +1,32 @@
+@use '../abstracts/colors';
+@use '../abstracts/fonts';
+
+#privacy-wrapper {
+  padding: 8em 0 2em 0;
+
+  .policy-container {
+    padding: 5em 2em;
+    .content {
+      margin-bottom: 1.5em;
+      & h1 {
+        font-size: 2.5rem;
+        font-weight: map-get(fonts.$font-weight, semi-bold);
+        color: colors.$primary-color;
+      }
+
+      & p {
+        font-size: 1.25rem;
+        font-weight: map-get(fonts.$font-weight, regular);
+        color: colors.$primary-color;
+      }
+    }
+  }
+}
+
+#terms-wrapper {
+  @extend #privacy-wrapper;
+
+  .terms-container {
+    @extend .policy-container;
+  }
+}

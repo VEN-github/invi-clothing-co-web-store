@@ -14,21 +14,17 @@ include_once "../includes/header.php";
     <!-- start of shop section -->
     <main>
       <section id="shop">
-        <div class="banner">
+        <div data-sal="slide-down" data-sal-duration="1200" data-sal-delay="200" data-sal-easing="ease-out-bounce" class="banner">
           Shop
           <p class="category-label"><span id="category-text">All Products</span> | <span id="product-count"></span> Products</p>
         </div>
         <div class="container">
           <div class="shop-grid">
-            <div class="filter">
-              <span>Sort by:</span>
-              <select id="sorting" class="input sorting">
-                <option value="Featured">Featured</option>
-                <option value="Ascending">Name (Ascending)</option>
-                <option value="Descending">Name (Descending)</option>
-              </select>
+            <div data-sal="slide-left" data-sal-duration="1200" data-sal-delay="300" data-sal-easing="ease-out-bounce" class="filter">
+              <span class="iconify search-icon" data-icon="fe:search" data-inline="false"></span>
+              <input type="text" class="input search-bar" id="search-bar" placeholder="Search...">
             </div>
-            <div class="categories">
+            <div data-sal="slide-right" data-sal-duration="1200" data-sal-delay="300" data-sal-easing="ease-out-bounce" class="categories">
               <p>Categories</p>
               <ul class="category-list">
                 <li class="filter-btn" data-filter="All Products">All Products</li>
@@ -38,29 +34,18 @@ include_once "../includes/header.php";
                 ] ?>"><?= $category["categoryName"] ?></li>
                 <?php } ?>
               </ul>
-              <p>Stock Status</p>
-              <ul class="stock-status">
-                <li>
-                  <div class="custom-checkbox">
-                    <input type="checkbox" name="" id="" class="checkbox" />
-                    <label for="">In Stock</label>
-                  </div>
-                </li>
-                <li>
-                  <div class="custom-checkbox">
-                    <input type="checkbox" name="" id="" class="checkbox" />
-                    <label for="">Out of Stock</label>
-                  </div>
-                </li>
-              </ul>
             </div>
-            <div class="product-container">          
+            <div data-sal="zoom-out" data-sal-duration="1200" data-sal-delay="400" data-sal-easing="ease-out-bounce" class="product-container">          
             <?php if ($displayProducts) { ?>
               <?php foreach ($displayProducts as $product) { ?>
                 <?php if ($product["availability"] === "Available") { ?>
                   <div class="products <?= $product[
                     "categoryName"
-                  ] ?>" style="display:none;">
+                  ] ?> <?= strtoupper(
+   $product["productName"]
+ ) ?> <?= strtoupper($product["categoryName"]) ?> <?= strtoupper(
+   $product["productColor"]
+ ) ?>" style="display:none;">
                     <div class="labels">
                       <span class="product-label"></span>
                       <!-- <button class="wishlist">
@@ -96,10 +81,10 @@ include_once "../includes/header.php";
                   <?php } ?>
                 <?php } ?>
               <?php } else { ?> 
-              <div class="container"><h1>No Data Available</h1></div>
+              <div class="container no-data"><img src="./assets/img/empty-order.svg" alt="No Data"><p>No Data Available</p></div>
               <?php } ?>
             </div>
-            <div class="load-more"><button id="load-more" class="btn primary-btn">Load More</button></div>
+            <div data-sal="zoom-in" data-sal-duration="1200" data-sal-delay="500" data-sal-easing="ease-out-bounce" class="load-more"><button id="load-more" class="btn primary-btn">Load More</button></div>
           </div>
         </div>
       </section>
@@ -126,5 +111,6 @@ include_once "../includes/header.php";
     });
   </script>
   <script src="./assets/js/filter.js"></script>
+  <?php require_once "../includes/scripts.php"; ?>
 </body>
 </html>

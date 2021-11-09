@@ -7,6 +7,7 @@ $admins = $store->get_admin();
 $products = $store->get_products();
 ?>
   <body id="page-top">
+    <?php include_once "../includes/preloader.php"; ?>
     <?php
     $store->add_inventory_products();
     $store->update_inventory_product();

@@ -11,7 +11,8 @@ $product = $store->get_editproduct($ID);
 $stocks = $store->view_all_stocks($ID);
 $costs = $store->view_all_cost($ID);
 ?>
-<body id="page-top">
+  <body id="page-top">
+  <?php include_once "../includes/preloader.php"; ?>
     <?php
     $categories = $store->get_categories();
     $store->update_product($ID);

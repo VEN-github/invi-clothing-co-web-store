@@ -9,6 +9,7 @@ include_once "../includes/dashboard_header.php";
 $admins = $store->get_admin();
 ?>
   <body id="page-top">
+    <?php include_once "../includes/preloader.php"; ?>
     <?php
     $store->update_order_status();
     $orders = $store->get_orders();
@@ -218,6 +219,7 @@ $admins = $store->get_admin();
                   <button class="btn btn-secondary load-more">Load more</button>
                 </div>
                 <?php } else { ?>
+                  <img class="img-fluid mx-auto d-block mb-4" src="./assets/img/no-data.svg" alt="No Data" width="300px">
                   <h4 class="text-center text-gray-900">No Data Available</h4>
                 <?php } ?>
               </div>

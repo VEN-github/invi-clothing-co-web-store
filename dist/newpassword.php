@@ -17,9 +17,9 @@ include_once "../includes/header.php";
           <div class="container">
             <div class="forgotPass-grid">
               <div class="illustration">
-                <img src="./assets/img/secure-login.svg" alt="Secure Login" />
+                <img data-sal="slide-right" data-sal-duration="1200" data-sal-delay="200" data-sal-easing="ease-out-bounce" src="./assets/img/secure-login.svg" alt="Secure Login" />
               </div>
-              <div class="forgotPass-form">
+              <div data-sal="zoom-in" data-sal-duration="1200" data-sal-delay="200" data-sal-easing="ease-out-bounce" class="forgotPass-form">
                 <h4>Create New Password</h4>
                 <p>
                   Your new password must be different from previous used
@@ -88,6 +88,7 @@ include_once "../includes/header.php";
       <!-- end of new password section -->
       <?php require_once "../includes/footer.php"; ?>
     </div>
+    <?php require_once "../includes/scripts.php"; ?>
     <script src="./assets/js/header.js"></script>
     <script src="./assets/js/user.js"></script>
     <script src="./assets/js/cart.js"></script>

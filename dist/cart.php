@@ -21,5 +21,6 @@ require_once "../includes/header.php";
     <script src="./assets/js/header.js"></script>
     <script src="./assets/js/user.js"></script>
     <script src="./assets/js/cart.js"></script>
+    <?php include_once "../includes/scripts.php"; ?>
   </body>
 </html>

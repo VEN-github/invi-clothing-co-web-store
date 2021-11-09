@@ -15,7 +15,7 @@ require_once "../includes/header.php";
           <div class="container">
             <!-- start of login form -->
             <div class="form-container">
-              <form class="form-group login-form" method="post">
+              <form data-sal="zoom-in" data-sal-duration="1200" data-sal-delay="200" data-sal-easing="ease-out-bounce" class="form-group login-form" method="post">
                 <h2 class="title">Login</h2>
                 <div class="social">
                   <a href="#"
@@ -84,12 +84,12 @@ require_once "../includes/header.php";
               <!-- start of panels -->
               <div class="panels-container">
                 <div class="panel right-panel">
-                  <img
+                  <img data-sal="slide-left" data-sal-duration="1200" data-sal-delay="200" data-sal-easing="ease-out-bounce"
                     class="illustration"
                     src="./assets/img/sign-up.svg"
                     alt="Sign Up Illustration"
                   />
-                  <div class="content signup-content">
+                  <div data-sal="slide-down" data-sal-duration="1200" data-sal-delay="200" data-sal-easing="ease-out-bounce" class="content signup-content">
                     <h3 class="panel-title">Get Started</h3>
                     <p class="panel-text">
                       Enter your personal details and start<span
@@ -109,6 +109,7 @@ require_once "../includes/header.php";
       </main>
       <?php require_once "../includes/footer.php"; ?>
     </div>
+    <?php include_once "../includes/scripts.php"; ?>
     <script src="./assets/js/header.js"></script>
     <script src="./assets/js/cart.js"></script>
     <script src="./assets/js/buttons.js"></script>

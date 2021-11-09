@@ -1,6 +1,9 @@
 const user = document.querySelector(".profile-menu");
 const userMenu = document.querySelector(".menu");
-
-user.addEventListener("click", () => {
-  userMenu.classList.toggle("active");
-});
+if (user) {
+  user.addEventListener("click", () => {
+    if (userMenu) {
+      userMenu.classList.toggle("active");
+    }
+  });
+}

@@ -65,7 +65,7 @@ $store->cancel_order();
               <?php } ?>
             <?php } ?>
             <div class="wrapper">
-              <div class="card-body">
+              <div data-sal="zoom-out" data-sal-duration="1200" data-sal-delay="400" data-sal-easing="ease-out-bounce" class="card-body">
                 <?php if ($tracking) { ?>
                   <?php foreach ($tracking as $track) { ?>
                     <?php if ($track["orderStatus"] === "Cancelled") { ?>
@@ -250,6 +250,7 @@ $store->cancel_order();
       <!-- end of tracking order section -->
       <?php require_once "../includes/footer.php"; ?>
     </div>
+    <?php require_once "../includes/scripts.php"; ?>
     <script src="./assets/js/header.js"></script>
     <script src="./assets/js/user.js"></script>
     <script src="./assets/js/cart.js"></script>

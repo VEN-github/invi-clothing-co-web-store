@@ -139,7 +139,7 @@
   }
   .order-summary {
     width: 345px;
-    height: 555px;
+    height: 505px;
     margin: 1.5em 0 2.5em 0;
     padding: 1em 1.5em;
     background: colors.$text-color;
@@ -169,6 +169,23 @@
         font-weight: map-get(fonts.$font-weight, medium);
         color: colors.$primary-color;
         border: 0;
+      }
+
+      .ship-opt {
+        padding: 1em;
+        font-size: 0.875rem;
+        font-weight: map-get(fonts.$font-weight, regular);
+        color: colors.$primary-color;
+        border: 1px solid colors.$disabled-color;
+        border-radius: 5px;
+
+        & span {
+          display: block;
+        }
+
+        .bold {
+          font-weight: map-get(fonts.$font-weight, medium);
+        }
       }
     }
     .subtotal-container {

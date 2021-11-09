@@ -283,10 +283,13 @@ function displayCart() {
             Shipping, taxes, and discounts will be calculated at checkout.
           </p>
           <div class="note">
-            <p>Add Note</p>
-            <form action="">
-              <textarea class="note-input" name="" id=""></textarea>
-            </form>
+            <p>Shipping options</p>
+            <div class="ship-opt">
+              <span class="bold">Standard Delivery:</span>
+              <span>Est. Arrival: 2-3 Days (Metro Manila), 5-7 Days (Outside Metro Manila)</span>
+              <span class="bold">Express Delivery:</span>
+              <span>Est. Arrival: Same Day (Within Metro Manila only)</span>
+            </div>
           </div>
           <div class="subtotal-container">
             Subtotal:

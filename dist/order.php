@@ -15,11 +15,11 @@ $orders = $store->get_order_customer($ID);
       <!-- start of order section -->
       <main>
         <section id="profile">
-          <div class="banner">Orders</div>
+          <div data-sal="zoom-out" data-sal-duration="1200" data-sal-delay="200" data-sal-easing="ease-out-bounce" class="banner">Orders</div>
           <div class="container">
             <div class="profile-wrapper">
               <?php include_once "../includes/profilesummary.php"; ?>
-              <div class="customer-details">
+              <div data-sal="zoom-in" data-sal-duration="1200" data-sal-delay="200" data-sal-easing="ease-out-bounce" class="customer-details">
                 <?php if ($orders) { ?>
                   <table id="orderTable">
                     <thead>
@@ -78,6 +78,7 @@ $orders = $store->get_order_customer($ID);
       <!-- end of order section -->
       <?php require_once "../includes/footer.php"; ?>
     </div>
+    <?php require_once "../includes/scripts.php"; ?>
     <script src="./assets/js/header.js"></script>
     <script src="./assets/js/user.js"></script>
     <script src="./assets/js/cart.js"></script>

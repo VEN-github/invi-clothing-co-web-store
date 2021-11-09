@@ -7,6 +7,7 @@ $countOrders = $store->count_orders();
 $pendingOrders = $store->get_pending_orders();
 ?>
   <body id="page-top">
+    <?php include_once "../includes/preloader.php"; ?>
     <?php
     $store->update_admin();
     $admins = $store->get_admin();
@@ -39,12 +40,10 @@ $pendingOrders = $store->get_pending_orders();
                             "profileImg"
                           ] ?>" alt="Profile image" class="mx-auto d-block mt-4 mb-4" width="150px" height="150px" style="object-fit:cover; border-radius:50%;">
                         <?php } ?>
-                        <input type="hidden" id="initials" value="<?= mb_substr(
-  $admin["firstName"],
-  0,
-  1
+                        <input type="hidden" id="initials" value="<?= strtoupper(
+  mb_substr($admin["firstName"], 0, 1)
 ),
-                          mb_substr($admin["lastName"], 0, 1) ?>">
+                          strtoupper(mb_substr($admin["lastName"], 0, 1)) ?>">
                         <h4 class="font-weight-bold text-gray-900 text-center"><?= $admin[
                           "firstName"
                         ] .

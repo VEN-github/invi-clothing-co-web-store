@@ -14,10 +14,10 @@ include_once "../includes/header.php";
       <section id="page-not-found">
         <div class="container">
           <div class="wrapper">
-            <img src="./assets/img/404.svg" alt="404" />
-            <h4>Oops! Page not found</h4>
-            <p>We can't seem to find the page you're looking for</p>
-            <a href="index.php" class="btn primary-btn back-btn"
+            <img data-sal="zoom-out" data-sal-duration="1200" data-sal-delay="200" data-sal-easing="ease-out-bounce" src="./assets/img/404.svg" alt="404" />
+            <h4 data-sal="slide-down" data-sal-duration="1200" data-sal-delay="300" data-sal-easing="ease-out-bounce">Oops! Page not found</h4>
+            <p data-sal="slide-down" data-sal-duration="1200" data-sal-delay="400" data-sal-easing="ease-out-bounce">We can't seem to find the page you're looking for</p>
+            <a data-sal="zoom-in" data-sal-duration="1200" data-sal-delay="600" data-sal-easing="ease-out-bounce" href="index.php" class="btn primary-btn back-btn"
               >Back to Homepage</a
             >
           </div>
@@ -27,6 +27,7 @@ include_once "../includes/header.php";
     <!-- end of 404 section -->
     <?php require_once "../includes/footer.php"; ?>
   </div>
+  <?php require_once "../includes/scripts.php"; ?>
   <script src="./assets/js/header.js"></script>
   <script src="./assets/js/user.js"></script>
   <script src="./assets/js/cart.js"></script>

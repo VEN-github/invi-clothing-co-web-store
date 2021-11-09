@@ -1,4 +1,4 @@
-<div class="profile-summary">
+<div data-sal="slide-right" data-sal-duration="1200" data-sal-delay="200" data-sal-easing="ease-out-bounce" class="profile-summary">
   <div class="user">
     <?php if ($userProfile) { ?>
       <?php if (

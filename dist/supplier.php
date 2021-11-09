@@ -6,6 +6,7 @@ include_once "../includes/dashboard_header.php";
 $admins = $store->get_admin();
 ?>
   <body id="page-top">
+    <?php include_once "../includes/preloader.php"; ?>
     <?php
     $store->add_supplier();
     $store->update_supplier();

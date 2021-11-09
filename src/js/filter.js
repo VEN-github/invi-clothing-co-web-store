@@ -37,3 +37,22 @@ if (filterBtn) {
     });
   });
 }
+
+const search = document.querySelector("#search-bar");
+
+if (search) {
+  search.addEventListener("keyup", (e) => {
+    e.preventDefault();
+
+    const searchValue = search.value.toUpperCase().trim();
+    productItem.forEach((product) => {
+      if (product.classList.contains(searchValue)) {
+        product.style.display = "flex";
+      } else if (searchValue == "") {
+        product.style.display = "flex";
+      } else {
+        product.style.display = "none";
+      }
+    });
+  });
+}

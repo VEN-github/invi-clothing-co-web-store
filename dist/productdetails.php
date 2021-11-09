@@ -18,12 +18,12 @@ include_once "../includes/header.php";
       <div class="container">
         <div class="product-grid">
           <div id="zoom" class="magnify-wrapper product-highlight">
-            <img src="./assets/img/<?= $product[
+            <img data-sal="zoom-out" data-sal-duration="1200" data-sal-delay="200" data-sal-easing="ease-out-bounce" src="./assets/img/<?= $product[
               "coverPhoto"
             ] ?>" alt="<?= $product["coverPhoto"] ?>">
             <div id="large-img"></div>
           </div>
-          <div class="product-gallery">
+          <div data-sal="zoom-out" data-sal-duration="1200" data-sal-delay="400" data-sal-easing="ease-out-bounce" class="product-gallery">
             <img src="./assets/img/<?= $product[
               "coverPhoto"
             ] ?>" alt="<?= $product["coverPhoto"] ?>">
@@ -43,7 +43,7 @@ include_once "../includes/header.php";
               ] ?>" alt="<?= $product["image3"] ?>">
             <?php } ?>
           </div>
-          <div class="product-info">
+          <div data-sal="zoom-out" data-sal-duration="1200" data-sal-delay="400" data-sal-easing="ease-out-bounce" class="product-info">
             <input type="hidden" id="productID" value="<?= $product["ID"] ?>">
             <div class="label"></div>
             <div class="product-name"><?= $product["productName"] ?></div>
@@ -99,7 +99,7 @@ include_once "../includes/header.php";
               </div>
             </div>
           </div>
-          <div class="product-actions">
+          <div data-sal="zoom-out" data-sal-duration="1200" data-sal-delay="400" data-sal-easing="ease-out-bounce" class="product-actions">
             <div class="product-color">
               <p>Color: <span id="productColor"><?= $product[
                 "productColor"
@@ -428,6 +428,7 @@ include_once "../includes/header.php";
     <!-- end of product section -->
     <?php require_once "../includes/footer.php"; ?>
   </div>
+  <?php require_once "../includes/scripts.php"; ?>
   <script src="./assets/js/header.js"></script>
   <script src="./assets/js/user.js"></script>
   <script src="./assets/js/imgGallery.js"></script>

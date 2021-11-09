@@ -1,7 +1,7 @@
 <?php $store->subscribe(); ?>
 <!-- start of footer -->
 <footer id="main-footer">
-  <div class="container footer-container">
+  <div data-sal="slide-up" data-sal-duration="1200" data-sal-delay="200" data-sal-easing="ease-out-bounce" class="container footer-container">
     <div class="logo">
       <a href="index.php"><img src="./assets/img/logo.png" alt="Logo" /></a>
       <p class="copyright"><span>&copy;</span> 2021 INVI Clothing Co.</p>
@@ -11,16 +11,16 @@
       <ul>
         <li><a href="index.php">Home</a></li>
         <li><a href="shop.php">Shop</a></li>
-        <li><a href="#">About</a></li>
+        <li><a href="about.php">About</a></li>
         <li><a href="contact.php">Contact</a></li>
       </ul>
     </div>
     <div class="help-center">
       <h4>HELP CENTER</h4>
       <ul>
-        <li><a href="#">FAQ</a></li>
-        <li><a href="#">Privacy Policy</a></li>
-        <li><a href="#">Terms & Condition</a></li>
+        <li><a href="faq.php">FAQ</a></li>
+        <li><a href="privacypolicy.php">Privacy Policy</a></li>
+        <li><a href="terms.php">Terms & Condition</a></li>
       </ul>
     </div>
     <div class="social-icon">
