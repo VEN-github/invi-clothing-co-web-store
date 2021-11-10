@@ -1,5 +1,6 @@
 <?php
 require_once "../class/webstoreclass.php";
+require_once "../includes/config.php";
 require "../PHPMailer/src/PHPMailer.php";
 require "../PHPMailer/src/SMTP.php";
 $store->loginValidation();
@@ -25,13 +26,13 @@ require_once "../includes/header.php";
                       data-inline="false"
                     ></span
                   ></a>
-                  <a href="#"
-                    ><span
+                  <button onclick="window.location = '<?php echo $login_url; ?>'" type="button">
+                    <span
                       class="iconify google"
                       data-icon="akar-icons:google-contained-fill"
                       data-inline="false"
-                    ></span
-                  ></a>
+                    ></span>
+                  </button>
                 </div>
                 <p class="input-text">or use your email account</p>
                 <div class="input-field">

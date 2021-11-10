@@ -3347,6 +3347,45 @@ class WebStore
       }
     }
   }
+
+  //inserting gmail data
+  function insertData($data)
+  {
+      //check email
+      if($this->checkEmail($data["email"]) == 0){
+        $connection = $this->openConnection();
+        $stmt = $connection->prepare("INSERT INTO account_table ( `firstName` , `lastName` , `email` , `access`) VALUES (?,?,?,?)");
+        $stmt->execute([
+              $data['firstName'],
+              $data['lastName'],
+              $data['email'],
+              $data['access']
+            ]);
+
+            if($stmt){
+              $selectUser =  $connection->prepare("SELECT * FROM account_table WHERE email = ?");
+              $selectUser->execute([$data['email']]);
+              $row = $selectUser->fetch();
+              $count = $selectUser->rowCount();
+    
+              if($count > 0){
+                $this->set_userdata($row);
+                header("Location: ../dist/index.php");
+              }
+          }   
+      } else{
+              $connection = $this->openConnection();
+              $selectUser =  $connection->prepare("SELECT * FROM account_table WHERE email = ?");
+              $selectUser->execute([$data['email']]);
+              $row = $selectUser->fetch();
+              $count = $selectUser->rowCount();
+
+              if($count > 0){
+                $this->set_userdata($row);
+                header("Location: ../dist/index.php");
+              }
+        }
+  }
 }
 $store = new WebStore();
 ?>
