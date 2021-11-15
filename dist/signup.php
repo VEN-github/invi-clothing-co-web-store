@@ -1,6 +1,7 @@
 <?php
 require_once "../class/webstoreclass.php";
 require_once "../includes/config.php";
+require_once "../includes/fb_config.php";
 require "../PHPMailer/src/PHPMailer.php";
 require "../PHPMailer/src/SMTP.php";
 $store->signupValidation();
@@ -34,112 +35,24 @@ require_once "../includes/header.php";
               </div>
               <!-- end of panels -->
               <!-- start of sign up form -->
-<<<<<<< HEAD
-              <form class="form-group signup-form" method="post">
-                <h2 class="title">Create Account</h2>
-                <div class="social">
-                  <a href="#"
-                    ><span
-                      class="iconify facebook"
-                      data-icon="akar-icons:facebook-fill"
-                      data-inline="false"
-                    ></span
-                  ></a>
-                  <button onclick="window.location = '<?php echo $login_url; ?>'" type="button">
-                    <span
-                      class="iconify google"
-                      data-icon="akar-icons:google-contained-fill"
-                      data-inline="false"
-                    ></span>  
-                  </button>
-                </div>
-                <p class="input-text">or use your email for registration</p>
-                <div class="input-field">
-                  <input
-                    type="text"
-                    name="firstName"
-                    placeholder=" "
-                    class="input"
-                  />
-                  <label class="form-label">First Name</label>
-                </div>
-                <?php if (isset($_GET["firstNameError"])) { ?>
-                <div class="validation">
-                  <span
-                    class="iconify error-icon"
-                    data-icon="clarity:error-standard-line"
-                    data-inline="false"
-                  ></span
-                  ><?= $_GET["firstNameError"] ?>
-                </div>
-                <?php } ?>
-                <div class="input-field">
-                  <input
-                    type="text"
-                    name="lastName"
-                    placeholder=" "
-                    class="input"
-                  />
-                  <label class="form-label">Last Name</label>
-                </div>
-                <?php if (isset($_GET["lastNameError"])) { ?>
-                <div class="validation">
-                  <span
-                    class="iconify error-icon"
-                    data-icon="clarity:error-standard-line"
-                    data-inline="false"
-                  ></span
-                  ><?= $_GET["lastNameError"] ?>
-                </div>
-                <?php } ?>
-                <div class="input-field">
-                  <input
-                    type="email"
-                    name="email"
-                    placeholder=" "
-                    class="input"
-                  />
-                  <label class="form-label">Email Address</label>
-                </div>
-                <?php if (isset($_GET["emailError"])) { ?>
-                <div class="validation">
-                  <span
-                    class="iconify error-icon"
-                    data-icon="clarity:error-standard-line"
-                    data-inline="false"
-                  ></span
-                  ><?= $_GET["emailError"] ?>
-                </div>
-                <?php } ?>
-                <div class="input-field">
-                  <input
-                    type="password"
-                    name="password"
-                    id="signup-pass-input"
-                    placeholder=" "
-                    class="input password"
-                  />
-                  <label class="form-label">Password</label>
-                  <button type="button" class="show-password signup-show-pass signup-show-invisible">
-=======
               <div class="signup-form">
                 <form class="form-group" method="post">
                   <h2 class="title">Create Account</h2>
                   <div class="social">
-                    <a href="#"
-                      ><span
+                    <button onclick="window.location = '<?php echo $fb_url; ?>'" type="button">
+                      <span
                         class="iconify facebook"
                         data-icon="akar-icons:facebook-fill"
                         data-inline="false"
                       ></span
-                    ></a>
-                    <a href="#"
-                      ><span
+                    ></button>
+                    <button onclick="window.location = '<?php echo $login_url; ?>'" type="button">
+                      <span
                         class="iconify google"
                         data-icon="akar-icons:google-contained-fill"
                         data-inline="false"
-                      ></span
-                    ></a>
+                      ></span>  
+                    </button>
                   </div>
                   <p class="input-text">or use your email for registration</p>
                   <div class="input-field">
@@ -172,7 +85,6 @@ require_once "../includes/header.php";
                   </div>
                   <?php if (isset($_GET["lastNameError"])) { ?>
                   <div class="validation">
->>>>>>> 8f06247dc1df300c975eabb9ef5b4048b6f51924
                     <span
                       class="iconify error-icon"
                       data-icon="clarity:error-standard-line"

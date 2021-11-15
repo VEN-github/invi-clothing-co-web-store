@@ -16,72 +16,25 @@ require_once "../includes/header.php";
         <section data-sal="zoom-out" data-sal-duration="1200" data-sal-delay="200" data-sal-easing="ease-out-bounce" class="login-wrapper">
           <div class="container">
             <div class="form-container">
-<<<<<<< HEAD
-              <form class="form-group login-form" method="post">
-                <h2 class="title">Login</h2>
-                <div class="social">
-                  <button onclick="window.location = '<?php echo $fb_url; ?>'" type="button">
-                    <span
-                      class="iconify facebook"
-                      data-icon="akar-icons:facebook-fill"
-                      data-inline="false"
-                    ></span
-                  ></button>
-                  <button onclick="window.location = '<?php echo $login_url; ?>'" type="button">
-                    <span
-                      class="iconify google"
-                      data-icon="akar-icons:google-contained-fill"
-                      data-inline="false"
-                    ></span>
-                  </button>
-                </div>
-                <p class="input-text">or use your email account</p>
-                <div class="input-field">
-                  <input
-                    type="email"
-                    name="email"
-                    class="input"
-                    placeholder=" "
-                  />
-                  <label class="form-label">Email Address</label>
-                </div>
-                <div class="input-field">
-                  <input
-                    type="password"
-                    name="password"
-                    id="login-pass-input"
-                    class="input password"
-                    placeholder=" "
-                  />
-                  <label class="form-label">Password</label>
-                  <button type="button" class="show-password login-eye-btn invisible">
-                    <span
-                      class="iconify show-pass"
-                      data-icon="ant-design:eye-invisible-outlined"
-                      data-inline="false"
-                    ></span>
-                  </button>
-                  <button type="button" class="show-password login-eye-btn visible" style="display:none;"> 
-=======
               <!-- start of login form -->
               <div class="login-form">
                 <form class="form-group login-group" method="post">
                   <h2 class="title">Login</h2>
                   <div class="social">
-                    <a href="#"
-                      ><span
+                    <button onclick="window.location = '<?php echo $fb_url; ?>'" type="button">
+                      <span
                         class="iconify facebook"
                         data-icon="akar-icons:facebook-fill"
                         data-inline="false"
                       ></span
-                    ></a>
-                    <a href="#"
-                      ><span
+                    ></button>
+                    <button onclick="window.location = '<?php echo $login_url; ?>'" type="button">
+                      <span
                         class="iconify google"
                         data-icon="akar-icons:google-contained-fill"
                         data-inline="false"
-                      ></span
-                    ></a>
+                      ></span>
+                    </button>
                   </div>
                   <p class="input-text">or use your email account</p>
                   <div class="input-field">
@@ -110,27 +63,26 @@ require_once "../includes/header.php";
                       ></span>
                     </button>
                     <button type="button" class="show-password login-eye-btn visible" style="display:none;"> 
-                      <span
-                        class="iconify show-pass"
-                        data-icon="ant-design:eye-outlined"
-                        data-inline="false"
-                      ></span>
-                    </button>
-                  </div>
-                  <?php if (isset($_GET["error"])) { ?>
-                  <div class="validation">
->>>>>>> 8f06247dc1df300c975eabb9ef5b4048b6f51924
                     <span
-                      class="iconify error-icon"
-                      data-icon="clarity:error-standard-line"
-                      data-inline="false"
-                    ></span
-                    ><?= $_GET["error"] ?>
-                  </div>
-                  <?php } ?>
-                  <a href="forgotpassword.php" class="forgot-pass">Forgot Password?</a>
-                  <input type="submit" name="login" value="Login" class="login" />
-                </form>
+                          class="iconify show-pass"
+                          data-icon="ant-design:eye-outlined"
+                          data-inline="false"
+                        ></span>
+                      </button>
+                    </div>
+                    <?php if (isset($_GET["error"])) { ?>
+                    <div class="validation">
+                      <span
+                        class="iconify error-icon"
+                        data-icon="clarity:error-standard-line"
+                        data-inline="false"
+                      ></span
+                      ><?= $_GET["error"] ?>
+                    </div>
+                    <?php } ?>
+                    <a href="forgotpassword.php" class="forgot-pass">Forgot Password?</a>
+                    <input type="submit" name="login" value="Login" class="login" />
+                  </form>
               </div>
               <!-- end of login form -->
               <!-- start of panels -->
