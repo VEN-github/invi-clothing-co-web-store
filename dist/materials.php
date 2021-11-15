@@ -840,7 +840,7 @@ $admins = $store->get_admin();
       var materialName = $(this).data('material_name');
       var supplierEmail = $(this).data('supplier_email');
 
-      $('#msg').val('Item ' + materialName + ' is at low inventory <add quantity here>' );
+      $('#msg').val('Hi, This is INVI Clothing Co. We would like to inform you that ' + materialName + ' is out of stock/low inventory. We would be ordering (quantity) (size). Let us know if or not available. Thank you!' );
       $('#supplierEmailAdd').val(supplierEmail);
       } );
     </script>

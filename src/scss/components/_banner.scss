@@ -1,14 +1,14 @@
 @use '../abstracts/colors';
 @use '../abstracts/fonts';
+@use './media';
 
 .banner {
   width: 100%;
-  margin-top: -0.7em;
-  padding: 1em 0;
+  padding: 1em 0.5em;
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-weight: map-get(fonts.$font-weight, semi-bold);
   color: colors.$primary-color;
   background: colors.$banner-color;
-  font-size: 4rem;
-  font-weight: map-get(fonts.$font-weight, semi-bold);
   letter-spacing: 0.1em;
   text-align: center;
 }

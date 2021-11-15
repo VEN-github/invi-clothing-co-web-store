@@ -13,7 +13,9 @@ $checkout = $store->get_checkout();
         <section id="checkout-process">
           <div class="checkout-banner">
             <div class="container">
-              <img src="./assets/img/logo.png" alt="Logo" />
+              <div class="banner-logo">
+                <img src="./assets/img/logo.png" alt="Logo" />
+              </div>
             </div>
             <?php include_once "../includes/stepper.php"; ?>
           </div>
@@ -133,19 +135,17 @@ $checkout = $store->get_checkout();
                       : "" ?>
                   </div>
                   <div class="button-container">
-                    <button>
-                      <a
-                        class="btn outline-primary-btn back-btn"
-                        href="checkoutInfo.php?ID=<?= $user["ID"] ?>"
-                      >
-                        <span
-                          class="iconify left-arrow"
-                          data-icon="dashicons:arrow-left-alt"
-                          data-inline="false"
-                        ></span
-                        >Back to Information</a
-                      >
-                    </button>
+                    <a
+                      class="btn outline-primary-btn back-btn"
+                      href="checkoutInfo.php?ID=<?= $user["ID"] ?>"
+                    >
+                      <span
+                        class="iconify left-arrow"
+                        data-icon="dashicons:arrow-left-alt"
+                        data-inline="false"
+                      ></span
+                      >Back to Information</a
+                    >
                     <button type="submit" name="proceedPayment" id="proceedPayment" class="btn primary-btn next-btn">
                       Proceed to Payment
                       <span

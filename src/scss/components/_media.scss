@@ -25,11 +25,6 @@
     @content;
   }
 }
-@mixin tablet {
-  @media screen and (max-width: breakpoints.$tablet) {
-    @content;
-  }
-}
 @mixin bigMobile {
   @media screen and (max-width: breakpoints.$big-mobile) {
     @content;

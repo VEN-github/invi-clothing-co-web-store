@@ -20,31 +20,27 @@ include_once "../includes/header.php";
             <div class="contact-grid">
               <div class="contact-vector">
                 <img data-sal="slide-right" data-sal-duration="1200" data-sal-delay="200" data-sal-easing="ease-out-bounce" src="./assets/img/contact-us.svg" alt="Contact Us" />
-                <div class="contact-details">
-                  <div class="contact-icon">
-                    <div data-sal="slide-up" data-sal-duration="1200" data-sal-delay="400" data-sal-easing="ease-out-bounce">
-                      <span
-                        class="iconify icon-contact"
-                        data-icon="fluent:location-28-filled"
-                      ></span>
-                    </div>
-                    <div data-sal="slide-up" data-sal-duration="1200" data-sal-delay="600" data-sal-easing="ease-out-bounce">
-                      <span
-                        class="iconify icon-contact"
-                        data-icon="carbon:phone-filled"
-                      ></span>
-                    </div>
-                    <div data-sal="slide-up" data-sal-duration="1200" data-sal-delay="800" data-sal-easing="ease-out-bounce">
-                      <span
-                        class="iconify icon-contact"
-                        data-icon="mdi:email"
-                      ></span>
-                    </div>
+                <div class="contact-icon">
+                  <div data-sal="slide-up" data-sal-duration="1200" data-sal-delay="400" data-sal-easing="ease-out-bounce">
+                    <span
+                      class="iconify icon-contact"
+                      data-icon="fluent:location-28-filled"
+                    ></span>
+                    <p>Pinagbuhatan, Pasig City 1600</p>
                   </div>
-                  <div class="contact-text">
-                    <p data-sal="slide-up" data-sal-duration="1200" data-sal-delay="400" data-sal-easing="ease-out-bounce">Pinagbuhatan, Pasig City 1600</p>
-                    <p data-sal="slide-up" data-sal-duration="1200" data-sal-delay="600" data-sal-easing="ease-out-bounce">+63 995 976 4761</p>
-                    <p data-sal="slide-up" data-sal-duration="1200" data-sal-delay="800" data-sal-easing="ease-out-bounce">inviclothing.co@gmail.com</p>
+                  <div data-sal="slide-up" data-sal-duration="1200" data-sal-delay="600" data-sal-easing="ease-out-bounce">
+                    <span
+                      class="iconify icon-contact"
+                      data-icon="carbon:phone-filled"
+                    ></span>
+                    <p>+63 995 976 4761</p>
+                  </div>
+                  <div data-sal="slide-up" data-sal-duration="1200" data-sal-delay="800" data-sal-easing="ease-out-bounce">
+                    <span
+                      class="iconify icon-contact"
+                      data-icon="mdi:email"
+                    ></span>
+                    <p>inviclothing.co@gmail.com</p>
                   </div>
                 </div>
               </div>

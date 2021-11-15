@@ -3,12 +3,13 @@
 @use '../layout/flex';
 @use '../layout/grid';
 @use '../layout/magnify';
+@use '../components/media';
 
 #product-details {
-  padding: 10em 0;
+  padding: 10em 0 8em 0;
 
   .product-grid {
-    @include grid.grid(1fr auto 1fr, none, none, 0 50px);
+    @include grid.grid(1fr auto 1fr, none, none, 0 30px);
     justify-content: flex-start;
     align-items: center;
   }
@@ -17,14 +18,15 @@
     grid-row: 1/3;
     & img {
       width: 500px;
-      height: 500px;
+      max-width: 100%;
       object-fit: contain;
-      cursor: zoom-in;
     }
   }
   .product-gallery {
     grid-column: 1/2;
     grid-row: 2/3;
+    align-self: start;
+    margin-top: 1em;
     & img {
       padding: 0.2em;
       width: 85px;
@@ -45,54 +47,24 @@
     grid-column: 1/2;
     grid-row: 1/2;
 
-    // .label {
-    //   padding: 0.1em 0.3em;
-    //   width: fit-content;
-    //   font-size: 1.125rem;
-    //   font-weight: map-get(fonts.$font-weight, semi-bold);
-    //   background: colors.$sale-color;
-    //   color: colors.$text-color;
-    //   border-radius: 5px;
-    // }
+    .label {
+      display: inline-block;
+      padding: 0.1em 0.5em;
+      font-size: 1.125rem;
+      font-weight: map-get(fonts.$font-weight, semi-bold);
+      background: colors.$sale-color;
+      color: colors.$text-color;
+      border-radius: 5px;
+      text-transform: uppercase;
+    }
     .product-name {
-      font-size: 3rem;
+      font-size: clamp(2rem, 3vw, 3rem);
       font-weight: map-get(fonts.$font-weight, semi-bold);
       color: colors.$primary-color;
     }
-    .reviews {
-      @include flex.flex(space-between, stretch, row);
-      margin-top: -0.5em;
-      margin-bottom: 0.3em;
-      .ratings {
-        .star {
-          font-size: 1.25rem;
-          color: colors.$pending-color;
-        }
-        .rating-number {
-          font-size: 0.875rem;
-          font-weight: map-get(fonts.$font-weight, regular);
-          color: colors.$primary-color;
-        }
-      }
-      .wishlist {
-        @include flex.flex(center, center, row);
-        width: 30px;
-        height: 30px;
-        background: colors.$light-color;
-        border-radius: 50%;
 
-        & .heart {
-          width: 18px;
-          height: 18px;
-          color: colors.$text-color;
-          transition: color 0.5s ease;
-          &:hover {
-            color: colors.$accent-color;
-          }
-        }
-      }
-    }
     .product-price {
+      @include flex.flex(flex-start, center, row);
       margin-bottom: 0.8em;
       .price {
         @include flex.flex(flex-start, center, row);
@@ -104,6 +76,11 @@
           margin-right: 0.1em;
           color: colors.$secondary-color;
         }
+      }
+      .sales-amount {
+        margin-left: 0.5em;
+        color: colors.$light-color;
+        text-decoration: line-through;
       }
     }
     .product-description {
@@ -126,7 +103,6 @@
     grid-column: 3/4;
     grid-row: 1/3;
     .product-color {
-      // margin-bottom: 1.5em;
       margin-bottom: 1em;
       & p {
         font-size: 1.125rem;
@@ -135,45 +111,6 @@
 
         & span {
           font-weight: map-get(fonts.$font-weight, regular);
-        }
-      }
-      & .color-group {
-        // @include flex.flex(center, center, row);
-        margin-top: 0.5em;
-        .color-field:first-child {
-          margin-left: 0;
-        }
-        & .color-field {
-          position: relative;
-          margin: 0 1em;
-          cursor: pointer;
-          & .radio {
-            opacity: 0;
-            cursor: pointer;
-
-            &:checked ~ .checkmark {
-              border: 1px solid colors.$secondary-color;
-              box-shadow: inset 0 0 0 3px #e5e5e5;
-            }
-          }
-          & .checkmark {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            width: 32px;
-            height: 32px;
-            border-color: transparent;
-            border-radius: 50%;
-            box-shadow: inset 0 0 0 3px #e5e5e5;
-            transition: all 0.5s ease;
-          }
-
-          &:hover .radio ~ .checkmark {
-            border: 1px solid colors.$accent-color;
-            box-shadow: inset 0 0 0 3px #e5e5e5;
-          }
         }
       }
     }
@@ -227,23 +164,56 @@
       }
     }
   }
-  .socials {
-    @include flex.flex(flex, center, row);
-    & p {
-      font-size: 1.125rem;
-      font-weight: map-get(fonts.$font-weight, medium);
-      color: colors.$primary-color;
+
+  @include media.laptop {
+    .product-gallery img {
+      width: 75px;
+      height: 75px;
+    }
+  }
+
+  @include media.landscapeTablet {
+    padding: 8em 0 6em 0;
+    .product-grid {
+      grid-template-columns: 1fr;
+    }
+    .product-highlight {
+      grid-column: 1/2;
+      grid-row: 1/2;
+      justify-self: center;
+    }
+    .product-gallery {
+      justify-self: center;
+      margin-bottom: 1.5em;
+    }
+    .product-info {
+      grid-row: 3/4;
+      margin-bottom: 1.5em;
+    }
+    .product-actions {
+      grid-column: 1/2;
+      grid-row: 5/6;
     }
 
-    .social-icon {
-      margin: 0 0.1em;
-      font-size: 2rem;
-      color: colors.$primary-color;
-      cursor: pointer;
-      transition: color 0.5s ease;
-      &:hover {
-        color: colors.$accent-color;
-      }
+    .product-quantity .qty .qty-input {
+      width: 100%;
+    }
+
+    .add-cart .cart-btn {
+      font-size: 1.125rem;
+    }
+  }
+
+  @include media.smallMobile {
+    .product-gallery img {
+      width: 70px;
+      height: 70px;
+    }
+  }
+  @include media.mobile {
+    .product-gallery img {
+      width: 60px;
+      height: 60px;
     }
   }
 }

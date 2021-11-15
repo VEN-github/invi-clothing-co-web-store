@@ -16,7 +16,9 @@ $checkout = $store->get_checkout();
         <section id="checkout-process">
           <div class="checkout-banner">
             <div class="container">
-              <img src="./assets/img/logo.png" alt="Logo" />
+              <div class="banner-logo">
+                <img src="./assets/img/logo.png" alt="Logo" />
+              </div>
             </div>
             <?php include_once "../includes/stepper.php"; ?>
           </div>
@@ -159,7 +161,7 @@ $checkout = $store->get_checkout();
                           id="city"
                           value="<?= $checkout ? $checkout["city"] : "" ?>"
                           placeholder=" "
-                          class="input input-left"
+                          class="input"
                         />
                         <label class="form-label">City</label>
                       </div>
@@ -172,7 +174,7 @@ $checkout = $store->get_checkout();
                             ? $checkout["postalCode"]
                             : "" ?>"
                           placeholder=" "
-                          class="input input-right"
+                          class="input"
                         />
                         <label class="form-label">Postal Code</label>
                       </div>
@@ -235,20 +237,18 @@ $checkout = $store->get_checkout();
                       <label for="">Set as primary address</label>
                     </div>
                   </div>
-                  <div class="button-container">
-                    <button>
-                      <a
-                        class="btn outline-primary-btn back-btn"
-                        href="cart.php"
-                      >
-                        <span
-                          class="iconify left-arrow"
-                          data-icon="dashicons:arrow-left-alt"
-                          data-inline="false"
-                        ></span
-                        >Back to Cart</a
-                      >
-                    </button>
+                  <div class="button-container">                  
+                    <a
+                      class="btn outline-primary-btn back-btn"
+                      href="cart.php"
+                    >
+                      <span
+                        class="iconify left-arrow"
+                        data-icon="dashicons:arrow-left-alt"
+                        data-inline="false"
+                      ></span
+                      >Back to Cart</a
+                    >
                     <button type="submit" name="proceedShip" class="btn primary-btn next-btn">
                       Proceed to Shipping
                       <span

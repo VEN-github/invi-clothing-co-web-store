@@ -17,7 +17,9 @@ $store->placed_order_email();
         <section id="checkout-process">
           <div class="checkout-banner">
             <div class="container">
-              <img src="./assets/img/logo.png" alt="Logo" />
+              <div class="banner-logo">
+                <img src="./assets/img/logo.png" alt="Logo" />
+              </div>
             </div>
             <?php include_once "../includes/stepper.php"; ?>
           </div>
@@ -148,19 +150,17 @@ $store->placed_order_email();
                     </div>
                   </div>
                   <div class="button-container">
-                    <button>
-                      <a
-                        class="btn outline-primary-btn back-btn"
-                        href="checkoutpayment.php?ID=<?= $user["ID"] ?>"
-                      >
-                        <span
-                          class="iconify left-arrow"
-                          data-icon="dashicons:arrow-left-alt"
-                          data-inline="false"
-                        ></span
-                        >Back to Payment</a
-                      >
-                    </button>
+                    <a
+                      class="btn outline-primary-btn back-btn"
+                      href="checkoutpayment.php?ID=<?= $user["ID"] ?>"
+                    >
+                      <span
+                        class="iconify left-arrow"
+                        data-icon="dashicons:arrow-left-alt"
+                        data-inline="false"
+                      ></span
+                      >Back to Payment</a
+                    >
                     <button type="submit" name="complete" id="complete" class="btn primary-btn next-btn">
                       Complete Order
                       <span

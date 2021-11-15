@@ -6,8 +6,8 @@
       <a href="index.php"><img src="./assets/img/logo.png" alt="Logo" /></a>
       <p class="copyright"><span>&copy;</span> 2021 INVI Clothing Co.</p>
     </div>
-    <div class="menu-links">
-      <h4>MENU</h4>
+    <div class="menu-links accordion-link">
+      <h4>MENU<span class="plus-icon">+</span></h4>
       <ul>
         <li><a href="index.php">Home</a></li>
         <li><a href="shop.php">Shop</a></li>
@@ -15,8 +15,8 @@
         <li><a href="contact.php">Contact</a></li>
       </ul>
     </div>
-    <div class="help-center">
-      <h4>HELP CENTER</h4>
+    <div class="help-center accordion-link">
+      <h4>HELP CENTER<span class="plus-icon">+</span></h4>
       <ul>
         <li><a href="faq.php">FAQ</a></li>
         <li><a href="privacypolicy.php">Privacy Policy</a></li>

@@ -2,6 +2,7 @@
 @use "../abstracts/fonts";
 @use "../layout/flex";
 @use "../layout/grid";
+@use "../components/media";
 
 #forgot-password {
   padding: 10em 0 8em 0;
@@ -13,13 +14,14 @@
     .illustration {
       & img {
         width: 500px;
+        max-width: 100%;
         object-fit: cover;
       }
     }
 
     .forgotPass-form {
       & h4 {
-        font-size: 2.5rem;
+        font-size: clamp(2rem, 5vw, 2.5rem);
         font-weight: map-get(fonts.$font-weight, semi-bold);
         color: colors.$primary-color;
         letter-spacing: 0.1em;
@@ -27,7 +29,7 @@
       }
 
       & p {
-        margin-bottom: 1.5em;
+        margin-bottom: 1em;
         font-size: 1rem;
         font-weight: map-get(fonts.$font-weight, regular);
         color: colors.$primary-color;
@@ -62,6 +64,10 @@
 
         .input-verify {
           width: 50px;
+          border-radius: 0;
+          border-top: 0;
+          border-left: 0;
+          border-right: 0;
         }
       }
 
@@ -109,6 +115,21 @@
         width: 100%;
         box-shadow: none;
       }
+    }
+  }
+
+  @include media.landscapeTablet {
+    .forgotPass-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+  @include media.mediumMobile {
+    .forgotPass-grid .forgotPass-form .forgotPass-btn-container {
+      flex-direction: column-reverse;
+    }
+    .forgotPass-grid .forgotPass-form .send-btn {
+      width: 100%;
+      margin-bottom: 1.5em;
     }
   }
 }

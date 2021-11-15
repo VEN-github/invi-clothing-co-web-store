@@ -172,46 +172,60 @@ function displayCart() {
           <input type="hidden" class="item-ID" value="${item.productID}">
           <input type="hidden" class="item-code" value="${item.itemCode}">
           <input type="hidden" class="stock-ID" value="${item.stockID}">
-          <img src="${item.productImage}" alt="${item.productImage}" />
-          <div class="item-label">
-            <p class="item-name">${item.productName}</p>
-            <p>Color: <span class="item-color">${item.productColor}</span></p>
+          <div class="item-info">
+            <img src="${item.productImage}" alt="${item.productImage}" />
+            <div class="item-label">
+              <p class="item-name">${item.productName}</p>
+              <p>Color: <span class="item-color">${item.productColor}</span></p>
+            </div>
           </div>
           <div class="item-price">
-            <span
-              class="iconify peso-sign"
-              data-icon="clarity:peso-line"
-              data-inline="false"
-            ></span>
-            <p>${item.productPrice}</p>
+            <span>Price</span>
+            <div class="price-container">
+              <span
+                class="iconify peso-sign"
+                data-icon="clarity:peso-line"
+                data-inline="false"
+              ></span>
+              <p>${item.productPrice}</p>
+            </div>
           </div>
           <div class="item-quantity">
-            <button type="button" class="minus-btn" onclick="minus(this)">-</button>
-            <input
-              class="qty-input quantity"
-              type="number"
-              name=""
-              value="${item.NewQuantity}"
-              min="1"
-              max="${item.maxValue}"
-            />
-            <button type="button" class="plus-btn" onclick="plus(this)">+</button>
+            <span>Quantity</span>
+            <div class="qty-container">
+              <button type="button" class="minus-btn" onclick="minus(this)">-</button>
+              <input
+                class="qty-input quantity"
+                type="number"
+                name=""
+                value="${item.NewQuantity}"
+                min="1"
+                max="${item.maxValue}"
+              />
+              <button type="button" class="plus-btn" onclick="plus(this)">+</button>
+            </div>
           </div>
           <div class="item-total">
-            <span
-              class="iconify peso-sign"
-              data-icon="clarity:peso-line"
-              data-inline="false"
-            ></span>
-            <p class="total-price">${item.productPrice * item.NewQuantity}</p>
+            <span>Total</span>
+            <div class="price-container">
+              <span
+                class="iconify peso-sign"
+                data-icon="clarity:peso-line"
+                data-inline="false"
+              ></span>
+              <p class="total-price">${item.productPrice * item.NewQuantity}</p>
+            </div>
           </div>
-          <button type="button" onclick="removeItem(this)">
-            <span
-              class="iconify del-icon"
-              data-icon="carbon:trash-can"
-              data-inline="false"
-            ></span>
-          </button>
+          <div class="del-btn">
+            <span>Action</span>
+            <button type="button" onclick="removeItem(this)">
+              <span
+                class="iconify del-icon"
+                data-icon="carbon:trash-can"
+                data-inline="false"
+              ></span>
+            </button>
+          </div>
           <input
             type="hidden"
             class="qty"
@@ -224,47 +238,61 @@ function displayCart() {
           <input type="hidden" class="item-ID" value="${item.productID}">
           <input type="hidden" class="item-code" value="${item.itemCode}">
           <input type="hidden" class="stock-ID" value="${item.stockID}">
-          <img src="${item.productImage}" alt="${item.productImage}" />
-          <div class="item-label">
-            <p class="item-name">${item.productName}</p>
-            <p>Color: <span class="item-color">${item.productColor}</span></p>
-            <p>Size: <span class="item-size">${item.productSize}</span></p>
+          <div class="item-info">
+            <img src="${item.productImage}" alt="${item.productImage}" />
+            <div class="item-label">
+              <p class="item-name">${item.productName}</p>
+              <p>Color: <span class="item-color">${item.productColor}</span></p>
+              <p>Size: <span class="item-size">${item.productSize}</span></p>
+            </div>
           </div>
           <div class="item-price">
-            <span
-              class="iconify peso-sign"
-              data-icon="clarity:peso-line"
-              data-inline="false"
-            ></span>
-            <p>${item.productPrice}</p>
+            <span>Price</span>
+              <div class="price-container">
+              <span
+                class="iconify peso-sign"
+                data-icon="clarity:peso-line"
+                data-inline="false"
+              ></span>
+              <p>${item.productPrice}</p>
+            </div>
           </div>
           <div class="item-quantity">
-            <button type="button" class="minus-btn" onclick="minus(this)">-</button>
-            <input
-              class="qty-input quantity"
-              type="number"
-              name=""
-              value="${item.NewQuantity}"
-              min="1"
-              max="${item.maxValue}"
-            />
-            <button type="button" class="plus-btn" onclick="plus(this)">+</button>
+            <span>Quantity</span>
+            <div class="qty-container">
+              <button type="button" class="minus-btn" onclick="minus(this)">-</button>
+              <input
+                class="qty-input quantity"
+                type="number"
+                name=""
+                value="${item.NewQuantity}"
+                min="1"
+                max="${item.maxValue}"
+              />
+              <button type="button" class="plus-btn" onclick="plus(this)">+</button>
+            </div>
           </div>
           <div class="item-total">
-            <span
-              class="iconify peso-sign"
-              data-icon="clarity:peso-line"
-              data-inline="false"
-            ></span>
-            <p class="total-price">${item.productPrice * item.NewQuantity}</p>
+            <span>Total</span>
+            <div class="price-container">
+              <span
+                class="iconify peso-sign"
+                data-icon="clarity:peso-line"
+                data-inline="false"
+              ></span>
+              <p class="total-price">${item.productPrice * item.NewQuantity}</p>
+            </div>
           </div>
-          <button type="button" onclick="removeItem(this)">
-            <span
-              class="iconify del-icon"
-              data-icon="carbon:trash-can"
-              data-inline="false"
-            ></span>
-          </button>
+          <div class="del-btn">
+            <span>Action</span>
+            <button type="button" onclick="removeItem(this)">
+              <span
+                class="iconify del-icon"
+                data-icon="carbon:trash-can"
+                data-inline="false"
+              ></span>
+            </button>
+          </div>
           <input
             type="hidden"
             class="qty"
@@ -280,7 +308,7 @@ function displayCart() {
         <div class="order-summary">
           <h4>Order Summary</h4>
           <p>
-            Shipping, taxes, and discounts will be calculated at checkout.
+            Shipping will be calculated at checkout.
           </p>
           <div class="note">
             <p>Shipping options</p>
@@ -398,21 +426,20 @@ function minus(e) {
       e.nextElementSibling.nextElementSibling.classList.remove("disabled");
       e.nextElementSibling.nextElementSibling.style.cursor = "pointer";
     }
-
-    let price = e.parentNode.previousElementSibling.childNodes[3].textContent;
-    const totalPrice = e.parentNode.nextElementSibling.childNodes[3];
+    let price =
+      e.parentNode.parentNode.previousElementSibling.childNodes[3].textContent;
+    const totalPrice =
+      e.parentNode.parentNode.nextElementSibling.childNodes[3].lastElementChild;
     let total = totalPrice.textContent;
     total = parseInt(total.replace(/,/g, ""));
     price = parseInt(price.replace(/,/g, ""));
-
     price = total - price;
     totalPrice.innerText = price.toLocaleString(undefined, {
       minimumFractionDigits: 2,
       maximumFractionDigits: 2,
     });
-
     let originalPrice =
-      e.parentNode.previousElementSibling.childNodes[3].textContent;
+      e.parentNode.parentNode.previousElementSibling.childNodes[3].textContent;
     originalPrice = parseInt(originalPrice.replace(/,/g, ""));
     let subtotal = document.querySelector("#subtotal-price");
     let subTotal = parseInt(subtotal.textContent.replace(/,/g, ""));
@@ -444,8 +471,10 @@ function plus(e) {
       e.style.cursor = "not-allowed";
     }
 
-    let price = e.parentNode.previousElementSibling.childNodes[3].textContent;
-    const totalPrice = e.parentNode.nextElementSibling.childNodes[3];
+    let price =
+      e.parentNode.parentNode.previousElementSibling.childNodes[3].textContent;
+    const totalPrice =
+      e.parentNode.parentNode.nextElementSibling.childNodes[3].lastElementChild;
     let total = totalPrice.textContent;
     total = parseInt(total.replace(/,/g, ""));
     price = parseInt(price.replace(/,/g, ""));
@@ -456,7 +485,7 @@ function plus(e) {
     });
 
     let originalPrice =
-      e.parentNode.previousElementSibling.childNodes[3].textContent;
+      e.parentNode.parentNode.previousElementSibling.childNodes[3].textContent;
 
     originalPrice = parseInt(originalPrice.replace(/,/g, ""));
     let subtotal = document.querySelector("#subtotal-price");
@@ -487,8 +516,8 @@ function removeItem(btn) {
 
   let cartItems = localStorage["productsInCart"];
   cartItems = JSON.parse(cartItems);
-  let itemCode = btn.parentNode.childNodes[3].value;
-  let qty = btn.nextElementSibling.value;
+  let itemCode = btn.parentNode.parentNode.childNodes[3].value;
+  let qty = btn.parentNode.nextElementSibling.value;
 
   cartItems = Object.values(cartItems).filter(
     (product) => product.itemCode !== itemCode
@@ -511,7 +540,7 @@ function checkoutItems() {
     let itemID = document.querySelectorAll(".item-ID")[i].value;
     let itemCode = document.querySelectorAll(".item-code")[i].value;
     let stockID = document.querySelectorAll(".stock-ID")[i].value;
-    let itemImg = document.querySelectorAll(".cart-items img")[i].src;
+    let itemImg = document.querySelectorAll(".item-info img")[i].src;
     let itemName = document.querySelectorAll(".item-name")[i].textContent;
     let itemColor = document.querySelectorAll(".item-color")[i].textContent;
     let itemSize;
@@ -524,11 +553,15 @@ function checkoutItems() {
     let itemMaxValue = document.querySelectorAll(".quantity")[i].max;
     itemMaxValue = parseInt(itemMaxValue);
     if (
-      cart[i].children[4].lastElementChild.children[0].classList.contains(
+      cart[
+        i
+      ].children[3].children[1].lastElementChild.children[0].classList.contains(
         "item-size"
       )
     ) {
-      itemSize = cart[i].children[4].lastElementChild.children[0].textContent;
+      itemSize =
+        cart[i].children[3].children[1].lastElementChild.children[0]
+          .textContent;
     }
     let products = {
       itemCode: itemCode,

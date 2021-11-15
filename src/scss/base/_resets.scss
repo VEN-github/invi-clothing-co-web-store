@@ -39,9 +39,6 @@ main {
 .flex {
   @include flex.flex(space-between, center, row);
 }
-.grid {
-  @include grid.grid(auto 1fr, none, none, 0);
-}
 
 ::-webkit-scrollbar {
   width: 0.6rem;

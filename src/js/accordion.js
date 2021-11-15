@@ -7,3 +7,21 @@ if (contentBox) {
     });
   });
 }
+
+const accordionLink = document.querySelectorAll(".accordion-link");
+
+if (accordionLink) {
+  accordionLink.forEach((links) => {
+    links.addEventListener("click", () => {
+      links.classList.toggle("active");
+    });
+  });
+}
+
+const categories = document.querySelector(".categories");
+
+if (categories) {
+  categories.addEventListener("click", () => {
+    categories.classList.toggle("active");
+  });
+}

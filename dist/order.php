@@ -21,49 +21,51 @@ $orders = $store->get_order_customer($ID);
               <?php include_once "../includes/profilesummary.php"; ?>
               <div data-sal="zoom-in" data-sal-duration="1200" data-sal-delay="200" data-sal-easing="ease-out-bounce" class="customer-details">
                 <?php if ($orders) { ?>
-                  <table id="orderTable">
-                    <thead>
-                      <tr>
-                        <th>Order #</th>
-                        <th>Date Purchased</th>
-                        <th>Status</th>
-                        <th>Total</th>
-                        <th>Action</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <?php foreach ($orders as $order) { ?>
+                  <div class="table">
+                    <table id="orderTable">
+                      <thead>
                         <tr>
-                          <td><?= $order["orderID"] ?></td>
-                          <td><?= $order["orderDate"] ?></td>
-                          <td><p class="status <?php if (
-                            $order["orderStatus"] === "Pending"
-                          ) { ?>pending<?php } elseif (
-                            $order["orderStatus"] === "Processing"
-                          ) { ?>processing<?php } elseif (
-                            $order["orderStatus"] === "Shipped"
-                          ) { ?>shipped<?php } elseif (
-                            $order["orderStatus"] === "Cancelled"
-                          ) { ?>cancelled<?php } else { ?>success<?php } ?>"><?= $order[
+                          <th>Order #</th>
+                          <th>Date Purchased</th>
+                          <th>Status</th>
+                          <th>Total</th>
+                          <th>Action</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <?php foreach ($orders as $order) { ?>
+                          <tr>
+                            <td><?= $order["orderID"] ?></td>
+                            <td><?= $order["orderDate"] ?></td>
+                            <td><p class="status <?php if (
+                              $order["orderStatus"] === "Pending"
+                            ) { ?>pending<?php } elseif (
+                              $order["orderStatus"] === "Processing"
+                            ) { ?>processing<?php } elseif (
+                              $order["orderStatus"] === "Shipped"
+                            ) { ?>shipped<?php } elseif (
+                              $order["orderStatus"] === "Cancelled"
+                            ) { ?>cancelled<?php } else { ?>success<?php } ?>"><?= $order[
   "orderStatus"
 ] ?></p></td>
-                          <td><p class="total-amount"><span
-                          class="iconify peso-sign"
-                          data-icon="clarity:peso-line"
-                          data-inline="false"
-                        ></span><?= number_format(
-                          $order["totalAmount"],
-                          2
-                        ) ?></p></td>
-                          <td><a href="trackorder.php?acctID=<?= $user[
-                            "ID"
-                          ] ?>&orderID=<?= $order[
+                            <td><p class="total-amount"><span
+                            class="iconify peso-sign"
+                            data-icon="clarity:peso-line"
+                            data-inline="false"
+                          ></span><?= number_format(
+                            $order["totalAmount"],
+                            2
+                          ) ?></p></td>
+                            <td><button class="btn primary-btn track-btn"><a href="trackorder.php?acctID=<?= $user[
+                              "ID"
+                            ] ?>&orderID=<?= $order[
   "orderID"
-] ?>" class="btn primary-btn track-btn">Track</a></td>
-                        </tr>
-                      <?php } ?>
-                    </tbody>
-                  </table>
+] ?>">Track</a></button></td>
+                          </tr>
+                        <?php } ?>
+                      </tbody>
+                    </table>
+                  </div>
                 <?php } else { ?>
                   <div class="empty-order">
                     <img src="./assets/img/empty-order.svg" alt="Empty Order">

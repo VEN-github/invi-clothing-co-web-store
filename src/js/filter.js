@@ -16,13 +16,13 @@ if (filterBtn) {
 
       productItem.forEach((product) => {
         if (filter === "All Products") {
-          product.style.display = "flex";
+          product.style.display = "block";
           document.querySelector("#category-text").textContent = "All Products";
           document.querySelector("#product-count").textContent =
             productItem.length;
         } else {
           if (product.classList.contains(filter)) {
-            product.style.display = "flex";
+            product.style.display = "block";
             document.querySelector("#category-text").textContent = filter;
             document.querySelector("#product-count").textContent =
               product.parentElement.getElementsByClassName(filter).length;
@@ -47,9 +47,9 @@ if (search) {
     const searchValue = search.value.toUpperCase().trim();
     productItem.forEach((product) => {
       if (product.classList.contains(searchValue)) {
-        product.style.display = "flex";
+        product.style.display = "block";
       } else if (searchValue == "") {
-        product.style.display = "flex";
+        product.style.display = "block";
       } else {
         product.style.display = "none";
       }

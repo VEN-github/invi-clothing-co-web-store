@@ -1,9 +1,10 @@
 @use "../abstracts/colors";
 @use "../abstracts/fonts";
 @use "../layout/flex";
+@use "../components/media";
 
 #our-story {
-  padding: 8em 0;
+  padding: 8em 0 3em 0;
 
   .story-container {
     @include flex.flex(flex-start, stretch, row);
@@ -15,17 +16,17 @@
     }
     .story {
       & h1 {
-        font-size: 3.5rem;
+        font-size: clamp(2.5rem, 5vw, 3.5rem);
         font-weight: map-get(fonts.$font-weight, semi-bold);
         color: colors.$secondary-color;
         letter-spacing: 0.095em;
       }
 
       & p {
-        font-size: 1.25rem;
+        font-size: clamp(0.8rem, 3vw, 1.25rem);
         font-weight: map-get(fonts.$font-weight, medium);
         color: colors.$primary-color;
-        line-height: 46px;
+        line-height: clamp(2.5rem, 3vw, 2.875rem);
 
         & span {
           display: block;
@@ -36,24 +37,25 @@
 }
 
 #mission-vision {
-  padding: 2em;
+  padding: 2em 0;
 
   .mission {
     @include flex.flex(space-around, center, row);
     flex-wrap: wrap;
     margin-bottom: 6em;
     .statement {
+      margin-bottom: 1em;
       & h1 {
-        font-size: 3.5rem;
+        font-size: clamp(2rem, 5vw, 3.5rem);
         font-weight: map-get(fonts.$font-weight, semi-bold);
         color: colors.$secondary-color;
         letter-spacing: 0.095em;
       }
       & p {
-        font-size: 1.75rem;
+        font-size: clamp(0.875rem, 3vw, 1.75rem);
         font-weight: map-get(fonts.$font-weight, medium);
         color: colors.$primary-color;
-        line-height: 54px;
+        line-height: clamp(2.5rem, 3vw, 3.375rem);
         letter-spacing: 0.095em;
 
         & span:not(.highlight) {
@@ -68,11 +70,20 @@
 
     & img {
       width: 600px;
+      max-width: 100%;
       object-fit: cover;
+      margin-bottom: 1em;
     }
   }
 
   .vision {
+    margin-bottom: 0;
     @extend .mission;
+  }
+}
+
+@include media.portraitTablet {
+  .line {
+    display: none;
   }
 }

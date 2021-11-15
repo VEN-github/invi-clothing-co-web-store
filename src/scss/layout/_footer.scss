@@ -2,10 +2,10 @@
 @use '../abstracts/fonts';
 @use './flex';
 @use './forms';
+@use '../components/media';
 
 #main-footer {
   width: 100%;
-  height: auto;
   padding: 4em 0;
   background: colors.$primary-color;
 
@@ -29,10 +29,17 @@
 
   .menu-links {
     & h4 {
+      @include flex.flex(space-between, center, row);
       margin-bottom: 0.5em;
       font-size: 1.125rem;
       font-weight: map-get(fonts.$font-weight, semi-bold);
       color: colors.$secondary-color;
+
+      .plus-icon {
+        display: none;
+        font-size: 1.5rem;
+        transition: transform 0.5s ease;
+      }
     }
     & ul {
       list-style: none;
@@ -95,5 +102,58 @@
       height: 26px;
       color: colors.$text-color;
     }
+  }
+
+  @include media.landscapeTablet {
+    .menu-links {
+      margin-bottom: 1em;
+    }
+  }
+  @include media.bigMobile {
+    .footer-container {
+      flex-direction: column;
+
+      .logo {
+        margin-bottom: 1em;
+      }
+      .menu-links {
+        cursor: pointer;
+        h4 .plus-icon {
+          display: flex;
+        }
+
+        ul {
+          overflow: hidden;
+          max-height: 0;
+          transition: max-height 1s ease;
+
+          & li:not(:last-child) {
+            margin-bottom: 0.8em;
+          }
+        }
+
+        &.active ul {
+          max-height: 300px;
+          animation: fade 1.5s ease-in-out;
+        }
+        &.active h4 .plus-icon {
+          transform: rotate(45deg);
+        }
+      }
+
+      .input-for-footer {
+        width: 100%;
+      }
+    }
+  }
+}
+@keyframes fade {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }

@@ -56,7 +56,7 @@
 }
 
 .input-group {
-  @include flex.flex(space-between, stretch, row);
+  @include flex.flex(space-between, center, row);
 }
 
 .form-label {
@@ -95,8 +95,8 @@
 }
 // input for footer
 .input-for-footer {
-  max-width: 300px;
-  width: 100%;
+  width: 300px;
+  max-width: 100%;
   padding-right: 4.5em;
   background: #e5e5e5;
   border: 2px solid #e5e5e5;

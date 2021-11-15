@@ -17,19 +17,23 @@
           strtoupper(mb_substr($userProfile["lastName"], 0, 1)) ?>">
     <?php } ?>
     <?php if ($title === "Profile") { ?>
-      <label class="camera-btn" for="avatarImg">
-        <span
-          class="iconify camera"
-          data-icon="bx:bxs-camera"
-          data-inline="false"
-        ></span>
+      <label class="btn outline-primary-btn change-img" for="avatarImg">
+        Change Profile Image
       </label>
     <?php } ?>
     <p class="user-name"><?= $userProfile["firstName"] .
       " " .
       $userProfile["lastName"] ?></p>
   </div>
-  <ul class="menu">
+  <div class="account-menu">
+    <div class="burger-menu">
+      <div class="line1"></div>
+      <div class="line2"></div>
+      <div class="line3"></div>
+    </div>
+    Account Menu
+  </div>
+  <ul class="user-menu">
     <li>
       <a href="profile.php?ID=<?= $user["ID"] ?>" class="<?= $title ===
 "Profile"

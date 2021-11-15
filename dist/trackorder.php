@@ -65,7 +65,7 @@ $store->cancel_order();
               <?php } ?>
             <?php } ?>
             <div class="wrapper">
-              <div data-sal="zoom-out" data-sal-duration="1200" data-sal-delay="400" data-sal-easing="ease-out-bounce" class="card-body">
+              <div class="card-body">
                 <?php if ($tracking) { ?>
                   <?php foreach ($tracking as $track) { ?>
                     <?php if ($track["orderStatus"] === "Cancelled") { ?>
@@ -107,140 +107,142 @@ $store->cancel_order();
                     <?php } ?>  
                   <?php } ?>  
                 <?php } ?>  
-                <div class="user-details">
-                  <div class="order-details">
-                    <?php if ($tracking) { ?>
-                      <?php foreach ($tracking as $track) { ?>
-                      <?php } ?>
-                      <form method="post" id="cancelForm">
-                        <input type="hidden" name="orderID" value="<?= $track[
-                          "orderID"
-                        ] ?>">
-                        <input type="hidden" name="userEmail" value="<?= $user[
-                          "email"
-                        ] ?>" />
-                        <input type="hidden" name="userName" value="<?= $user[
-                          "firstName"
-                        ] .
+                <div>
+                  <div class="user-details">
+                    <div class="order-details">
+                      <?php if ($tracking) { ?>
+                        <?php foreach ($tracking as $track) { ?>
+                        <?php } ?>
+                        <form method="post" id="cancelForm">
+                          <input type="hidden" name="orderID" value="<?= $track[
+                            "orderID"
+                          ] ?>">
+                          <input type="hidden" name="userEmail" value="<?= $user[
+                            "email"
+                          ] ?>" />
+                          <input type="hidden" name="userName" value="<?= $user[
+                            "firstName"
+                          ] .
+                            " " .
+                            $user["lastName"] ?>" />
+                          <input type="hidden" name="paymentMethod" value="<?= $track[
+                            "paymentMethod"
+                          ] ?>">
+                        </form>
+                        <p>Order #: <?= strtoupper($track["orderID"]) ?></p>
+                        <p>Ships to <?= $track["addressFname"] .
                           " " .
-                          $user["lastName"] ?>" />
-                        <input type="hidden" name="paymentMethod" value="<?= $track[
-                          "paymentMethod"
-                        ] ?>">
-                      </form>
-                      <p>Order #: <?= strtoupper($track["orderID"]) ?></p>
-                      <p>Ships to <?= $track["addressFname"] .
-                        " " .
-                        $track["addressLname"] ?></p>
-                    <?php } ?>
-                  </div>
-                  <div class="view-details">
-                    <p id="view-details">View Details</p>
-                  </div>
-                </div>
-                <div class="item-details">
-                  <div class="items">
-                    <?php if ($tracking) { ?>
-                      <?php foreach ($tracking as $track) { ?>
-                        <div class="orders">
-                          <img
-                            src="./assets/img/<?= $track["coverPhoto"] ?>"
-                            alt="<?= $track["coverPhoto"] ?>"
-                          />
-                          <div class="order-details">
-                            <h4><?= $track["productName"] ?></h4>
-                            <?php if (is_null($track["size"])) { ?>
-                              <p>Color: <?= $track["productColor"] ?></p>
-                            <?php } else { ?>
-                              <p>Color: <?= $track["productColor"] ?></p>
-                              <p>Size: <?= $track["size"] ?></p>
-                            <?php } ?>
-                            <p class="price-container">
-                              <span
-                                class="iconify peso-sign"
-                                data-icon="clarity:peso-line"
-                                data-inline="false"
-                              ></span>
-                              <span class="price"><?= number_format(
-                                $track["netSales"],
-                                2
-                              ) ?></span>
-                              <span class="qty">x <?= $track[
-                                "salesQty"
-                              ] ?></span>
-                            </p>
-                          </div>
-                        </div>
+                          $track["addressLname"] ?></p>
                       <?php } ?>
-                    <?php } ?>
-                  </div>
-                  <div class="billing-statement">
-                    <div class="payments">
-                      <h4>Subtotal:</h4>
-                      <p class="price-container">
-                        <span
-                          class="iconify peso-sign"
-                          data-icon="clarity:peso-line"
-                          data-inline="false"
-                        ></span>
-                        <span class="price"><?= number_format(
-                          $track["totalAmount"] - $track["shipFee"],
-                          2
-                        ) ?></span>
-                      </p>
-                      <h4>Shipping Fee:</h4>
-                      <p class="price-container">
-                        <span
-                          class="iconify peso-sign"
-                          data-icon="clarity:peso-line"
-                          data-inline="false"
-                        ></span>
-                        <span class="price"><?= number_format(
-                          $track["shipFee"],
-                          2
-                        ) ?></span>
-                      </p>
-                      <h4>Total:</h4>
-                      <p class="price-container">
-                        <span
-                          class="iconify peso-sign"
-                          data-icon="clarity:peso-line"
-                          data-inline="false"
-                        ></span>
-                        <span class="price"><?= number_format(
-                          $track["totalAmount"],
-                          2
-                        ) ?></span>
-                      </p>
+                    </div>
+                    <div class="view-details">
+                      <p id="view-details">View Details</p>
                     </div>
                   </div>
-                </div>
-                <div class="buttons">
-                  <button type="button" id="cancelBtn" class="btn outline-primary-btn cancel-btn <?php if (
-                    $tracking
-                  ) {
-                    foreach ($tracking as $track) {
-                    }
-                    if (
-                      $track["orderStatus"] === "Shipped" ||
-                      $track["orderStatus"] === "Delivered" ||
-                      $track["orderStatus"] === "Cancelled"
-                    ) { ?>disabled-btn<?php }
-                  } ?>" href="">
-                    <span
-                      class="iconify cancel-icon"
-                      data-icon="topcoat:cancel"
-                    ></span>
-                    Cancel Order
-                  </button>
-                  <a class="btn primary-btn back-btn" href="shop.php">
-                    <span
-                      class="iconify left-arrow"
-                      data-icon="dashicons:arrow-left-alt"
-                      data-inline="false"
-                    ></span>
-                    Go back Shopping
-                  </a>
+                  <div class="item-details">
+                    <div class="items">
+                      <?php if ($tracking) { ?>
+                        <?php foreach ($tracking as $track) { ?>
+                          <div class="orders">
+                            <img
+                              src="./assets/img/<?= $track["coverPhoto"] ?>"
+                              alt="<?= $track["coverPhoto"] ?>"
+                            />
+                            <div class="order-details">
+                              <h4><?= $track["productName"] ?></h4>
+                              <?php if (is_null($track["size"])) { ?>
+                                <p>Color: <?= $track["productColor"] ?></p>
+                              <?php } else { ?>
+                                <p>Color: <?= $track["productColor"] ?></p>
+                                <p>Size: <?= $track["size"] ?></p>
+                              <?php } ?>
+                              <p class="price-container">
+                                <span
+                                  class="iconify peso-sign"
+                                  data-icon="clarity:peso-line"
+                                  data-inline="false"
+                                ></span>
+                                <span class="price"><?= number_format(
+                                  $track["netSales"],
+                                  2
+                                ) ?></span>
+                                <span class="qty">x <?= $track[
+                                  "salesQty"
+                                ] ?></span>
+                              </p>
+                            </div>
+                          </div>
+                        <?php } ?>
+                      <?php } ?>
+                    </div>
+                    <div class="billing-statement">
+                      <div class="payments">
+                        <h4>Subtotal:</h4>
+                        <p class="price-container">
+                          <span
+                            class="iconify peso-sign"
+                            data-icon="clarity:peso-line"
+                            data-inline="false"
+                          ></span>
+                          <span class="price"><?= number_format(
+                            $track["totalAmount"] - $track["shipFee"],
+                            2
+                          ) ?></span>
+                        </p>
+                        <h4>Shipping Fee:</h4>
+                        <p class="price-container">
+                          <span
+                            class="iconify peso-sign"
+                            data-icon="clarity:peso-line"
+                            data-inline="false"
+                          ></span>
+                          <span class="price"><?= number_format(
+                            $track["shipFee"],
+                            2
+                          ) ?></span>
+                        </p>
+                        <h4>Total:</h4>
+                        <p class="price-container">
+                          <span
+                            class="iconify peso-sign"
+                            data-icon="clarity:peso-line"
+                            data-inline="false"
+                          ></span>
+                          <span class="price"><?= number_format(
+                            $track["totalAmount"],
+                            2
+                          ) ?></span>
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="buttons">
+                    <button type="button" id="cancelBtn" class="btn outline-primary-btn cancel-btn <?php if (
+                      $tracking
+                    ) {
+                      foreach ($tracking as $track) {
+                      }
+                      if (
+                        $track["orderStatus"] === "Shipped" ||
+                        $track["orderStatus"] === "Delivered" ||
+                        $track["orderStatus"] === "Cancelled"
+                      ) { ?>disabled-btn<?php }
+                    } ?>" href="">
+                      <span
+                        class="iconify cancel-icon"
+                        data-icon="topcoat:cancel"
+                      ></span>
+                      Cancel Order
+                    </button>
+                    <a class="btn primary-btn back-btn" href="shop.php">
+                      <span
+                        class="iconify left-arrow"
+                        data-icon="dashicons:arrow-left-alt"
+                        data-inline="false"
+                      ></span>
+                      Go back Shopping
+                    </a>
+                  </div>        
                 </div>
               </div>
             </div>

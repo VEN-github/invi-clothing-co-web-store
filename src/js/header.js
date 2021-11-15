@@ -29,3 +29,22 @@ burgerBtn.addEventListener("click", () => {
     });
   }
 });
+
+const accountMenu = document.querySelector(".account-menu");
+const burgerMenu = document.querySelector(".burger-menu");
+const menu = document.querySelector(".user-menu");
+
+if (accountMenu) {
+  let burgerToggle = false;
+  accountMenu.addEventListener("click", () => {
+    if (!burgerToggle) {
+      burgerMenu.classList.add("open");
+      menu.classList.toggle("active");
+      burgerToggle = true;
+    } else {
+      burgerMenu.classList.remove("open");
+      menu.classList.remove("active");
+      burgerToggle = false;
+    }
+  });
+}

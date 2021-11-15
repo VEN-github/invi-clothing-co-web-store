@@ -22,7 +22,7 @@ include_once "../includes/header.php";
               <?php include_once "../includes/profilesummary.php"; ?>
               <div data-sal="zoom-in" data-sal-duration="1200" data-sal-delay="200" data-sal-easing="ease-out-bounce" class="customer-details">
                 <h4>Request Return</h4>
-                <p class="note-text">Note:</p>
+                <p class="note-text">Note: For return policy, INVI Clothing Co. only allow 7 days from the date received for return.</p>
                 <form method="post">
                   <div class="input-field">
                     <input type="hidden" name="email" value="<?= $user[
@@ -45,6 +45,7 @@ include_once "../includes/header.php";
                       <option value="Broken Item">Broken Item</option>
                       <option value="Wrong Item">Wrong Item</option>
                       <option value="Incomplete Item">Incomplete Item</option>
+                      <option value="Other Reason">Other Reason</option>
                     </select>
                     <span
                       class="iconify dropdown"
@@ -56,7 +57,7 @@ include_once "../includes/header.php";
                     <textarea class="input input-full" name="comment" placeholder="Write additional comments here (Optional)"></textarea>
                   </div>
                   <div class="button-container">
-                    <button type="submit" name="returnSubmit" class="btn primary-btn">
+                    <button type="submit" name="returnSubmit" class="btn primary-btn submit-return">
                       Submit
                     </button>
                   </div>
