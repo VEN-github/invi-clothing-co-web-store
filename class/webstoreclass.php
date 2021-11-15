@@ -1064,7 +1064,7 @@ class WebStore
   {
     $connection = $this->openConnection();
     $stmt = $connection->prepare(
-      "SELECT product.ID, productName, categoryName, productColor, coverPhoto, image1, image2, image3, netSales, productCost, netIncome, availability FROM (SELECT * FROM product_table) product LEFT JOIN category_table category ON product.categoryID = category.ID LEFT JOIN costing_table costing ON product.ID = costing.productID GROUP BY product.ID ORDER BY product.ID DESC"
+      "SELECT product.ID, productName, categoryName, productColor, coverPhoto, image1, image2, image3, salesAmount, salesDiscount, netSales, productCost, netIncome, availability FROM (SELECT * FROM product_table) product LEFT JOIN category_table category ON product.categoryID = category.ID LEFT JOIN costing_table costing ON product.ID = costing.productID GROUP BY product.ID ORDER BY product.ID DESC"
     );
     $stmt->execute();
     $products = $stmt->fetchall();
@@ -1344,7 +1344,7 @@ class WebStore
   {
     $connection = $this->openConnection();
     $stmt = $connection->prepare(
-      "SELECT product.ID, productName, productColor, coverPhoto, availability, netSales FROM (SELECT * FROM product_table) product LEFT JOIN costing_table costing ON product.ID = costing.productID GROUP BY product.ID ORDER BY RAND()"
+      "SELECT product.ID, productName, productColor, coverPhoto, availability, netSales, salesAmount, salesDiscount FROM (SELECT * FROM product_table) product LEFT JOIN costing_table costing ON product.ID = costing.productID GROUP BY product.ID ORDER BY RAND()"
     );
     $stmt->execute();
     $randomProducts = $stmt->fetchall();
@@ -1362,7 +1362,7 @@ class WebStore
   {
     $connection = $this->openConnection();
     $stmt = $connection->prepare(
-      "SELECT product.ID, productName, productDescription, categoryName, netSales, netIncome, productColor, coverPhoto, image1, image2, image3, sizeGuide FROM (SELECT * FROM product_table WHERE product_table.ID = ?) product LEFT JOIN category_table category ON product.categoryID = category.ID LEFT JOIN costing_table costing ON product.ID = costing.productID"
+      "SELECT product.ID, productName, productDescription, categoryName, salesAmount, salesDiscount,netSales, netIncome, productColor, coverPhoto, image1, image2, image3, sizeGuide FROM (SELECT * FROM product_table WHERE product_table.ID = ?) product LEFT JOIN category_table category ON product.categoryID = category.ID LEFT JOIN costing_table costing ON product.ID = costing.productID"
     );
     $stmt->execute([$ID]);
     $product = $stmt->fetch();
@@ -1991,7 +1991,10 @@ class WebStore
         $customerName = $_POST["userName"];
         $mailToCustomer = $_POST["userEmail"];
         $mailTo = "inviclothing.co@gmail.com";
-        $body = "Order #: " . $orderID . " has been cancelled";
+        $body =
+          "We are sorry to hear that you cancelled your Order #:" .
+          $orderID .
+          ". Please take note that for PayPal and bank payment method refund will take up to 5-7 business days. We are hoping to shop with you soon.";
 
         $mail = new PHPMailer\PHPMailer\PHPMailer();
         //$mail->SMTPDebug = 1;
@@ -2028,7 +2031,10 @@ class WebStore
         $customerName = $_POST["userName"];
         $mailToCustomer = $_POST["userEmail"];
         $mailTo = "inviclothing.co@gmail.com";
-        $body = "Order #: " . $orderID . " has been cancelled";
+        $body =
+          "We are sorry to hear that you cancelled your Order #:" .
+          $orderID .
+          ". Please take note that for PayPal and bank payment method refund will take up to 5-7 business days. We are hoping to shop with you soon.";
 
         $mail = new PHPMailer\PHPMailer\PHPMailer();
         //$mail->SMTPDebug = 1;
@@ -3014,7 +3020,7 @@ class WebStore
       } elseif ($this->checkEmail($email) == 0) {
         echo "<script> Swal.fire({
           icon: 'error',
-          title: 'Empty Field',
+          title: 'Error',
           text: 'Email address is not registered',
         });
         </script>";
@@ -3209,7 +3215,11 @@ class WebStore
       $customerName = $_POST["userName"];
       $mailToCustomer = $_POST["userEmail"];
       $mailTo = "inviclothing.co@gmail.com";
-      $body = "Order #: " . $orderID . " has been placed";
+      $body =
+        "Hi, 
+      This is INVI Clothing Co. Your order with Order #:" .
+        $orderID .
+        " has been placed. We will process your order as soon as possible. For inquiries, please free to message us. Thank you for shopping with us.";
 
       $mail = new PHPMailer\PHPMailer\PHPMailer();
       //$mail->SMTPDebug = 1;
@@ -3270,25 +3280,39 @@ class WebStore
             "<h4> Order# " .
             $orderID .
             " </h4>" .
-            "<b>Your order is being processed.</b>";
+            "<b>Hi, 
+            This is INVI Clothing Co. Your order with Order #:" .
+            $orderID .
+            " is now on processing status.</b>";
         }
         if ($_POST["orderStatus"] === "Shipped") {
           $mail->Body =
             "<h4> Order# " .
             $orderID .
             " </h4>" .
-            "Your order/s has been shipped out.";
+            "Hi, 
+            This is INVI Clothing Co. Your order with Order #:" .
+            $orderID .
+            " has been shipped out.";
         }
         if ($_POST["orderStatus"] === "Delivered") {
           $mail->Body =
             "<h4> Order# " .
             $orderID .
             " </h4>" .
-            "Your order/s has been delivered. Thank you for supporting INVI Clothing Co.";
+            "Hi, 
+            This is INVI Clothing Co. Your order with Order #:" .
+            $orderID .
+            " has been delivered. Thank you for supporting INVI Clothing Co.";
         }
         if ($_POST["orderStatus"] === "Cancelled") {
           $mail->Body =
-            "<h4> Order# " . $orderID . " </h4>" . "Cancelled order.";
+            "<h4> Order# " .
+            $orderID .
+            " </h4>" .
+            "Order with Order #: " .
+            $orderID .
+            " was cancelled. Please check payment method and review refund if necessary.";
         }
 
         if (!$mail->send()) {

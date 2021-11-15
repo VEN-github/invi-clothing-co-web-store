@@ -1,0 +1,1 @@
+$(".carousel-container").owlCarousel({center:!0,lazyLoad:!0,loop:!0,autoplay:!0,nav:!1,dots:!1,autoWidth:!0,autoplayTimeout:2e3,autoplayHoverPause:!0,responsiveClass:!0,responsive:{0:{items:1,nav:!1},600:{items:2,nav:!1},1e3:{items:3,nav:!1}}});

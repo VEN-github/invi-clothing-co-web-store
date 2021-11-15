@@ -27,6 +27,7 @@ $novSales = $store->get_nov_sales();
 $decSales = $store->get_dec_sales();
 ?>
   <body id="page-top">
+    <?php include_once "../includes/preloader.php"; ?>
     <!-- Page Wrapper -->
     <div id="wrapper">
       <?php include_once "../includes/dashboard_sidebar.php"; ?>
@@ -436,6 +437,7 @@ $decSales = $store->get_dec_sales();
                       </table>
                     </div>
                     <?php } else { ?>
+                      <img class="img-fluid mx-auto d-block mb-4" src="./assets/img/no-data.svg" alt="No Data" width="300px">
                       <h4 class="text-center text-gray-900">No Data Available</h4>
                     <?php } ?>
                   </div>
@@ -492,6 +494,7 @@ $decSales = $store->get_dec_sales();
                       </table>
                     </div>
                     <?php } else { ?>
+                      <img class="img-fluid mx-auto d-block mb-4" src="./assets/img/no-data.svg" alt="No Data" width="300px">
                       <h4 class="text-center text-gray-900">No Data Available</h4>
                     <?php } ?>  
                   </div>

@@ -16,7 +16,7 @@ $orderID = $store->get_orderID($ID);
       <main>
         <section id="confirmation">
           <div class="container">
-            <div class="confirmation-container">
+            <div data-sal="fade" data-sal-duration="1200" data-sal-delay="100" data-sal-easing="ease-out-bounce" class="confirmation-container">
               <h1>ORDER COMPLETED</h1>
               <img
                 src="./assets/img/order-confirmed.svg"
@@ -64,6 +64,7 @@ $orderID = $store->get_orderID($ID);
       <!-- end of confirmed section -->
       <?php require_once "../includes/footer.php"; ?>
     </div>
+    <?php require_once "../includes/scripts.php"; ?>
     <script src="./assets/js/header.js"></script>
     <script src="./assets/js/user.js"></script>
     <script src="./assets/js/cart.js"></script>

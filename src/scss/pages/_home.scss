@@ -3,11 +3,11 @@
 @use '../layout/showcase';
 @use '../layout/features';
 @use '../layout/flex';
+@use '../components/media';
 
 .info {
   width: 100%;
-  height: 100%;
-  padding: 4em 0;
+  padding: 2.5em 0;
   background: #e5e5e5;
 
   &-container {
@@ -49,6 +49,12 @@
       p span {
         display: block;
       }
+    }
+  }
+
+  @include media.landscapeTablet {
+    .box {
+      margin-bottom: 1.5em;
     }
   }
 }

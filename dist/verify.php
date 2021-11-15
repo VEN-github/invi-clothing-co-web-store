@@ -17,12 +17,12 @@ include_once "../includes/header.php";
           <div class="container">
             <div class="forgotPass-grid">
               <div class="illustration">
-                <img
+                <img data-sal="slide-right" data-sal-duration="1200" data-sal-delay="200" data-sal-easing="ease-out-bounce"
                   src="./assets/img/authentication.svg"
                   alt="Authentication"
                 />
               </div>
-              <div class="forgotPass-form">
+              <div data-sal="zoom-in" data-sal-duration="1200" data-sal-delay="200" data-sal-easing="ease-out-bounce" class="forgotPass-form">
                 <h4>Verification</h4>
                 <p>
                   Enter the verification code we just sent you on your email
@@ -74,6 +74,7 @@ include_once "../includes/header.php";
       <!-- end of verify password section -->
       <?php require_once "../includes/footer.php"; ?>
     </div>
+    <?php require_once "../includes/scripts.php"; ?>
     <script src="./assets/js/header.js"></script>
     <script src="./assets/js/user.js"></script>
     <script src="./assets/js/cart.js"></script>

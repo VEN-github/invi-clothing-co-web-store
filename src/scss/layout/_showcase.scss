@@ -1,5 +1,6 @@
 @use '../abstracts/colors';
 @use '../abstracts/fonts';
+@use './flex';
 @use '../components/media';
 
 .showcase {
@@ -13,46 +14,96 @@
   );
   background-size: 100% 200%;
   animation: movingGradient 5s linear infinite alternate;
-  .hero {
-    justify-self: center;
-    width: 580px;
-    height: 825px;
-    object-fit: cover;
-    filter: drop-shadow(14px 0px 16px rgba(0, 0, 0, 0.25));
-    // & img {
-    //   width: 100%;
-    //   max-width: 580px;
-    //   height: 100%;
-    //   object-fit: cover;
-    //   filter: drop-shadow(14px 0px 16px rgba(0, 0, 0, 0.25));
-    // }
-  }
-  .showcase-text {
-    align-self: center;
-    & h1 {
-      font-size: 6.75rem;
-      font-weight: map-get(fonts.$font-weight, extra-bold);
-      background: linear-gradient(279.15deg, #ffffff -7.93%, #ed6a4c 113.09%);
-      background-clip: text;
-      -webkit-text-fill-color: transparent;
-      letter-spacing: 0.045em;
-      line-height: 132px;
-      margin-bottom: 0.2em;
-      & span {
-        display: block;
-      }
-    }
-    & p {
-      font-size: 1.45rem;
-      color: colors.$text-color;
-      // line-height: 1.75em;
 
-      & span {
-        display: block;
+  .flex-showcase {
+    @include flex.flex(space-between, center, row);
+
+    .hero {
+      align-self: stretch;
+      & img {
+        width: 100%;
+        max-width: 580px;
+        height: 100%;
+        object-fit: cover;
+        filter: drop-shadow(14px 0px 16px rgba(0, 0, 0, 0.25));
       }
     }
-    & .cta {
-      margin-top: 3em;
+    .showcase-text {
+      & h1 {
+        font-size: 6.75rem;
+        font-weight: map-get(fonts.$font-weight, extra-bold);
+        background: linear-gradient(279.15deg, #ffffff -7.93%, #ed6a4c 113.09%);
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        letter-spacing: 0.045em;
+        line-height: 132px;
+        margin-bottom: 0.2em;
+        & span {
+          display: block;
+        }
+      }
+      & p {
+        font-size: 1.45rem;
+        color: colors.$text-color;
+
+        & span {
+          display: block;
+        }
+      }
+      & .cta {
+        margin-top: 3em;
+      }
+    }
+    @include media.laptop {
+      .showcase-text h1 {
+        font-size: clamp(3.25rem, 7vw, 6.75rem);
+      }
+      .showcase-text p {
+        font-size: 1.25rem;
+      }
+    }
+    @include media.landscapeTablet {
+      align-items: stretch;
+      flex-direction: column;
+      .showcase-text {
+        margin-bottom: 1.5em;
+
+        & h1 {
+          font-size: 6.75rem;
+        }
+
+        & p {
+          font-size: 1.45rem;
+        }
+      }
+
+      .hero {
+        align-self: center;
+      }
+    }
+    @include media.bigMobile {
+      .showcase-text {
+        & h1 {
+          font-size: 5.125rem;
+          line-height: 100px;
+        }
+
+        & p {
+          font-size: 1.25rem;
+        }
+      }
+    }
+    @include media.smallMobile {
+      .showcase-text {
+        & h1 {
+          font-size: 3rem;
+          line-height: 60px;
+        }
+
+        & p {
+          font-size: 0.875rem;
+        }
+      }
     }
   }
 }

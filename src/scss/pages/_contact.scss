@@ -2,13 +2,14 @@
 @use "../abstracts/fonts";
 @use "../layout/flex";
 @use "../layout/grid";
+@use "../components/media";
 
 #contact {
-  padding: 8em 0;
+  padding: 8em 0 4em 0;
 
   & h1 {
     margin-bottom: 0.5em;
-    font-size: 4rem;
+    font-size: clamp(3rem, 5vw, 4rem);
     font-weight: map-get(fonts.$font-weight, semi-bold);
     color: colors.$primary-color;
     letter-spacing: 0.1em;
@@ -16,32 +17,27 @@
   }
 
   .contact-grid {
-    @include grid.grid(1fr 1fr, none, none, 100px);
+    @include grid.grid(repeat(2, 1fr), none, none, 100px);
     .contact-vector {
       & img {
         width: 580px;
         max-width: 100%;
         object-fit: cover;
-        margin-bottom: 4em;
+        margin-bottom: 1.5em;
       }
-
-      .contact-details {
-        @include flex.flex(center, stretch, column);
-        .contact-icon {
-          @include flex.flex(space-around, center, row);
+      .contact-icon {
+        @include flex.flex(center, center, row);
+        flex-wrap: wrap;
+        & > div {
+          @include flex.flex(center, center, column);
+          margin-bottom: 1em;
           .icon-contact {
             font-size: 1.75rem;
             color: colors.$secondary-color;
           }
         }
-        .contact-text {
-          @include flex.flex(space-between, center, row);
-
-          & p {
-            font-size: 1rem;
-            font-weight: map-get(fonts.$font-weight, regular);
-            color: colors.$primary-color;
-          }
+        & div:nth-child(2) {
+          margin: 0 0.8em 1em 0.8em;
         }
       }
     }
@@ -63,6 +59,13 @@
         width: 100%;
         box-shadow: none;
       }
+    }
+  }
+
+  @include media.portraitTablet {
+    .contact-grid {
+      grid-template-columns: 1fr;
+      gap: 30px;
     }
   }
 }

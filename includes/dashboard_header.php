@@ -15,6 +15,8 @@
         href="./assets/img/favicon.ico"
         type="image/x-icon"
         />
+        <!-- preloader -->
+        <link href="./assets/css/preloader.css" rel="stylesheet" />
         <!-- Custom fonts for this template-->
         <link href="./assets/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
         <link

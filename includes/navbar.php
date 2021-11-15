@@ -12,7 +12,7 @@
         <li><a href="shop.php" class="nav-link <?= $title === "Shop"
           ? "active"
           : "" ?>">Shop</a></li>
-        <li><a href="#" class="nav-link <?= $title === "About"
+        <li><a href="about.php" class="nav-link <?= $title === "About Us"
           ? "active"
           : "" ?>">About</a></li>
         <li><a href="contact.php" class="nav-link <?= $title === "Contact Us"
@@ -27,9 +27,6 @@
     </nav>
     <div class="side-menu">
       <div class="icon-menu">
-        <div>
-          <span class="iconify search-icon" data-icon="fe:search" data-inline="false"></span>
-        </div>
         <div class="shopping-container">
           <a href="cart.php" class="<?= $title === "Cart"
             ? "icon-link visited"
@@ -37,7 +34,6 @@
             <span class="iconify cart-icon" data-icon="gg:shopping-bag" data-inline="false"></span></a>
             <span id="counter" class="counter">0</span>               
         </div>
-        
         <div class="profile-menu">
         <?php if (isset($_SESSION["userdata"])) { ?>
           <div class="hover">

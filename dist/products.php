@@ -12,6 +12,7 @@ $store->publish_product();
 $store->delete_product();
 ?>
   <body id="page-top">
+    <?php include_once "../includes/preloader.php"; ?>
     <!-- Page Wrapper -->
     <div id="wrapper">
       <?php include_once "../includes/dashboard_sidebar.php"; ?>
@@ -43,6 +44,7 @@ $store->delete_product();
                 </h6>
               </div>
               <div class="card-body">
+              <?php if ($products) { ?>
                 <div class="table-responsive">
                   <table
                     class="table table-bordered text-center table-sm"    
@@ -81,7 +83,7 @@ $store->delete_product();
                         <input type="hidden" name="deleteImage2" id="deleteImage2">
                         <input type="hidden" name="deleteImage3" id="deleteImage3">
                       </form>
-                      <?php if ($products) { ?>
+                      
                         <?php foreach ($products as $product) { ?>
                           <?php $stocks = $store->view_all_stocks(
                             $product["ID"]
@@ -392,7 +394,7 @@ $store->delete_product();
                             <?php } ?> 
                           <?php } ?> 
                         <?php } ?> 
-                      <?php } ?>
+          
                     </tbody>
                     <tfoot class="bg-gray-600 text-gray-100">
                         <tr>
@@ -415,6 +417,10 @@ $store->delete_product();
                 <div class="mt-4 col text-center">
                   <button class="btn btn-secondary load-more">Load more</button>
                 </div>
+                <?php } else { ?>
+                  <img class="img-fluid mx-auto d-block mb-4" src="./assets/img/no-data.svg" alt="No Data" width="300px">
+                  <h4 class="text-center text-gray-900">No Data Available</h4>
+                <?php } ?>
               </div>
             </div>
           </div>

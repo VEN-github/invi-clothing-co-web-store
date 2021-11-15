@@ -19,11 +19,11 @@ $store->delete_address();
       <!-- start of addresses section -->
       <main>
         <section id="profile">
-          <div class="banner">Addresses</div>
+          <div data-sal="zoom-out" data-sal-duration="1200" data-sal-delay="200" data-sal-easing="ease-out-bounce" class="banner">Addresses</div>
           <div class="container">
             <div class="profile-wrapper">
               <?php include_once "../includes/profilesummary.php"; ?>
-              <div class="customer-details">
+              <div data-sal="zoom-in" data-sal-duration="1200" data-sal-delay="200" data-sal-easing="ease-out-bounce" class="customer-details">
                 <?php if ($addresses) { ?>
                   <div class="address-header">
                     <h4>Address Book</h4>
@@ -155,7 +155,7 @@ $store->delete_address();
                           class="input input-full"
                           form="addAddressForm"
                         />
-                        <label class="form-label full-label">House Number, Street Address</label>
+                        <label class="form-label">House Number, Street Address</label>
                       </div>
                       <div class="input-field">
                         <input
@@ -165,7 +165,7 @@ $store->delete_address();
                           class="input input-full"
                           form="addAddressForm"
                         />
-                        <label class="form-label full-label">Apartment, suite, etc. (optional)</label>
+                        <label class="form-label">Apartment, suite, etc. (optional)</label>
                       </div>
                       <div class="input-group">
                         <div class="input-field">
@@ -231,7 +231,7 @@ $store->delete_address();
                           class="input input-full"
                           form="addAddressForm"
                         />
-                        <label class="form-label phone-label">Phone Number</label>
+                        <label class="form-label">Phone Number</label>
                       </div>
                       <div class="inputfield custom-checkbox">
                         <input type="checkbox" name="addPrimaryAddress" class="checkbox" value="primary address" form="addAddressForm"/>
@@ -241,7 +241,7 @@ $store->delete_address();
                         <button
                           type="button"
                           id="cancel-btn"
-                          class="btn outline-primary-btn"
+                          class="btn outline-primary-btn cancel-form"
                         >
                           Cancel
                         </button>
@@ -350,7 +350,7 @@ $store->delete_address();
                           class="input input-full"
                           form="editAddressForm"
                         />
-                        <label class="form-label full-label">House Number, Street Address</label>
+                        <label class="form-label">House Number, Street Address</label>
                       </div>
                       <div class="input-field">
                         <input
@@ -361,7 +361,7 @@ $store->delete_address();
                           class="input input-full"
                           form="editAddressForm"
                         />
-                        <label class="form-label full-label">Apartment, suite, etc. (optional)</label>
+                        <label class="form-label">Apartment, suite, etc. (optional)</label>
                       </div>
                       <div class="input-group">
                         <div class="input-field">
@@ -432,7 +432,7 @@ $store->delete_address();
                           class="input input-full"
                           form="editAddressForm"
                         />
-                        <label class="form-label phone-label">Phone Number</label>
+                        <label class="form-label">Phone Number</label>
                       </div>
                       <div class="inputfield custom-checkbox">
                         <input type="checkbox" name="editPrimaryAddress" id="primaryAddress" class="checkbox" value="primary address" form="editAddressForm"/>
@@ -442,7 +442,7 @@ $store->delete_address();
                         <button
                           type="button"
                           id="close-btn"
-                          class="btn outline-primary-btn"
+                          class="btn outline-primary-btn cancel-form"
                         >
                           Cancel
                         </button>
@@ -466,6 +466,7 @@ $store->delete_address();
       <!-- end of addresses section -->
       <?php require_once "../includes/footer.php"; ?>
     </div>
+    <?php require_once "../includes/scripts.php"; ?>
     <script src="./assets/js/header.js"></script>
     <script src="./assets/js/user.js"></script>
     <script src="./assets/js/cart.js"></script>
@@ -507,6 +508,7 @@ $store->delete_address();
         editBtn.forEach((edit) => {
           edit.addEventListener("click", () => {
             document.querySelector('#editAddressForm').style.display="block";
+            document.querySelector('#addAddressForm').style.display="none";
           });
         });
       }
@@ -522,6 +524,7 @@ $store->delete_address();
       if(addBtn){
         addBtn.addEventListener('click', () => {
           document.querySelector('#addAddressForm').style.display="block";
+          document.querySelector('#editAddressForm').style.display="none";
         })
       }
       if(cancelBtn){

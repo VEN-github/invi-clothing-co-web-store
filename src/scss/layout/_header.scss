@@ -16,7 +16,6 @@
   position: fixed;
   z-index: 999;
   width: 100%;
-  // height: auto;
   padding: 1em 0;
   transition: all 0.5s ease-in;
 
@@ -93,7 +92,13 @@
   .icon-link.visited .cart-icon {
     color: colors.$secondary-color;
   }
-  .search-icon {
+
+  .shopping-container {
+    position: relative;
+  }
+
+  .cart-icon {
+    display: flex;
     width: 23px;
     height: 23px;
     color: colors.$text-color;
@@ -102,14 +107,6 @@
     &:hover:not(.visited) {
       color: colors.$accent-color;
     }
-  }
-  .shopping-container {
-    position: relative;
-  }
-
-  .cart-icon {
-    display: flex;
-    @extend .search-icon;
   }
   .counter {
     position: absolute;
@@ -159,13 +156,14 @@
     .menu {
       display: none;
       position: absolute;
-      top: 110px;
+      top: 90px;
       width: 170px;
-      background: #f9f9f9;
       padding: 1em 1.5em;
+      background: #f9f9f9;
       border-radius: 5px;
       box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.15);
       list-style: none;
+      user-select: none;
       &.active {
         display: block;
       }
@@ -218,9 +216,13 @@
     .nav-link {
       font-size: 1.125rem;
     }
-    .search-icon {
+    .cart-icon {
       width: 20px;
       height: 20px;
+    }
+    .counter {
+      width: 18px;
+      height: 18px;
     }
     .user-icon {
       width: 22px;
@@ -230,17 +232,18 @@
       width: 18px;
       height: 18px;
     }
-    .outline-primary-btn {
+    .login-btn {
       font-size: 1rem;
     }
   }
   @include media.landscapeTablet {
-    .logo img {
-      width: 85px;
-    }
-    .search-icon {
+    .cart-icon {
       width: 23px;
       height: 23px;
+    }
+    .counter {
+      width: 20px;
+      height: 20px;
     }
     .user-icon {
       width: 25px;
@@ -249,9 +252,11 @@
     .arrow {
       width: 20px;
       height: 20px;
+      margin-right: 0.5em;
     }
-    .outline-primary-btn {
+    .login-btn {
       font-size: 1.125rem;
+      margin-right: 0.8em;
     }
     .line1,
     .line2,
@@ -259,14 +264,13 @@
       width: 28px;
       height: 3px;
       margin: 5px;
-      background-color: #fff;
+      background: colors.$text-color;
       border-radius: 5px;
       transition: all 0.5s ease-in-out;
     }
     .burger-btn {
       position: relative;
       z-index: 2;
-      margin-left: 1.3em;
       cursor: pointer;
 
       &.open .line1 {
@@ -326,43 +330,28 @@
     }
   }
   @include media.bigMobile {
+    .logo img {
+      width: 75px;
+    }
+    .icon-menu > div:not(.profile-menu) {
+      margin-right: 1.2em;
+    }
+
     .login-btn {
       display: none;
     }
     .login-nav {
       display: block;
+      padding: 0.8em 5em;
+      font-size: 1.25rem;
     }
     .nav-links {
       & .nav-link {
         font-size: 1.5rem;
       }
     }
-    .outline-primary-btn {
-      padding: 0.8em 5em;
-      font-size: 1.25rem;
-    }
-  }
-  @include media.mobile {
-    .logo {
-      & img {
-        width: 80px;
-      }
-    }
-    .icon-menu > div {
-      margin-right: 0.8em;
-    }
-    .search-icon {
-      width: 20px;
-      height: 20px;
-    }
-    .user-icon {
-      width: 22px;
-      height: 22px;
-    }
-    .arrow {
-      width: 18px;
-      height: 18px;
-      margin-right: -0.8em;
+    .burger-btn {
+      margin-left: 0;
     }
   }
 }
