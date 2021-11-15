@@ -1,5 +1,6 @@
 <?php
     require_once "../google_api/vendor/autoload.php";
+
     $gClient = new Google_Client();
     $gClient->setClientId("260363476361-1ruq880arjih1jp273jk76crn1js16o4.apps.googleusercontent.com");
     $gClient->setClientSecret("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");

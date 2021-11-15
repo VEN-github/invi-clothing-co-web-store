@@ -1,6 +1,7 @@
 <?php
 require_once "../class/webstoreclass.php";
 require_once "../includes/config.php";
+require_once "../includes/fb_config.php";
 require "../PHPMailer/src/PHPMailer.php";
 require "../PHPMailer/src/SMTP.php";
 $store->loginValidation();
@@ -19,13 +20,13 @@ require_once "../includes/header.php";
               <form class="form-group login-form" method="post">
                 <h2 class="title">Login</h2>
                 <div class="social">
-                  <a href="#"
-                    ><span
+                  <button onclick="window.location = '<?php echo $fb_url; ?>'" type="button">
+                    <span
                       class="iconify facebook"
                       data-icon="akar-icons:facebook-fill"
                       data-inline="false"
                     ></span
-                  ></a>
+                  ></button>
                   <button onclick="window.location = '<?php echo $login_url; ?>'" type="button">
                     <span
                       class="iconify google"

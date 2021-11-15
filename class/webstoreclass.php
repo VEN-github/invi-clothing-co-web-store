@@ -3386,6 +3386,10 @@ class WebStore
               }
         }
   }
+
+  // function insertFBData($data){
+  //     var_dump($data);
+  // }
 }
 $store = new WebStore();
 ?>
