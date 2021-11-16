@@ -21,20 +21,20 @@ include_once "../includes/header.php";
                 <div class="answer"><p>We have you covered! We will email you as items in your order ship, or if there are updates on the status of your order. Can't find the email? Go to Profile > Orders > Track. COVID-19 potential delivery delay. We apologize for the inconvenience this may cause.</p></div>
               </div>
               <div class="content-box">
-                <div class="question"><h4>What is the status of my order?</h4><span class="plus-icon">+</span></div>
-                <div class="answer"><p>We have you covered! We will email you as items in your order ship, or if there are updates on the status of your order. Can't find the email? Go to Profile > Orders > Track. COVID-19 potential delivery delay. We apologize for the inconvenience this may cause.</p></div>
+                <div class="question"><h4>Can you ship internationally or process international credit cards?</h4><span class="plus-icon">+</span></div>
+                <div class="answer"><p>At this time we do not offer international shipping and cannot accept credit cards from outside of the Philippines.</p></div>
               </div>
               <div class="content-box">
-                <div class="question"><h4>What is the status of my order?</h4><span class="plus-icon">+</span></div>
-                <div class="answer"><p>We have you covered! We will email you as items in your order ship, or if there are updates on the status of your order. Can't find the email? Go to Profile > Orders > Track. COVID-19 potential delivery delay. We apologize for the inconvenience this may cause.</p></div>
+                <div class="question"><h4>How can I pay for my order?</h4><span class="plus-icon">+</span></div>
+                <div class="answer"><p>INVI Clothing Co. currently accepts Credit/Debit card. We also accept payment via PayPal and Cash on Delivery (COD).</p></div>
               </div>
               <div class="content-box">
-                <div class="question"><h4>What is the status of my order?</h4><span class="plus-icon">+</span></div>
-                <div class="answer"><p>We have you covered! We will email you as items in your order ship, or if there are updates on the status of your order. Can't find the email? Go to Profile > Orders > Track. COVID-19 potential delivery delay. We apologize for the inconvenience this may cause.</p></div>
+                <div class="question"><h4>How long will it take to get my order?</h4><span class="plus-icon">+</span></div>
+                <div class="answer"><p>For standard shipping within Metro Manila, you should receive your order within 2-3 business days. For standard shipping outside Metro Manila, it can take 5-7 business days. INVI Clothing Co. also offers express delivery within Metro Manila only, and this is only available between 8:00 am to 3:00 pm and you should receive your order within the day.</p></div>
               </div>
               <div class="content-box">
-                <div class="question"><h4>What is the status of my order?</h4><span class="plus-icon">+</span></div>
-                <div class="answer"><p>We have you covered! We will email you as items in your order ship, or if there are updates on the status of your order. Can't find the email? Go to Profile > Orders > Track. COVID-19 potential delivery delay. We apologize for the inconvenience this may cause.</p></div>
+                <div class="question"><h4>Can I cancel my order?</h4><span class="plus-icon">+</span></div>
+                <div class="answer"><p>I'm sorry to hear that you are thinking to cancel your order. Cancelling of the orders can only be done if the order status is still on "Pending or Processing Status". Once Order shipped you can no longer cancel your order.</p></div>
               </div>
               <div class="content-box">
                 <div class="question"><h4>Can I change my order?</h4><span class="plus-icon">+</span></div>

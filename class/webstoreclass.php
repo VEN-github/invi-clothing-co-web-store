@@ -1804,7 +1804,7 @@ class WebStore
   {
     $connection = $this->openConnection();
     $stmt = $connection->prepare(
-      "SELECT sales.orderID, account.firstName as firstName, account.lastName as lastName, email, coverPhoto, productName, productColor, size, sku, salesQty, totalAmount, paymentMethod, netSales, shipMethod, shipFee, orderDate, shipAddress.firstName as addressFname, shipAddress.lastName as addressLname, address1, address2, city, postalCode, region, country, phoneNumber FROM sales_table sales  LEFT JOIN account_table account ON sales.accountID = account.ID LEFT JOIN product_table product ON sales.productID = product.ID LEFT JOIN stocks_table stocks ON sales.stockID = stocks.ID LEFT JOIN costing_table costing ON sales.productID = costing.productID LEFT JOIN address_table shipAddress ON sales.orderID = shipAddress.orderID WHERE sales.orderID = ? AND sales.addressID = ? GROUP BY sales.productID"
+      "SELECT sales.orderID, account.firstName as firstName, account.lastName as lastName, email, coverPhoto, productName, productColor, size, sku, salesQty, totalAmount, paymentMethod, netSales, shipMethod, shipFee, orderDate, shipAddress.firstName as addressFname, shipAddress.lastName as addressLname, address1, address2, city, postalCode, region, country, phoneNumber FROM sales_table sales  LEFT JOIN account_table account ON sales.accountID = account.ID LEFT JOIN product_table product ON sales.productID = product.ID LEFT JOIN stocks_table stocks ON sales.stockID = stocks.ID LEFT JOIN costing_table costing ON sales.productID = costing.productID LEFT JOIN address_table shipAddress ON sales.orderID = shipAddress.orderID WHERE sales.orderID = ? AND sales.addressID = ? GROUP BY sales.stockID"
     );
     $stmt->execute([$orderID, $addressID]);
     $order = $stmt->fetchall();
@@ -3375,40 +3375,46 @@ class WebStore
   //inserting gmail data
   function insertData($data)
   {
-      //check email
-      if($this->checkEmail($data["email"]) == 0){
-        $connection = $this->openConnection();
-        $stmt = $connection->prepare("INSERT INTO account_table ( `firstName` , `lastName` , `email` , `access`) VALUES (?,?,?,?)");
-        $stmt->execute([
-              $data['firstName'],
-              $data['lastName'],
-              $data['email'],
-              $data['access']
-            ]);
+    //check email
+    if ($this->checkEmail($data["email"]) == 0) {
+      $connection = $this->openConnection();
+      $stmt = $connection->prepare(
+        "INSERT INTO account_table ( `firstName` , `lastName` , `email` , `access`) VALUES (?,?,?,?)"
+      );
+      $stmt->execute([
+        $data["firstName"],
+        $data["lastName"],
+        $data["email"],
+        $data["access"],
+      ]);
 
-            if($stmt){
-              $selectUser =  $connection->prepare("SELECT * FROM account_table WHERE email = ?");
-              $selectUser->execute([$data['email']]);
-              $row = $selectUser->fetch();
-              $count = $selectUser->rowCount();
-    
-              if($count > 0){
-                $this->set_userdata($row);
-                header("Location: ../dist/index.php");
-              }
-          }   
-      } else{
-              $connection = $this->openConnection();
-              $selectUser =  $connection->prepare("SELECT * FROM account_table WHERE email = ?");
-              $selectUser->execute([$data['email']]);
-              $row = $selectUser->fetch();
-              $count = $selectUser->rowCount();
+      if ($stmt) {
+        $selectUser = $connection->prepare(
+          "SELECT * FROM account_table WHERE email = ?"
+        );
+        $selectUser->execute([$data["email"]]);
+        $row = $selectUser->fetch();
+        $count = $selectUser->rowCount();
 
-              if($count > 0){
-                $this->set_userdata($row);
-                header("Location: ../dist/index.php");
-              }
+        if ($count > 0) {
+          $this->set_userdata($row);
+          header("Location: ../dist/index.php");
         }
+      }
+    } else {
+      $connection = $this->openConnection();
+      $selectUser = $connection->prepare(
+        "SELECT * FROM account_table WHERE email = ?"
+      );
+      $selectUser->execute([$data["email"]]);
+      $row = $selectUser->fetch();
+      $count = $selectUser->rowCount();
+
+      if ($count > 0) {
+        $this->set_userdata($row);
+        header("Location: ../dist/index.php");
+      }
+    }
   }
 
   // function insertFBData($data){

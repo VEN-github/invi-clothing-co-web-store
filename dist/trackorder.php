@@ -67,7 +67,8 @@ $store->cancel_order();
             <div class="wrapper">
               <div class="card-body">
                 <?php if ($tracking) { ?>
-                  <?php foreach ($tracking as $track) { ?>
+                    <?php foreach ($tracking as $track) { ?>
+                    <?php } ?>  
                     <?php if ($track["orderStatus"] === "Cancelled") { ?>
                       <div class="progress-bar">
                         <ul>
@@ -105,7 +106,7 @@ $store->cancel_order();
                         </ul>
                       </div>
                     <?php } ?>  
-                  <?php } ?>  
+                  
                 <?php } ?>  
                 <div>
                   <div class="user-details">

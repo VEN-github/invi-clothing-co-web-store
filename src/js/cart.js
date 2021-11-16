@@ -32,7 +32,7 @@ if (document.querySelector("#sizeOpt")) {
     stockID = sizeForm.options[sizeForm.selectedIndex].value;
     products.productSize = sizeValue;
     products.stockID = stockID;
-    products.itemCode = productName + " " + sizeValue;
+    products.itemCode = productName + " " + productColor + " " + sizeValue;
 
     maxVal = sizeForm.options[sizeForm.selectedIndex].dataset.stock;
     maxVal = parseInt(maxVal);
@@ -51,7 +51,7 @@ if (document.querySelector("#quantity")) {
   maxVal = parseInt(maxVal);
 }
 if (sizeValue == undefined) {
-  itemCode = productName;
+  itemCode = productName + " " + productColor;
 }
 let products = {
   itemCode: itemCode,
@@ -316,7 +316,7 @@ function displayCart() {
               <span class="bold">Standard Delivery:</span>
               <span>Est. Arrival: 2-3 Days (Metro Manila), 5-7 Days (Outside Metro Manila)</span>
               <span class="bold">Express Delivery:</span>
-              <span>Est. Arrival: Same Day (Within Metro Manila only)</span>
+              <span>Est. Arrival: Same Day (Within Metro Manila 8:00am - 3:00pm only)</span>
             </div>
           </div>
           <div class="subtotal-container">
