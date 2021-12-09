@@ -38,9 +38,9 @@
                                 <div class="small text-gray-500"><?= $pending[
                                   "orderDate"
                                 ] ?></div>
-                                Order #: <span class="font-weight-bold"><?= $pending[
+                                New Order #: <span class="font-weight-bold"><?= $pending[
                                   "orderID"
-                                ] ?></span> is requesting for your approval
+                                ] ?></span>
                             </div>
                         </a>
                     <?php } ?>

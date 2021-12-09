@@ -18,7 +18,7 @@ include_once "../includes/header.php";
               <p>We are committed to protecting the privacy of visitors and customers that use our sites, and take your privacy very seriously. INVI Clothing Co. appreciate and respect the importance of privacy on the Internet. The sections below make up our privacy policy. It sets out the rules we follow regarding how we use any personal information we collect about you.</p>
             </div>
             <div data-sal="slide-up" data-sal-duration="1200" data-sal-delay="200" data-sal-easing="ease-out-bounce" class="content">
-              <p>INVI Clothing Co. operate our sites, under the trading names of Invi Clothing Co and are referred to in this policy as ‘we’, ‘our’, and ‘us’. We are the data controller of any information provided to us via our websites, mobile phone applications, stores, or social media pages. Any changes we make to our privacy policy in the future will be posted on this page. This policy was last updated July 2021.</p>
+              <p>INVI Clothing Co. operate our sites, under the trading names of INVI Clothing Co. and are referred to in this policy as ‘we’, ‘our’, and ‘us’. We are the data controller of any information provided to us via our websites, mobile phone applications, stores, or social media pages. Any changes we make to our privacy policy in the future will be posted on this page. This policy was last updated July 2021.</p>
             </div>
             <div data-sal="slide-up" data-sal-duration="1200" data-sal-delay="300" data-sal-easing="ease-out-bounce" class="content">
               <p>If you have any concerns or questions about our privacy policy, or how we use your personal information, please contact us.</p>

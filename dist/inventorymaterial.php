@@ -10,7 +10,6 @@ $materials = $store->get_all_materials();
     <?php include_once "../includes/preloader.php"; ?>
     <?php
     $store->add_inventory_materials();
-    $store->update_inventory_material();
     $addedInventoryMaterials = $store->get_inventory_materials_added();
     $countOrders = $store->count_orders();
     $pendingOrders = $store->get_pending_orders();
@@ -37,9 +36,6 @@ $materials = $store->get_all_materials();
                   </div>
                   <div class="modal-body">
                     <form method="post" id="inventoryMaterialsForm">
-                    <input type="hidden" name="adminID" value="<?= $user[
-                      "ID"
-                    ] ?>">
                       <div class="form-group">
                         <label>Stock Quantity</label>
                         <input type="number" name="addedStockQty" class="form-control" min="1" value="1">
@@ -67,46 +63,6 @@ $materials = $store->get_all_materials();
               </div>
             </div>
             <!-- End of Modal Form -->
-            <!-- Edit Inventory Materials Modal Form -->
-            <div class="modal fade" id="editInventoryMaterialModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-              <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLongTitle">Edit Added Inventory</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                      <span aria-hidden="true">&times;</span>
-                    </button>
-                  </div>
-                  <div class="modal-body">
-                    <form method="post" id="updateInventoryMaterialsForm">
-                      <input type="hidden" name="inventoryMaterialID" id="inventoryMaterialID">
-                      <input type="hidden" name="adminID" id="adminID" value="<?= $user[
-                        "ID"
-                      ] ?>">
-                      <div class="form-group">
-                        <label>Stock Quantity</label>
-                        <input type="number" name="addedStockQty" id="addedStockQty" class="form-control" min="1">
-                      </div>
-                      <div class="form-group">
-                        <label>Raw Material</label>
-                        <select class="form-control" name="material" id="material">
-                          <?php foreach ($materials as $material) { ?>
-                          <option value="<?= $material["ID"] ?>"><?= $material[
-  "materialName"
-] ?></option>
-                          <?php } ?>
-                        </select>
-                      </div>
-                    </form>
-                  </div>
-                  <div class="modal-footer">
-                    <button type="button" class="btn btn-light" data-dismiss="modal">Cancel</button>
-                    <input type="submit" name="updateInventoryMaterial" class="btn btn-secondary" form="updateInventoryMaterialsForm" value="Update">
-                  </div>
-                </div>
-              </div>
-            </div>
-            <!-- End of Edit Inventory Materials Modal Form -->
             <!-- Page Heading -->
             <div
               class="d-sm-flex align-items-center justify-content-between mb-4 d-print-none"
@@ -152,7 +108,6 @@ $materials = $store->get_all_materials();
                           <th>Material Name</th>
                           <th>Added Stock</th>
                           <th>Date & Time</th>
-                          <th>Added By</th>
                         </tr>
                     </thead>
                     <tbody class="text-gray-900">
@@ -166,9 +121,6 @@ $materials = $store->get_all_materials();
                             <td><?= $inventoryMaterial["materialName"] ?></td>
                             <td><?= $inventoryMaterial["addedQty"] ?></td>
                             <td><?= $inventoryMaterial["dateTime"] ?></td>
-                            <td><?= $inventoryMaterial["addedByName"] .
-                              " " .
-                              $inventoryMaterial["addedByLastName"] ?></td>
                           </tr>
                         <?php } ?>
                       <?php } ?>
@@ -179,7 +131,6 @@ $materials = $store->get_all_materials();
                           <th>Material Name</th>
                           <th>Added Stock</th>
                           <th>Date & Time</th>
-                          <th>Added By</th>
                         </tr>
                     </tfoot>
                   </table>
@@ -216,8 +167,6 @@ $materials = $store->get_all_materials();
                           <th>Material Name</th>
                           <th>Added Stock</th>
                           <th>Date & Time</th>
-                          <th>Added By</th>
-                          <th>Action</th>
                         </tr>
                     </thead>
                     <tbody class="text-gray-900">
@@ -231,22 +180,6 @@ $materials = $store->get_all_materials();
                             <td><?= $inventoryMaterial["materialName"] ?></td>
                             <td><?= $inventoryMaterial["addedQty"] ?></td>
                             <td><?= $inventoryMaterial["dateTime"] ?></td>
-                            <td><?= $inventoryMaterial["addedByName"] .
-                              " " .
-                              $inventoryMaterial["addedByLastName"] ?></td>
-                            <td>
-                              <button type="button" class="editInventoryMaterial btn btn-sm btn-secondary btn-circle" href="javascript:;" data-toggle="modal" data-target="#editInventoryMaterialModal" data-inventory_material_id="<?= $inventoryMaterial[
-                                "ID"
-                              ] ?>" data-admin_id="<?= $user[
-  "ID"
-] ?>" data-material_id="<?= $inventoryMaterial[
-  "materialID"
-] ?>" data-added_stock_qty="<?= $inventoryMaterial["addedQty"] ?>">
-                              <span class="icon text">
-                                <i class="fas fa-edit"></i>
-                              </span>
-                            </button>
-                            </td>
                           </tr>
                         <?php } ?>
                       <?php } ?>
@@ -257,8 +190,6 @@ $materials = $store->get_all_materials();
                           <th>Material Name</th>
                           <th>Added Stock</th>
                           <th>Date & Time</th>
-                          <th>Added By</th>
-                          <th>Action</th>
                         </tr>
                     </tfoot>
                   </table>
@@ -279,19 +210,6 @@ $materials = $store->get_all_materials();
       <i class="fas fa-angle-up"></i>
     </a>
     <?php require_once "../includes/dashboard_scripts.php"; ?>
-    <script>
-        $('.editInventoryMaterial').click(function() {
-        var inventoryMaterialID = $(this).data('inventory_material_id');
-        var adminID = $(this).data('admin_id');
-        var materialID = $(this).data('material_id');
-        var addedStockQty = $(this).data('added_stock_qty');
-
-        $('#inventoryMaterialID').val(inventoryMaterialID);
-        $('#adminID').val(adminID);
-        $('#material').val(materialID);
-        $('#addedStockQty').val(addedStockQty);
-        } );
-    </script>
     <script>
       const setDate = new Date();
       const date = setDate.toDateString();

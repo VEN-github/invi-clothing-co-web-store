@@ -49,7 +49,6 @@ $admins = $store->get_admin();
                           <option value="Processing">Processing</option>
                           <option value="Shipped">Shipped</option>
                           <option value="Delivered">Delivered</option> 
-                          <option value="Cancelled" class="addedOpt">Cancelled</option>
                         </select>
                       </div>
                     </form>
@@ -145,7 +144,7 @@ $admins = $store->get_admin();
                           $order["orderStatus"] === "Cancelled"
                         ) { ?>
                           text-danger<?php } elseif (
-                          $order["orderStatus"] === "Pending"
+                          $order["orderStatus"] === "Placed"
                         ) { ?> text-warning<?php } elseif (
                           $order["orderStatus"] === "Processing"
                         ) { ?>text-primary<?php } elseif (
@@ -169,7 +168,7 @@ $admins = $store->get_admin();
                               <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
                                 <?php if (
                                   $order["orderStatus"] === "Processing" ||
-                                  $order["orderStatus"] === "Pending"
+                                  $order["orderStatus"] === "Placed"
                                 ) { ?>      
                                   <a class="dropdown-item" target="_blank" href="invoice.php?orderID=<?= $order[
                                     "orderID"
@@ -262,10 +261,6 @@ $admins = $store->get_admin();
         $("#orderID").val(orderID);
         $("#email").val(email);
         $("#payment").val(payment);
-
-        if (status === "Processing" || status === "Shipped") {
-          $(".addedOpt").attr("disabled", "disabled");
-        }
       });
     </script>
   </body>

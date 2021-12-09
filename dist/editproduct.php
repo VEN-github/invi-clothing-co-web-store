@@ -16,7 +16,6 @@ $costs = $store->view_all_cost($ID);
     <?php
     $categories = $store->get_categories();
     $store->update_product($ID);
-    $store->update_stock($ID);
     $store->update_costing($ID);
     ?>
     <!-- Page Wrapper -->
@@ -388,12 +387,12 @@ $costs = $store->view_all_cost($ID);
                                 <td><input class="form-control" name="size[]" value="<?= $stock[
                                   "size"
                                 ] ?>" form="productForm" readonly></td>
-                                <td><input type="number" class="form-control stocks" name="stocks[]" min="0" value="<?= $stock[
+                                <td><input type="text" class="form-control stocks" name="stocks[]" value="<?= $stock[
                                   "stock"
-                                ] ?>" form="productForm"></td>
+                                ] ?>" form="productForm" readonly></td>
                                 <td><input type="text" class="form-control text-uppercase" name="sku[]" value="<?= $stock[
                                   "sku"
-                                ] ?>" form="productForm"></td>
+                                ] ?>" form="productForm" readonly></td>
                               </tr>  
                             <?php } ?>
                           </tbody>

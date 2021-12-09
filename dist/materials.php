@@ -98,7 +98,7 @@ $admins = $store->get_admin();
                       </div>
                       <div class="form-group">
                         <label>Stock Qty</label>
-                        <input type="number" name="stockQty" id="stockQty" class="form-control">
+                        <input type="text" name="stockQty" id="stockQty" class="form-control" readonly>
                       </div>
                       <div class="form-group">
                         <label>Supplier</label>
@@ -131,7 +131,7 @@ $admins = $store->get_admin();
                     </button>
                   </div>
                   <div class="modal-body">
-                    <form method="post" id="supplierContactForm">
+                    <form method="post" id="supplierContactForm" enctype="multipart/form-data">
                       <div class="form-group">
                         <label>Recipient</label>
                         <input type="text" name="supplierEmail" id="supplierEmailAdd" class="form-control">
@@ -139,6 +139,10 @@ $admins = $store->get_admin();
                       <div class="form-group">
                         <label>Message</label>
                         <textarea class="form-control" name="message" id="msg"></textarea>
+                      </div>
+                      <div class="form-group">
+                        <label>Attach File</label>
+                        <input type="file" name="pdf" class="form-control-file">
                       </div>
                     </form>
                   </div>
@@ -690,7 +694,9 @@ $admins = $store->get_admin();
   "supplierEmail"
 ] ?>">Contact Supplier
                                         </a>
-                                        </a>
+                                        <a class="dropdown-item" target="_blank" href="suppliereport.php?ID=<?= $material[
+                                          "ID"
+                                        ] ?>">Generate Report</a>
                                       <?php } elseif (
                                         $addedInventory[$index]["stockQty"] +
                                           $addedInventory[$index]["addedQty"] -
@@ -703,6 +709,9 @@ $admins = $store->get_admin();
   "supplierEmail"
 ] ?>">Contact Supplier
                                       </a>
+                                      <a class="dropdown-item" target="_blank" href="suppliereport.php?ID=<?= $material[
+                                        "ID"
+                                      ] ?>">Generate Report</a>
                                       <?php } ?> 
                                     <?php } ?> 
                                   <?php } elseif (
@@ -723,6 +732,9 @@ $admins = $store->get_admin();
   "supplierEmail"
 ] ?>">Contact Supplier
                                       </a>
+                                      <a class="dropdown-item" target="_blank" href="suppliereport.php?ID=<?= $material[
+                                        "ID"
+                                      ] ?>">Generate Report</a>
                                       <?php } elseif (
                                         $addedStock["stockQty"] +
                                           $addedStock["addedQty"] <=
@@ -734,6 +746,9 @@ $admins = $store->get_admin();
   "supplierEmail"
 ] ?>">Contact Supplier
                                     </a>
+                                    <a class="dropdown-item" target="_blank" href="suppliereport.php?ID=<?= $material[
+                                      "ID"
+                                    ] ?>">Generate Report</a>
                                       <?php } ?>
                                     <?php } ?>
                                   <?php } elseif (is_array($itemUsed)) { ?>
@@ -749,6 +764,9 @@ $admins = $store->get_admin();
   "supplierEmail"
 ] ?>">Contact Supplier
                                       </a>
+                                      <a class="dropdown-item" target="_blank" href="suppliereport.php?ID=<?= $material[
+                                        "ID"
+                                      ] ?>">Generate Report</a>
                                     <?php } elseif (
                                         $material["stockQty"] -
                                           $used["materialQty"] <=
@@ -760,6 +778,9 @@ $admins = $store->get_admin();
   "supplierEmail"
 ] ?>">Contact Supplier
                                       </a>
+                                      <a class="dropdown-item" target="_blank" href="suppliereport.php?ID=<?= $material[
+                                        "ID"
+                                      ] ?>">Generate Report</a>
                                     <?php } ?>
                                   <?php } ?>
                                 <?php } else { ?>
@@ -770,6 +791,9 @@ $admins = $store->get_admin();
   "supplierEmail"
 ] ?>">Contact Supplier
                                     </a>
+                                    <a class="dropdown-item" target="_blank" href="suppliereport.php?ID=<?= $material[
+                                      "ID"
+                                    ] ?>">Generate Report</a>
                                   <?php } elseif (
                                     $material["stockQty"] <= 10
                                   ) { ?>  
@@ -779,6 +803,9 @@ $admins = $store->get_admin();
   "supplierEmail"
 ] ?>">Contact Supplier
                                     </a>
+                                    <a class="dropdown-item" target="_blank" href="suppliereport.php?ID=<?= $material[
+                                      "ID"
+                                    ] ?>">Generate Report</a>
                                   <?php } ?>  
                                 <?php } ?>   
                                 </div>

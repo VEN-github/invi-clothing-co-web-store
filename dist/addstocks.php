@@ -45,7 +45,7 @@ $pendingOrders = $store->get_pending_orders();
   [" "],
   "",
   $product["productName"]
-) ?>-" form="stockForm">
+) ?>-" form="stockForm" readonly>
                       </div>
                       <input type="hidden" name="noSize" id="noSize" value="" form="stockForm">
                       <input type="hidden" name="productID" value="<?= $product[
@@ -101,7 +101,7 @@ $pendingOrders = $store->get_pending_orders();
   [" "],
   "",
   $product["productName"]
-) ?>-XS-"></td>
+) ?>-XS-" readonly></td>
                           </tr>
                           <tr>
                             <td><input class="form-control" name="size[]" value="S" readonly></td>
@@ -114,7 +114,7 @@ $pendingOrders = $store->get_pending_orders();
   [" "],
   "",
   $product["productName"]
-) ?>-S-"></td>
+) ?>-S-" readonly></td>
                           </tr>
                           <tr>
                             <td><input class="form-control" name="size[]" value="M" readonly></td>
@@ -127,7 +127,7 @@ $pendingOrders = $store->get_pending_orders();
   [" "],
   "",
   $product["productName"]
-) ?>-M-"></td>
+) ?>-M-" readonly></td>
                           </tr>
                           <tr>
                             <td><input class="form-control" name="size[]" value="L" readonly></td>
@@ -140,7 +140,7 @@ $pendingOrders = $store->get_pending_orders();
   [" "],
   "",
   $product["productName"]
-) ?>-L-"></td>
+) ?>-L-" readonly></td>
                           </tr>
                           <tr>
                             <td><input class="form-control" name="size[]" value="XL" readonly></td>
@@ -153,7 +153,7 @@ $pendingOrders = $store->get_pending_orders();
   [" "],
   "",
   $product["productName"]
-) ?>-XL-"></td>
+) ?>-XL-" readonly></td>
                           </tr>
                           <tr>
                             <td><input class="form-control" name="size[]" value="2XL" readonly></td>
@@ -166,7 +166,7 @@ $pendingOrders = $store->get_pending_orders();
   [" "],
   "",
   $product["productName"]
-) ?>-2XL-"></td>
+) ?>-2XL-" readonly></td>
                           </tr>
                           <tr>
                             <td><input class="form-control" name="size[]" value="3XL" readonly></td>
@@ -179,7 +179,7 @@ $pendingOrders = $store->get_pending_orders();
   [" "],
   "",
   $product["productName"]
-) ?>-3XL-"></td>
+) ?>-3XL-" readonly></td>
                           </tr>
                         </tbody>
                         <tfoot class="bg-gray-600 text-gray-100">

@@ -13,7 +13,7 @@ require_once "../includes/header.php";
     <div class="page-container">
       <?php include_once "../includes/navbar.php"; ?>
       <main>
-        <section data-sal="zoom-out" data-sal-duration="1200" data-sal-delay="200" data-sal-easing="ease-out-bounce" class="signup-wrapper">
+        <section class="signup-wrapper">
           <div class="container">
             <div class="form-container">
               <!-- start of panels -->           
@@ -35,7 +35,7 @@ require_once "../includes/header.php";
               </div>
               <!-- end of panels -->
               <!-- start of sign up form -->
-              <div class="signup-form">
+              <div data-sal="zoom-out" data-sal-duration="1200" data-sal-delay="200" data-sal-easing="ease-out-bounce" class="signup-form">
                 <form class="form-group" method="post">
                   <h2 class="title">Create Account</h2>
                   <div class="social">

@@ -33,8 +33,7 @@ $orderID = $store->get_orderID($ID);
                   possible.
                 </p>
                 <p>
-                  You will be receiving an email shortly with confirmation of
-                  your order.
+                  You will be receiving an email shortly with order details.
                 </p>
               </div>
               <div class="button-container">

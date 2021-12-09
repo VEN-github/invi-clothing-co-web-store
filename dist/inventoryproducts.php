@@ -10,7 +10,6 @@ $products = $store->get_products();
     <?php include_once "../includes/preloader.php"; ?>
     <?php
     $store->add_inventory_products();
-    $store->update_inventory_product();
     $addedInventoryProducts = $store->get_inventory_products_added();
     $countOrders = $store->count_orders();
     $pendingOrders = $store->get_pending_orders();
@@ -37,9 +36,6 @@ $products = $store->get_products();
                   </div>
                   <div class="modal-body">
                     <form method="post" id="inventoryProductsForm">
-                      <input type="hidden" name="adminID" value="<?= $user[
-                        "ID"
-                      ] ?>">
                       <input type="hidden" name="stockID" id="stockID">
                       <div class="form-group">
                         <label>Stock Quantity</label>
@@ -54,9 +50,10 @@ $products = $store->get_products();
                               $product["ID"]
                             ); ?>
                             <?php foreach ($stocks as $stock) { ?>
-                          <option value="<?= $product[
-                            "ID"
-                          ] ?>" data-id="<?= $stock[
+                              <?php if ($stock["sku"]) { ?>
+                                <option value="<?= $product[
+                                  "ID"
+                                ] ?>" data-id="<?= $stock[
   "ID"
 ] ?>" data-tokens="<?= $product["productName"] ?>"><?= is_null($stock["size"])
   ? $product["productName"] . " (" . $product["productColor"] . ")"
@@ -66,6 +63,7 @@ $products = $store->get_products();
     ") (" .
     $stock["size"] .
     ")" ?></option>
+                              <?php } ?>
                             <?php } ?>
                           <?php } ?>
                         </select>
@@ -80,61 +78,6 @@ $products = $store->get_products();
               </div>
             </div>
             <!-- End of Modal Form -->
-            <!-- Edit Inventory Products Modal Form -->
-            <div class="modal fade" id="editInventoryProductModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-              <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLongTitle">Edit Added Inventory</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                      <span aria-hidden="true">&times;</span>
-                    </button>
-                  </div>
-                  <div class="modal-body">
-                    <form method="post" id="updateInventoryProductsForm">
-                      <input type="hidden" name="inventoryProductID" id="inventoryProductID">
-                      <input type="hidden" name="adminID" id="adminID" value="<?= $user[
-                        "ID"
-                      ] ?>">
-                      <input type="hidden" name="stockID" id="stock">
-                      <div class="form-group">
-                        <label>Stock Quantity</label>
-                        <input type="number" name="addedStockQty" id="addedStockQty" class="form-control" min="1">
-                      </div>
-                      <div class="form-group">
-                        <label>Product</label>
-                        <select class="form-control" name="products" id="product">
-                          <?php foreach ($products as $product) { ?>
-                            <?php $stocks = $store->view_all_stocks(
-                              $product["ID"]
-                            ); ?>
-                            <?php foreach ($stocks as $stock) { ?>
-                          <option value="<?= $product[
-                            "ID"
-                          ] ?>" data-id="<?= $stock["ID"] ?>" ><?= is_null(
-  $stock["size"]
-)
-  ? $product["productName"] . " (" . $product["productColor"] . ")"
-  : $product["productName"] .
-    " (" .
-    $product["productColor"] .
-    ") (" .
-    $stock["size"] .
-    ")" ?></option>
-                            <?php } ?>
-                          <?php } ?>
-                        </select>
-                      </div>
-                    </form>
-                  </div>
-                  <div class="modal-footer">
-                    <button type="button" class="btn btn-light" data-dismiss="modal">Cancel</button>
-                    <input type="submit" name="updateInventoryProduct" class="btn btn-secondary" form="updateInventoryProductsForm" value="Update">
-                  </div>
-                </div>
-              </div>
-            </div>
-            <!-- End of Edit Inventory Products Modal Form -->
             <!-- Page Heading -->
             <div
               class="d-sm-flex align-items-center justify-content-between mb-4 d-print-none"
@@ -181,7 +124,6 @@ $products = $store->get_products();
                           <th>Size</th>
                           <th>Added Stock</th>
                           <th>Date & Time</th>
-                          <th>Added By</th>
                         </tr>
                     </thead>
                     <tbody class="text-gray-900">
@@ -201,9 +143,6 @@ $products = $store->get_products();
                               : "n/a" ?></td>
                             <td><?= $inventoryProduct["addedQty"] ?></td>
                             <td><?= $inventoryProduct["dateTime"] ?></td>
-                            <td><?= $inventoryProduct["addedByName"] .
-                              " " .
-                              $inventoryProduct["addedByLastName"] ?></td>
                           </tr>
                         <?php } ?>
                       <?php } ?>
@@ -215,7 +154,6 @@ $products = $store->get_products();
                           <th>Size</th>
                           <th>Added Stock</th>
                           <th>Date & Time</th>
-                          <th>Added By</th>
                         </tr>
                     </tfoot>
                   </table>
@@ -253,8 +191,6 @@ $products = $store->get_products();
                           <th>Size</th>
                           <th>Added Stock</th>
                           <th>Date & Time</th>
-                          <th>Added By</th>
-                          <th>Action</th>
                         </tr>
                     </thead>
                     <tbody class="text-gray-900">
@@ -274,24 +210,6 @@ $products = $store->get_products();
                               : "n/a" ?></td>
                             <td><?= $inventoryProduct["addedQty"] ?></td>
                             <td><?= $inventoryProduct["dateTime"] ?></td>
-                            <td><?= $inventoryProduct["addedByName"] .
-                              " " .
-                              $inventoryProduct["addedByLastName"] ?></td>
-                            <td>
-                              <button type="button" class="editInventoryProduct btn btn-sm btn-secondary btn-circle" href="javascript:;" data-toggle="modal" data-target="#editInventoryProductModal" data-inventory_product_id="<?= $inventoryProduct[
-                                "ID"
-                              ] ?>" data-admin_id="<?= $user[
-  "ID"
-] ?>" data-product_id="<?= $inventoryProduct[
-  "productID"
-] ?>" data-stock_id="<?= $inventoryProduct[
-  "stockID"
-] ?>" data-added_stock_qty="<?= $inventoryProduct["addedQty"] ?>">
-                              <span class="icon text">
-                                <i class="fas fa-edit"></i>
-                              </span>
-                            </button>
-                            </td>
                           </tr>
                         <?php } ?>
                       <?php } ?>
@@ -303,8 +221,6 @@ $products = $store->get_products();
                           <th>Size</th>
                           <th>Added Stock</th>
                           <th>Date & Time</th>
-                          <th>Added By</th>
-                          <th>Action</th>
                         </tr>
                     </tfoot>
                   </table>
@@ -327,7 +243,6 @@ $products = $store->get_products();
     <?php require_once "../includes/dashboard_scripts.php"; ?>
     <script>
       const productsForm = document.querySelector("#productsForm");
-      const editProductsForm = document.querySelector("#product");
 
       if (productsForm) {
         productsForm.addEventListener("change", () => {
@@ -336,28 +251,6 @@ $products = $store->get_products();
           document.querySelector("#stockID").value = stockID;
         });
       }
-      if (editProductsForm) {
-        editProductsForm.addEventListener("change", () => {
-          let stockID = editProductsForm.options[editProductsForm.selectedIndex].dataset.id;
-
-          document.querySelector("#stock").value = stockID;
-        });
-      }
-    </script>
-    <script>
-        $('.editInventoryProduct').click(function() {
-        var inventoryProductID = $(this).data('inventory_product_id');
-        var adminID = $(this).data('admin_id');
-        var productID = $(this).data('product_id');
-        var stockID = $(this).data('stock_id');
-        var addedStockQty = $(this).data('added_stock_qty');
-
-        $('#inventoryProductID').val(inventoryProductID);
-        $('#adminID').val(adminID);
-        $('#product').val(productID);
-        $('#stock').val(stockID);
-        $('#addedStockQty').val(addedStockQty);
-        } );
     </script>
     <script>
       const setDate = new Date();

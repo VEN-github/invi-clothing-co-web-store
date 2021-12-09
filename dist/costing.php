@@ -208,7 +208,7 @@ $pendingOrders = $store->get_pending_orders();
                             <input type="text" name="netSales" id="netSales" class="form-control" form="stocksForm" readonly >
                           </div>
                           <div class="form-group">
-                            <label>Product Cost</label>
+                            <label>Production Cost</label>
                             <input type="text" name="productCost" id="cogs" class="form-control" form="stocksForm" readonly>
                           </div>
                           <div class="form-group">

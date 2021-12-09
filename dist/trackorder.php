@@ -224,6 +224,7 @@ $store->cancel_order();
                       foreach ($tracking as $track) {
                       }
                       if (
+                        $track["shipMethod"] === "Express Delivery" ||
                         $track["orderStatus"] === "Shipped" ||
                         $track["orderStatus"] === "Delivered" ||
                         $track["orderStatus"] === "Cancelled"

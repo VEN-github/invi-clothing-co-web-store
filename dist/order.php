@@ -38,7 +38,7 @@ $orders = $store->get_order_customer($ID);
                             <td><?= $order["orderID"] ?></td>
                             <td><?= $order["orderDate"] ?></td>
                             <td><p class="status <?php if (
-                              $order["orderStatus"] === "Pending"
+                              $order["orderStatus"] === "Placed"
                             ) { ?>pending<?php } elseif (
                               $order["orderStatus"] === "Processing"
                             ) { ?>processing<?php } elseif (

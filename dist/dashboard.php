@@ -82,7 +82,7 @@ $decSales = $store->get_dec_sales();
                           "
                         >
                           <?php date_default_timezone_set("Asia/Manila"); ?>
-                          <?php $day = date("M d, Y"); ?>
+                          <?php $day = date("F d, Y"); ?>
                           Total Sales Today (<?= $day ?>)
                         </div>
                         <div class="h5 mb-0 font-weight-bold text-gray-800">
@@ -122,7 +122,7 @@ $decSales = $store->get_dec_sales();
                           "
                         >
                           <?php date_default_timezone_set("Asia/Manila"); ?>
-                          <?php $month = date("F, Y"); ?>
+                          <?php $month = date("F Y"); ?>
                           Sales This Month (<?= $month ?>)
                         </div>
                         <div class="h5 mb-0 font-weight-bold text-gray-800">
@@ -162,7 +162,7 @@ $decSales = $store->get_dec_sales();
                           "
                         >
                           <?php date_default_timezone_set("Asia/Manila"); ?>    
-                          <?php $month = date("F, Y"); ?>
+                          <?php $month = date("F Y"); ?>
                           Total Net Income (<?= $month ?>)
                         </div>
                         <div class="h5 mb-0 font-weight-bold text-gray-800">
@@ -193,7 +193,7 @@ $decSales = $store->get_dec_sales();
                   </div>
                 </div>
               </div>
-              <!-- Pending Orders -->
+              <!-- New Orders -->
               <div class="col-xl-3 col-md-6 mb-4">
                 <div class="card border-left-warning shadow h-100 py-2">
                   <div class="card-body">
@@ -207,7 +207,7 @@ $decSales = $store->get_dec_sales();
                             mb-1
                           "
                         >
-                          Pending Orders
+                          New Orders
                         </div>
                         <div class="row no-gutters align-items-center">
                           <div class="col-auto">

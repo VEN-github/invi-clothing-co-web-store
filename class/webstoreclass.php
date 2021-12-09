@@ -700,7 +700,7 @@ class WebStore
           title: 'Admin Updated',
           showConfirmButton: false,
           timer: 1000
-        },function(){ window.location.href = 'admin.php';});
+        });
       </script>";
         return $row;
       } elseif (
@@ -733,7 +733,7 @@ class WebStore
           title: 'Admin Updated',
           showConfirmButton: false,
           timer: 1000
-        },function(){ window.location.href = 'admin.php';});
+        });
       </script>";
         return $row;
       } elseif (strlen($_POST["newPass"]) < 8) {
@@ -765,7 +765,7 @@ class WebStore
           title: 'Admin Updated',
           showConfirmButton: false,
           timer: 1000
-        },function(){ window.location.href = 'admin.php';});
+        });
       </script>";
         return $row;
       } else {
@@ -796,7 +796,7 @@ class WebStore
               title: 'Admin Updated',
               showConfirmButton: false,
               timer: 1000
-            },function(){ window.location.href = 'admin.php';});
+            });
           </script>";
         return $row;
       }
@@ -829,7 +829,7 @@ class WebStore
           title: 'Material Added',
           showConfirmButton: false,
           timer: 1000
-        },function(){ window.location.href = 'addProduct.php';});
+        });
       </script>";
       }
     }
@@ -1292,45 +1292,6 @@ class WebStore
             $ID,
             $materialID,
           ]);
-        }
-        $row = $stmt->fetch();
-        header("Location: products.php");
-        return $row;
-      }
-    }
-  }
-
-  // update stock
-  public function update_stock($ID)
-  {
-    if (isset($_POST["updateProduct"])) {
-      if (isset($_POST["wholeStock"]) && isset($_POST["skuNoSize"])) {
-        $wholeStock = $_POST["wholeStock"];
-        $skuNoSize = $_POST["skuNoSize"];
-        $connection = $this->openConnection();
-        $stmt = $connection->prepare(
-          "UPDATE stocks_table SET `stock` = ?, `sku` = ? WHERE productID = ?"
-        );
-        $stmt->execute([$wholeStock, $skuNoSize, $ID]);
-        $row = $stmt->fetch();
-        header("Location: products.php");
-        return $row;
-      }
-      if (
-        isset($_POST["size"]) &&
-        isset($_POST["stocks"]) &&
-        isset($_POST["sku"])
-      ) {
-        $count = count($_POST["size"]);
-        for ($i = 0; $i < $count; $i++) {
-          $size = $_POST["size"][$i];
-          $stock = $_POST["stocks"][$i];
-          $sku = $_POST["sku"][$i];
-          $connection = $this->openConnection();
-          $stmt = $connection->prepare(
-            "UPDATE stocks_table SET `size` = ?, `stock` = ?, `sku` = ? WHERE productID = ? AND size = ?"
-          );
-          $stmt->execute([$size, $stock, $sku, $ID, $size]);
         }
         $row = $stmt->fetch();
         header("Location: products.php");
@@ -1822,7 +1783,7 @@ class WebStore
   {
     $connection = $this->openConnection();
     $stmt = $connection->prepare(
-      "SELECT COUNT(DISTINCT(orderID)) FROM sales_table WHERE orderStatus = 'Pending'"
+      "SELECT COUNT(DISTINCT(orderID)) FROM sales_table WHERE orderStatus = 'Placed'"
     );
     $stmt->execute();
     $orders = $stmt->fetchColumn();
@@ -1840,7 +1801,7 @@ class WebStore
   {
     $connection = $this->openConnection();
     $stmt = $connection->prepare(
-      "SELECT orderID, DATE_FORMAT(orderDate, '%M %d, %Y - %h:%i %p') as orderDate FROM sales_table WHERE orderStatus = 'Pending' GROUP BY orderID ORDER BY orderDate DESC LIMIT 3"
+      "SELECT orderID, DATE_FORMAT(orderDate, '%M %d, %Y - %h:%i %p') as orderDate FROM sales_table WHERE orderStatus = 'Placed' GROUP BY orderID ORDER BY orderDate DESC LIMIT 3"
     );
     $stmt->execute();
     $pendingOrders = $stmt->fetchall();
@@ -1887,8 +1848,25 @@ class WebStore
                 title: 'Order Status Updated',
                 showConfirmButton: false,
                 timer: 1000
-                },function(){ window.location.href = 'orders.php';});
+                });
             </script>";
+          return $row;
+        } else {
+          $connection = $this->openConnection();
+          $stmt = $connection->prepare(
+            "UPDATE sales_table SET `orderStatus` = ? WHERE orderID = '$orderID'"
+          );
+          $stmt->execute([$orderStatus]);
+          $row = $stmt->fetch();
+          echo "<script>
+                  Swal.fire({
+                  position: 'center',
+                  icon: 'success',
+                  title: 'Order Status Updated',
+                  showConfirmButton: false,
+                  timer: 1000
+                  });
+              </script>";
           return $row;
         }
       }
@@ -1907,7 +1885,7 @@ class WebStore
               title: 'Order Status Updated',
               showConfirmButton: false,
               timer: 1000
-              },function(){ window.location.href = 'orders.php';});
+              });
           </script>";
           return $row;
         }
@@ -1927,47 +1905,7 @@ class WebStore
               title: 'Order Status Updated',
               showConfirmButton: false,
               timer: 1000
-              },function(){ window.location.href = 'orders.php';});
-          </script>";
-          return $row;
-        }
-      }
-      if (isset($_POST["orderStatus"])) {
-        if (
-          $_POST["orderStatus"] === "Cancelled" &&
-          $_POST["paymentMethod"] === "Cash on Delivery (COD)"
-        ) {
-          $connection = $this->openConnection();
-          $stmt = $connection->prepare(
-            "UPDATE sales_table SET `paymentStatus` = ?, `orderStatus` = ? WHERE orderID = '$orderID'"
-          );
-          $stmt->execute(["Cancelled", $orderStatus]);
-          $row = $stmt->fetch();
-          echo "<script>
-              Swal.fire({
-              position: 'center',
-              icon: 'success',
-              title: 'Order Status Updated',
-              showConfirmButton: false,
-              timer: 1000
-              },function(){ window.location.href = 'orders.php';});
-          </script>";
-          return $row;
-        } else {
-          $connection = $this->openConnection();
-          $stmt = $connection->prepare(
-            "UPDATE sales_table SET `orderStatus` = ? WHERE orderID = '$orderID'"
-          );
-          $stmt->execute([$orderStatus]);
-          $row = $stmt->fetch();
-          echo "<script>
-              Swal.fire({
-              position: 'center',
-              icon: 'success',
-              title: 'Order Status Updated',
-              showConfirmButton: false,
-              timer: 1000
-              },function(){ window.location.href = 'orders.php';});
+              });
           </script>";
           return $row;
         }
@@ -2005,10 +1943,10 @@ class WebStore
         $mail->Password = "inviclothingco";
         $mail->SMTPSecure = "tls";
         $mail->Port = "2525";
-        $mail->From = $mailToCustomer;
-        $mail->FromName = $customerName;
-        $mail->addAddress($mailTo, "INVI Clothing Co.");
-        $mail->addAddress($mailToCustomer, $customerName);
+        $mail->From = $mailTo;
+        $mail->FromName = "INVI Clothing Co.";
+        $mail->addAddress($mailToCustomer, "INVI Clothing Co.");
+        $mail->addCC($mailTo, $customerName);
         $mail->isHTML(true);
         $mail->Subject = "INVI Clothing Co. - Order";
         $mail->Body = $body;
@@ -2045,10 +1983,10 @@ class WebStore
         $mail->Password = "inviclothingco";
         $mail->SMTPSecure = "tls";
         $mail->Port = "2525";
-        $mail->From = $mailToCustomer;
-        $mail->FromName = $customerName;
-        $mail->addAddress($mailTo, "INVI Clothing Co.");
-        $mail->addAddress($mailToCustomer, $customerName);
+        $mail->From = $mailTo;
+        $mail->FromName = "INVI Clothing Co.";
+        $mail->addAddress($mailToCustomer, "INVI Clothing Co.");
+        $mail->addCC($mailTo, $customerName);
         $mail->isHTML(true);
         $mail->Subject = "INVI Clothing Co. - Order";
         $mail->Body = $body;
@@ -2511,7 +2449,7 @@ class WebStore
             title: 'Material Added',
             showConfirmButton: false,
             timer: 1000
-          },function(){ window.location.href = 'materials.php';});
+          });
         </script>";
       }
     }
@@ -2578,10 +2516,9 @@ class WebStore
       $materialID = $_POST["materialID"];
       $materialName = $_POST["materialName"];
       $unitPrice = $_POST["unitPrice"];
-      $stockQty = $_POST["stockQty"];
       $supplierID = $_POST["supplierID"];
 
-      if (empty($materialName) || empty($unitPrice) || empty($stockQty)) {
+      if (empty($materialName) || empty($unitPrice)) {
         echo "<script> Swal.fire({
           icon: 'error',
           title: 'Empty Field',
@@ -2591,9 +2528,9 @@ class WebStore
       } else {
         $connection = $this->openConnection();
         $stmt = $connection->prepare(
-          "UPDATE rawmaterials_table SET `materialName` = ?, `unitPrice` = ?, `stockQty` = ?, `supplierID` = ? WHERE ID = '$materialID'"
+          "UPDATE rawmaterials_table SET `materialName` = ?, `unitPrice` = ?, `supplierID` = ? WHERE ID = '$materialID'"
         );
-        $stmt->execute([$materialName, $unitPrice, $stockQty, $supplierID]);
+        $stmt->execute([$materialName, $unitPrice, $supplierID]);
         $row = $stmt->fetch();
         echo "<script>  
       Swal.fire({
@@ -2602,7 +2539,7 @@ class WebStore
         title: 'Material Updated',
         showConfirmButton: false,
         timer: 1000
-      },function(){ window.location.href = 'materials.php';});
+      });
       </script>";
         return $row;
       }
@@ -2613,7 +2550,6 @@ class WebStore
   public function add_inventory_products()
   {
     if (isset($_POST["addInventoryProducts"])) {
-      $adminID = $_POST["adminID"];
       $stockID = $_POST["stockID"];
       $addedStockQty = $_POST["addedStockQty"];
       if (isset($_POST["products"])) {
@@ -2630,9 +2566,9 @@ class WebStore
       } else {
         $connection = $this->openConnection();
         $stmt = $connection->prepare(
-          "INSERT INTO inventoryproduct_table (`productID`, `stockID`, `addedQty`, `addedBy`) VALUES (?,?,?,?)"
+          "INSERT INTO inventoryproduct_table (`productID`, `stockID`, `addedQty`) VALUES (?,?,?)"
         );
-        $stmt->execute([$products, $stockID, $addedStockQty, $adminID]);
+        $stmt->execute([$products, $stockID, $addedStockQty]);
         echo "<script>  
             Swal.fire({
               position: 'center',
@@ -2640,7 +2576,7 @@ class WebStore
               title: 'Inventory Added',
               showConfirmButton: false,
               timer: 1000
-            },function(){ window.location.href = 'inventoryproducts.php';});
+            });
           </script>";
       }
     }
@@ -2651,7 +2587,7 @@ class WebStore
   {
     $connection = $this->openConnection();
     $stmt = $connection->prepare(
-      "SELECT inventory.ID , inventory.productID, inventory.stockID, productName, productColor, size, addedQty, dateTime, account.firstName as addedByName, account.lastName as addedByLastName FROM (SELECT * FROM inventoryproduct_table) inventory LEFT JOIN product_table product ON inventory.productID = product.ID LEFT JOIN stocks_table stocks ON inventory.stockID = stocks.ID LEFT JOIN account_table account ON inventory.addedBy = account.ID ORDER BY ID DESC"
+      "SELECT inventory.ID , inventory.productID, inventory.stockID, productName, productColor, size, addedQty, dateTime FROM (SELECT * FROM inventoryproduct_table) inventory LEFT JOIN product_table product ON inventory.productID = product.ID LEFT JOIN stocks_table stocks ON inventory.stockID = stocks.ID ORDER BY ID DESC"
     );
     $stmt->execute();
     $inventoryProducts = $stmt->fetchall();
@@ -2664,49 +2600,10 @@ class WebStore
     }
   }
 
-  // update inventory products
-  public function update_inventory_product()
-  {
-    if (isset($_POST["updateInventoryProduct"])) {
-      $inventoryProductID = $_POST["inventoryProductID"];
-      $adminID = $_POST["adminID"];
-      $stockID = $_POST["stockID"];
-      $product = $_POST["products"];
-      $addedStockQty = $_POST["addedStockQty"];
-
-      if (empty($addedStockQty)) {
-        echo "<script> Swal.fire({
-          icon: 'error',
-          title: 'Empty Field',
-          text: 'Please input missing field',
-        });
-        </script>";
-      } else {
-        $connection = $this->openConnection();
-        $stmt = $connection->prepare(
-          "UPDATE inventoryproduct_table SET `productID` = ?, `stockID` = ?, `addedQty` = ?, dateTime = now(), `addedBy` = ? WHERE ID = '$inventoryProductID'"
-        );
-        $stmt->execute([$product, $stockID, $addedStockQty, $adminID]);
-        $row = $stmt->fetch();
-        echo "<script>
-      Swal.fire({
-        position: 'center',
-        icon: 'success',
-        title: 'Inventory Updated',
-        showConfirmButton: false,
-        timer: 1000
-      },function(){ window.location.href = 'inventoryproducts.php';});
-      </script>";
-        return $row;
-      }
-    }
-  }
-
   // inventory raw material
   public function add_inventory_materials()
   {
     if (isset($_POST["addInventoryMaterials"])) {
-      $adminID = $_POST["adminID"];
       $addedStockQty = $_POST["addedStockQty"];
       if (isset($_POST["material"])) {
         $material = $_POST["material"];
@@ -2722,9 +2619,9 @@ class WebStore
       } else {
         $connection = $this->openConnection();
         $stmt = $connection->prepare(
-          "INSERT INTO inventorymaterial_table (`materialID` , `addedQty`, `adminID`) VALUES (?,?,?)"
+          "INSERT INTO inventorymaterial_table (`materialID` , `addedQty`) VALUES (?,?)"
         );
-        $stmt->execute([$material, $addedStockQty, $adminID]);
+        $stmt->execute([$material, $addedStockQty]);
         echo "<script>  
             Swal.fire({
               position: 'center',
@@ -2732,7 +2629,7 @@ class WebStore
               title: 'Inventory Added',
               showConfirmButton: false,
               timer: 1000
-            },function(){ window.location.href = 'inventorymaterial.php';});
+            });
           </script>";
       }
     }
@@ -2743,7 +2640,7 @@ class WebStore
   {
     $connection = $this->openConnection();
     $stmt = $connection->prepare(
-      "SELECT inventory.ID, materialID, materialName, addedQty, dateTime, account.firstName as addedByName, account.lastName as addedByLastName FROM (SELECT * FROM inventorymaterial_table) inventory LEFT JOIN rawmaterials_table materials ON inventory.materialID = materials.ID LEFT JOIN account_table account ON inventory.adminID = account.ID ORDER BY ID DESC"
+      "SELECT inventory.ID, materialID, materialName, addedQty, dateTime FROM (SELECT * FROM inventorymaterial_table) inventory LEFT JOIN rawmaterials_table materials ON inventory.materialID = materials.ID ORDER BY ID DESC"
     );
     $stmt->execute();
     $inventoryMaterials = $stmt->fetchall();
@@ -2753,43 +2650,6 @@ class WebStore
       return $inventoryMaterials;
     } else {
       return false;
-    }
-  }
-
-  // update inventory raw materials
-  public function update_inventory_material()
-  {
-    if (isset($_POST["updateInventoryMaterial"])) {
-      $inventoryMaterialID = $_POST["inventoryMaterialID"];
-      $adminID = $_POST["adminID"];
-      $material = $_POST["material"];
-      $addedStockQty = $_POST["addedStockQty"];
-
-      if (empty($addedStockQty)) {
-        echo "<script> Swal.fire({
-          icon: 'error',
-          title: 'Empty Field',
-          text: 'Please input missing field',
-        });
-        </script>";
-      } else {
-        $connection = $this->openConnection();
-        $stmt = $connection->prepare(
-          "UPDATE inventorymaterial_table SET `materialID` = ?, `addedQty` = ?, dateTime = now(), `adminID` = ? WHERE ID = '$inventoryMaterialID'"
-        );
-        $stmt->execute([$material, $addedStockQty, $adminID]);
-        $row = $stmt->fetch();
-        echo "<script>
-      Swal.fire({
-        position: 'center',
-        icon: 'success',
-        title: 'Inventory Updated',
-        showConfirmButton: false,
-        timer: 1000
-      },function(){ window.location.href = 'inventorymaterial.php';});
-      </script>";
-        return $row;
-      }
     }
   }
 
@@ -2832,7 +2692,7 @@ class WebStore
             title: 'Supplier Added',
             showConfirmButton: false,
             timer: 1000
-          },function(){ window.location.href = 'supplier.php';});
+          });
         </script>";
       }
     }
@@ -2897,7 +2757,7 @@ class WebStore
           title: 'Supplier Updated',
           showConfirmButton: false,
           timer: 1000
-        },function(){ window.location.href = 'supplier.php';});
+        });
         </script>";
         return $row;
       }
@@ -2947,7 +2807,7 @@ class WebStore
             title: 'Email has been sent',
             showConfirmButton: false,
             timer: 1000
-          },function(){ window.location.href = 'index.php';});
+          });
           </script>";
         }
       }
@@ -2998,7 +2858,7 @@ class WebStore
             title: 'Message has been sent',
             showConfirmButton: false,
             timer: 1000
-          },function(){ window.location.href = 'index.php';});
+          });
           </script>";
         }
       }
@@ -3200,7 +3060,7 @@ class WebStore
             title: 'Request has been sent',
             showConfirmButton: false,
             timer: 1000
-          },function(){ window.location.href = 'returnorder.php';});
+          });
           </script>";
         }
       }
@@ -3232,8 +3092,8 @@ class WebStore
       $mail->Port = "2525";
       $mail->From = "inviclothing.co@gmail.com";
       $mail->FromName = "INVI Clothing Co.";
-      $mail->addAddress($mailTo, "INVI Clothing Co.");
-      $mail->addAddress($mailToCustomer, $customerName);
+      $mail->addAddress($mailToCustomer, "INVI Clothing Co.");
+      $mail->addCC($mailTo, $customerName);
       $mail->isHTML(true);
       $mail->Subject = "INVI Clothing Co. - Order";
       $mail->Body = $body;
@@ -3305,15 +3165,6 @@ class WebStore
             $orderID .
             " has been delivered. Thank you for supporting INVI Clothing Co.";
         }
-        if ($_POST["orderStatus"] === "Cancelled") {
-          $mail->Body =
-            "<h4> Order# " .
-            $orderID .
-            " </h4>" .
-            "Order with Order #: " .
-            $orderID .
-            " was cancelled. Please check payment method and review refund if necessary.";
-        }
 
         if (!$mail->send()) {
           echo "Mailer Error: " . $mail->ErrorInfo;
@@ -3328,6 +3179,7 @@ class WebStore
     if (isset($_POST["contactSupplier"])) {
       $supplierEmail = $_POST["supplierEmail"];
       $body = $_POST["message"];
+      $pdf = $_FILES["pdf"]["name"];
 
       $mailTo = $supplierEmail;
 
@@ -3351,6 +3203,7 @@ class WebStore
         $mail->From = "inviclothing.co@gmail.com";
         $mail->FromName = "INVI Clothing Co.";
         $mail->addAddress($mailTo, "INVI Clothing Co.");
+        $mail->AddAttachment($_FILES["pdf"]["tmp_name"], $pdf);
         $mail->isHTML(true);
         $mail->Subject = "INVI Clothing Co.";
         $mail->Body = $body;
@@ -3362,13 +3215,31 @@ class WebStore
         Swal.fire({
           position: 'center',
           icon: 'success',
-          title: 'Email has been sent',
+          title: 'Message has been sent',
           showConfirmButton: false,
           timer: 1000
-        },function(){ window.location.href = 'materials.php';});
+        });
         </script>";
         }
       }
+    }
+  }
+
+  // generate report on supplier
+  public function supplier_report($materialID)
+  {
+    $connection = $this->openConnection();
+    $stmt = $connection->prepare(
+      "SELECT materials.ID, materialName, supplierName FROM rawmaterials_table materials LEFT JOIN supplier_table supplier ON materials.supplierID = supplier.ID WHERE materials.ID = ?"
+    );
+    $stmt->execute([$materialID]);
+    $report = $stmt->fetch();
+    $count = $stmt->rowCount();
+
+    if ($count > 0) {
+      return $report;
+    } else {
+      return $this->show_dashboard404();
     }
   }
 
@@ -3398,7 +3269,7 @@ class WebStore
 
         if ($count > 0) {
           $this->set_userdata($row);
-          header("Location: ../dist/index.php");
+          header("Location: index.php");
         }
       }
     } else {
@@ -3412,14 +3283,10 @@ class WebStore
 
       if ($count > 0) {
         $this->set_userdata($row);
-        header("Location: ../dist/index.php");
+        header("Location: index.php");
       }
     }
   }
-
-  // function insertFBData($data){
-  //     var_dump($data);
-  // }
 }
 $store = new WebStore();
 ?>

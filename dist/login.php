@@ -13,11 +13,11 @@ require_once "../includes/header.php";
     <div class="page-container">
       <?php include_once "../includes/navbar.php"; ?>
       <main>
-        <section data-sal="zoom-out" data-sal-duration="1200" data-sal-delay="200" data-sal-easing="ease-out-bounce" class="login-wrapper">
+        <section class="login-wrapper">
           <div class="container">
             <div class="form-container">
               <!-- start of login form -->
-              <div class="login-form">
+              <div data-sal="zoom-out" data-sal-duration="1200" data-sal-delay="200" data-sal-easing="ease-out-bounce" class="login-form">
                 <form class="form-group login-group" method="post">
                   <h2 class="title">Login</h2>
                   <div class="social">
