@@ -3338,7 +3338,7 @@ class WebStore
       $pdf = $_FILES["pdf"]["name"];
       $mailTo = $supplierEmail;
 
-      if (empty($supplierEmail) || empty($body)) {
+      if (empty($supplierEmail) || empty($body) || empty($pdf)) {
         echo "<script> Swal.fire({
           icon: 'error',
           title: 'Empty Field',
