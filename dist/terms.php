@@ -31,7 +31,7 @@ include_once "../includes/header.php";
             </div>
             <div data-sal="slide-up" data-sal-duration="1200" data-sal-delay="600" data-sal-easing="ease-out-bounce" class="content">
               <p>Payment for goods ordered can be made by any method shown in this website at the time you place your order. All payments are taken in peso.</p>
-              <p>For cancellation, if the payment method is through bank and PayPal the refund may take up to 5-7 business days. Additionally, for Express Delivery or same day delivery which is only available from 8AM to 3PM, cancellation or items that are successfully placed can no longer be cancelled.</p>
+              <p>For cancellation, if the payment method is through bank and PayPal the refund may take up to 5-7 business days. Additionally, for Express Delivery or same day delivery which is only available from 8AM to 3PM, cancellation of items that are successfully placed can no longer be cancelled.</p>
             </div>
             <div data-sal="slide-up" data-sal-duration="1200" data-sal-delay="700" data-sal-easing="ease-out-bounce" class="content">
               <p>INVI Clothing Co. only allows 3 business days to request for return item. Once not requested within the given time INVI Clothing Co. is no longer responsible for any damage or defect from the product.</p>
