@@ -63,6 +63,7 @@ $store->delete_product();
                           <th>Net Income</th>
                           <th>Total Stock Quantity</th>
                           <th>No. of Sold</th>
+                          <th>No. of Return</th>
                           <th>On Hand Stock</th>
                           <th>Inventory Status</th>
                           <th>Product Status</th>
@@ -106,11 +107,7 @@ $store->delete_product();
                                   <img loading="lazy" src="./assets/img/<?= $product[
                                     "coverPhoto"
                                   ] ?>" alt="Product Image" style="width:120px;">
-                                  <p><?= $product[
-                                    "productName"
-                                  ] ?> <span>(<?= $product[
-   "productColor"
- ] ?>)</span>
+                                  <p><?= $product["productName"] ?>
                                   </p>
                                 </td>
                                 <td class="align-middle"><?= $product[
@@ -140,7 +137,8 @@ $store->delete_product();
                                 <td class="align-middle">
                                   <?php if (
                                     $stock["size"] ||
-                                    $stock["stock"]
+                                    $stock["stock"] ||
+                                    $stock["variantID"]
                                   ) { ?>
                                     <?php if ($stock["size"] === null) { ?>
                                       <?php if (is_array($addedInventory)) { ?>
@@ -148,11 +146,17 @@ $store->delete_product();
                                           $addedInventory
                                           as $addedStock
                                         ) { ?>
-                                            <?= $addedStock["stock"] +
+                                            <?= "(" .
+                                              $stock["variantName"] .
+                                              ") - " .
+                                              $addedStock["stock"] +
                                               $addedStock["addedQty"] ?>
                                           <?php } ?>
                                         <?php } else { ?>
-                                          <?= $stock["stock"] ?>
+                                          <?= "(" .
+                                            $stock["variantName"] .
+                                            ") - " .
+                                            $stock["stock"] ?>
                                         <?php } ?>  
                                       <?php } else { ?>
                                         <?php if (
@@ -162,13 +166,19 @@ $store->delete_product();
                                             $addedInventory
                                             as $addedStock
                                           ) { ?>
-                                        <p><?= $stock["size"] .
+                                        <p><?= "(" .
+                                          $stock["variantName"] .
+                                          ") " .
+                                          $stock["size"] .
                                           " - " .
                                           $addedStock["stock"] +
                                           $addedStock["addedQty"] ?></p>
                                           <?php } ?>
                                         <?php } else { ?>
-                                          <p><?= $stock["size"] .
+                                          <p><?= "(" .
+                                            $stock["variantName"] .
+                                            ") " .
+                                            $stock["size"] .
                                             " - " .
                                             $stock["stock"] ?></p>
                                         <?php } ?>
@@ -180,7 +190,20 @@ $store->delete_product();
                                 <td class="align-middle">
                                   <?php if (is_array($soldProducts)) { ?>
                                     <?php foreach ($soldProducts as $sold) { ?>
-                                      <?= $sold["salesQty"] ?>
+                                      <?php if (
+                                        $stock["status"] === "Accepted"
+                                      ) { ?>
+                                        <?= "(" .
+                                          $stock["variantName"] .
+                                          ") - " .
+                                          $sold["salesQty"] -
+                                          $stock["qty"] ?>
+                                        <?php } else { ?>
+                                          <?= "(" .
+                                            $stock["variantName"] .
+                                            ") - " .
+                                            $sold["salesQty"] ?>
+                                        <?php } ?>
                                     <?php } ?>
                                   <?php } else { ?>
                                     -
@@ -188,8 +211,21 @@ $store->delete_product();
                                 </td>
                                 <td class="align-middle">
                                   <?php if (
+                                    $stock["status"] === "Accepted"
+                                  ) { ?>
+                                    <?= "(" .
+                                      $stock["variantName"] .
+                                      ") - " .
+                                      $stock["qty"] ?>
+                                  <?php } else { ?>
+                                    -
+                                  <?php } ?> 
+                                </td>
+                                <td class="align-middle">
+                                  <?php if (
                                     $stock["stock"] ||
-                                    $stock["size"]
+                                    $stock["size"] ||
+                                    $stock["variantID"]
                                   ) { ?>
                                     <?php if (
                                       is_array($soldProducts) &&
@@ -199,7 +235,10 @@ $store->delete_product();
                                         $soldProducts
                                         as $index => $value
                                       ) { ?>
-                                      <?= $addedInventory[$index]["stock"] +
+                                      <?= "(" .
+                                        $stock["variantName"] .
+                                        ") - " .
+                                        $addedInventory[$index]["stock"] +
                                         $addedInventory[$index]["addedQty"] -
                                         $soldProducts[$index]["salesQty"] ?>
                                       <?php } ?>
@@ -210,7 +249,10 @@ $store->delete_product();
                                         $addedInventory
                                         as $addedStock
                                       ) { ?>
-                                        <?= $addedStock["stock"] +
+                                        <?= "(" .
+                                          $stock["variantName"] .
+                                          ") - " .
+                                          $addedStock["stock"] +
                                           $addedStock["addedQty"] ?>
                                       <?php } ?> 
                                     <?php } elseif (
@@ -220,11 +262,17 @@ $store->delete_product();
                                         $soldProducts
                                         as $sold
                                       ) { ?>
-                                        <?= $stock["stock"] -
+                                        <?= "(" .
+                                          $stock["variantName"] .
+                                          ") - " .
+                                          $stock["stock"] -
                                           $sold["salesQty"] ?>
                                       <?php } ?>    
                                     <?php } else { ?>
-                                      <?= $stock["stock"] ?> 
+                                      <?= "(" .
+                                        $stock["variantName"] .
+                                        ") - " .
+                                        $stock["stock"] ?> 
                                     <?php } ?>
                                   <?php } else { ?>
                                     -
@@ -233,7 +281,8 @@ $store->delete_product();
                                 <td class="align-middle">
                                   <?php if (
                                     $stock["stock"] ||
-                                    $stock["size"]
+                                    $stock["size"] ||
+                                    $stock["variantID"]
                                   ) { ?>
                                     <?php if (
                                       is_array($soldProducts) &&
@@ -338,8 +387,16 @@ $store->delete_product();
                                     <a class="dropdown-toggle btn btn-secondary btn-circle btn-sm href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         <i class="fas fa-ellipsis-v fa-sm fa-fw"></i>
                                     </a>
-                                      <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">   
+                                      <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">  
                                         <?php if (
+                                          !$product["variantName"]
+                                        ) { ?>                          
+                                        <a class="dropdown-item" href="addvariation.php?ID=<?= $product[
+                                          "ID"
+                                        ] ?>">Add Variation</a> 
+                                        <?php } ?>
+                                        <?php if (
+                                          $product["variantName"] &&
                                           !($stock["size"] || $stock["stock"])
                                         ) { ?>
                                           <a class="dropdown-item" href="addstocks.php?ID=<?= $product[
@@ -357,6 +414,7 @@ $store->delete_product();
                                           "ID"
                                         ] ?>">Financing</a>
                                         <?php } ?>
+                                        
                                         <a class="dropdown-item" href="editproduct.php?ID=<?= $product[
                                           "ID"
                                         ] ?>">Edit</a>
@@ -406,6 +464,7 @@ $store->delete_product();
                           <th>Net Income</th>
                           <th>Total Stock Quantity</th>
                           <th>No. of Sold</th>
+                          <th>No. of Return</th>
                           <th>On Hand Stock</th>
                           <th>Inventory Status</th>
                           <th>Product Status</th>

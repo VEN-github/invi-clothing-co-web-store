@@ -30,6 +30,14 @@
         </a>
     </li>
 
+    <!-- Nav Item - Return Orders -->
+    <li class="nav-item">
+        <a class="nav-link" href="return_orders.php">
+            <i class="fas fa-undo-alt"></i>
+            <span>Return Orders</span>
+        </a>
+    </li>
+
     <!-- Nav Item - Sales -->
     <li class="nav-item">
         <a class="nav-link" href="sales.php">

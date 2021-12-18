@@ -12,63 +12,56 @@ let maxVal;
 if (document.querySelector("#productID")) {
   productID = document.querySelector("#productID").value;
 }
-if (document.querySelector(".product-highlight img")) {
-  productImg = document.querySelector(".product-highlight img").src;
-}
 if (document.querySelector(".product-name")) {
   productName = document.querySelector(".product-name").textContent;
-}
-if (document.querySelector("#productColor")) {
-  productColor = document.querySelector("#productColor").textContent;
-}
-if (document.querySelector("#sizeOpt")) {
-  const sizeForm = document.querySelector("#sizeOpt");
-  sizeForm.addEventListener("change", selectSize);
-
-  function selectSize(e) {
-    e.preventDefault();
-
-    sizeValue = sizeForm.options[sizeForm.selectedIndex].text;
-    stockID = sizeForm.options[sizeForm.selectedIndex].value;
-    products.productSize = sizeValue;
-    products.stockID = stockID;
-    products.itemCode = productName + " " + productColor + " " + sizeValue;
-
-    maxVal = sizeForm.options[sizeForm.selectedIndex].dataset.stock;
-    maxVal = parseInt(maxVal);
-    products.maxValue = maxVal;
-  }
-}
-if (document.querySelector("#stockID")) {
-  stockID = document.querySelector("#stockID").value;
 }
 if (document.querySelector("#productPrice")) {
   productPrice = document.querySelector("#productPrice").textContent;
   productPrice = parseInt(productPrice.replace(/,/g, ""));
 }
-if (document.querySelector("#quantity")) {
-  maxVal = document.querySelector("#quantity").max;
-  maxVal = parseInt(maxVal);
-}
-if (sizeValue == undefined) {
-  itemCode = productName + " " + productColor;
-}
-let products = {
-  itemCode: itemCode,
-  productID: productID,
-  productImage: productImg,
-  productName: productName,
-  productColor: productColor,
-  stockID: stockID,
-  productSize: sizeValue,
-  productPrice: productPrice,
-  Quantity: qty,
-  NewQuantity: qty,
-  maxValue: maxVal,
-};
+
 const cartBtn = document.querySelector("#cart-btn");
 if (cartBtn) {
   cartBtn.addEventListener("click", () => {
+    if (document.querySelector("#stockID")) {
+      stockID = document.querySelector("#stockID").value;
+    }
+    if (document.querySelector("#productImg")) {
+      productImg = document.querySelector("#productImg").src;
+    }
+    if (document.querySelector("#productColor")) {
+      productColor = document.querySelector("#productColor").value;
+    }
+    if (document.querySelector("#sizeOpt")) {
+      sizeValue = sizeForm.options[sizeForm.selectedIndex].text;
+      stockID = sizeForm.options[sizeForm.selectedIndex].value;
+      itemCode = productName + " " + productColor + " " + sizeValue;
+
+      maxVal = sizeForm.options[sizeForm.selectedIndex].dataset.stock;
+      maxVal = parseInt(maxVal);
+    }
+
+    if (sizeValue == undefined) {
+      itemCode = productName + " " + productColor;
+    }
+
+    if (document.querySelector("#quantity")) {
+      maxVal = document.querySelector("#quantity").max;
+      maxVal = parseInt(maxVal);
+    }
+    let products = {
+      itemCode: itemCode,
+      productID: productID,
+      productImage: productImg,
+      productName: productName,
+      productColor: productColor,
+      stockID: stockID,
+      productSize: sizeValue,
+      productPrice: productPrice,
+      Quantity: qty,
+      NewQuantity: qty,
+      maxValue: maxVal,
+    };
     setProducts(products);
   });
 }

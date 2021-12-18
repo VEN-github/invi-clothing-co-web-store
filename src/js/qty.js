@@ -68,29 +68,6 @@ function plus(e) {
   }
 }
 
-// minus btn
-if (minusBtn) {
-  minusBtn.setAttribute("disabled", "disabled");
-  minusBtn.style.cursor = "not-allowed";
-
-  // TAKING VALUE TO INCREMENT DECREMENT INPUT VALUE
-  let valueCount = 1;
-
-  // SETTING MAX VALUE
-  let maxValue = document.querySelector("#quantity").max;
-  if (maxValue == 0) {
-    plusBtn.setAttribute("disabled", "disabled");
-    plusBtn.style.cursor = "not-allowed";
-  } else if (valueCount == maxValue) {
-    plusBtn.setAttribute("disabled", "disabled");
-    plusBtn.style.cursor = "not-allowed";
-  } else {
-    plusBtn.removeAttribute("disabled");
-    plusBtn.classList.remove("disabled");
-    plusBtn.style.cursor = "pointer";
-  }
-}
-
 function minus(e) {
   let valueCount = 1;
   let maxValue = e.nextElementSibling.max;

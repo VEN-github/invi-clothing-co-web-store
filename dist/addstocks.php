@@ -3,6 +3,7 @@ require_once "../class/webstoreclass.php";
 $user = $store->get_userdata();
 $ID = $_GET["ID"];
 $product = $store->get_singleID($ID);
+$variation = $store->get_variation($ID);
 $title = "Add Stocks";
 include_once "../includes/dashboard_header.php";
 $admins = $store->get_admin();
@@ -31,22 +32,36 @@ $pendingOrders = $store->get_pending_orders();
                   </div>
                   <div class="card-body">
                     <form>
-                      <div class="form-group">
-                        <label>Stock</label>
-                        <input type="number" class="form-control stocks" name="wholeStock" min="0" value="1" form="stockForm">
-                      </div>
-                      <div class="form-group">
-                        <label>Stock Keeping Unit (SKU)</label>
-                        <input type="text" class="form-control text-uppercase" name="skuNoSize" id="skuNoSize" value="<?= str_ireplace(
-                          ["a", "e", "i", "o", "u", "-", " "],
-                          "",
-                          $product["productColor"]
-                        ) ?>-<?= str_ireplace(
+                      <?php if ($variation) { ?>
+                        <?php foreach ($variation as $variant) { ?>
+                          <div class="form-group">
+                            <label>Variation</label>
+                            <input class="form-control"value="<?= $variant[
+                              "variantName"
+                            ] ?>" readonly>
+                          </div>
+                          <div class="form-group">
+                            <input type="hidden" name="variationID[]" value="<?= $variant[
+                              "ID"
+                            ] ?>" form="stockForm">
+                            <label>Stock</label>
+                            <input type="number" class="form-control stocks" name="wholeStock[]" min="0" value="1" form="stockForm">
+                          </div>
+                          <div class="form-group">
+                            <label>Stock Keeping Unit (SKU)</label>
+                            <input type="text" class="form-control text-uppercase sku" name="skuNoSize[]" value="<?= str_ireplace(
+                              ["a", "e", "i", "o", "u", "-", " "],
+                              "",
+                              $variant["variantName"]
+                            ) ?>-<?= str_ireplace(
   [" "],
   "",
   $product["productName"]
 ) ?>-" form="stockForm" readonly>
-                      </div>
+                          </div>
+                          <hr>
+                        <?php } ?>
+                      <?php } ?>
                       <input type="hidden" name="noSize" id="noSize" value="" form="stockForm">
                       <input type="hidden" name="productID" value="<?= $product[
                         "ID"
@@ -76,121 +91,162 @@ $pendingOrders = $store->get_pending_orders();
                   </div>         
                   <div class="card-body">
                     <form method="post" id="stockForm">
-                      <div class="table-responsive">
-                        <table
-                          class="table table-bordered text-center"
-                          width="100%"
-                          cellspacing="0"
-                        >
-                        <thead class="bg-gray-600 text-gray-100">
-                          <tr>
-                            <th>Size</th>
-                            <th>Stock Quantity</th>
-                            <th>Stock Keeping Unit (SKU)</th>
-                          </tr>
-                        </thead>
-                        <tbody class="text-gray-900">
-                          <tr>
-                            <td><input class="form-control" name="size[]" value="XS" readonly></td>
-                            <td><input type="number" class="form-control stocks" name="stocks[]" min="0" value="1"></td>
-                            <td><input type="text" class="form-control text-uppercase" name="sku[]" id="xs" value="<?= str_ireplace(
-                              ["a", "e", "i", "o", "u", "-", " "],
-                              "",
-                              $product["productColor"]
-                            ) ?>-<?= str_ireplace(
+                      <?php if ($variation) { ?>
+                        <?php foreach ($variation as $variant) { ?>
+                          <div class="table-responsive">
+                            <table
+                              class="table table-bordered text-center"
+                              width="100%"
+                              cellspacing="0"
+                            >
+                            <thead class="bg-gray-600 text-gray-100">
+                              <tr>
+                                <th>Variation</th>
+                                <th>Size</th>
+                                <th>Stock Quantity</th>
+                                <th>Stock Keeping Unit (SKU)</th>
+                              </tr>
+                            </thead>
+                            <tbody class="text-gray-900">
+                              <tr>
+                                <td><input type="hidden" name="variantID[]" value="<?= $variant[
+                                  "ID"
+                                ] ?>" readonly><input class="form-control"value="<?= $variant[
+  "variantName"
+] ?>" readonly></td>
+                                <td><input class="form-control" name="size[]" value="XS" readonly></td>
+                                <td><input type="number" class="form-control stocks" name="stocks[]" min="0" value="1"></td>
+                                <td><input type="text" class="form-control text-uppercase sku" name="sku[]" id="xs" value="<?= str_ireplace(
+                                  ["a", "e", "i", "o", "u", "-", " "],
+                                  "",
+                                  $variant["variantName"]
+                                ) ?>-<?= str_ireplace(
   [" "],
   "",
   $product["productName"]
 ) ?>-XS-" readonly></td>
-                          </tr>
-                          <tr>
-                            <td><input class="form-control" name="size[]" value="S" readonly></td>
-                            <td><input type="number" class="form-control stocks" name="stocks[]" min="0" value="1"></td>
-                            <td><input type="text" class="form-control text-uppercase" name="sku[]" id="s" value="<?= str_ireplace(
-                              ["a", "e", "i", "o", "u", "-", " "],
-                              "",
-                              $product["productColor"]
-                            ) ?>-<?= str_ireplace(
+                              </tr>
+                              <tr>
+                                <td><input type="hidden" name="variantID[]" value="<?= $variant[
+                                  "ID"
+                                ] ?>" readonly><input class="form-control"value="<?= $variant[
+  "variantName"
+] ?>" readonly></td>
+                                <td><input class="form-control" name="size[]" value="S" readonly></td>
+                                <td><input type="number" class="form-control stocks" name="stocks[]" min="0" value="1"></td>
+                                <td><input type="text" class="form-control text-uppercase sku" name="sku[]" id="s" value="<?= str_ireplace(
+                                  ["a", "e", "i", "o", "u", "-", " "],
+                                  "",
+                                  $variant["variantName"]
+                                ) ?>-<?= str_ireplace(
   [" "],
   "",
   $product["productName"]
 ) ?>-S-" readonly></td>
-                          </tr>
-                          <tr>
-                            <td><input class="form-control" name="size[]" value="M" readonly></td>
-                            <td><input type="number" class="form-control stocks" name="stocks[]" min="0" value="1"></td>
-                            <td><input type="text" class="form-control text-uppercase" name="sku[]" id="m" value="<?= str_ireplace(
-                              ["a", "e", "i", "o", "u", "-", " "],
-                              "",
-                              $product["productColor"]
-                            ) ?>-<?= str_ireplace(
+                              </tr>
+                              <tr>
+                                <td><input type="hidden" name="variantID[]" value="<?= $variant[
+                                  "ID"
+                                ] ?>" readonly><input class="form-control"value="<?= $variant[
+  "variantName"
+] ?>" readonly></td>
+                                <td><input class="form-control" name="size[]" value="M" readonly></td>
+                                <td><input type="number" class="form-control stocks" name="stocks[]" min="0" value="1"></td>
+                                <td><input type="text" class="form-control text-uppercase sku" name="sku[]" id="m" value="<?= str_ireplace(
+                                  ["a", "e", "i", "o", "u", "-", " "],
+                                  "",
+                                  $variant["variantName"]
+                                ) ?>-<?= str_ireplace(
   [" "],
   "",
   $product["productName"]
 ) ?>-M-" readonly></td>
-                          </tr>
-                          <tr>
-                            <td><input class="form-control" name="size[]" value="L" readonly></td>
-                            <td><input type="number" class="form-control stocks" name="stocks[]" min="0" value="1"></td>
-                            <td><input type="text" class="form-control text-uppercase" name="sku[]" id="l" value="<?= str_ireplace(
-                              ["a", "e", "i", "o", "u", "-", " "],
-                              "",
-                              $product["productColor"]
-                            ) ?>-<?= str_ireplace(
+                              </tr>
+                              <tr>
+                                <td><input type="hidden" name="variantID[]" value="<?= $variant[
+                                  "ID"
+                                ] ?>" readonly><input class="form-control"value="<?= $variant[
+  "variantName"
+] ?>" readonly></td>
+                                <td><input class="form-control" name="size[]" value="L" readonly></td>
+                                <td><input type="number" class="form-control stocks" name="stocks[]" min="0" value="1"></td>
+                                <td><input type="text" class="form-control text-uppercase sku" name="sku[]" id="l" value="<?= str_ireplace(
+                                  ["a", "e", "i", "o", "u", "-", " "],
+                                  "",
+                                  $variant["variantName"]
+                                ) ?>-<?= str_ireplace(
   [" "],
   "",
   $product["productName"]
 ) ?>-L-" readonly></td>
-                          </tr>
-                          <tr>
-                            <td><input class="form-control" name="size[]" value="XL" readonly></td>
-                            <td><input type="number" class="form-control stocks" name="stocks[]" min="0" value="1"></td>
-                            <td><input type="text" class="form-control text-uppercase" name="sku[]" id="xl" value="<?= str_ireplace(
-                              ["a", "e", "i", "o", "u", "-", " "],
-                              "",
-                              $product["productColor"]
-                            ) ?>-<?= str_ireplace(
+                              </tr>
+                              <tr>
+                                <td><input type="hidden" name="variantID[]" value="<?= $variant[
+                                  "ID"
+                                ] ?>" readonly><input class="form-control"value="<?= $variant[
+  "variantName"
+] ?>" readonly></td>
+                                <td><input class="form-control" name="size[]" value="XL" readonly></td>
+                                <td><input type="number" class="form-control stocks" name="stocks[]" min="0" value="1"></td>
+                                <td><input type="text" class="form-control text-uppercase sku" name="sku[]" id="xl" value="<?= str_ireplace(
+                                  ["a", "e", "i", "o", "u", "-", " "],
+                                  "",
+                                  $variant["variantName"]
+                                ) ?>-<?= str_ireplace(
   [" "],
   "",
   $product["productName"]
 ) ?>-XL-" readonly></td>
-                          </tr>
-                          <tr>
-                            <td><input class="form-control" name="size[]" value="2XL" readonly></td>
-                            <td><input type="number" class="form-control stocks" name="stocks[]" min="0" value="1"></td>
-                            <td><input type="text" class="form-control text-uppercase" name="sku[]" id="xxl" value="<?= str_ireplace(
-                              ["a", "e", "i", "o", "u", "-", " "],
-                              "",
-                              $product["productColor"]
-                            ) ?>-<?= str_ireplace(
+                              </tr>
+                              <tr>
+                                <td><input type="hidden" name="variantID[]" value="<?= $variant[
+                                  "ID"
+                                ] ?>" readonly><input class="form-control"value="<?= $variant[
+  "variantName"
+] ?>" readonly></td>
+                                <td><input class="form-control" name="size[]" value="2XL" readonly></td>
+                                <td><input type="number" class="form-control stocks" name="stocks[]" min="0" value="1"></td>
+                                <td><input type="text" class="form-control text-uppercase sku" name="sku[]" id="xxl" value="<?= str_ireplace(
+                                  ["a", "e", "i", "o", "u", "-", " "],
+                                  "",
+                                  $variant["variantName"]
+                                ) ?>-<?= str_ireplace(
   [" "],
   "",
   $product["productName"]
 ) ?>-2XL-" readonly></td>
-                          </tr>
-                          <tr>
-                            <td><input class="form-control" name="size[]" value="3XL" readonly></td>
-                            <td><input type="number" class="form-control stocks" name="stocks[]" min="0" value="1"></td>
-                            <td><input type="text" class="form-control text-uppercase" name="sku[]" id="xxxl" value="<?= str_ireplace(
-                              ["a", "e", "i", "o", "u", "-", " "],
-                              "",
-                              $product["productColor"]
-                            ) ?>-<?= str_ireplace(
+                              </tr>
+                              <tr>
+                                <td><input type="hidden" name="variantID[]" value="<?= $variant[
+                                  "ID"
+                                ] ?>" readonly><input class="form-control"value="<?= $variant[
+  "variantName"
+] ?>" readonly></td>
+                                <td><input class="form-control" name="size[]" value="3XL" readonly></td>
+                                <td><input type="number" class="form-control stocks" name="stocks[]" min="0" value="1"></td>
+                                <td><input type="text" class="form-control text-uppercase sku" name="sku[]" id="xxxl" value="<?= str_ireplace(
+                                  ["a", "e", "i", "o", "u", "-", " "],
+                                  "",
+                                  $variant["variantName"]
+                                ) ?>-<?= str_ireplace(
   [" "],
   "",
   $product["productName"]
 ) ?>-3XL-" readonly></td>
-                          </tr>
-                        </tbody>
-                        <tfoot class="bg-gray-600 text-gray-100">
-                          <tr>
-                            <th>Size</th>
-                            <th>Stock Quantity</th>
-                            <th>Stock Keeping Unit (SKU)</th>
-                          </tr>
-                        </tfoot>
-                      </table>
-                      </div>
+                              </tr>
+                            </tbody>
+                            <tfoot class="bg-gray-600 text-gray-100">
+                              <tr>
+                                <th>Variation</th>
+                                <th>Size</th>
+                                <th>Stock Quantity</th>
+                                <th>Stock Keeping Unit (SKU)</th>
+                              </tr>
+                            </tfoot>
+                          </table>
+                          </div>
+                        <?php } ?>
+                      <?php } ?>
                     </form>
                   </div>
                 </div>

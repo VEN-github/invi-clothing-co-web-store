@@ -56,10 +56,10 @@ $products = $store->get_products();
                                 ] ?>" data-id="<?= $stock[
   "ID"
 ] ?>" data-tokens="<?= $product["productName"] ?>"><?= is_null($stock["size"])
-  ? $product["productName"] . " (" . $product["productColor"] . ")"
+  ? $product["productName"] . " (" . $stock["variantName"] . ")"
   : $product["productName"] .
     " (" .
-    $product["productColor"] .
+    $stock["variantName"] .
     ") (" .
     $stock["size"] .
     ")" ?></option>
@@ -136,7 +136,7 @@ $products = $store->get_products();
                             <td><?= $inventoryProduct["ID"] ?></td>
                             <td><?= $inventoryProduct["productName"] .
                               " (" .
-                              $inventoryProduct["productColor"] .
+                              $inventoryProduct["variantName"] .
                               ")" ?></td>
                             <td><?= $inventoryProduct["size"]
                               ? $inventoryProduct["size"]
@@ -203,7 +203,7 @@ $products = $store->get_products();
                             <td><?= $inventoryProduct["ID"] ?></td>
                             <td><?= $inventoryProduct["productName"] .
                               " (" .
-                              $inventoryProduct["productColor"] .
+                              $inventoryProduct["variantName"] .
                               ")" ?></td>
                             <td><?= $inventoryProduct["size"]
                               ? $inventoryProduct["size"]

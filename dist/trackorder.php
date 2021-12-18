@@ -146,15 +146,15 @@ $store->cancel_order();
                         <?php foreach ($tracking as $track) { ?>
                           <div class="orders">
                             <img
-                              src="./assets/img/<?= $track["coverPhoto"] ?>"
-                              alt="<?= $track["coverPhoto"] ?>"
+                              src="./assets/img/<?= $track["variantImage"] ?>"
+                              alt="<?= $track["variantImage"] ?>"
                             />
                             <div class="order-details">
                               <h4><?= $track["productName"] ?></h4>
                               <?php if (is_null($track["size"])) { ?>
-                                <p>Color: <?= $track["productColor"] ?></p>
+                                <p>Color: <?= $track["variantName"] ?></p>
                               <?php } else { ?>
-                                <p>Color: <?= $track["productColor"] ?></p>
+                                <p>Color: <?= $track["variantName"] ?></p>
                                 <p>Size: <?= $track["size"] ?></p>
                               <?php } ?>
                               <p class="price-container">

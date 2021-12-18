@@ -43,9 +43,7 @@ include_once "../includes/header.php";
                       "categoryName"
                     ] ?> <?= strtoupper(
    $product["productName"]
- ) ?> <?= strtoupper($product["categoryName"]) ?> <?= strtoupper(
-   $product["productColor"]
- ) ?>" style="display:none;">
+ ) ?> <?= strtoupper($product["categoryName"]) ?> style="display:none;">
                       <?php if ($product["salesDiscount"]) { ?>
                         <div class="product-label">Sale</div>
                       <?php } ?>
@@ -58,9 +56,6 @@ include_once "../includes/header.php";
                         <a href="productdetails.php?ID=<?= $product[
                           "ID"
                         ] ?>"><?= $product["productName"] ?></a>
-                        <p class="color">
-                          <?= $product["productColor"] ?>
-                        </p>
                         <div class="price-container">
                           <p class="price">
                             <span

@@ -54,7 +54,7 @@ $pendingOrders = $store->get_pending_orders();
                   >
                     <thead class="text-info">
                       <tr>
-                        <th>#</th>
+                        <th>Order #</th>
                         <th>Product Name</th>
                         <th>Price</th>
                         <th>Quantity</th>
@@ -74,11 +74,11 @@ $pendingOrders = $store->get_pending_orders();
                             <td> <?= is_null($sale["size"])
                               ? $sale["productName"] .
                                 " (" .
-                                $sale["productColor"] .
+                                $sale["variantName"] .
                                 ")"
                               : $sale["productName"] .
                                 " (" .
-                                $sale["productColor"] .
+                                $sale["variantName"] .
                                 ", " .
                                 $sale["size"] .
                                 ")" ?></td>
@@ -101,7 +101,7 @@ $pendingOrders = $store->get_pending_orders();
                     </tbody>
                     <tfoot class="text-info">
                       <tr>
-                        <th>#</th>
+                        <th>Order #</th>
                         <th>Product Name</th>
                         <th>Price</th>
                         <th>Quantity</th>
@@ -140,7 +140,7 @@ $pendingOrders = $store->get_pending_orders();
                   >
                     <thead class="bg-gray-600 text-gray-100">
                       <tr>
-                        <th>#</th>
+                        <th>Order #</th>
                         <th>Product Name</th>
                         <th>Price</th>
                         <th>Quantity</th>
@@ -160,11 +160,11 @@ $pendingOrders = $store->get_pending_orders();
                             <td> <?= is_null($sale["size"])
                               ? $sale["productName"] .
                                 " (" .
-                                $sale["productColor"] .
+                                $sale["variantName"] .
                                 ")"
                               : $sale["productName"] .
                                 " (" .
-                                $sale["productColor"] .
+                                $sale["variantName"] .
                                 ", " .
                                 $sale["size"] .
                                 ")" ?></td>
@@ -187,7 +187,7 @@ $pendingOrders = $store->get_pending_orders();
                     </tbody>
                     <tfoot class="bg-gray-600 text-gray-100">
                       <tr>
-                        <th>#</th>
+                        <th>Order #</th>
                         <th>Product Name</th>
                         <th>Price</th>
                         <th>Quantity</th>

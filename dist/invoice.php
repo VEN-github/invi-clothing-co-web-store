@@ -15,7 +15,7 @@ foreach ($orders as $order) {
     $items .
     '<tr class="order">
     <td class="order"><img class="item-img" src="./assets/img/' .
-    $order["coverPhoto"] .
+    $order["variantImage"] .
     '" alt="Logo"></td>
     <td class="order">
       <table>
@@ -27,7 +27,7 @@ foreach ($orders as $order) {
     (is_null($order["size"])
       ? '<tr>
             <td class="items">Color: ' .
-        $order["productColor"] .
+        $order["variantName"] .
         '</td>
           </tr>
           <tr>
@@ -37,7 +37,7 @@ foreach ($orders as $order) {
           </tr>'
       : '<tr>
             <td class="items">Color: ' .
-        $order["productColor"] .
+        $order["variantName"] .
         '</td>
           </tr>
           <tr>

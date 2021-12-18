@@ -1,15 +1,16 @@
 const addSize = document.querySelector("#addSize");
 const closeSize = document.querySelector("#close");
-document.querySelector("#skuNoSize").value += Math.random()
-  .toString(36)
-  .slice(-5);
-document.querySelector("#xs").value += Math.random().toString(36).slice(-5);
-document.querySelector("#s").value += Math.random().toString(36).slice(-5);
-document.querySelector("#m").value += Math.random().toString(36).slice(-5);
-document.querySelector("#l").value += Math.random().toString(36).slice(-5);
-document.querySelector("#xl").value += Math.random().toString(36).slice(-5);
-document.querySelector("#xxl").value += Math.random().toString(36).slice(-5);
-document.querySelector("#xxxl").value += Math.random().toString(36).slice(-5);
+const skuNoSize = document.querySelectorAll(".sku");
+skuNoSize.forEach((sku) => {
+  sku.value += Math.random().toString(36).slice(-5);
+});
+// document.querySelector("#xs").value += Math.random().toString(36).slice(-5);
+// document.querySelector("#s").value += Math.random().toString(36).slice(-5);
+// document.querySelector("#m").value += Math.random().toString(36).slice(-5);
+// document.querySelector("#l").value += Math.random().toString(36).slice(-5);
+// document.querySelector("#xl").value += Math.random().toString(36).slice(-5);
+// document.querySelector("#xxl").value += Math.random().toString(36).slice(-5);
+// document.querySelector("#xxxl").value += Math.random().toString(36).slice(-5);
 if (addSize) {
   addSize.addEventListener("click", () => {
     document.querySelector("#sizeInfo").style.display = "block";

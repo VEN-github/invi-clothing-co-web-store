@@ -107,16 +107,16 @@ $admins = $store->get_admin();
                           $order["lastName"] ?></td>
                         <td class="text-left align-middle">
                           <img loading="lazy" src="./assets/img/<?= $order[
-                            "coverPhoto"
+                            "variantImage"
                           ] ?>" alt="Product Image" style="width:75px;">
                         <?= is_null($order["size"])
                           ? $order["productName"] .
                             " (" .
-                            $order["productColor"] .
+                            $order["variantName"] .
                             ")"
                           : $order["productName"] .
                             " (" .
-                            $order["productColor"] .
+                            $order["variantName"] .
                             ", " .
                             $order["size"] .
                             ")" ?>

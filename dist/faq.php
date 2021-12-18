@@ -44,6 +44,14 @@ include_once "../includes/header.php";
                 <div class="question"><h4>What do I do if my order is damaged?</h4><span class="plus-icon">+</span></div>
                 <div class="answer"><p>We are sorry to hear that your order arrived less than pristine condition! For order return you can go to Profile > return, fill out the form and select the reason for the return. We will get back to you once we received.</p></div>
               </div>
+              <div class="content-box">
+                <div class="question"><h4>How to return items?</h4><span class="plus-icon">+</span></div>
+                <div class="answer"><p>Please take note that return requests are for approval by the Admin. We only allows 3 business days to request for return item. Once not requested within the given time INVI Clothing Co. is no longer responsible for any damage or defect from the product. Upload a photo of the product and write the detailed reason for the return. For return, go to Profile > Return.</p></div>
+              </div>
+              <div class="content-box">
+                <div class="question"><h4>My order should only take 2-3 business days for Standard Shipping within Metro Manila. Why is my order not delivered yet?</h4><span class="plus-icon">+</span></div>
+                <div class="answer"><p>I'm sorry for the inconvenience or delay, INVI Clothing Co. shipped your item one to two days after we received the order. You can see shipped order by going to Profile > Orders > Track. COVID-19 potential delivery delay. We apologize for the inconvenience this may cause. If not received yet please contact us. Go to Contact us and write your message and we will try to get in touch with the courier.</p></div>
+              </div>
             </div>
           </div>
         </section>

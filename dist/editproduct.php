@@ -8,7 +8,6 @@ $countOrders = $store->count_orders();
 $pendingOrders = $store->get_pending_orders();
 $ID = $_GET["ID"];
 $product = $store->get_editproduct($ID);
-$stocks = $store->view_all_stocks($ID);
 $costs = $store->view_all_cost($ID);
 ?>
   <body id="page-top">
@@ -72,12 +71,6 @@ $costs = $store->view_all_cost($ID);
                         <textarea class="form-control" name="productDescription" rows="3"><?= $product[
                           "productDescription"
                         ] ?></textarea>
-                      </div>
-                      <div class="form-group">
-                        <label>Color</label>
-                        <input type="text" name="productColor" class="form-control" value="<?= $product[
-                          "productColor"
-                        ] ?>">
                       </div>
                       <div class="row">
                         <div class="col-lg-3">
@@ -335,79 +328,6 @@ $costs = $store->view_all_cost($ID);
                       </div>
                     </div>
                   </div>
-                <?php } ?>
-                <?php if ($stocks) { ?>
-                  <?php foreach ($stocks as $stock) { ?>
-                  <?php } ?>
-                <?php } ?>
-                <?php if ($stock["size"] || $stock["stock"]) { ?>
-                  <?php if (is_null($stock["size"])) { ?>
-                    <div class="card shadow mb-4">
-                      <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-gray-800">Stock Information</h6>
-                      </div>
-                      <div class="card-body">
-                        <div class="form-group">
-                          <label>Stock</label>
-                          <input type="number" class="form-control stocks" name="wholeStock" min="0" value="<?= $stock[
-                            "stock"
-                          ] ?>" form="productForm">
-                        </div>
-                        <div class="form-group">
-                          <label>Stock Keeping Unit (SKU)</label>
-                          <input type="text" class="form-control text-uppercase" name="skuNoSize" id="skuNoSize" value="<?= $stock[
-                            "sku"
-                          ] ?>" form="productForm">
-                        </div>       
-                      </div>
-                    </div>
-                  <?php } else { ?>
-                    <div class="card shadow mb-4">
-                      <!-- Size Info -->
-                      <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                        <h6 class="m-0 font-weight-bold text-gray-800">Stock Information</h6>
-                      </div>         
-                      <div class="card-body">                     
-                        <div class="table-responsive">
-                          <table
-                            class="table table-bordered text-center"
-                            width="100%"
-                            cellspacing="0"
-                          >
-                          <thead class="bg-gray-600 text-gray-100">
-                            <tr>
-                              <th>Size</th>
-                              <th>Stock Quantity</th>
-                              <th>Stock Keeping Unit (SKU)</th>
-                            </tr>
-                          </thead>
-                          <tbody class="text-gray-900">
-                            <?php foreach ($stocks as $stock) { ?>
-                              <tr>
-                                <td><input class="form-control" name="size[]" value="<?= $stock[
-                                  "size"
-                                ] ?>" form="productForm" readonly></td>
-                                <td><input type="text" class="form-control stocks" name="stocks[]" value="<?= $stock[
-                                  "stock"
-                                ] ?>" form="productForm" readonly></td>
-                                <td><input type="text" class="form-control text-uppercase" name="sku[]" value="<?= $stock[
-                                  "sku"
-                                ] ?>" form="productForm" readonly></td>
-                              </tr>  
-                            <?php } ?>
-                          </tbody>
-                          <tfoot class="bg-gray-600 text-gray-100">
-                            <tr>
-                              <th>Size</th>
-                              <th>Stock Quantity</th>
-                              <th>Stock Keeping Unit (SKU)</th>
-                            </tr>
-                          </tfoot>
-                        </table>
-                        </div>
-                      </div>
-                    </div>
-                  <?php } ?>
                 <?php } ?>
                 <div class="card body mb-4 py-1">
                   <div class="d-flex flex-row-reverse">

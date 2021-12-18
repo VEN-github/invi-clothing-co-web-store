@@ -17,8 +17,8 @@ if (table) {
     const cell3 = row.cells[3];
     const cell4 = row.cells[4];
     const cell5 = row.cells[5];
-    const cell10 = row.cells[10];
-    const cell11 = row.cells[11];
+    const cell10 = row.cells[11];
+    const cell11 = row.cells[12];
 
     if (headerCell === null || cell.innerText !== headerCell.innerText) {
       headerCell = cell;

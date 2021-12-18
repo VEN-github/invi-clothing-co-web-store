@@ -53,9 +53,6 @@ include_once "../includes/header.php";
                       <a href="productdetails.php?ID=<?= $randomProduct[
                         "ID"
                       ] ?>"><?= $randomProduct["productName"] ?></a>
-                      <p class="color">
-                        <?= $randomProduct["productColor"] ?>
-                      </p>
                       <div class="price-container">
                         <p class="price">
                           <span

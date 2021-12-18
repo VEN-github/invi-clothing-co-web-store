@@ -415,11 +415,11 @@ $decSales = $store->get_dec_sales();
                               <td><?= is_null($top["size"])
                                 ? $top["productName"] .
                                   " (" .
-                                  $top["productColor"] .
+                                  $top["variantName"] .
                                   ")"
                                 : $top["productName"] .
                                   " (" .
-                                  $top["productColor"] .
+                                  $top["variantName"] .
                                   ", " .
                                   $top["size"] .
                                   ")" ?></td>

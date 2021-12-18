@@ -862,7 +862,6 @@ class WebStore
       }
       $productName = $_POST["productName"];
       $productDescription = $_POST["productDescription"];
-      $productColor = $_POST["productColor"];
       $coverPhoto = $_FILES["coverPhoto"]["name"];
       $image1 = $_FILES["image1"]["name"];
       $image2 = $_FILES["image2"]["name"];
@@ -873,7 +872,6 @@ class WebStore
         empty(isset($_POST["category"])) ||
         empty($productName) ||
         empty($productDescription) ||
-        empty($productColor) ||
         empty($coverPhoto)
       ) {
         echo "<script> Swal.fire({
@@ -885,13 +883,12 @@ class WebStore
       } else {
         $connection = $this->openConnection();
         $stmt = $connection->prepare(
-          "INSERT INTO product_table (`categoryID`, `productName`, `productDescription`, `productColor`, `coverPhoto`, `image1`, `image2`, `image3`, `sizeGuide`, `availability`) VALUES (?,?,?,?,?,?,?,?,?,?)"
+          "INSERT INTO product_table (`categoryID`, `productName`, `productDescription`, `coverPhoto`, `image1`, `image2`, `image3`, `sizeGuide`, `availability`) VALUES (?,?,?,?,?,?,?,?,?)"
         );
         $stmt->execute([
           $category,
           $productName,
           $productDescription,
-          $productColor,
           $coverPhoto,
           $image1,
           $image2,
@@ -922,6 +919,49 @@ class WebStore
 
         header("Location: products.php");
       }
+    }
+  }
+
+  // add variation
+  public function add_variation()
+  {
+    if (isset($_POST["addVariant"])) {
+      $productID = $_POST["productID"];
+      $variationImg = $_FILES["variationImg"]["name"];
+
+      $count = count($_POST["variationName"]);
+      for ($i = 0; $i < $count; $i++) {
+        $variantName = $_POST["variationName"][$i];
+        $variantImg = $_FILES["variationImg"]["name"][$i];
+        $connection = $this->openConnection();
+        $stmt = $connection->prepare(
+          "INSERT INTO variation_table ( `productID`, `variantName`, `variantImage`) VALUES (?,?,?)"
+        );
+        $stmt->execute([$productID, $variantName, $variantImg]);
+        move_uploaded_file(
+          $_FILES["variationImg"]["tmp_name"][$i],
+          "assets/img/" . $_FILES["variationImg"]["name"][$i]
+        );
+      }
+      header("Location: products.php");
+    }
+  }
+
+  // get variation per product
+  public function get_variation($ID)
+  {
+    $connection = $this->openConnection();
+    $stmt = $connection->prepare(
+      "SELECT * FROM variation_table WHERE productID = ?"
+    );
+    $stmt->execute([$ID]);
+    $variant = $stmt->fetchall();
+    $count = $stmt->rowCount();
+
+    if ($count > 0) {
+      return $variant;
+    } else {
+      return $this->show_dashboard404();
     }
   }
 
@@ -1016,27 +1056,33 @@ class WebStore
   {
     if (isset($_POST["addStock"])) {
       $productID = $_POST["productID"];
-      $wholeStock = $_POST["wholeStock"];
-      $skuNoSize = $_POST["skuNoSize"];
+
       $noSize = $_POST["noSize"];
 
       if (empty($noSize)) {
-        $connection = $this->openConnection();
-        $stmt = $connection->prepare(
-          "INSERT INTO stocks_table ( `productID`, `stock`, `sku`) VALUES (?,?,?)"
-        );
-        $stmt->execute([$productID, $wholeStock, $skuNoSize]);
-      } else {
-        $count = count($_POST["size"]);
+        $count = count($_POST["variationID"]);
         for ($i = 0; $i < $count; $i++) {
+          $variantID = $_POST["variationID"][$i];
+          $wholeStock = $_POST["wholeStock"][$i];
+          $skuNoSize = $_POST["skuNoSize"][$i];
+          $connection = $this->openConnection();
+          $stmt = $connection->prepare(
+            "INSERT INTO stocks_table ( `productID`, `variantID`, `stock`, `sku`) VALUES (?,?,?,?)"
+          );
+          $stmt->execute([$productID, $variantID, $wholeStock, $skuNoSize]);
+        }
+      } else {
+        $count = count($_POST["variantID"]);
+        for ($i = 0; $i < $count; $i++) {
+          $variantID = $_POST["variantID"][$i];
           $size = $_POST["size"][$i];
           $stock = $_POST["stocks"][$i];
           $sku = $_POST["sku"][$i];
           $connection = $this->openConnection();
           $stmt = $connection->prepare(
-            "INSERT INTO stocks_table ( `productID`, `size`, `stock`, `sku`) VALUES (?,?,?,?)"
+            "INSERT INTO stocks_table ( `productID`, `variantID`, `size`, `stock`, `sku`) VALUES (?,?,?,?,?)"
           );
-          $stmt->execute([$productID, $size, $stock, $sku]);
+          $stmt->execute([$productID, $variantID, $size, $stock, $sku]);
         }
       }
       header("Location: products.php");
@@ -1064,7 +1110,7 @@ class WebStore
   {
     $connection = $this->openConnection();
     $stmt = $connection->prepare(
-      "SELECT product.ID, productName, categoryName, productColor, coverPhoto, image1, image2, image3, salesAmount, salesDiscount, netSales, productCost, netIncome, availability FROM (SELECT * FROM product_table) product LEFT JOIN category_table category ON product.categoryID = category.ID LEFT JOIN costing_table costing ON product.ID = costing.productID GROUP BY product.ID ORDER BY product.ID DESC"
+      "SELECT product.ID, productName, categoryName, coverPhoto, image1, image2, image3, salesAmount, salesDiscount, netSales, productCost, netIncome, availability, variantName FROM (SELECT * FROM product_table) product LEFT JOIN category_table category ON product.categoryID = category.ID LEFT JOIN costing_table costing ON product.ID = costing.productID LEFT JOIN variation_table variant ON product.ID = variant.productID GROUP BY product.ID ORDER BY product.ID DESC"
     );
     $stmt->execute();
     $products = $stmt->fetchall();
@@ -1082,7 +1128,7 @@ class WebStore
   {
     $connection = $this->openConnection();
     $stmt = $connection->prepare(
-      "SELECT product.ID as ID, productName, productDescription, categoryID, categoryName, productColor, coverPhoto, image1, image2, image3, sizeGuide, netSales, netIncome, productCost FROM product_table product LEFT JOIN category_table category ON product.categoryID = category.ID LEFT JOIN costing_table costing ON product.ID = costing.productID WHERE product.ID = ? GROUP BY product.ID"
+      "SELECT product.ID as ID, productName, productDescription, categoryID, categoryName, coverPhoto, image1, image2, image3, sizeGuide, netSales, netIncome, productCost FROM product_table product LEFT JOIN category_table category ON product.categoryID = category.ID LEFT JOIN costing_table costing ON product.ID = costing.productID WHERE product.ID = ? GROUP BY product.ID"
     );
     $stmt->execute([$ID]);
     $product = $stmt->fetch();
@@ -1305,7 +1351,7 @@ class WebStore
   {
     $connection = $this->openConnection();
     $stmt = $connection->prepare(
-      "SELECT product.ID, productName, productColor, coverPhoto, availability, netSales, salesAmount, salesDiscount FROM (SELECT * FROM product_table) product LEFT JOIN costing_table costing ON product.ID = costing.productID GROUP BY product.ID ORDER BY RAND()"
+      "SELECT product.ID, productName, coverPhoto, availability, netSales, salesAmount, salesDiscount FROM (SELECT * FROM product_table) product LEFT JOIN costing_table costing ON product.ID = costing.productID GROUP BY product.ID ORDER BY RAND()"
     );
     $stmt->execute();
     $randomProducts = $stmt->fetchall();
@@ -1323,7 +1369,7 @@ class WebStore
   {
     $connection = $this->openConnection();
     $stmt = $connection->prepare(
-      "SELECT product.ID, productName, productDescription, categoryName, salesAmount, salesDiscount,netSales, netIncome, productColor, coverPhoto, image1, image2, image3, sizeGuide FROM (SELECT * FROM product_table WHERE product_table.ID = ?) product LEFT JOIN category_table category ON product.categoryID = category.ID LEFT JOIN costing_table costing ON product.ID = costing.productID"
+      "SELECT product.ID, productName, productDescription, categoryName, salesAmount, salesDiscount,netSales, netIncome, coverPhoto, image1, image2, image3, sizeGuide FROM (SELECT * FROM product_table WHERE product_table.ID = ?) product LEFT JOIN category_table category ON product.categoryID = category.ID LEFT JOIN costing_table costing ON product.ID = costing.productID"
     );
     $stmt->execute([$ID]);
     $product = $stmt->fetch();
@@ -1359,7 +1405,7 @@ class WebStore
   {
     $connection = $this->openConnection();
     $stmt = $connection->prepare(
-      "SELECT * FROM product_table product LEFT JOIN stocks_table stocks ON product.ID = stocks.productID WHERE product.ID = ?"
+      "SELECT *, stocks.ID FROM product_table product LEFT JOIN stocks_table stocks ON product.ID = stocks.productID LEFT JOIN variation_table variant ON stocks.variantID = variant.ID LEFT JOIN return_table returns ON stocks.sku = returns.returnSku WHERE product.ID = ?"
     );
     $stmt->execute([$productID]);
     $stocks = $stmt->fetchall();
@@ -1367,6 +1413,24 @@ class WebStore
 
     if ($count > 0) {
       return $stocks;
+    } else {
+      return false;
+    }
+  }
+
+  //display product sizes and stocks every single variant
+  public function view_all_stocks_per_variant($productID, $variantID)
+  {
+    $connection = $this->openConnection();
+    $stmt = $connection->prepare(
+      "SELECT * FROM stocks_table WHERE productID = ? AND variantID = ?"
+    );
+    $stmt->execute([$productID, $variantID]);
+    $stockVar = $stmt->fetchall();
+    $count = $stmt->rowCount();
+
+    if ($count > 0) {
+      return $stockVar;
     } else {
       return false;
     }
@@ -1693,7 +1757,7 @@ class WebStore
   {
     $connection = $this->openConnection();
     $stmt = $connection->prepare(
-      "SELECT orderID, accountID, firstName, lastName, email,coverPhoto, productName, productColor, size, salesQty, totalAmount, paymentMethod, paymentStatus, shipMethod, orderStatus, orderDate, addressID FROM sales_table sales  LEFT JOIN account_table account ON sales.accountID = account.ID LEFT JOIN product_table product ON sales.productID = product.ID LEFT JOIN stocks_table stocks ON sales.stockID = stocks.ID ORDER BY orderDate DESC"
+      "SELECT orderID, accountID, firstName, lastName, email, variantImage, variantName, productName, size, salesQty, totalAmount, paymentMethod, paymentStatus, shipMethod, orderStatus, orderDate, addressID FROM sales_table sales  LEFT JOIN account_table account ON sales.accountID = account.ID LEFT JOIN product_table product ON sales.productID = product.ID LEFT JOIN stocks_table stocks ON sales.stockID = stocks.ID LEFT JOIN variation_table variant ON stocks.variantID = variant.ID ORDER BY orderDate DESC"
     );
     $stmt->execute();
     $orders = $stmt->fetchall();
@@ -1747,7 +1811,7 @@ class WebStore
   {
     $connection = $this->openConnection();
     $stmt = $connection->prepare(
-      "SELECT sales.orderID, salesQty, shipMethod, shipFee, paymentMethod, totalAmount, coverPhoto, productName, productColor, netSales, size, orderStatus, account.firstName as accountFname, account.lastName as accountLname, email, shipAddress.firstName as addressFname, shipAddress.lastName as addressLname, address1, address2, city, postalCode, region, country, phoneNumber FROM sales_table sales LEFT JOIN account_table account ON sales.accountID = account.ID LEFT JOIN product_table product ON sales.productID = product.ID LEFT JOIN stocks_table stock ON sales.stockID = stock.ID LEFT JOIN costing_table costing ON sales.productID = costing.productID LEFT JOIN address_table shipAddress ON sales.orderID = shipAddress.orderID WHERE sales.accountID = ?  AND sales.orderID = ? GROUP BY stock.ID"
+      "SELECT sales.orderID, salesQty, shipMethod, shipFee, paymentMethod, totalAmount, variantImage, variantName, productName, netSales, size, orderStatus, account.firstName as accountFname, account.lastName as accountLname, email, shipAddress.firstName as addressFname, shipAddress.lastName as addressLname, address1, address2, city, postalCode, region, country, phoneNumber FROM sales_table sales LEFT JOIN account_table account ON sales.accountID = account.ID LEFT JOIN product_table product ON sales.productID = product.ID LEFT JOIN stocks_table stock ON sales.stockID = stock.ID  LEFT JOIN variation_table variant ON stock.variantID = variant.ID LEFT JOIN costing_table costing ON sales.productID = costing.productID LEFT JOIN address_table shipAddress ON sales.orderID = shipAddress.orderID WHERE sales.accountID = ?  AND sales.orderID = ? GROUP BY stock.ID"
     );
     $stmt->execute([$acctID, $orderID]);
     $track = $stmt->fetchall();
@@ -1765,7 +1829,7 @@ class WebStore
   {
     $connection = $this->openConnection();
     $stmt = $connection->prepare(
-      "SELECT sales.orderID, account.firstName as firstName, account.lastName as lastName, email, coverPhoto, productName, productColor, size, sku, salesQty, totalAmount, paymentMethod, netSales, shipMethod, shipFee, orderDate, shipAddress.firstName as addressFname, shipAddress.lastName as addressLname, address1, address2, city, postalCode, region, country, phoneNumber FROM sales_table sales  LEFT JOIN account_table account ON sales.accountID = account.ID LEFT JOIN product_table product ON sales.productID = product.ID LEFT JOIN stocks_table stocks ON sales.stockID = stocks.ID LEFT JOIN costing_table costing ON sales.productID = costing.productID LEFT JOIN address_table shipAddress ON sales.orderID = shipAddress.orderID WHERE sales.orderID = ? AND sales.addressID = ? GROUP BY sales.stockID"
+      "SELECT sales.orderID, account.firstName as firstName, account.lastName as lastName, email, variantImage, productName, variantName, size, sku, salesQty, totalAmount, paymentMethod, netSales, shipMethod, shipFee, orderDate, shipAddress.firstName as addressFname, shipAddress.lastName as addressLname, address1, address2, city, postalCode, region, country, phoneNumber FROM sales_table sales  LEFT JOIN account_table account ON sales.accountID = account.ID LEFT JOIN product_table product ON sales.productID = product.ID LEFT JOIN stocks_table stocks ON sales.stockID = stocks.ID LEFT JOIN variation_table variant ON stocks.variantID = variant.ID LEFT JOIN costing_table costing ON sales.productID = costing.productID LEFT JOIN address_table shipAddress ON sales.orderID = shipAddress.orderID WHERE sales.orderID = ? AND sales.addressID = ? GROUP BY sales.stockID"
     );
     $stmt->execute([$orderID, $addressID]);
     $order = $stmt->fetchall();
@@ -2006,7 +2070,7 @@ class WebStore
   {
     $connection = $this->openConnection();
     $stmt = $connection->prepare(
-      "SELECT sales.productID as productID, orderID, productName, productColor, size, salesQty, totalAmount,orderDate FROM sales_table sales LEFT JOIN product_table product ON sales.productID = product.ID LEFT JOIN stocks_table stocks ON sales.stockID = stocks.ID WHERE paymentStatus = 'Paid' ORDER BY orderDate DESC"
+      "SELECT sales.productID as productID, orderID, productName, variantName, size, salesQty, totalAmount,orderDate FROM sales_table sales LEFT JOIN product_table product ON sales.productID = product.ID LEFT JOIN stocks_table stocks ON sales.stockID = stocks.ID LEFT JOIN variation_table variant ON stocks.variantID = variant.ID WHERE paymentStatus = 'Paid' ORDER BY orderDate DESC"
     );
     $stmt->execute();
     $sales = $stmt->fetchall();
@@ -2060,7 +2124,7 @@ class WebStore
   {
     $connection = $this->openConnection();
     $stmt = $connection->prepare(
-      "SELECT sales.productID as productID, productName, productColor, size, SUM(salesQty) as salesQty FROM sales_table sales LEFT JOIN product_table product ON sales.productID = product.ID LEFT JOIN stocks_table stocks ON sales.stockID = stocks.ID WHERE paymentStatus = 'Paid' AND YEAR(orderDate) = YEAR(CURRENT_DATE()) AND
+      "SELECT sales.productID as productID, productName, variantName, size, SUM(salesQty) as salesQty FROM sales_table sales LEFT JOIN product_table product ON sales.productID = product.ID LEFT JOIN stocks_table stocks ON sales.stockID = stocks.ID LEFT JOIN variation_table variant ON stocks.variantID = variant.ID WHERE paymentStatus = 'Paid' AND YEAR(orderDate) = YEAR(CURRENT_DATE()) AND
       MONTH(orderDate) = MONTH(CURRENT_DATE()) GROUP BY sales.stockID ORDER BY SUM(salesQty) DESC LIMIT 5"
     );
     $stmt->execute();
@@ -2587,7 +2651,7 @@ class WebStore
   {
     $connection = $this->openConnection();
     $stmt = $connection->prepare(
-      "SELECT inventory.ID , inventory.productID, inventory.stockID, productName, productColor, size, addedQty, dateTime FROM (SELECT * FROM inventoryproduct_table) inventory LEFT JOIN product_table product ON inventory.productID = product.ID LEFT JOIN stocks_table stocks ON inventory.stockID = stocks.ID ORDER BY ID DESC"
+      "SELECT inventory.ID , inventory.productID, inventory.stockID, productName, variantName, size, addedQty, dateTime FROM (SELECT * FROM inventoryproduct_table) inventory LEFT JOIN product_table product ON inventory.productID = product.ID LEFT JOIN stocks_table stocks ON inventory.stockID = stocks.ID LEFT JOIN variation_table variant ON stocks.variantID = variant.ID ORDER BY ID DESC"
     );
     $stmt->execute();
     $inventoryProducts = $stmt->fetchall();
@@ -3011,27 +3075,43 @@ class WebStore
     if (isset($_POST["returnSubmit"])) {
       $email = $_POST["email"];
       $name = $_POST["userName"];
+      $userID = $_POST["userID"];
       $orderID = $_POST["orderID"];
+      $returnSku = $_POST["returnSku"];
+      $returnQty = $_POST["returnQty"];
+      $returnImg = $_FILES["returnImg"]["name"];
+      $returnStatus = $_POST["returnStatus"];
+
       if (isset($_POST["reason"])) {
         $reason = $_POST["reason"];
       }
       $comment = $_POST["comment"];
 
-      if (empty($orderID) || empty(isset($_POST["reason"]))) {
+      if (
+        empty($orderID) ||
+        empty($returnSku) ||
+        empty(isset($_POST["reason"])) ||
+        empty($returnQty) ||
+        empty($returnImg)
+      ) {
         echo "<script> Swal.fire({
           icon: 'error',
           title: 'Empty Field',
           text: 'Please input missing field',
         });
         </script>";
-      } else {
+      } elseif (is_numeric($returnQty) || is_int($returnQty)) {
         $mailTo = "inviclothing.co@gmail.com";
         $body =
           $name .
           " is requesting to return an item/s <br> <br> <b>Order #:</b> " .
           $orderID .
+          "<br> <b>SKU:</b> " .
+          $returnSku .
           "<br> <b>Reason:</b> " .
           $reason .
+          "<br> <b>Quantity:</b> " .
+          $returnQty .
           "<br> <b>Comments:</b> " .
           $comment;
         $mail = new PHPMailer\PHPMailer\PHPMailer();
@@ -3046,6 +3126,7 @@ class WebStore
         $mail->From = $email;
         $mail->FromName = $name;
         $mail->addAddress($mailTo, "INVI Clothing Co.");
+        $mail->AddAttachment($_FILES["returnImg"]["tmp_name"], $returnImg);
         $mail->isHTML(true);
         $mail->Subject = "INVI Clothing Co. - Request Return";
         $mail->Body = $body;
@@ -3063,7 +3144,82 @@ class WebStore
           });
           </script>";
         }
+        $connection = $this->openConnection();
+        $stmt = $connection->prepare(
+          "INSERT INTO return_table (`returnOrderId`, `returnSku`, `reason`, `qty`, `comments`, `returnImg`, `userID`, `status`) VALUES (?,?,?,?,?,?,?,?)"
+        );
+        $stmt->execute([
+          $orderID,
+          $returnSku,
+          $reason,
+          $returnQty,
+          $comment,
+          $returnImg,
+          $userID,
+          $returnStatus,
+        ]);
+        move_uploaded_file(
+          $_FILES["returnImg"]["tmp_name"],
+          "assets/img/" . $returnImg
+        );
+      } else {
+        echo "<script> Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Please input number only',
+        });
+        </script>";
       }
+    }
+  }
+
+  // display return order
+  public function get_return_orders()
+  {
+    $connection = $this->openConnection();
+    $stmt = $connection->prepare(
+      "SELECT returns.ID as ID, orderID, firstName, lastName, productName, variantName, variantImage, size, qty, reason, comments, returnImg, status FROM return_table returns LEFT JOIN stocks_table stocks ON returns.returnSku = stocks.sku LEFT JOIN variation_table variant ON stocks.variantID = variant.ID LEFT JOIN product_table product ON stocks.productID = product.ID LEFT JOIN account_table account ON returns.userID = account.ID LEFT JOIN sales_table sales ON returns.returnOrderID = sales.orderID GROUP BY returnSku ORDER BY returns.ID DESC"
+    );
+    $stmt->execute();
+    $return_orders = $stmt->fetchall();
+    $count = $stmt->rowCount();
+
+    if ($count > 0) {
+      return $return_orders;
+    } else {
+      return false;
+    }
+  }
+
+  // accept return orders
+  public function accept_return_orders()
+  {
+    if (isset($_POST["acceptReturnID"])) {
+      $ID = $_POST["acceptReturnID"];
+      $connection = $this->openConnection();
+      $stmt = $connection->prepare(
+        "UPDATE return_table SET `status` = 'Accepted' WHERE ID = '$ID'"
+      );
+      $stmt->execute();
+      $row = $stmt->fetch();
+      header("Location: return_orders.php");
+      return $row;
+    }
+  }
+
+  // reject return orders
+  public function reject_return_orders()
+  {
+    if (isset($_POST["rejectReturnID"])) {
+      $ID = $_POST["rejectReturnID"];
+      $connection = $this->openConnection();
+      $stmt = $connection->prepare(
+        "UPDATE return_table SET `status` = 'Rejected' WHERE ID = '$ID'"
+      );
+      $stmt->execute();
+      $row = $stmt->fetch();
+      header("Location: return_orders.php");
+      return $row;
     }
   }
 
@@ -3180,7 +3336,6 @@ class WebStore
       $supplierEmail = $_POST["supplierEmail"];
       $body = $_POST["message"];
       $pdf = $_FILES["pdf"]["name"];
-
       $mailTo = $supplierEmail;
 
       if (empty($supplierEmail) || empty($body)) {

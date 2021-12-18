@@ -86,10 +86,6 @@ $admins = $store->get_admin();
                         <label>Product Description</label>
                         <textarea class="form-control" name="productDescription" rows="3" placeholder="Product Description"></textarea>
                       </div>
-                      <div class="form-group">
-                        <label>Color</label>
-                        <input type="text" name="productColor" class="form-control" placeholder="Color">
-                      </div>
                       <div class="row">
                         <div class="col-lg-3">
                           <div class="form-group">
