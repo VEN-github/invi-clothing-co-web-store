@@ -79,30 +79,265 @@ include_once "../includes/header.php";
               </div>
             </div>
             <div data-sal="zoom-out" data-sal-duration="1200" data-sal-delay="400" data-sal-easing="ease-out-bounce" class="product-actions">
-              <div class="product-color">
-                <p>Select Variation:</p>
-              </div>
-              <div>
-                <div id="product-variant" class="product-gallery var-gallery">
-                  <?php if ($variation) { ?>
-                    <?php foreach ($variation as $variant) { ?>
-                      <?php $stocksPerVariant = $store->view_all_stocks_per_variant(
-                        $ID,
-                        $variant["ID"]
-                      ); ?>
-                      <span data-varID="<?= $variant[
+              <?php if ($variation) { ?>
+                <?php if (count($variation) === 1) { ?>
+                  <?php foreach ($variation as $variant) { ?>
+                    <?php $stocksPerVariant = $store->view_all_stocks_per_variant(
+                      $ID,
+                      $variant["ID"]
+                    ); ?>
+                    <div class="product-color">
+                      <input type="hidden" id="productColor" value="<?= $variant[
+                        "variantName"
+                      ] ?>">
+                      <img id="productImg" src="./assets/img/<?= $variant[
+                        "variantImage"
+                      ] ?>" alt="" style="display: none;">
+                      <p>Color: <span><?= $variant["variantName"] ?></span></p>
+                    </div>
+                    <?php foreach ($stocks as $stock) { ?>
+                    <?php } ?>
+                    <?php if (is_null($stock["size"])) { ?>
+                      <input type="hidden" id="stockID" value="<?= $stock[
                         "ID"
-                      ] ?>" data-variant="<?= $variant[
+                      ] ?>">
+                      <div class="product-quantity">
+                        <p>Quantity:</p>
+                        <div class="qty">
+                          <button class="minus-btn" onclick="minus(this)">-</button>
+                          <input
+                            class="qty-input"
+                            type="number"
+                            id="quantity"
+                            value="1"
+                            min="1"
+                            max="<?php if ($stocksPerVariant) {
+                              foreach ($stocksPerVariant as $stockVar) {
+                                $soldProducts = $store->sold_products(
+                                  $ID,
+                                  $stockVar["ID"]
+                                );
+                                $addedInventory = $store->get_added_stock_products(
+                                  $ID,
+                                  $stockVar["ID"]
+                                );
+                                if (
+                                  is_array($soldProducts) &&
+                                  is_array($addedInventory)
+                                ) { ?> <?php foreach (
+   $soldProducts
+   as $index => $value
+ ) { ?> <?= $addedInventory[$index]["stock"] +
+   $addedInventory[$index]["addedQty"] -
+   $soldProducts[$index]["salesQty"] ?> <?php } ?> <?php } elseif (
+                                  is_array($addedInventory)
+                                ) { ?> <?php foreach (
+   $addedInventory
+   as $addedStock
+ ) { ?> <?= $addedStock["stock"] +
+   $addedStock["addedQty"] ?> <?php } ?> <?php } elseif (
+                                  is_array($soldProducts)
+                                ) { ?> <?php foreach (
+   $soldProducts
+   as $sold
+ ) { ?> <?= $stockVar["stock"] -
+   $sold["salesQty"] ?> <?php } ?> <?php } else { ?> <?= $stockVar["stock"] ?> 
+    <?php }
+                              }
+                            } ?>"
+                            />   
+                          <button class="plus-btn" onclick="plus(this)">+</button>
+                        </div>
+                      </div>
+                      <div class="add-cart">
+                        <?php if ($stocksPerVariant) {
+                          foreach ($stocksPerVariant as $stockVar) {
+                            $soldProducts = $store->sold_products(
+                              $ID,
+                              $stockVar["ID"]
+                            );
+                            $addedInventory = $store->get_added_stock_products(
+                              $ID,
+                              $stockVar["ID"]
+                            );
+                            if (
+                              is_array($soldProducts) &&
+                              is_array($addedInventory)
+                            ) { ?> <?php foreach (
+   $soldProducts
+   as $index => $value
+ ) { ?> <?php if (
+   $addedInventory[$index]["stock"] +
+     $addedInventory[$index]["addedQty"] -
+     $soldProducts[$index]["salesQty"] ===
+   0
+ ) { ?><button id="disabled-btn" class="btn disabled-btn cart-btn">
+    Out of Stock
+  </button> <?php } else { ?>                         <button type="button" id="cart-btn" class="btn primary-btn cart-btn">
+                          <span
+                            class="iconify cart-icon"
+                            data-icon="gg:shopping-bag"
+                            data-inline="false"
+                          ></span>
+                            Add to Cart
+                        </button> <?php }} ?> <?php } elseif (
+                              is_array($addedInventory)
+                            ) { ?> <?php foreach (
+   $addedInventory
+   as $addedStock
+ ) { ?> <?php if (
+   $addedStock["stock"] + $addedStock["addedQty"] ===
+   0
+ ) { ?> <button id="disabled-btn" class="btn disabled-btn cart-btn">
+    Out of Stock
+  </button> <?php } else { ?> <button type="button" id="cart-btn" class="btn primary-btn cart-btn">
+                          <span
+                            class="iconify cart-icon"
+                            data-icon="gg:shopping-bag"
+                            data-inline="false"
+                          ></span>
+                            Add to Cart
+                        </button> <?php } ?> <?php } ?> <?php } elseif (
+                              is_array($soldProducts)
+                            ) { ?> <?php foreach (
+   $soldProducts
+   as $sold
+ ) { ?> <?php if (
+   $stockVar["stock"] - $sold["salesQty"] ===
+   0
+ ) { ?> <button id="disabled-btn" class="btn disabled-btn cart-btn">
+    Out of Stock
+  </button> <?php } else { ?> <button type="button" id="cart-btn" class="btn primary-btn cart-btn">
+                          <span
+                            class="iconify cart-icon"
+                            data-icon="gg:shopping-bag"
+                            data-inline="false"
+                          ></span>
+                            Add to Cart
+                        </button> <?php }} ?> <?php } else { ?> <?php if (
+   $stockVar["stock"] === 0
+ ) { ?> <button id="disabled-btn" class="btn disabled-btn cart-btn">
+  Out of Stock
+</button> <?php } else { ?> <button type="button" id="cart-btn" class="btn primary-btn cart-btn">
+                          <span
+                            class="iconify cart-icon"
+                            data-icon="gg:shopping-bag"
+                            data-inline="false"
+                          ></span>
+                            Add to Cart
+                        </button> <?php } ?> 
+    <?php }
+                          }
+                        } ?>
+                      </div>
+                    <?php } ?>
+                    <?php if (!is_null($stock["size"])) { ?>       
+                      <div class="product-size">
+                        <div class="size-guide">
+                          <p>Size:</p>
+                            <?php if (!empty($product["sizeGuide"])) { ?>
+                              <button type="button" id="size-chart" class="size-chart" onclick="sizeGuide(this)">
+                                <span
+                                  class="iconify ruler"
+                                  data-icon="bx:bx-ruler"
+                                ></span>
+                                Size Guide
+                              </button>
+                            <?php } ?>
+                        </div>
+                        <select name="sizeList" id="sizeOpt" class="input size">
+                          <option selected disabled>Select Size</option>
+                          <?php foreach ($stocksPerVariant as $stockVar) { ?>
+                            <option value="<?= $stockVar["ID"] ?>" data-stock="
+                              <?php
+                              $soldProducts = $store->sold_products(
+                                $ID,
+                                $stockVar["ID"]
+                              );
+                              $addedInventory = $store->get_added_stock_products(
+                                $ID,
+                                $stockVar["ID"]
+                              );
+                              if (
+                                is_array($soldProducts) &&
+                                is_array($addedInventory)
+                              ) { ?> <?php foreach (
+   $soldProducts
+   as $index => $value
+ ) { ?> <?= $addedInventory[$index]["stock"] +
+   $addedInventory[$index]["addedQty"] -
+   $soldProducts[$index]["salesQty"] ?> <?php } ?> <?php } elseif (
+                                is_array($addedInventory)
+                              ) { ?> <?php foreach (
+   $addedInventory
+   as $addedStock
+ ) { ?> <?= $addedStock["stock"] +
+   $addedStock["addedQty"] ?> <?php } ?> <?php } elseif (
+                                is_array($soldProducts)
+                              ) { ?> <?php foreach (
+   $soldProducts
+   as $sold
+ ) { ?> <?= $stockVar["stock"] -
+   $sold["salesQty"] ?> <?php } ?> <?php } else { ?> <?= $stockVar["stock"] ?> 
+  <?php }
+                              ?>" ><?= $stockVar["size"] ?></option>
+                          <?php } ?>
+                        </select>
+                      </div>
+                      <div class="product-quantity" style="display:none;">
+                        <p>Quantity:</p>
+                        <div class="qty">
+                          <button class="minus-btn" onclick="minus(this)">-</button>
+                          <input
+                            class="qty-input"
+                            type="number"
+                            name=""
+                            id="quantity"
+                            value="1"
+                            min="1"            
+                            />   
+                          <button class="plus-btn" onclick="plus(this)">+</button>
+                        </div>
+                      </div>
+                      <div class="add-cart" style="display:none;">
+                        <button type="button" id="cart-btn" class="btn primary-btn cart-btn" >
+                          <span
+                            class="iconify cart-icon"
+                            data-icon="gg:shopping-bag"
+                            data-inline="false"
+                          ></span>Add to Cart
+                        </button>
+                        <button id="disabled-btn" class="btn disabled-btn cart-btn" style="display:none;">
+                          Out of Stock
+                        </button>
+                      </div>  
+                    <?php } ?>  
+                  <?php } ?>
+                <?php } else { ?>
+                  <div class="product-color">
+                    <p>Select Variation:</p>
+                  </div>
+                  <div>
+                    <div id="product-variant" class="product-gallery var-gallery">
+                      <?php if ($variation) { ?>
+                        <?php foreach ($variation as $variant) { ?>
+                          <?php $stocksPerVariant = $store->view_all_stocks_per_variant(
+                            $ID,
+                            $variant["ID"]
+                          ); ?>
+                          <span data-varID="<?= $variant[
+                            "ID"
+                          ] ?>" data-variant="<?= $variant[
   "variantName"
 ] ?>" data-variantImg="<?= $variant["variantImage"] ?>" >
-                      <img src="./assets/img/<?= $variant[
-                        "variantImage"
-                      ] ?>" alt="<?= $variant["variantImage"] ?>"> 
-                      <span><?php if ($stocksPerVariant) {
-                        foreach (
-                          $stocksPerVariant
-                          as $stockVar
-                        ) { ?><span class="<?= $stockVar[
+                          <img src="./assets/img/<?= $variant[
+                            "variantImage"
+                          ] ?>" alt="<?= $variant["variantImage"] ?>"> 
+                          <span><?php if ($stocksPerVariant) {
+                            foreach (
+                              $stocksPerVariant
+                              as $stockVar
+                            ) { ?><span class="<?= $stockVar[
   "variantID"
 ] ?>" data-stockID="<?= $stockVar["ID"] ?>" data-variantID="<?= $stockVar[
   "variantID"
@@ -122,13 +357,15 @@ if (is_array($soldProducts) && is_array($addedInventory)) { ?> <?php foreach (
   is_array($soldProducts)
 ) { ?> <?php foreach ($soldProducts as $sold) { ?> <?= $stockVar["stock"] -
    $sold["salesQty"] ?> <?php } ?> <?php } else { ?> <?= $stockVar["stock"] ?> 
-<?php }
+    <?php }
 ?>" ></span><?php }
-                      } ?></span></span>                 
-                    <?php } ?>
-                  <?php } ?>
-                </div>
-              </div>
+                          } ?></span></span>                 
+                        <?php } ?>
+                      <?php } ?>
+                    </div>
+                  </div>
+                <?php } ?>
+              <?php } ?>
               <input type="hidden" id="productColor">
               <img id="productImg" src="" alt="" style="display: none;">
               <div id="color-container" class="product-color" style="display:none;">

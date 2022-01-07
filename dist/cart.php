@@ -3,11 +3,11 @@ require_once "../class/webstoreclass.php";
 require "../PHPMailer/src/PHPMailer.php";
 require "../PHPMailer/src/SMTP.php";
 $user = $store->get_userdata();
-$store->checkout();
 $title = "Cart";
 require_once "../includes/header.php";
 ?>
   <body>
+    <?php $store->checkout(); ?>
     <div class="page-container">
       <?php include_once "../includes/navbar.php"; ?>
       <!-- start of cart section -->

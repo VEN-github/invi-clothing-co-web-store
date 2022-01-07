@@ -1476,7 +1476,12 @@ class WebStore
         $ID = $_SESSION["userdata"]["ID"];
         header("Location: checkoutInfo.php?ID=$ID");
       } else {
-        header("Location: login.php");
+        echo "<script> Swal.fire({
+          icon: 'error',
+          title: 'Login Required',
+          text: 'Please login first',
+        });
+        </script>";
       }
     }
   }
